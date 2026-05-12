@@ -1,17 +1,31 @@
 {
   "RootObject": {
     "__guid": "13e05e7e-a93c-4a2a-8d00-3f5d066be661",
+    "__version": 2,
     "Flags": 0,
-    "Name": "Client",
+    "Name": "client",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
     "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "Facepunch.Client",
-        "__guid": "4287ea75-f9a3-44a1-9b33-47d8171c2433",
-        "TimeSinceRespawnStateChanged": {
-          "Relative": 2698.3528
-        },
-        "IsBot": false,
+        "__type": "Sandbox.Components.ClientComponent",
+        "__guid": "5b3f57d1-ba08-4a4e-b38b-927326a9fa25",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
         "PlayerPawnPrefab": {
           "_type": "gameobject",
           "prefab": "prefabs/player/player.prefab"
@@ -20,59 +34,157 @@
         "Team": "Unassigned"
       },
       {
-        "__type": "Facepunch.PlayerId",
-        "__guid": "aab3a546-80c0-4d1c-aa86-c834ce2ea541"
-      },
-      {
-        "__type": "Facepunch.UI.PlayerScore",
-        "__guid": "f8891149-61b5-4fd3-b42f-6cb6857b3507",
-        "Deaths": 0,
-        "Kills": 0,
+        "__type": "Sandbox.Components.PlayerLoadoutComponent",
+        "__guid": "ba0a43db-1c1b-4076-8f65-0aa0af021f14",
+        "__enabled": true,
+        "Flags": 0,
         "Client": {
           "_type": "component",
-          "component_id": "4287ea75-f9a3-44a1-9b33-47d8171c2433",
+          "component_id": "5b3f57d1-ba08-4a4e-b38b-927326a9fa25",
           "go": "13e05e7e-a93c-4a2a-8d00-3f5d066be661",
-          "component_type": "Client"
+          "component_type": "ClientComponent"
         },
+        "Equipment": [],
+        "HasDefuseKit": false,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      },
+      {
+        "__type": "Sandbox.Components.PlayerScoreComponent",
+        "__guid": "5cf017c1-799d-4a96-9c47-a97bc2750a00",
+        "__enabled": true,
+        "Flags": 0,
+        "Client": {
+          "_type": "component",
+          "component_id": "5b3f57d1-ba08-4a4e-b38b-927326a9fa25",
+          "go": "13e05e7e-a93c-4a2a-8d00-3f5d066be661",
+          "component_type": "ClientComponent"
+        },
+        "Deaths": 0,
+        "Kills": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
         "Score": 0
       },
       {
-        "__type": "Facepunch.PlayerVoiceComponent",
-        "__guid": "c92ec926-f734-4463-89d5-786760d9bc3e",
+        "__type": "Sandbox.Voices.PlayerVoice",
+        "__guid": "0052a485-9708-411d-9f38-5be1f3a9c8d4",
+        "__enabled": true,
+        "Flags": 0,
+        "Client": {
+          "_type": "component",
+          "component_id": "5b3f57d1-ba08-4a4e-b38b-927326a9fa25",
+          "go": "13e05e7e-a93c-4a2a-8d00-3f5d066be661",
+          "component_type": "ClientComponent"
+        },
+        "Distance": 15000,
+        "Falloff": [
+          {
+            "x": 0,
+            "y": 1,
+            "in": 0,
+            "out": -1.8,
+            "mode": "Mirrored"
+          },
+          {
+            "x": 0.05,
+            "y": 0.22,
+            "in": 3.5,
+            "out": -3.5,
+            "mode": "Mirrored"
+          },
+          {
+            "x": 0.2,
+            "y": 0.04,
+            "in": 0.16,
+            "out": -0.16,
+            "mode": "Mirrored"
+          },
+          {
+            "x": 1,
+            "y": 0,
+            "in": 0,
+            "out": 0,
+            "mode": "Mirrored"
+          }
+        ],
+        "LipSync": true,
         "Loopback": false,
         "Mode": "PushToTalk",
         "MorphScale": 0.12,
         "MorphSmoothTime": 0.1,
-        "Client": {
-          "_type": "component",
-          "component_id": "4287ea75-f9a3-44a1-9b33-47d8171c2433",
-          "go": "13e05e7e-a93c-4a2a-8d00-3f5d066be661",
-          "component_type": "Client"
-        },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
         "PushToTalkInput": "voice",
+        "Renderer": null,
+        "VoiceMixer": {
+          "Name": "unknown",
+          "Id": "00000000-0000-0000-0000-000000000000"
+        },
         "Volume": 1,
-        "WorldspacePlayback": false
+        "WorldspacePlayback": true
       },
       {
-        "__type": "Facepunch.PlayerLoadout",
-        "__guid": "c47762ae-b09b-4cde-99b3-157debee5f47",
-        "Equipment": [],
-        "HasDefuseKit": false,
+        "__type": "Sandbox.Components.PlayerLoadoutComponent",
+        "__guid": "11001de9-5868-4c74-96d4-e26005cfeba3",
+        "__enabled": true,
+        "Flags": 0,
         "Client": {
           "_type": "component",
-          "component_id": "4287ea75-f9a3-44a1-9b33-47d8171c2433",
+          "component_id": "5b3f57d1-ba08-4a4e-b38b-927326a9fa25",
           "go": "13e05e7e-a93c-4a2a-8d00-3f5d066be661",
-          "component_type": "Client"
-        }
+          "component_type": "ClientComponent"
+        },
+        "Equipment": [],
+        "HasDefuseKit": false,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
       }
     ],
     "Children": [],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
+      }
+    },
     "__variables": []
   },
+  "ResourceVersion": 2,
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
-  "ResourceVersion": 1,
+  "DontBreakAsTemplate": false,
   "__references": [],
-  "__version": 1
+  "__version": 2
 }
