@@ -1,0 +1,84 @@
+﻿@using System;
+@using Sandbox.UI;
+@using Sandbox.Components;
+@using Sandbox.Components.PawnComponents;
+@namespace Sandbox.UI.Panels
+@inherits Panel
+
+<root class="row @(IsLocal ? "local" : "") @(IsDead ? "dead" : "") with-px-lg with-py">
+    <span class="col stat-small">
+        @if ( Player.IsValid() ) 
+        {
+            @if (Player.Inventory.HasBomb && IsFriendly && Team == Team.Terrorist)
+            {
+                <IconPanel File="/ui/bomb.png" size="24"></IconPanel>
+            }
+            else if (Player.Inventory.HasDefuseKit && IsFriendly && Team == Team.CounterTerrorist)
+            {
+                <IconPanel File="/ui/defusekit.png" size="24"></IconPanel>
+            }
+        }
+    </span>
+
+    <span class="col stat-small">
+        @if ( Connection is not null )
+        {
+            <label class="small">@(Connection?.Ping.CeilToInt())</label>
+        }
+        else
+        {
+            <IconPanel style="background-tint: red;" File="/ui/no-connection.png" size="24" />
+        }
+    </span>
+
+    <span class="col playername gap-sm">
+        
+        <PlayerAvatarPanel ShowHealth=@false ShowBomb=@false class="avatar" Player=@Client />
+        <label>
+            @Client.DisplayName
+        </label>
+
+        @if ( IsPartyMember )
+        {
+            <IconPanel File="/ui/party-member.png" size="24"></IconPanel>
+        }
+    </span>
+
+    @foreach ( var x in IScore.Find( Client ) )
+    {
+        <label class="col stat">@(x.Value)</label>
+    }
+</root>
+
+@code {
+    public ClientComponent Client { get; set; }
+    public PlayerPawnComponent Player => Client.PlayerPawn;
+    private Connection Connection => Client.Connection;
+    private PlayerScoreComponent Score => Client.GetComponent<PlayerScoreComponent>();
+
+    private bool IsFriendly => Client.IsFriendly( ClientComponent.Local );
+    private bool IsLocal => Client.IsLocalPlayer;
+    private bool IsDead => !Player.IsValid() || Player.HealthComponent.State != LifeState.Alive;
+    private float KillDeathRatio => (float)Score.Kills / (float)Score.Deaths.Clamp(1, int.MaxValue);
+    private Team Team => Client.Team;
+    private bool IsPartyMember => PartyRoom.Current?.Members.Any( x => x.Id == Connection.SteamId ) ?? false;
+
+    public bool Disconnected => Connection is null;
+
+    protected override int BuildHash()
+    {
+        var hash = HashCode.Combine( Connection, IsLocal, IsDead, Connection?.Ping );
+
+        if ( Player.IsValid() )
+        {
+            hash = HashCode.Combine( hash, Player.Inventory.HasDefuseKit, Player.Inventory.HasBomb, IsPartyMember, Player.Client.PlayerColor );
+        }
+
+        foreach ( var x in IScore.Find( Client ) )
+        {
+            hash = HashCode.Combine( hash, x.Value );
+        }
+
+        return hash;
+    }
+}

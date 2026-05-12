@@ -1,0 +1,23 @@
+{
+  "publish": {
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "Ct Bags",
+      "Type": "material",
+      "Org": "local",
+      "Ident": "ctbags",
+      "Schema": 0,
+      "IncludeSourceFiles": false,
+      "Resources": null,
+      "PackageReferences": null,
+      "EditorReferences": [
+        "additionproject.picture_frame1#12740"
+      ],
+      "Mounts": null,
+      "IsStandaloneOnly": false,
+      "Metadata": {
+        "SingleAssetSource": "models/player/ct_side/ct_side_player_01/ct_bags.vmat"
+      }
+    }
+  }
+}

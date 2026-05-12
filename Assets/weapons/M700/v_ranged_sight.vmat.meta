@@ -1,0 +1,23 @@
+{
+  "publish": {
+    "Enabled": false,
+    "ProjectConfig": {
+      "Title": "V Ranged Sight",
+      "Type": "material",
+      "Org": "local",
+      "Ident": "vrangedsight",
+      "Schema": 0,
+      "IncludeSourceFiles": false,
+      "Resources": null,
+      "PackageReferences": null,
+      "EditorReferences": [
+        "additionproject.picture_frame1#12740"
+      ],
+      "Mounts": null,
+      "IsStandaloneOnly": false,
+      "Metadata": {
+        "SingleAssetSource": "weapons/m700/v_ranged_sight.vmat"
+      }
+    }
+  }
+}

@@ -1,0 +1,133 @@
+﻿@using System;
+@using Sandbox.UI;
+@using Sandbox.Components
+@using Sandbox.Components.SingletonComponents
+
+@namespace Sandbox.UI.Panels
+@inherits Panel
+
+@attribute [StyleSheet]
+
+<root class="hidden flex absolute inset-0 align-center justify-center background">
+    <table class="with-background with-padding-lg layout">
+        <div class="title">
+            <label class="important uppercase left">@(Status is null ? Name : $"{Name} - {Status}")</label>
+            <label class="important uppercase center">@(RoundNumber is { } roundNumber && RoundLimit is { } roundLimit ? $"Round {roundNumber} of {roundLimit}" : "")</label>
+            <label class="important uppercase right">@(Time?.ToString( @"m\:ss" ) ?? " ")</label>
+        </div>
+
+        @for ( int i = 0; i < GroupedPlayers.Count(); i++ )
+        {
+             var group = GroupedPlayers[i];
+
+            @if ( group.Key == Team.Unassigned )
+            {
+                <div class="flex gap-sm align-center">
+                    <IconPanel file="/ui/teams/spectator.png" size="16" />
+                    <label class="small grey">string.Join(", ", group.Select(x => x.DisplayName)</label>
+                </div>
+            }
+            else
+            {
+                <span class="flex align-center space-between gap-sm" style="color: @group.Key.GetColor().Hex">
+                    <span class="flex align-center gap-sm">
+                        <IconPanel file="@group.Key.GetIconPath()" size="24" />
+                        <label class="emphasis with-py">@group.Key.GetName()</label>
+                    </span>
+
+                    <separator style="background-color: @group.Key.GetColor().Hex" />
+
+                    @if ( GameModeSingletonComponent.Instance.Get<TeamScoringComponent>() is { } scoring )
+                    {
+                        <label class="emphasis">@scoring.GetFormattedScore(group.Key)</label>
+		            }
+                </span>
+
+                <div class="row header with-px-lg with-py-sm">
+                    <label class="col stat-small small"></label>
+                    <label class="col stat-small small"></label>
+                    <label class="col playername small"></label>
+                   
+                    @foreach ( var x in IScore.Find( ClientComponent.Local ) )
+                    {
+                        <label class="col stat">@(x.Attribute.Name)</label>
+                    }
+                </div>
+
+                @foreach ( var player in group )
+                {
+                    <ScoreboardRowPanel Client="@player" />
+                }
+
+                @if ( i == 0 )
+                {
+                    <GameOverviewPanel />
+                }
+            }
+        }
+    </table>
+</root>
+
+@code
+{
+    public string Status => GameModeSingletonComponent.Instance?.DisplayedStatus;
+    public string Name => GameModeSingletonComponent.Instance?.Title;
+    public TimeSpan? Time => GameModeSingletonComponent.Instance?.DisplayedTime;
+
+    public int? RoundNumber => GameModeSingletonComponent.Instance.Get<RoundCounterComponent>()?.Round;
+    public int? RoundLimit => GameModeSingletonComponent.Instance.Get<RoundLimitComponent>()?.MaxRounds;
+
+    public IEnumerable<ClientComponent> Clients => GameUtils.AllPlayers;
+
+    private List<IGrouping<Team, ClientComponent>> GroupedPlayers
+    {
+        get
+        {
+            var sortedPlayers = Clients.OrderByDescending( x => x.GetComponent<PlayerScoreComponent>().Score );
+            var groupedPlayers = sortedPlayers.GroupBy( x => x.Team );
+            return groupedPlayers.ToList();
+        }
+    }
+
+    public bool IsActive { get; set; }
+
+    protected override int BuildHash()
+    {
+        if ( !IsActive ) return 0;
+
+        var hash = new HashCode();
+
+        hash.Add( IsActive );
+        hash.Add( Status );
+        hash.Add( Time?.TotalSeconds );
+        hash.Add( RoundNumber );
+        hash.Add( RoundLimit );
+
+        foreach ( var team in GroupedPlayers )
+        {
+            hash.Add( team.Key );
+
+            foreach ( var player in team )
+            {
+                hash.Add( player.Id );
+            }
+        }
+
+        return hash.ToHashCode();
+    }
+
+    public override void Tick()
+    {
+        if ( Input.Pressed( "Score" ) )
+        {
+            IsActive = Input.Pressed( "Score" );
+            SetClass( "visible", true );
+        }
+
+        if ( Input.Released( "Score" ) )
+        {
+            SetClass( "visible", false );
+            IsActive = false;
+        }
+    }
+}

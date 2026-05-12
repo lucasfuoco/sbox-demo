@@ -1,0 +1,146 @@
+{
+  "RootObject": {
+    "__guid": "89e9bfbf-5479-448a-be07-24914e1c82c3",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "spectate",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.Components.PawnComponents.SpectateControllerPawnComponent",
+        "__guid": "1a368c00-bf11-4536-a008-fab6ddbc0b5a",
+        "__enabled": true,
+        "Flags": 0,
+        "FlySpeed": 10,
+        "HealthComponent": null,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      },
+      {
+        "__type": "Sandbox.Components.PawnCameraControllerComponent",
+        "__guid": "20f970fe-0a0d-40d3-863d-80a13199c2f6",
+        "__enabled": true,
+        "Flags": 0,
+        "Boom": null,
+        "CameraObject": null,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      },
+      {
+        "__type": "Sandbox.Components.PawnCameraControllerComponent",
+        "__guid": "9cbd9d13-7226-40fc-bd17-2ef0fd0d3d51",
+        "__enabled": true,
+        "Flags": 0,
+        "Boom": null,
+        "CameraObject": null,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "76bb9bb6-92d1-4dca-9a77-929eb5a55cb6",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "Boom",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [],
+        "Children": [
+          {
+            "__guid": "ce351d81-326c-49d1-8f55-9bcefe0e518b",
+            "__version": 2,
+            "__Prefab": "prefabs/player/cameras/default_player_camera.prefab",
+            "__PrefabInstancePatch": {
+              "AddedObjects": [],
+              "RemovedObjects": [],
+              "PropertyOverrides": [
+                {
+                  "Target": {
+                    "Type": "GameObject",
+                    "IdValue": "91c92300-c9e5-4a0d-b4ae-d26a91936fc8"
+                  },
+                  "Property": "Position",
+                  "Value": "-0.00266118697,-0.000236611348,2"
+                }
+              ],
+              "MovedObjects": []
+            },
+            "__PrefabIdToInstanceId": {
+              "91c92300-c9e5-4a0d-b4ae-d26a91936fc8": "ce351d81-326c-49d1-8f55-9bcefe0e518b",
+              "da762119-5dde-4e71-b670-7d89847453bb": "f4a1d088-28d5-473f-9cc0-a475148916ea",
+              "c283a749-a1b4-4d71-97cd-6cfe6e0269f0": "d5d1fce0-7a95-4de4-b568-1ae30ad291a7",
+              "9a1e8dd1-ce52-4988-a0a6-2192d8401241": "43fddf12-51f7-4ca9-8d70-9f39b7b2aec5",
+              "aa00f6d6-044f-4303-b133-b1db76e26a95": "97e48470-33b2-49df-b8e1-05dbfc804f43",
+              "84567d97-73e3-488c-9ec1-ecfea74f2603": "c035e368-f276-40b4-ac34-21ef167b7aae",
+              "09775e98-d3bd-4fe7-b742-4888e27b545c": "8c155965-7fff-44aa-9bc8-6119373c1b08",
+              "a1574d00-56c9-4791-9885-9c2ce4d6d170": "9d4730f1-360d-4626-b3b2-5709bb758b5c",
+              "fea821b4-2c14-4aa3-ab38-da30ee64a3a3": "9fe48041-2eea-4dc2-bd02-f5ca339a3587",
+              "9d21f25e-4845-4991-8273-82f901d917f4": "e38cce1b-5838-4be7-a0c7-15fd50becf3f",
+              "f454dfa0-11ae-4273-98bb-4cab30eecc08": "dbc4192b-5039-4508-b595-3ad7d9fd5822",
+              "8508e342-b8bf-4ada-9ba3-494ca655ac72": "d8f531b6-bd9b-4105-9b83-b0f37baedf8e",
+              "e4d86c77-f57a-43fb-b915-a2a5b90c7033": "75c9429c-fb55-468b-85f1-1f9449e22e08"
+            }
+          }
+        ]
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

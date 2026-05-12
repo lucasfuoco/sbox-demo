@@ -1,0 +1,97 @@
+@using Sandbox
+@using Sandbox.UI.Navigation
+@using Sandbox.UI.NavigationHosts
+@using Sandbox.UI.Panels
+
+@inherits Panel
+@implements INavigatorPage
+@namespace Sandbox.UI.Panels
+
+<root class="hc1 blur">
+    <PagePanel>
+        <Header>
+            <div class="row gap align-center layout grow">
+                <label>Settings</label>
+            </div>
+        </Header>
+        <Body>
+            <div style="height: 18%;"/>
+
+            <div class="layout column gap">
+                <div class="layout row inset">
+                    @foreach (var grouping in TypeLibrary.GetPropertyDescriptions(GameSettingsSystem.Current).GroupBy(x => x.Group))
+                    {
+                        <div class="button standard smaller no-anim extra-x-padding @(SelectedGroup == grouping.Key ? "selected" : "")" onclick=@(() => SetGroup( grouping.Key ) )>@grouping.Key</div>
+                    }
+                </div>
+
+                <div class="layout padding-insane-x with-scroll column">
+                    <VerticalDividerPanel />
+
+                    <div class="column with-bg layout padding-extra with-gap">
+                        @if ( !string.IsNullOrEmpty( SelectedGroup ) )
+                        {
+                            @foreach ( var property in TypeLibrary.GetPropertyDescriptions( GameSettingsSystem.Current ).Where( x => x.Group == SelectedGroup ) )
+                            {
+                                <SettingsEntryPanel Target=@GameSettingsSystem.Current Description=@property />
+                            }
+                        }
+                    </div>
+
+                    <VerticalDividerPanel />
+                </div>
+            </div>
+
+            <div class="grow" />
+        </Body>
+
+        <Footer>
+            <div class="button standard" onclick=@(() => Game.Overlay.ShowBinds())>
+                EDIT INPUT BINDINGS
+            </div>
+            <button class="button standard" onclick=@(()=>Save())>Save</button>
+        </Footer>
+    </PagePanel>
+</root>
+
+@code
+{
+    private string SelectedGroup { get; set; } = null;
+
+    protected override void OnAfterTreeRender( bool firstTime )
+    {
+        if ( firstTime )
+        {
+            // Get the first group
+            var first = TypeLibrary.GetPropertyDescriptions( GameSettingsSystem.Current ).FirstOrDefault();
+            SetGroup( first.Group );
+        }
+    }
+
+    private void SetGroup( string group )
+    {
+        SelectedGroup = group;
+        StateHasChanged();
+    }
+
+    void Save()
+    {
+        GameSettingsSystem.Save();
+    }
+
+    public void OnNavigationOpen()
+    {
+        if ( MainMenuNavigationHost.Instance.IsValid() )
+        {
+            MainMenuNavigationHost.Instance.SetBlur( true );
+        }
+    }
+    
+    public void OnNavigationClose() 
+    {
+        if ( MainMenuNavigationHost.Instance.IsValid() )
+        {
+            MainMenuNavigationHost.Instance.SetBlur( false );
+        }
+    }
+}

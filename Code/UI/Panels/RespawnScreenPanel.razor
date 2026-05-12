@@ -1,0 +1,56 @@
+@namespace Sandbox.UI.Panels
+@using Sandbox.Components
+@using Sandbox.Components.PawnComponents
+@using Sandbox.Components.RespawnerComponents
+@inherits Panel
+@attribute [StyleSheet]
+
+@if ( !Respawner.IsValid() )
+{
+    return;
+}
+
+@if ( Client.PlayerPawn.IsValid() )
+{
+    return;
+}
+
+@if ( Client.RespawnState == RespawnState.Immediate ) 
+{
+    return;
+}
+
+<root>
+    @if ( Respawner is PlayerAutoRespawnerComponent auto )
+    {
+        <div class="default-respawner">
+            <div class="label">Deploying in @auto.GetRespawnTime()</div>
+        </div>
+    }
+
+    @if ( Respawner is PlayerInputRespawnerComponent input )
+    {
+        <div class="default-respawner">
+            @if (input.GetRespawnTime() <= 0f )
+            {
+                <div class="label">Press <InputHintPanel class="small" Action=@input.InputAction /> to deploy</div>
+            }
+            else
+            {
+                <div class="label">Deploying in @input.GetRespawnTime()</div>
+            }
+        </div>
+    }
+
+</root>
+
+@code
+{
+    public RespawnerComponent Respawner => Scene.GetAllComponents<RespawnerComponent>().FirstOrDefault();
+    public ClientComponent Client => ClientComponent.Local;
+
+    protected override int BuildHash()
+    {
+        return System.HashCode.Combine( Time.Now );
+    }
+}

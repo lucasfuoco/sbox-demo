@@ -1,0 +1,126 @@
+@using Sandbox.Components
+@using Sandbox.Components.SingletonComponents
+@namespace Sandbox.UI.Panels
+@inherits Panel
+@attribute [StyleSheet]
+
+<root class="flex gap-sm justify-center row">
+    @if ( MyTeamPlayers is not null )
+    {
+        <RoundStateTeamPanel Score="@MyTeamScore" Team="@MyTeam" Players="@MyTeamPlayers" iconPosition="Right" />
+    }
+    else
+    {
+        <div class="grow"></div>        
+    }
+
+    <div class="layout flex column with-background align-center justify-center blur" style="border: 1px solid rgba( black, 0.25 )">
+        @if ( IconPath is { } path )
+        {
+            <IconPanel File="@path" size="64" />
+        }
+        else
+        {
+            @* <label class="small slight">@Status</label> *@
+            @if (Time.HasValue)
+            {
+                <label class="uppercase">@(Time?.ToString(@"m\:ss"))</label>
+            }
+        }
+    </div>
+
+    @if ( EnemyTeamPlayers is not null )
+    {
+        <RoundStateTeamPanel Score="@EnemyTeamScore" Team="@EnemyTeam" Players="@EnemyTeamPlayers" iconPosition="Left" />
+    }
+    else
+    {
+        <div class="grow"></div>
+    }
+</root>
+
+@code
+{
+    private Team MyTeam => ClientComponent.Local.Team;
+    private Team EnemyTeam => MyTeam.GetOpponents();
+
+    private string MyTeamScore { get; set; } = "0";
+    private string EnemyTeamScore { get; set; } = "0";
+
+    private List<ClientComponent> MyTeamPlayers { get; } = new();
+    private List<ClientComponent> EnemyTeamPlayers { get; } = new();
+
+    public string Status => GameModeSingletonComponent.Instance.IsValid() ? GameModeSingletonComponent.Instance.DisplayedStatus : "";
+    public string IconPath => GameModeSingletonComponent.Instance.IsValid() ? GameModeSingletonComponent.Instance.Get<ShowStatusIconComponent>()?.IconPath : "";
+    public TimeSpan? Time => GameModeSingletonComponent.Instance.IsValid() ? GameModeSingletonComponent.Instance.DisplayedTime : null;
+
+    private void OnSecondElapsed()
+    {
+        // TODO: hook this up to a place where we can conditionally activate the beeping
+        // if ( storedTime <= 5 )
+        // {
+        //     var snd = Sound.Play( storedTime == 0 ? "countdown_activate" : "countdown_beep" );
+        //     snd.TargetMixer = Sandbox.Audio.Mixer.FindMixerByName( "UI" );
+        // }
+    }
+
+    private int storedTime;
+    public override void Tick()
+    {
+        if ( Time.HasValue )
+        {
+            var timeInSeconds = (int)Time.Value.TotalSeconds;
+            if ( storedTime != timeInSeconds )
+            {
+                storedTime = timeInSeconds;
+                OnSecondElapsed();
+            }
+        }
+
+        MyTeamPlayers.Clear();
+        EnemyTeamPlayers.Clear();
+
+        if ( MyTeam == Team.Unassigned || EnemyTeam == Team.Unassigned )
+            return;
+
+        if ( GameModeSingletonComponent.Instance.IsValid() && GameModeSingletonComponent.Instance.Get<TeamScoringComponent>() is { IsValid: true } teamScoring )
+        {
+            MyTeamScore = teamScoring.MyTeamScoreFormatted;
+            EnemyTeamScore = teamScoring.OpposingTeamScoreFormatted;
+        }
+        else
+        {
+            MyTeamScore = null;
+            EnemyTeamScore = null;
+        }
+
+        MyTeamPlayers.AddRange( GameUtils.GetPlayers( MyTeam ) );
+        EnemyTeamPlayers.AddRange( GameUtils.GetPlayers( EnemyTeam ) );
+    }
+
+    protected override int BuildHash()
+    {
+        var hash = new HashCode();
+
+        hash.Add( MyTeam );
+        hash.Add( EnemyTeam );
+
+        hash.Add( Status );
+        hash.Add( IconPath );
+        hash.Add( Time?.TotalSeconds );
+
+        foreach ( var player in MyTeamPlayers )
+        {
+            hash.Add( player.Id );
+            hash.Add( player.Team );
+        }
+
+        foreach ( var player in EnemyTeamPlayers )
+        {
+            hash.Add( player.Id );
+            hash.Add( player.Team );
+        }
+
+        return hash.ToHashCode();
+    }
+}

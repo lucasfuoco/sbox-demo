@@ -1,0 +1,55 @@
+﻿@using System.Text;
+@namespace Sandbox.UI.Panels
+@using Sandbox.Components
+@using Sandbox.Components.SingletonComponents
+@using Sandbox.Components.PawnComponents
+@inherits Panel
+
+@attribute [StyleSheet]
+
+@if ( !SpectateSystem.IsValid() || !SpectateSystem.IsSpectating ) return;
+
+@if (ClientComponent.Viewer.IsLocalPlayer && !SpectateSystemSingletonComponent.Instance.IsFreecam) return;
+
+<root class="hud with-deadzone flex column">
+    <div class="flex row">
+        <InputHintPanel Action="SpectatorPrev" />
+        <div class="flex column with-background with-padding h-full align-center justify-center" style="min-width: 275px; height: 75px;">
+            <label class="text small upper">SPECTATING</label>
+            @if ( SpectateSystem.IsFreecam )
+            {
+                <label>FREECAM</label>
+            }
+            else
+            {
+                <label>@Player.DisplayName</label>
+            }  
+        </div>
+        <InputHintPanel Action="SpectatorNext" />  
+    </div>
+    <div class="flex row justify-center gap">
+        @if (!SpectateSystem.IsFreecam )
+        {
+            <span>
+                <InputHintPanel Action="SpectatorFreeCam" /> 
+                <label>Freecam</label>
+            </span>
+            <span>
+                <InputHintPanel Action="SpectatorMode" Size="@InputGlyphSize.Small" />
+                <label>Mode</label>
+             </span>
+        }
+    </div>
+</root>
+
+@code
+{
+    public PlayerPawnComponent Player => ClientComponent.Viewer.PlayerPawn;
+
+    public SpectateSystemSingletonComponent SpectateSystem => SpectateSystemSingletonComponent.Instance;
+
+    protected override int BuildHash()
+    {
+        return !Player.IsValid() ? 0 : HashCode.Combine( SpectateSystem?.IsSpectating, Player );
+    }
+}

@@ -1,0 +1,81 @@
+@using Sandbox
+@using Sandbox.UI
+@using Sandbox.UI.Navigation
+@using Sandbox.GameResources
+@using Sandbox.UI.NavigationHosts
+
+@inherits Panel
+@implements INavigatorPage
+@attribute [StyleSheet]
+@namespace Sandbox.UI.Panels
+
+<root class="hc1">
+    <PagePanel>
+        <Header>
+            Career
+        </Header>
+        <Body>
+            <div class="flex layout row gap" style="width: 100%; height: 100%; 	justify-content: center; align-items: center;">
+                <div class="inset column layout with-background line-left" style="width: 15%;">
+                    <VerticalDividerPanel />
+
+                    <div class="layout padding-extra with-gap column">
+                        <label class="text emphasis">
+                            Player Stats
+                        </label>
+                        
+                        <CareerStatPanel Name="Kills" Stat="kills" />
+                        <CareerStatPanel Name="Headshot Kills" Stat="kills-headshots" />
+                        <CareerStatPanel Name="Deaths" Stat="deaths" />
+                    </div>
+
+                    <VerticalDividerPanel />
+                </div>
+
+                <div class="inset column layout with-background line-left" style="width: 60%;">
+                    <VerticalDividerPanel />
+
+                    <div class="layout padding-extra with-gap column">
+                        <label class="text emphasis">
+                            Weapon Stats
+                        </label>
+
+                        <div class="layout row wrap">
+                            @foreach ( var equip in ResourceLibrary.GetAll<EquipmentResource>().Where( x => x.Slot == EquipmentSlot.Primary || x.Slot == EquipmentSlot.Secondary ) )
+                            {
+                                <CareerWeaponPanel style="width: 49%;" Equipment=@equip />
+                            }
+                        </div>
+
+                    </div>
+
+                    <VerticalDividerPanel />
+                </div>
+            </div>
+        </Body>
+    </PagePanel>
+</root>
+
+@code
+{
+    void Quit()
+    {
+        Game.Close();
+    }
+       
+    public void OnNavigationOpen()
+    {
+        if ( MainMenuNavigationHost.Instance.IsValid() )
+        {
+            MainMenuNavigationHost.Instance.SetBlur( true );
+        }
+    }
+    
+    public void OnNavigationClose() 
+    {
+        if ( MainMenuNavigationHost.Instance.IsValid() )
+        {
+            MainMenuNavigationHost.Instance.SetBlur( false );
+        }
+    }
+}

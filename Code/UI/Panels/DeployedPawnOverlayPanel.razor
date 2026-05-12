@@ -1,0 +1,52 @@
+@namespace Sandbox.UI.Panels
+@using Sandbox.Components
+@using Sandbox.Components.PawnComponents
+@attribute [StyleSheet]
+
+@if ( !Player.IsValid() )
+    return;
+
+@if ( !Player.GetComponent<DeployedPawnHandlerComponent>().IsValid() )
+    return;
+
+@if ( !Player.GetComponent<DeployedPawnHandlerComponent>().Pawn.IsValid() )
+    return;
+
+<root>
+    <div class="warning">
+        <div class="flex layout align-center grow">
+            <label class="small slight">@Message</label>
+            <div class="grow" />
+            <InputHintPanel class="small" Action="Use" />
+        </div>
+    </div>
+</root>
+
+@code
+{
+    public Panel Overlay { get; set; }
+    public ClientComponent Player => ClientComponent.Viewer;
+
+    public string Message
+    {
+        get
+        {
+            if ( Player.Components.Get<DeployedPawnHandlerComponent>() is { } handler )
+            {
+                if ( Player.Pawn == handler.Pawn )
+                    return $"Exit {handler.Pawn.NameType}";
+                else
+                    return $"Return to {handler.Pawn.NameType}";
+            }
+
+            return "";
+        }
+    }
+
+    protected override int BuildHash()
+    {
+        if ( !Player.IsValid() ) return 1;
+
+        return HashCode.Combine( Time.Now );
+    }
+}

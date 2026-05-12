@@ -1,0 +1,1719 @@
+{
+  "__guid": "ced1cae9-e91d-4ca2-a838-6aa8806c201e",
+  "GameObjects": [
+    {
+      "__guid": "b1b80b74-22fa-4db3-973e-14b55780a447",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Scene Information",
+      "Position": "149.994965,149.994995,-212.124985",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.SceneInformation",
+          "__guid": "2bfa4ef5-e084-4efb-aae4-c747c7e634d0",
+          "__enabled": true,
+          "Flags": 0,
+          "Author": null,
+          "Changes": null,
+          "Description": null,
+          "Group": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "SceneTags": "",
+          "Title": "Depot",
+          "Version": null
+        },
+        {
+          "__type": "Sandbox.Components.MapInformationComponent",
+          "__guid": "98357822-b46b-4c0c-89fe-45d82a72a86a",
+          "__enabled": true,
+          "Flags": 0,
+          "Image": "ui/maps/depot.jpg",
+          "IsVisibleInMenu": true,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "89b70ab3-975e-4bc6-bdff-06179737aaeb",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Map",
+      "Position": "149.994965,149.994995,-212.124985",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.MapInstance",
+          "__guid": "21cefd58-0623-4fe9-b64c-0098b1712a40",
+          "__enabled": true,
+          "Flags": 0,
+          "__version": 1,
+          "EnableCollision": true,
+          "MapName": null,
+          "NoOrigin": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnMapLoaded": null,
+          "OnMapUnloaded": null,
+          "UseMapFromLaunch": false
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "dedcd6e8-8336-4396-abe2-4d6bcf292bb1",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Minimap Renderer",
+      "Position": "149.994965,149.994995,-212.124985",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.Components.MinimapRendererComponent",
+          "__guid": "c8258590-73af-4453-9879-50d1bdb08c86",
+          "__enabled": true,
+          "Flags": 0,
+          "CurrentMinimapPath": "ui/minimaps/minimap_depot.png",
+          "ExportResolution": "2048,2048",
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Size": 0
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "e07677f7-b87b-4281-8695-8b91ba02553e",
+      "__version": 2,
+      "__Prefab": "prefabs/game_modes/team_deathmatch.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [],
+        "RemovedObjects": [],
+        "PropertyOverrides": [],
+        "MovedObjects": []
+      },
+      "__PrefabIdToInstanceId": {
+        "f7c25223-1ca5-4076-9d06-aa3c3c46f4a1": "e07677f7-b87b-4281-8695-8b91ba02553e",
+        "328cbb32-2ab1-44c8-973c-c6415ad5de9c": "9aba5576-2c58-4bb7-b6ba-2862c4966509",
+        "051994b9-fb6d-4d33-89a1-0007e35e331d": "26b96698-dc76-417a-a7c3-576110834861",
+        "9e31259b-8f2b-440f-951b-627d381f0070": "52d1c027-6d2e-4a8e-b67b-6d4afe7e8954",
+        "14015847-da35-40c1-8b88-e6735a93d675": "2698f59d-d77a-4642-b7e5-8852aefff90b",
+        "0f3d58dc-63e2-479a-9040-5a9f55270498": "5a503339-e5bd-4c2b-92e5-345281593a1d",
+        "c6901466-11c7-4fed-be74-aab840e0c0c4": "b09861b8-a409-4ddc-a467-ad5af70cd268",
+        "90ce4b2e-e92a-4dc3-a6e7-a6e854ae664a": "3610325b-b2da-4ee1-a461-bcd769ce0f2a",
+        "bd671ec0-06ae-4cdd-b888-2314913ad0f0": "86df553b-312f-47b4-82f1-a2815ebe8d62",
+        "9a80bfa0-43e5-412a-9976-055a5af9698d": "758de68f-207b-4601-b26e-536765328f83",
+        "22b101d4-7b25-42a8-8882-d2cc8cc4bb03": "6e1f0f60-ff2d-43b4-8b9c-59ff75e1f577",
+        "7bb8e366-b4b9-4580-8e13-676e254da85b": "14b6bceb-6bd0-4a0e-bea4-ac3b5e5528a0",
+        "4b5267c1-7a7c-463b-be70-c68857a2167f": "71588017-a067-4e91-9b4a-c442e90f7498",
+        "fec41e74-67b6-4ce4-9d93-31e46c97da45": "fbba2023-6870-4cf7-8867-72f08af83605",
+        "e3523077-dc7e-4d0a-a45f-e8598919832a": "11f6e746-efcc-4b8c-821a-8f1c354832ae",
+        "9d66ab60-1204-429a-9ac6-5a2af9b6c4b9": "4ef76ce2-1ffa-4fec-ab48-18708e4f9205",
+        "100d9f09-2c5b-41ea-a4d6-e73e2e7a7474": "8d6010ad-cf83-4c5d-a81d-b8cc9f8409e3",
+        "7f6ed311-bd1a-423a-b9cb-9597011eb81b": "38e7d0fa-1911-4134-9070-014315a56ab7",
+        "d0d14df6-2878-46f8-be9f-444cc7e7e207": "545b3e02-b559-4720-ab18-219c6bb1a491",
+        "0ac475f9-0b9c-4e85-8d97-d495705508f1": "57b32259-4cfa-4d52-be4f-2208997f4d57",
+        "154c88cb-cea1-430f-94ae-8216d3d6127c": "3816859c-9330-424f-ba09-2f4267f630c6",
+        "68c378cd-8c3a-4493-a78b-dde9db7d017a": "439362fb-c268-4385-8b46-024f51f80d9f",
+        "4dee8780-ca3c-4615-b5ad-2fcb8a406fce": "a0c1306c-3549-4970-b7a2-42bf7e880da1",
+        "1d13bb54-0bc7-486f-ba05-50fc059aab8a": "904fd4ea-b732-46eb-b44c-483c3672afa7",
+        "bdd00ce5-fc14-432b-9f34-eb55f85aca40": "df3613bf-850e-4893-a39f-f232fdeb5582",
+        "da527315-8973-447e-a799-cee200c4df3b": "849edbf4-13c8-41a7-87d7-68b4e83c2f02",
+        "84ef9c72-dfb8-4ea6-88fe-6393556717b8": "3e06015b-01b1-4bd4-8d51-e1b538cd0a5d",
+        "d57c76bc-28a5-4ef0-be5d-344a38eaf64f": "138e2965-bfc0-4f2d-8aa8-4c0c51784eaa",
+        "ecf51ede-da4e-489e-8131-1a088ef66aec": "b4bacd2e-dd73-4979-9012-a254f57dfa9d",
+        "4c82737a-111e-4745-aa9f-7e36ff9cbb36": "fb3769e9-13a8-4b53-989b-d7e3770e9f4d",
+        "188025de-1b23-4cc9-a89f-dcbc112f8a8a": "e10a1069-f7d8-49a7-974e-d2f36568a43f",
+        "98986d2d-1073-4a23-9f00-e9e96e4374ba": "b8df18eb-101b-4d6e-ac96-bb18a1696562",
+        "393bb75f-fc8f-4d23-8535-7ad2151abd8a": "ee6631f2-03ee-46fb-8cb7-1f562157314a",
+        "8464fbe2-6939-4d27-8da7-a4835357daf9": "952e6355-b92f-40c3-9085-7c7787106505",
+        "550e3fda-05a1-45a2-9707-a33f8e76647d": "a45a2134-ae77-4d7f-a636-f015f881afb6",
+        "73c32974-c759-440d-80bb-eb65411f3508": "fc581dd2-5a86-46af-b828-9b3a15854e03",
+        "267d8ca8-9146-495d-a1d5-991736e4e724": "db32683c-005a-44cb-a5e5-b6f0c3ab8b7d",
+        "a3a22316-7b6c-46e0-9f8b-d73712fa5516": "fc8090f8-17ec-4d73-a389-34f95da3a1c1",
+        "8bd20ab5-2f15-4789-a259-c21deee4d49e": "84bddd7b-5d48-428d-a4e0-51fc5dc00afe",
+        "7124f2a0-631f-4d42-9e1d-09f5d2142f3a": "163ffeb3-5b50-49d5-8b2a-070c4c7ac094",
+        "24b3e740-a89d-4bec-a512-63763817796a": "916254e9-cefc-4f5b-8dc2-58c1167ad668",
+        "7bfebd88-bc1d-4008-9d3f-85f3f8476780": "8181eef8-d346-48ad-b7b1-8737fadf2040",
+        "22f62d20-a0d2-4ab3-b282-aac29691fc99": "ed7e6a00-21fc-401c-8a96-24686ba518e9",
+        "1fd1898f-a9bb-42d0-9e1c-3bf36e9a98ef": "79bf9dc7-4821-4faa-8c85-8c56c44604c9",
+        "8e4fef47-033e-4a13-a3c8-7d2e4f18365f": "e65a92e3-b930-405a-9fe7-cc2b49447aa1",
+        "1ef5a15e-79c1-4571-bcf3-4d923760cc0e": "0aed626a-0632-4860-891d-60e7cb5e5d8b",
+        "cc2b3a78-7da1-44f0-8e8b-e5581f8096e9": "7ec2fc55-cebb-409f-ba3f-a4f50655a97f",
+        "9c6296f6-be34-4d99-8bed-3515a8cc96ca": "273af748-257f-4ed1-ba78-fcea3e40136e",
+        "989556ca-973d-451b-b457-65ebed2256f0": "f2955823-d54e-46d3-8e55-089a57d900c3",
+        "2a579962-863e-419a-92a3-bffcbdeac43c": "6a18bee7-1b4c-4147-b3e4-892a13d10a86",
+        "871b8e76-31c0-437f-a365-b9e7032abbd2": "2c689f75-6526-4dee-a81a-76475629d5cf",
+        "2e39e785-2911-46ed-8b9b-3438735ca4ab": "ffcb7685-fa80-47dc-8c1a-8c44e1b2e797",
+        "d20bfd92-2001-4902-826a-f156fcfe6758": "67803bd6-0e16-44c3-aaf9-719ac1f46b0a",
+        "b83b7638-adfe-4cb4-897f-e0901c8135c0": "b08c921b-cb2a-4267-b30d-98054e17a32b",
+        "c8e58e7e-5e12-4067-8053-4f7bd98fb9f3": "7cfef4b6-f36b-4916-93e0-76e6b8e69998",
+        "0b8d88b7-2fa4-4405-8896-36a411363e3a": "5da07a5a-8bbc-4030-bfd1-c0d866f743a1",
+        "25630784-ccf2-4847-a741-95044d51cbb3": "db6d75f8-adbd-4247-b8cf-19297ff2c5b5",
+        "a30c69b3-1287-4645-88dd-869aecfa9811": "198f58e4-b6dd-4bb6-9a66-ea3e65f0bdd6",
+        "e09afc69-0a18-4e23-bec5-f1a117474095": "d0c58ecc-e79a-4a2a-b3f4-b028dd900a77",
+        "ed999a73-2876-4bb3-88ff-d103f6866c92": "49dd1388-bedc-4813-adad-1adbaa48d52c",
+        "f79b6f89-45f8-4b97-b69d-185a76dcce0a": "33fee1c2-ff1c-4de3-a01a-1533574100ba",
+        "f529713b-8389-43c5-a6f7-a63a0f62ba4e": "97f67dde-a4e1-4ff8-8f8f-2cd8378ffb5a",
+        "41dcf6fc-64e0-406a-badf-6b879c370c0b": "06a4f1d8-4d4d-419b-87df-e8f101282847",
+        "fa9131b6-22be-4312-ae77-e3e7da7a7cf9": "fe62a622-1782-4ce3-ab20-a7727709274b",
+        "81d9afc6-1c06-47b3-aed4-004e7ceb6ffd": "ae99075a-73a2-4388-87ba-d8d8d05a2846",
+        "610397a3-3f84-491a-a55e-9fa9949cb67a": "6d314918-0640-4606-8482-da295e12f5d9",
+        "f4ab80ae-a16f-4fc4-b554-db8bb9df0d51": "6b43a9b0-81ba-481d-8006-7e9149f31905",
+        "2f88868a-4e6a-4418-ab64-6b1ac645d3b3": "12d5cba2-74db-4e76-9f0d-cb0edef981f7",
+        "34763b36-dbcd-4813-9ddd-f43eabe7a47a": "cca846b8-b45a-4cc4-8f43-c091ca12eee1",
+        "81d618ca-ac48-49f0-9d53-deab1c8b0cbb": "cec12f42-ad24-4e7e-97ee-d98051848f9a",
+        "e202fa43-68f7-4d19-8046-f39ed2edd444": "7a04651f-a181-4963-80a8-2be7f209f351",
+        "45d2f9c1-e34d-4756-807d-b5197dfc0e92": "c13750ff-ad0d-4809-b415-04a610a282d3",
+        "862cd136-11a8-467b-9681-aa1d40033399": "35cf9f08-0174-4b0d-a17e-c62f7907c21a",
+        "491df050-91aa-4ef6-8336-86405147a189": "88ed0936-053d-4a47-9cd1-d6e8449ebd7d"
+      }
+    },
+    {
+      "__guid": "ca4e740d-43c3-4666-b06f-9d114017e2e1",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Play Area",
+      "Position": "149.994965,149.994995,-212.124985",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [
+        {
+          "__type": "Sandbox.Components.ZoneComponent",
+          "__guid": "fffc8c50-b9dd-4fc7-9cce-2894c73c6562",
+          "__enabled": true,
+          "Flags": 0,
+          "Color": "1,1,1,1",
+          "DisplayName": null,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null
+        },
+        {
+          "__type": "Sandbox.Components.PlayerAreaComponent",
+          "__guid": "4150db8c-5fce-48f8-a191-38a573d94e7e",
+          "__enabled": true,
+          "Flags": 0,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Zone": {
+            "_type": "component",
+            "component_id": "fffc8c50-b9dd-4fc7-9cce-2894c73c6562",
+            "go": "ca4e740d-43c3-4666-b06f-9d114017e2e1",
+            "component_type": "ZoneComponent"
+          }
+        },
+        {
+          "__type": "Sandbox.BoxCollider",
+          "__guid": "6a866638-6116-41c2-872f-6be976473f09",
+          "__enabled": true,
+          "Flags": 0,
+          "Center": "0,0,0",
+          "ColliderFlags": 0,
+          "Elasticity": null,
+          "Friction": null,
+          "IsTrigger": false,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "OnObjectTriggerEnter": null,
+          "OnObjectTriggerExit": null,
+          "OnTriggerEnter": null,
+          "OnTriggerExit": null,
+          "RollingResistance": null,
+          "Scale": "50,50,50",
+          "Static": true,
+          "Surface": null,
+          "SurfaceVelocity": "0,0,0"
+        }
+      ],
+      "Children": []
+    },
+    {
+      "__guid": "6e47d030-aa03-4329-b31b-dbb548fe0572",
+      "__version": 2,
+      "__Prefab": "scenes/maps/defuse_map/game_setup.prefab",
+      "__PrefabInstancePatch": {
+        "AddedObjects": [
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "40562776-af2b-4842-8360-bdff87359123"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "1fbe1885-c54f-4870-916f-05a56271e8fd"
+            },
+            "PreviousElement": null,
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "40562776-af2b-4842-8360-bdff87359123",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/spectate.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "7713d50a-1d1a-4455-9830-f28b268055a8"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "0edffdff-489a-4bd2-9aac-d7bf39d8d905"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "7713d50a-1d1a-4455-9830-f28b268055a8",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "fb5790c1-4e91-46a9-971c-f362e92a22ce"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "7713d50a-1d1a-4455-9830-f28b268055a8"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "fb5790c1-4e91-46a9-971c-f362e92a22ce",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "573fc738-04c2-4c69-86e0-b1009fdd9d5e"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "fb5790c1-4e91-46a9-971c-f362e92a22ce"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "573fc738-04c2-4c69-86e0-b1009fdd9d5e",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "154a0b3c-5330-455d-830c-12a5d57acbef"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "573fc738-04c2-4c69-86e0-b1009fdd9d5e"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "154a0b3c-5330-455d-830c-12a5d57acbef",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "57b0330b-0dca-472e-a714-c4607d3633d4"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "154a0b3c-5330-455d-830c-12a5d57acbef"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "57b0330b-0dca-472e-a714-c4607d3633d4",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "d1cd2a16-40c2-4ddc-9743-cd68566957b7"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "57b0330b-0dca-472e-a714-c4607d3633d4"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "d1cd2a16-40c2-4ddc-9743-cd68566957b7",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "092a34ad-e7f8-4cab-9925-ea0e4ea12122"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "d1cd2a16-40c2-4ddc-9743-cd68566957b7"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "092a34ad-e7f8-4cab-9925-ea0e4ea12122",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "e8fedfb0-da6d-4d12-9a08-88e159e0d49a"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "092a34ad-e7f8-4cab-9925-ea0e4ea12122"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "e8fedfb0-da6d-4d12-9a08-88e159e0d49a",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "e7d8755a-4d23-4b9b-a7a5-2b0dd67e83d0"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "e8fedfb0-da6d-4d12-9a08-88e159e0d49a"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "e7d8755a-4d23-4b9b-a7a5-2b0dd67e83d0",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "550360a7-e164-44b6-b0a3-fdb30a608719"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "e7d8755a-4d23-4b9b-a7a5-2b0dd67e83d0"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "550360a7-e164-44b6-b0a3-fdb30a608719",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "ac43a1ec-6f77-4e58-ab79-2f4cea53ef7f"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "550360a7-e164-44b6-b0a3-fdb30a608719"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "ac43a1ec-6f77-4e58-ab79-2f4cea53ef7f",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "a5c6650c-78f9-4d7f-ad9f-546bb8e999a0"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "ac43a1ec-6f77-4e58-ab79-2f4cea53ef7f"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "a5c6650c-78f9-4d7f-ad9f-546bb8e999a0",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "4664bc38-a733-4377-8fad-8394999f980c"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "a5c6650c-78f9-4d7f-ad9f-546bb8e999a0"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "4664bc38-a733-4377-8fad-8394999f980c",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "6a233d42-de49-4674-b967-6f62c4ec3e62"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "4664bc38-a733-4377-8fad-8394999f980c"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "6a233d42-de49-4674-b967-6f62c4ec3e62",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "833d5323-3f8e-42de-b1fd-8781d4d84010"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "6a233d42-de49-4674-b967-6f62c4ec3e62"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "833d5323-3f8e-42de-b1fd-8781d4d84010",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "18c33393-a4c3-450f-af25-80ca1d6daa10"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "833d5323-3f8e-42de-b1fd-8781d4d84010"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "18c33393-a4c3-450f-af25-80ca1d6daa10",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "c038ae19-a0d9-4d80-a2d3-8a6e46611836"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "18c33393-a4c3-450f-af25-80ca1d6daa10"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "c038ae19-a0d9-4d80-a2d3-8a6e46611836",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "328a2e15-9a77-4a65-88c1-4c2333f284c9"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "c038ae19-a0d9-4d80-a2d3-8a6e46611836"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "328a2e15-9a77-4a65-88c1-4c2333f284c9",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "60bd3d73-0107-40bf-85ea-83b63de2e0fe"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "328a2e15-9a77-4a65-88c1-4c2333f284c9"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "60bd3d73-0107-40bf-85ea-83b63de2e0fe",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "a0515263-5e78-4255-834e-7521b4ee59c7"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "60bd3d73-0107-40bf-85ea-83b63de2e0fe"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "a0515263-5e78-4255-834e-7521b4ee59c7",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "0fd8d30d-aa7f-4077-9928-d211a0a089fc"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "a0515263-5e78-4255-834e-7521b4ee59c7"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "0fd8d30d-aa7f-4077-9928-d211a0a089fc",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "eb76ea7c-13f6-4ac4-838b-13fa52e02949"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "0fd8d30d-aa7f-4077-9928-d211a0a089fc"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "eb76ea7c-13f6-4ac4-838b-13fa52e02949",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "f790c4c9-ff5c-441f-a040-b5f8acb17b64"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "eb76ea7c-13f6-4ac4-838b-13fa52e02949"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "f790c4c9-ff5c-441f-a040-b5f8acb17b64",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "9ab35f3d-1cf8-428d-8ddd-f5f2e64bac7b"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "f790c4c9-ff5c-441f-a040-b5f8acb17b64"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "9ab35f3d-1cf8-428d-8ddd-f5f2e64bac7b",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "08fceb62-afd5-47e7-9cb1-401b84e6ce54"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "9ab35f3d-1cf8-428d-8ddd-f5f2e64bac7b"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "08fceb62-afd5-47e7-9cb1-401b84e6ce54",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "f3ced3f0-a813-4b2b-99c3-1822567c34d1"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "08fceb62-afd5-47e7-9cb1-401b84e6ce54"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "f3ced3f0-a813-4b2b-99c3-1822567c34d1",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "37e6019b-34ef-442e-9d9b-7ddd7a1be501"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "f3ced3f0-a813-4b2b-99c3-1822567c34d1"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "37e6019b-34ef-442e-9d9b-7ddd7a1be501",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "a9b0ec35-5b2e-4bee-856c-f6d76cf7f6ed"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "37e6019b-34ef-442e-9d9b-7ddd7a1be501"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "a9b0ec35-5b2e-4bee-856c-f6d76cf7f6ed",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "860f5728-e46d-49f5-a351-7b3e1e132509"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "a9b0ec35-5b2e-4bee-856c-f6d76cf7f6ed"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "860f5728-e46d-49f5-a351-7b3e1e132509",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "f654908b-f753-4d03-873a-e18b35222719"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "860f5728-e46d-49f5-a351-7b3e1e132509"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "f654908b-f753-4d03-873a-e18b35222719",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "cb9a7f67-bdbc-4fff-9e9f-5b5705fe3466"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "f654908b-f753-4d03-873a-e18b35222719"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "cb9a7f67-bdbc-4fff-9e9f-5b5705fe3466",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "8fd89f17-934e-4de2-9104-d88fda9f3aa8"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "cb9a7f67-bdbc-4fff-9e9f-5b5705fe3466"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "8fd89f17-934e-4de2-9104-d88fda9f3aa8",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "5e6345f1-533f-45db-9772-0866ab525ada"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "8fd89f17-934e-4de2-9104-d88fda9f3aa8"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "5e6345f1-533f-45db-9772-0866ab525ada",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "82f53570-4f7b-4f57-b10e-617d3f084efd"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "5e6345f1-533f-45db-9772-0866ab525ada"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "82f53570-4f7b-4f57-b10e-617d3f084efd",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "178f30c3-abe0-4945-826c-f7447c9ce7ee"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "82f53570-4f7b-4f57-b10e-617d3f084efd"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "178f30c3-abe0-4945-826c-f7447c9ce7ee",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "4aabe1ac-6bc8-436f-a564-096e7405e6c4"
+            },
+            "Parent": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "PreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "178f30c3-abe0-4945-826c-f7447c9ce7ee"
+            },
+            "ContainerProperty": "Children",
+            "IsContainerArray": true,
+            "Data": {
+              "__guid": "4aabe1ac-6bc8-436f-a564-096e7405e6c4",
+              "__version": 2,
+              "Flags": 0,
+              "Name": "GameObject",
+              "Position": "0,0,0",
+              "Rotation": "0,0,0,1",
+              "Scale": "1,1,1",
+              "Tags": "",
+              "Enabled": false,
+              "NetworkMode": 2,
+              "NetworkFlags": 0,
+              "NetworkOrphaned": 0,
+              "NetworkTransmit": true,
+              "OwnerTransfer": 1,
+              "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+              "Components": [],
+              "Children": []
+            }
+          }
+        ],
+        "RemovedObjects": [
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "4ef70fa7-a501-403f-a72d-486aebb0650f"
+            }
+          },
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "d5f2f2a0-49a4-46ab-ad0f-81c8e7616cd0"
+            }
+          }
+        ],
+        "PropertyOverrides": [
+          {
+            "Target": {
+              "Type": "GameObject",
+              "IdValue": "d0c8d522-0524-4dbb-92a9-04b45bf7d1c7"
+            },
+            "Property": "Position",
+            "Value": "130.112167,131.384872,-185.124985"
+          }
+        ],
+        "MovedObjects": [
+          {
+            "Id": {
+              "Type": "GameObject",
+              "IdValue": "322b4155-b464-45d6-a500-3868c11b2350"
+            },
+            "NewParent": {
+              "Type": "GameObject",
+              "IdValue": "1fbe1885-c54f-4870-916f-05a56271e8fd"
+            },
+            "NewContainerProperty": "Children",
+            "IsNewContainerArray": true,
+            "NewPreviousElement": {
+              "Type": "GameObject",
+              "IdValue": "40562776-af2b-4842-8360-bdff87359123"
+            }
+          }
+        ]
+      },
+      "__PrefabIdToInstanceId": {
+        "d0c8d522-0524-4dbb-92a9-04b45bf7d1c7": "6e47d030-aa03-4329-b31b-dbb548fe0572",
+        "69d5003a-44d7-41fe-a620-32f6bf0c4cd0": "b7f8d1a0-0377-4be5-8947-c915d55bbc5d",
+        "20c78d91-5ca6-442a-a6b5-ab8b1602e80f": "170f8746-97da-4cfc-b370-0a8cee275013",
+        "322b4155-b464-45d6-a500-3868c11b2350": "a2b1ae49-be4d-4325-a184-8bf250cf2b30",
+        "f220d064-34fb-4a75-b828-3e5b7a2d49ab": "9b79a08d-649f-401f-aebb-b9157322c1e7",
+        "f9751f82-6019-4749-876f-48b8e95cc7f7": "12ed9af8-71cf-4f89-bff7-07516e50ddc9",
+        "58807d92-54d1-46b8-8cb5-b611520f2ede": "b9ff2330-9181-4fc0-bb6f-d2b13bb08f85",
+        "844630d4-8e46-4f32-a9f4-d920196346fc": "8015d727-620c-4517-8343-504fe751412d",
+        "1fbe1885-c54f-4870-916f-05a56271e8fd": "ee80d4a3-462f-4b10-87e4-9b970e6c93a3",
+        "2a8cd6bb-d3c8-4a66-a343-1af88768c18f": "05f46a20-9708-40f5-bc8f-90f2fb566960",
+        "3951a691-bb25-49f8-9a58-e276f08222cf": "a9e5f78a-7435-40fd-ac6e-ceec6c069b67",
+        "54b6c5ab-9e90-40df-90bd-b2c98591b167": "ea44b76a-b7eb-4ee0-9ce8-392b883ad70c",
+        "b4ca6d36-f647-49b3-9151-8ef4c63aeddd": "db37cba8-cce3-4cac-8e9d-ee8dbc0f9c0d",
+        "50de49ef-0287-435d-b570-e48047718014": "c4b80dc2-f5d3-4c4e-8925-f1b55244071d",
+        "a030a8ab-0d81-4236-967f-ac5a43d1fc7b": "457717a8-e5e7-4c4b-b3ab-837674926ce7",
+        "7a8c4bdd-0944-4032-a00b-de5ebc81a263": "1892f43b-c875-457f-8b6b-5a3b71ff4fc8",
+        "0edffdff-489a-4bd2-9aac-d7bf39d8d905": "e4a6c464-7594-4b02-b71e-4de2c3330641",
+        "73439664-445d-46ec-952b-efe45da4ab2a": "ce606473-02eb-405d-a094-6a24234697bc",
+        "f5bdcac0-db38-487e-ace4-74308a41ebea": "a2ac173d-6fb7-4ed9-ab35-d43e20fe0f54",
+        "362b2250-3f3d-4558-8a94-64b31582aadc": "4dca71f6-4b07-47c6-aaae-04e338e806c1",
+        "652502f1-acab-432b-8cea-478792944a6a": "fd47c7a3-fec6-4052-bab0-0bb71959e17f",
+        "d3fca0c4-4068-4180-86c8-5d898baba61e": "4e6ed8c1-4e8f-4890-9076-d5fa22fb49e6",
+        "5ebb2cc6-2acb-4982-b4f9-11e93e581340": "70f6ae25-973e-4d3c-a271-770a67fc3c80",
+        "8d3f8fec-a4c7-43b0-8b2a-9e7c97ffaebf": "2c20c701-38e5-4061-9d14-d16b7650a7db",
+        "fdaf77cd-bb4d-442f-880c-39c37a25c22e": "054bc943-de22-43a8-acfa-d814165f8481",
+        "bd4899d8-8608-4eae-b467-74b808b44573": "3a381bd9-3832-4ce4-b197-d9142ed88cc7",
+        "89ce89fc-5f0e-4b28-8b33-95b4544a708b": "5586c91c-3349-4464-8113-555f9f27ad3b",
+        "2d646686-c728-4cf8-9371-a96fabae6f15": "ae82464c-24f3-493e-826c-f3d9e2e46a1f",
+        "a24e5ae8-fe17-44e4-9c12-a5477b482830": "a357a375-3e12-45e0-a80f-c9303a8e227b",
+        "7149bbbf-cc4c-4240-92f8-ed69789c142b": "33bdd8ef-4416-4e00-b6cd-b5310bbebc77",
+        "437b5db7-6283-4363-8f7b-b3c0f8f6b5b1": "d16d05a9-553d-4193-a9ef-3b2c9bf3c674",
+        "e8699fac-b744-4bdc-8681-e6af9ef0cea4": "f2830b68-d762-44d8-89c5-ed35a2269f51",
+        "3240b3e8-8451-4b0c-af2a-ab30faa0e00b": "86debfbe-db24-45f3-a24e-bd998c66f3e0",
+        "b068270c-bfc9-4fab-924e-602c905a2a34": "1552b54a-581d-4063-9694-4bab46bc03ed",
+        "6279caec-3c05-481c-a1eb-d78ebec7700d": "a69c346d-a5b9-4bab-92fe-7cdce92fdfc4",
+        "e5b30dbc-bb5c-420f-ae05-a5710ba85313": "6b188884-4cd8-4766-ae0e-1f2ade6580b1"
+      }
+    }
+  ],
+  "SceneProperties": {
+    "NetworkInterpolation": true,
+    "TimeScale": 1,
+    "WantsSystemScene": true,
+    "Metadata": {
+      "Title": "Depot",
+      "Image": "ui/maps/depot.jpg",
+      "IsVisibleInMenu": "True",
+      "GameModes": "prefabs/game_modes/team_deathmatch.prefab"
+    },
+    "NavMesh": {
+      "Enabled": false,
+      "IncludeStaticBodies": true,
+      "IncludeKeyframedBodies": true,
+      "EditorAutoUpdate": false,
+      "AgentHeight": 64,
+      "AgentRadius": 16,
+      "AgentStepSize": 18,
+      "AgentMaxSlope": 40,
+      "ExcludedBodies": "",
+      "IncludedBodies": "",
+      "DeferGeneration": false,
+      "CustomBounds": false
+    },
+    "GameObjectSystems": {
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
+      },
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "263a10b3-ddc1-4278-acd0-caec2c4d597c"
+        }
+      },
+      "Sandbox.SelectionSetsSystem": {
+        "Data": {
+          "SelectionSets": []
+        }
+      }
+    }
+  },
+  "ResourceVersion": 3,
+  "Title": "Depot",
+  "Description": null,
+  "__references": [],
+  "__version": 3
+}

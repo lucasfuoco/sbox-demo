@@ -1,0 +1,57 @@
+@namespace Sandbox.UI.Panels
+@using Sandbox.Components
+@using Sandbox.Components.PawnComponents
+@using Sandbox.GameResources
+@inherits Panel
+
+<root class="@(IsActive ? "is-active" : "")">
+
+    @if ( Equipment.IsValid() )
+    {
+        @if ( !string.IsNullOrEmpty( Equipment.Resource.Icon ) )
+        {
+            <div class="column">
+
+            <div class="icon">
+                <div class="image" style="background-image:url(@Equipment.Resource.Icon);" />
+            </div>
+
+            <span style="gap: 4px; align-items: flex-end;">
+                @if ( IsActive )
+                {
+                    <label class="gunname">@Equipment.Resource.Name</label>
+                }
+            </span>
+
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <label class="gunname">@Equipment.Resource.Name</label>
+            </div>
+        }
+    }
+</root>
+
+@code
+{
+    /// <summary>
+    ///  The equipment's slot
+    /// </summary>
+    public EquipmentSlot Slot => Equipment?.Resource.Slot ?? default;
+
+    /// <summary>
+    /// The player's equipment.
+    /// </summary>
+    public EquipmentComponent Equipment { get; set; }
+
+    private WeaponAmmoComponent HasAmmo => Equipment.IsValid() ? Equipment.GetComponent<WeaponAmmoComponent>(true) : null;
+    public PlayerPawnComponent Player => Equipment?.Owner;
+    public bool IsActive => Player?.CurrentEquipment == Equipment;
+
+    protected override int BuildHash()
+    {
+        return HashCode.Combine( IsActive, Equipment, HasAmmo?.Ammo );
+    }   
+}

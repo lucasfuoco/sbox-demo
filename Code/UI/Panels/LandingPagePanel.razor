@@ -1,0 +1,42 @@
+@using Sandbox
+@using Sandbox.UI
+@using Sandbox.UI.Navigation
+@using Sandbox
+
+@inherits Panel
+@implements INavigatorPage
+@namespace Sandbox.UI.Panels
+
+<root class="hc1">
+    <PagePanel>
+        <Body>
+            <div class="inset column layout with-background line-left" style="width: 15%;">
+                <VerticalDividerPanel />
+                <div class="layout padding-extra with-gap column">
+                    <a class="button standard" href="/new"><i>play_circle_outline</i> Create Game</a>
+                    <a class="button standard" href="/career"><i>assessment</i> Progression</a>
+                    <a class="button standard" href="/lobbies"><i>dns</i> Session List</a>
+
+                    <a class="button standard" href="/settings">
+                        <i>settings</i>
+                        Settings
+                    </a>
+
+                    <div class="button standard" onclick=@(()=>Quit())>
+                        <i>power_settings_new</i>
+                        Quit
+                    </div>
+                </div>
+                <VerticalDividerPanel />
+            </div>
+        </Body>
+    </PagePanel>
+</root>
+
+@code
+{
+    void Quit()
+    {
+        DialogModalPanel.Show("Are you sure you want to quit?", "Quit", "Cancel", () => Game.Close() );
+    }
+}

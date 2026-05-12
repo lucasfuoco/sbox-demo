@@ -1,0 +1,35 @@
+SettingsEntryPanel
+{
+    justify-content: space-between;
+    flex-direction: row;
+
+    .grow 
+    {
+        flex-grow: 1;
+    }
+
+    .icon
+    {
+        font-family: Material Icons;
+        color: white;
+        font-size: 20px;
+    }
+
+    .name
+    {
+        color: white;
+        font-size: 18px;
+    }
+
+    .description
+    {
+        font-weight: 500;
+        font-size: 15px;
+    }
+
+    .warning
+    {
+        font-size: 16px;
+        color: orange;
+    }
+}

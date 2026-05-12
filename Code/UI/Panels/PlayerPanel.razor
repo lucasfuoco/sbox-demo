@@ -1,0 +1,18 @@
+@namespace Sandbox.UI.Panels
+@using Sandbox.Components
+@inherits Panel
+
+@if (!Client.IsValid()) return;
+
+<root>
+    <label class="name" style="color:@TeamColor">
+        @Client.DisplayName
+    </label>
+</root>
+
+@code
+{
+    public ClientComponent Client { get; set; }
+
+    private string TeamColor => (Client?.Team.GetColor() ?? Color.White).Hex;
+}
