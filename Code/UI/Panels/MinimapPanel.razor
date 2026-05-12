@@ -1,0 +1,156 @@
+@using Sandbox.Components
+@using Sandbox.Components.PawnComponents
+@using Sandbox.Components.SingletonComponents
+@using Sandbox.Valids
+@using Sandbox.Valids.MinimapElementValids
+@using Sandbox.Valids.MinimapElementValids.MinimapIconValids.CustomMinimapIconValids
+@using Sandbox.Valids.MinimapElementValids.MinimapIconValids
+@namespace Sandbox.UI.Panels
+@attribute [StyleSheet]
+@inherits Panel
+
+@if ( !ClientComponent.Viewer.Pawn.IsValid() ) return;
+
+<root class="radar" style="border: 1px solid rgba( black, 0.5 )">
+    @if (Renderer.IsValid())
+    {
+        <div class="mask" style="@MapRot()">
+            <div class="map-parent">
+                <div style="@MapTransform()">
+                    <div class="minimap" style="background-image: url( @Renderer.CurrentMinimapPath )" />
+                    <div class="overlay" style="background-image: url( @Renderer.CurrentMinimapPath )" />
+
+                    @foreach ( var volume in Game.ActiveScene.GetAllComponents<IMinimapVolumeValid>() )
+                    {
+                        if (!volume.IsValid() || (ClientComponent.Viewer.Pawn is PlayerPawnComponent player && !volume.IsVisible( player )))
+                            continue;
+                            
+                        <div class="volume" style="@GetBox( volume ) @GetBoxStyles( volume )" >
+                            <div class="bg" style="@GetLineStyles( volume )" />
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="markers">
+            @foreach ( var element in Game.ActiveScene.GetAllComponents<IMinimapElementValid>() )
+            {
+                @if ( !element.IsValid() || ( ClientComponent.Viewer.Pawn is PlayerPawnComponent player && !element.IsVisible( player ) ) )
+                    continue;
+
+                @if ( element is IMinimapIconValid icon && !string.IsNullOrEmpty( icon.IconPath ) )
+                {
+                    string style = WorldToMap( icon.WorldPosition );
+
+                    if ( icon is IDirectionalMinimapIconValid { EnableDirectional: true } dir )
+                        style += RotationToMap( dir.Direction );
+                    else
+                        style += RotationToMap( FixedMode ? 0 : ClientComponent.Viewer.Pawn?.EyeAngles.yaw ?? 0 );
+
+                    if (icon is ICustomMinimapIconValid custom)
+                        style += custom.CustomStyle;
+
+                    <div class="marker" style="background-image: url( @icon.IconPath ); @style z-index: @icon.IconOrder;" />
+                }
+                
+                if ( element is IMinimapLabelValid label )
+                {
+                    <div class="label" style="@WorldToMap( label.WorldPosition ) @LabelStyles( label )">
+                        @label.Label
+                    </div>
+                }
+            }
+
+            <!-- POV Marker -->
+            @if ( ClientComponent.Viewer.Pawn is not PlayerPawnComponent || ClientComponent.Viewer.Pawn?.HealthComponent?.State == LifeState.Alive )
+            {
+                <div class="marker @(SpectateSystemSingletonComponent.Instance?.IsFreecam ?? false ? "" : "viewer")" style="@WorldToMap( ViewPos ) @RotationToMap( ViewYaw ) background-tint: @ViewerColor.Hex" />
+            }
+
+        </div>
+    }
+</root>
+
+@code
+{
+    public MinimapRendererComponent Renderer => Game.ActiveScene.GetAllComponents<MinimapRendererComponent>().FirstOrDefault();
+
+    public Color TeamColor => ClientComponent.Viewer.Team.GetColor();
+    private PlayerPawnComponent Player => ClientComponent.Viewer.PlayerPawn;
+
+    public Color ViewerColor => ClientComponent.Viewer.PlayerColor;
+
+    public Vector3 ViewPos => ClientComponent.Viewer.Pawn?.WorldPosition ?? Vector3.Zero;
+    public float ViewYaw => ClientComponent.Viewer.Pawn?.EyeAngles.yaw ?? 0;
+
+    public float Zoom => 2;
+
+    // doesn't rotate the map with the player
+    public bool FixedMode => false;
+
+    // generic
+    string WorldToMap( Vector3 worldPosition )
+    {
+        var position = Renderer.FromWorldRadar( worldPosition, ViewPos, FixedMode ? 0 : ViewYaw, Zoom );
+        return $"left: {Length.Fraction( position.x )}; top: {Length.Fraction( position.y )};";
+    }
+
+    string LabelStyles( IMinimapLabelValid label )
+    {
+        return $"color: {label.LabelColor.Rgba};";
+    }
+
+    string GetBox( IMinimapVolumeValid volume )
+    {
+        var min = Renderer.FromWorld(volume.WorldPosition + (volume.Size / 2));
+        var max = Renderer.FromWorld(volume.WorldPosition - (volume.Size / 2));
+        var remappedSize = max - min;
+        float yaw = 0f;
+
+        // TODO: make this work in fixed mode
+        if ( FixedMode )
+        {
+            yaw = -volume.Angles.yaw;
+        }
+
+        return $"left: {Length.Fraction(min.x)}; top: {Length.Fraction(min.y)}; width:{Length.Fraction(remappedSize.x)}; height:{Length.Fraction(remappedSize.y)};transform: rotateZ({yaw}deg);";
+    }
+
+    string GetBoxStyles(IMinimapVolumeValid volume)
+    {
+        return $"background-color: darken( {volume.Color.Rgba}, 0.05 ); border: 1px solid {volume.Color.Rgba};";
+    }
+
+    string GetLineStyles(IMinimapVolumeValid volume)
+    {
+        return $"background-color: {volume.LineColor.Rgba};";
+    }
+
+    string RotationToMap( Angles rot )
+    {
+        return RotationToMap(rot.yaw);
+    }
+
+    string RotationToMap( float yaw )
+    {
+        return $"transform: translateX(-50%) translateY(-50%) rotate({-(yaw - (FixedMode ? 0 : ViewYaw))}deg);";
+    }
+
+    string MapTransform()
+    {
+        var position = -Renderer.FromWorld(ViewPos) * Zoom;
+        return $"position: absolute; left: {Length.Fraction( position.x )}; top: {Length.Fraction( position.y )}; width: {Zoom * 100}%; height: {Zoom * 100}%";
+    }
+
+    string MapRot()
+    {
+        if ( FixedMode ) return "transform: none;";
+        return $"transform-origin: center center; transform: rotate({(FixedMode ? 0 : ViewYaw)}deg); ";
+    }
+
+    protected override int BuildHash()
+    {
+        return HashCode.Combine( Time.Now );
+    }
+}

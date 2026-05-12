@@ -1,0 +1,39 @@
+@using Sandbox.UI
+@using Sandbox.Components
+@namespace Sandbox.UI.Panels
+@inherits Panel
+@attribute [StyleSheet]
+
+<root>
+    <div @ref="Overlay" class="overlay mask-scope" />
+</root>
+
+@code
+{
+    public Panel Overlay { get; set; }
+
+    float GetOpacity()
+    {
+        if ( !ClientComponent.Viewer.IsValid() )
+            return 0f;
+
+        if ( !ClientComponent.Viewer.Pawn.IsValid() )
+            return 0f;
+
+        if ( !ClientComponent.Viewer.Pawn.HealthComponent.IsValid() )
+            return 0f;
+
+        if ( ClientComponent.Viewer.Pawn.HealthComponent.IsGodMode ) 
+            return 1f;
+
+        return 0f;
+    }
+
+    public override void Tick()
+    {
+        if ( Overlay.IsValid() )
+        {
+            Overlay.Style.Opacity = GetOpacity();
+        }
+    }
+}

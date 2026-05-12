@@ -1,0 +1,106 @@
+@namespace Sandbox.UI.Panels
+@using Sandbox.Components
+@using Sandbox.UI.Panels
+@using Sandbox.GameEvents
+@using Sandbox.Attributes
+@inherits PanelComponent
+@implements IGameEventHandler<OnScoreAddedEvent>
+
+@if (!IsHudEnabled)
+    return;
+
+@{
+    var isValidPlayer = ClientComponent.Viewer.IsValid() && ClientComponent.Viewer.Pawn.IsValid();
+}
+
+<root>
+    @if ( isValidPlayer )
+    {
+        <ScreenProtectionOverlayPanel />
+        <DamageOverlayPanel />
+    }
+
+    <canvas>
+        <ToastPanel />
+
+        <div class="hud with-deadzone bottom-left gap-sm flex column skew-left">
+            <RoundStateDisplayPanel />
+            <MinimapPanel />
+        </div>
+
+        @if ( isValidPlayer )
+        {   
+            <EquipmentOverlayPanel />
+            <SpectatingPanel />
+            <DeathcamPanel />
+            <DefuseKitDisplayPanel />
+            <DamageIndicatorPanel />
+            <KillFeedPanel @ref="KillFeed" />
+        }
+
+
+        <div class="right">
+            <div class="flex-grow" />
+            <VoicesPanel />
+
+            @if ( isValidPlayer )
+            {
+                <WeaponInfoPanel />
+            }
+        </div>
+
+        @if ( isValidPlayer )
+        {
+            @* <Radio /> *@
+            <ScoringSystemPanel @ref="ScoringSystem" />
+        }
+
+        @if ( !isValidPlayer )
+        {
+            <RespawnScreenPanel />
+        }
+    </canvas>
+    
+    @if ( isValidPlayer )
+    {
+        <!-- Full-screen overlays -->
+        <BuyMenuPanel />
+        <MarkerSystemPanel />
+
+        <PlayAreaOverlayPanel />
+        <DeployedPawnOverlayPanel />
+    }
+
+    <ScoreboardPanel />
+</root>
+
+@code 
+{
+    [ConVar( "cl_drawhud" )]
+    public static bool IsHudEnabled { get; set; } = true;
+
+    [DeveloperCommand( "Toggle HUD", "Visuals" )]
+    private static void Command_ToggleHUD()
+    {
+        IsHudEnabled = !IsHudEnabled;
+    }
+
+    public ScoringSystemPanel ScoringSystem { get; set; }
+
+    public KillFeedPanel KillFeed { get; set; }
+
+    void IGameEventHandler<OnScoreAddedEvent>.OnGameEvent( OnScoreAddedEvent eventArgs )
+    {
+        if ( !ScoringSystem.IsValid() )
+        {
+            return;
+        }
+
+        ScoringSystem.OnScore( eventArgs.Score, eventArgs.Reason );
+    }
+
+    protected override int BuildHash()
+    {
+        return HashCode.Combine(IsHudEnabled, ClientComponent.Viewer.IsValid(), ClientComponent.Viewer.IsValid() && ClientComponent.Viewer.Pawn.IsValid() );
+    }
+}

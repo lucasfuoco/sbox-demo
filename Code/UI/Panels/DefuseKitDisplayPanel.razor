@@ -1,0 +1,26 @@
+﻿@namespace Sandbox.UI.Panels
+@using Sandbox.Components
+@using Sandbox.Components.PawnComponents
+@inherits Panel
+
+@if ( !Player.IsValid() ) return;
+
+<root class="hud with-deadzone with-padding column bottom-right">
+    @if (HasKit)
+    {
+        <IconPanel File="/ui/defusekit.png" size="32" />
+    }
+</root>
+
+@code
+{
+    public PlayerPawnComponent Player => ClientComponent.Viewer.PlayerPawn;
+    public PlayerInventoryComponent Inventory => Player.Inventory;
+
+    public bool HasKit => Inventory.HasDefuseKit;
+
+    protected override int BuildHash()
+    {
+        return !Player.IsValid() ? 0 : HashCode.Combine(HasKit);
+    }
+}

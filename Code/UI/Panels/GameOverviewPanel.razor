@@ -1,0 +1,84 @@
+@namespace Sandbox.UI.Panels
+@using Sandbox.Components
+@using Sandbox.Components.SingletonComponents
+@inherits Panel
+
+<style>
+    GameOverviewPanel
+    {
+        align-items: center;
+        justify-content: center;
+        gap: 4px;
+    }
+
+    .box
+    {
+        width: 24px;
+        height: 24px;
+        background-color: rgba( black, 0.5 );
+
+        img {
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    .half
+    {
+        background-color: white;
+        width: 1px;
+        height: 24px;
+    }
+</style>
+
+@if ( !RoundLimit.IsValid() ) return;
+@if ( !TeamScoring.IsValid() ) return;
+
+<root style="padding-top: 10px;">
+    @for ( int i = 0; i < RoundLimit.MaxRounds; i++ )
+    {
+        @if ( i == RoundLimit.FirstHalfRounds )
+        {
+            <div class="half"/>
+        }
+        <div class="box" style="background-color:rgba( @GetColor( i ), 0.5 )">
+            @if ( GetWinner( i ) != Team.Unassigned )
+            {
+                <img src="@GetWinner( i ).GetIconPath()" />
+            }
+
+            @if ( i == WinningRound - 1 )
+            {
+                <IconPanel File="/ui/crown.png" size="24"/>
+            }
+        </div>
+    }
+</root>
+
+@code
+{
+    RoundLimitComponent RoundLimit => GameModeSingletonComponent.Instance?.Get<RoundLimitComponent>();
+    TeamScoringComponent TeamScoring => GameModeSingletonComponent.Instance?.Get<TeamScoringComponent>();
+    RoundBasedTeamScoringComponent RoundScoring => GameModeSingletonComponent.Instance?.Get<RoundBasedTeamScoringComponent>();
+    TeamEarlyWinConditionComponent WinCondition => GameModeSingletonComponent.Instance?.Get<TeamEarlyWinConditionComponent>();
+    
+    int WinningRound => WinCondition.TargetScore + TeamScoring.OpposingTeamScore;
+
+    private Team GetWinner( int round )
+    {
+        if (round > RoundScoring.RoundWinHistory.Count - 1) return Team.Unassigned;
+        return RoundScoring.RoundWinHistory[round];
+    }
+
+    private string GetColor( int round )
+    {
+        var winner = GetWinner( round );
+        if (winner == Team.Unassigned) return new Color( 0, 0, 0, 0.5f ).Hex;
+        return winner.GetColor().Hex;
+    }
+
+    protected override int BuildHash()
+    {
+        return HashCode.Combine( RoundLimit.IsValid(), TeamScoring.IsValid(), RoundScoring?.RoundWinHistory?.Count() ?? 0 );
+    }
+}

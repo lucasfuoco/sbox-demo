@@ -1,0 +1,36 @@
+@using Sandbox.Menu
+@using Sandbox.UI.Panels;
+@using Sandbox.UI.Navigation;
+
+@inherits NavigationHost
+@namespace Sandbox.UI.NavigationHosts
+
+<root>
+	<div @ref="BackgroundPanel" class="background @( HasBlur ? "blur" : "") " />
+    <div class="navigator-canvas" slot="navigator-canvas" />
+</root>
+
+@code
+{
+	public static MainMenuNavigationHost Instance { get; set; }
+
+	public MainMenuNavigationHost()
+	{
+		Instance = this;
+		DefaultUrl = "/";
+		AddDestination( "/", typeof( LandingPagePanel ) );
+		AddDestination( "/lobbies", typeof( LobbyListPanel ) );
+		AddDestination( "/new", typeof( CreateLobbyPagePanel ) );
+		AddDestination( "/career", typeof( CareerLandingPanel ) );
+		AddDestination( "/settings", typeof( SettingsPagePanel ) );
+	}
+
+	public bool HasBlur { get; set; }
+	public Panel BackgroundPanel { get; set; }
+
+	public void SetBlur( bool doBlur )
+	{
+		HasBlur = doBlur;
+		BackgroundPanel.StateHasChanged();
+	}
+}

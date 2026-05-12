@@ -1,0 +1,129 @@
+@using Sandbox
+@using Sandbox.Network
+@using Sandbox.UI
+@using Sandbox.UI.Navigation
+@using Sandbox
+@using Sandbox.Components
+@using Sandbox.Components.SingletonComponents
+@using Sandbox.UI.NavigationHosts
+
+@inherits Panel
+@implements INavigatorPage
+@namespace Sandbox.UI.Panels
+
+<root class="hc1 blur">
+    <PagePanel>
+        <Header>
+            <div class="row gap align-center layout grow">
+                <label>Play Game</label>
+            </div>
+        </Header>
+        <Body>
+            <div style="height: 23%;"/>
+
+            <div class="layout column gap">
+                <div class="layout row inset">
+                    @foreach (var mode in GameModeSingletonComponent.AllUnique.OrderBy( x => x.Title ) )
+                    {
+                        <div class="button standard smaller no-anim extra-x-padding @(SelectedGameMode == mode ? "selected" : "")" onclick=@(() => SetMode( mode ) )>@mode.Title</div>
+                    }
+                </div>
+
+                <div class="layout padding-insane-x with-scroll column">
+                    <VerticalDividerPanel />
+
+                    <div class="row with-bg layout padding-extra with-gap">
+                        @if ( SelectedGameMode is not null )
+                        {
+                            @foreach ( var map in GameUtils.GetAvailableMaps() )
+                            {
+                                @if ( GameModeSingletonComponent.GetAll( map ).Contains( SelectedGameMode ) )
+                                {
+                                    <MapCardPanel Map=@map Selected=@( SelectedMap == map ) OnSelected=@SetMap />
+                                }
+                            }
+                        }
+                    </div>
+
+                    <VerticalDividerPanel />
+                </div>
+            </div>
+
+            <div class="grow" />
+        </Body>
+
+        <Footer>
+            <div class="grow" />
+
+            @if ( SelectedMap is not null && SelectedGameMode is not null )
+            {
+                <div class="button standard action" onclick=@Join>
+                    <label>Start</label>
+                    <label class="emphasis slight" style="height: 30px;">@SelectedGameMode.Title</label>
+                    <label>on</label>
+                    <label class="emphasis slight" style="height: 30px;">@SelectedMap.GetMetadata( "Title" )</label>
+                </div>
+            }
+        </Footer>
+    </PagePanel>
+</root>
+
+@code
+{
+    public SceneFile SelectedMap { get; set; }
+    public GameModeSingletonComponent SelectedGameMode { get; set; }
+
+    public List<GameModeSingletonComponent> GameModeList { get; set; }
+
+    private void SetMap( SceneFile map )
+    {
+        SelectedMap = map;
+        StateHasChanged();
+    }
+
+
+    private void SetMode( GameModeSingletonComponent mode )
+    {
+        SelectedGameMode = mode;
+        SelectedMap = null;
+        StateHasChanged();
+    }
+
+    protected override void OnAfterTreeRender( bool firstTime )
+    {
+        if ( !firstTime )
+            return;
+
+        SelectedMap = GameUtils.GetAvailableMaps().FirstOrDefault();
+        SelectedGameMode = GameModeSingletonComponent.GetAll( SelectedMap )
+            .FirstOrDefault();
+    }
+
+    private void Join()
+    {
+        if ( SelectedGameMode is null )
+            return;
+
+        if ( SelectedMap is null )
+            return;
+
+        GameModeSingletonComponent.SetCurrent( SelectedGameMode );
+        Game.ActiveScene.Load( SelectedMap );
+    }
+
+    public void OnNavigationOpen()
+    {
+        if ( MainMenuNavigationHost.Instance.IsValid() )
+        {
+            MainMenuNavigationHost.Instance.SetBlur( true );
+        }
+    }
+    
+    public void OnNavigationClose() 
+    {
+        if ( MainMenuNavigationHost.Instance.IsValid() )
+        {
+            MainMenuNavigationHost.Instance.SetBlur( false );
+        }
+    }
+}

@@ -1,0 +1,144 @@
+@namespace Sandbox.UI.Panels
+@using Sandbox.Components
+@using Sandbox.Components.PawnComponents
+@using Sandbox.GameResources
+@using Sandbox.Components.SingletonComponents
+@inherits Panel
+@attribute [StyleSheet]
+
+@if ( !Player.IsValid() ) return;
+
+<root class="flex absolute inset-0 align-center justify-center hidden @(IsOpen ? "visible" : "")">
+    <div class="flex column with-padding gap-sm">
+
+        @if ( GameModeSingletonComponent.Instance?.UnlimitedMoney is false )
+        {
+            <div class="with-background with-padding">
+                <label class="emphasis">$@Client.Balance.ToString("N0")</label>
+            </div>
+        }
+
+        <div class="with-rounding flex row gap-sm">
+
+        @foreach (EquipmentSlot slot in Enum.GetValues(typeof(EquipmentSlot)))
+        {
+            var weapons = EquipmentResource.All.Where( W => W.IsPurchasableForTeam( Player.Team ) && W.Slot == slot );
+            if (weapons.Count() < 1)
+                continue;
+
+            if (slot == EquipmentSlot.Melee || slot == EquipmentSlot.Special)
+                continue;
+
+            <div class="flex column shrink-0 with-background">
+                <label class="title text-center with-padding uppercase">@slot</label>
+                <div class="flex column gap-sm with-padding">
+                    @foreach (EquipmentResource resource in weapons)
+                    {
+                            if (!resource.IsPurchasable)
+                            continue;
+
+                            <div class="button @slot @(@Inventory.Has( resource ) ? "owned" : "unowned") @(@CanAfford( resource ) ? "" : "unaffordable" )" onclick=@(() => BuyWeapon( resource ))>
+                                <label>@resource.Name</label>
+
+                            @if (!string.IsNullOrEmpty(resource.Icon))
+                            {
+                                <div class="gunicon" style="background-image:url(@resource.Icon);" />
+                            }
+
+                                <label class="price @(GameModeSingletonComponent.Instance?.UnlimitedMoney is true ? "hidden" : "")">�@resource.Price.ToString("N0")</label>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        </div>
+
+        <div class="with-rounding flex row gap-sm">
+            <div class="flex column shrink-0 with-background grow">
+                <label class="title text-center with-padding uppercase">Equipment</label>
+                <div class="flex row gap-sm with-padding">
+                    @foreach (var equipment in BuyMenuItem.GetAll())
+                    {
+                        @if (!equipment.IsVisible( Player ))
+                            continue;
+
+                        <div class="button grow equipment @(equipment.IsOwned( Player ) ? "owned" : "unowned") @(@CanAfford( equipment ) ? "" : "unaffordable" )" onclick=@(() => BuyEquipment( equipment ))>
+                            <label>@equipment.Name</label>
+
+                            @if (!string.IsNullOrEmpty(equipment.Icon))
+                            {
+                                <div class="gunicon" style="background-image:url(@equipment.Icon);" />
+                            }
+
+                            <label class="price @(GameModeSingletonComponent.Instance?.UnlimitedMoney is true ? "hidden" : "")">$@equipment.GetPrice( Player ).ToString( "N0" )</label>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</root>
+
+@code
+{
+    public PlayerInventoryComponent Inventory => Player?.Inventory;
+    public PlayerPawnComponent Player => ClientComponent.Viewer?.PlayerPawn;
+    public ClientComponent Client => ClientComponent.Viewer;
+
+    private void BuyWeapon( EquipmentResource resource )
+    {
+        if ( !CanAfford( resource ) )
+            return;
+
+        Sound.Play( "buy" );
+
+        Inventory.Purchase( resource.ResourceId );
+    }
+
+    private void BuyEquipment( BuyMenuItem buyMenuItem )
+    {
+        if ( !CanAfford( buyMenuItem ) )
+            return;
+
+        Sound.Play( "buy" );
+
+        Inventory.TryPurchaseBuyMenuItem(buyMenuItem.Id);
+    }
+
+    private bool CanAfford( EquipmentResource resource )
+    {
+        return Client.Balance >= resource.Price;
+    }
+
+    private bool CanAfford( BuyMenuItem buyMenuItem )
+    {
+        return Client.Balance >= buyMenuItem.GetPrice( Player );
+    }
+
+    private bool IsOpen = false;
+
+    void Toggle()
+    {
+        IsOpen = !IsOpen;
+    }
+
+    public override void Tick()
+    {
+        if ( Player?.CanBuy is true )
+        {
+            if ( Input.Pressed( "BuyMenu" ) )
+            {
+                Toggle();
+            }
+        }
+        else
+        {
+            IsOpen = false;
+        }
+    }
+
+    protected override int BuildHash()
+    {
+        return !Player.IsValid() ? 0 : HashCode.Combine( Inventory.Equipment.Count(), IsOpen );
+    }
+}

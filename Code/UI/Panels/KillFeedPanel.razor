@@ -1,0 +1,186 @@
+@namespace Sandbox.UI.Panels
+@using Sandbox.GameEvents
+@inherits Panel
+@attribute [StyleSheet]
+
+<root>
+    @foreach ( var entry in Entries )
+    {
+        <div class="entry">
+            @if ( entry.Attacker is not null )
+            {
+                <div class="attacker @(IsMe( entry.Attacker ) ? "is-me" : "")">
+                    @if ( entry.DamageFlags.HasFlag( DamageFlags.AirShot ) )
+                    {
+                        <div style="@GetAirshotTintStyle( entry )">
+                            <div class="image-icon" style="background-image: url(/ui/wings.png); width: 24px; height: 24px;" />
+                        </div>
+                    }
+
+                    @if ( entry.Attacker.Contains( "BOT" ) )
+                    {
+                        <div style="@GetTintStyle( entry.AttackerColor )">
+                            <div class="image-icon" style="background-image: url(/ui/bot.png); width: 24px; height: 24px;" />
+                        </div>
+                    }
+
+                    @if ( IsMe( entry.Attacker ) )
+                    {
+                        <label>@entry.Attacker</label>
+                    }
+                    else
+                    {
+                        <label style="@GetNameColorStyle( entry.AttackerColor )">@entry.Attacker.Replace("BOT", "").Trim()</label>
+                    }
+                </div>
+            }
+
+            <div class="method">
+                @if ( entry.DamageFlags.HasFlag( DamageFlags.Burn ) )
+                {
+                    <div class="image-icon" style="background-image: url(/ui/fire.png); width: 24px; height: 24px;" />
+                }
+
+                @if ( entry.DamageFlags.HasFlag( DamageFlags.Explosion ) )
+                {
+                    <div class="image-icon" style="background-image: url(/ui/explosion.png); width: 24px; height: 24px;" />
+                }
+
+                @if ( entry.Inflictor is not null )
+                {
+                    @if ( entry.Inflictor.StartsWith( "icon:" ) )
+                    {
+                        <div class="icon">
+                            <div class="image-icon flip" style="background-image: url(@entry.InflictorIcon); width: 64px; height: 64px;" />
+                        </div>
+                    }
+                    else
+                    {
+                        <label>@entry.Inflictor</label>
+                    }
+
+                    @if ( entry.DamageFlags.HasFlag( DamageFlags.WallBang ) )
+                    {
+                        <div class="image-icon" style="background-image: url(/ui/wallbang.png); width: 32px; height: 32px;" />
+                    }
+
+                    @if ( entry.HitboxTags.HasFlag( HitboxTags.Head ) )
+                    {
+                        <div class="image-icon headshot" style="background-image: url(/ui/headshot.png); width: 24px; height: 24px;" />
+                    }
+                }
+                else
+                {
+                    <label>killed</label>
+                }
+            </div>
+
+            @if ( entry.Victim is not null )
+            {
+                <div class="victim @(IsMe( entry.Victim ) ? "is-me" : "")">
+
+                    @if ( entry.Victim.Contains( "BOT" ) )
+                    {
+                        <div style="@GetTintStyle( entry.VictimColor )">
+                            <div class="image-icon" style="background-image: url(/ui/bot.png); width: 24px; height: 24px;" />
+                        </div>
+                    }
+
+                    @if ( IsMe( entry.Victim ) )
+                    {
+                        <label>@entry.Victim</label>
+                    }
+                    else
+                    {
+                        <label style="@GetNameColorStyle( entry.VictimColor )">@entry.Victim.Replace("BOT", "").Trim()</label>
+                    }
+                </div>
+            }
+        </div>
+    }
+</root>
+
+@code
+{
+    private static KillFeedPanel Instance { get; set; } = null;
+
+    public KillFeedPanel()
+    {
+        Instance = this;
+    }
+
+    public bool IsMe( string name )
+    {
+        return Sandbox.Utility.Steam.PersonaName.Equals( name );
+    }
+
+    private static string GetAirshotTintStyle( KillFeedEntry entry ) =>
+        IsMeStatic( entry.Attacker ) ? "background-tint:black" : $"background-tint:{entry.AttackerColor.Hex}";
+
+    private static string GetTintStyle( Color color ) => $"background-tint:{color.Hex}";
+
+    private static string GetNameColorStyle( Color color ) => $"color:{color.Hex}";
+
+    private static bool IsMeStatic( string name ) =>
+        Sandbox.Utility.Steam.PersonaName.Equals( name );
+
+    public record KillFeedEntry( string Attacker, Color AttackerColor, string Inflictor, string Victim, Color VictimColor, HitboxTags HitboxTags, DamageFlags DamageFlags,
+        RealTimeSince TimeSinceAdded )
+    {
+        public string AttackerIcon => Attacker.Replace("icon:", "");
+        public string InflictorIcon => Inflictor.Replace("icon:", "");
+        public string VictimIcon => Victim.Replace( "icon:", "" );
+    }
+
+    private List<KillFeedEntry> Entries { get; set; } = new();
+
+    private float Lifetime => 10f;
+
+    [Rpc.Broadcast]
+    public static void BroadcastKillFeedEvent( string attacker, Color attackerColor, string inflictor, string victim, Color victimColor, HitboxTags tags, DamageFlags flags )
+    {
+        if ( !Instance.IsValid() )
+            return;
+
+        Instance.Entries.Add( new KillFeedEntry( attacker, attackerColor, inflictor, victim, victimColor, tags, flags, 0 ) );
+        Instance.StateHasChanged();
+    }
+
+    public static void RecordEvent( DamageInfo damageInfo )
+    {
+        var attackerDesc = GameUtils.GetDescription( damageInfo.Attacker );
+        var inflictorDesc = GameUtils.GetDescription( damageInfo.Inflictor );
+        var victimDesc = GameUtils.GetDescription( damageInfo.Victim );
+
+        var attacker = attackerDesc?.DisplayName;
+        if ( !string.IsNullOrEmpty( attackerDesc?.Icon ) ) attacker = $"icon:{attackerDesc.Icon}";
+
+        var inflictor = inflictorDesc?.DisplayName;
+        if ( !string.IsNullOrEmpty( inflictorDesc?.Icon ) ) inflictor = $"icon:{inflictorDesc.Icon}";
+
+        var victim = victimDesc?.DisplayName;
+        if ( !string.IsNullOrEmpty( victimDesc?.Icon ) ) victim = $"icon:{victimDesc.Icon}";
+
+        BroadcastKillFeedEvent(
+            attacker, attackerDesc?.Color ?? Color.White,
+            inflictor,
+            victim, victimDesc?.Color ?? Color.White,
+            //
+            damageInfo.Hitbox,
+            damageInfo.Flags
+        );
+
+    }
+
+    public override void Tick()
+    {
+        // Limit entries so we don't get too busy
+        Entries = Entries.TakeLast( 5 ).ToList();
+
+        // Did we remove something?
+        if ( Entries.RemoveAll( x => x.TimeSinceAdded > Lifetime ) > 0 )
+        {
+            StateHasChanged();
+        }
+    }
+}

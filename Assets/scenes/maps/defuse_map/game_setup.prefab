@@ -1,0 +1,402 @@
+{
+  "RootObject": {
+    "__guid": "d0c8d522-0524-4dbb-92a9-04b45bf7d1c7",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "game_setup",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [],
+    "Children": [
+      {
+        "__guid": "69d5003a-44d7-41fe-a620-32f6bf0c4cd0",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "Networking",
+        "Position": "0,8,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.Components.SingletonComponents.GameNetworkManagerSingletonComponent",
+            "__guid": "a030a8ab-0d81-4236-967f-ac5a43d1fc7b",
+            "__enabled": true,
+            "Flags": 0,
+            "ClientPrefab": {
+              "_type": "gameobject",
+              "prefab": "prefabs/player/client.prefab"
+            },
+            "IsMultiplayer": true,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "20c78d91-5ca6-442a-a6b5-ab8b1602e80f",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "HUD",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 1,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.ScreenPanel",
+            "__guid": "58807d92-54d1-46b8-8cb5-b611520f2ede",
+            "__enabled": true,
+            "Flags": 0,
+            "AutoScreenScale": true,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Opacity": 1,
+            "Scale": 1,
+            "ScaleStrategy": "ConsistentHeight",
+            "TargetCamera": null,
+            "ZIndex": 100
+          },
+          {
+            "__type": "Sandbox.UI.Panels.MainHUDPanel",
+            "__guid": "f9751f82-6019-4749-876f-48b8e95cc7f7",
+            "__enabled": true,
+            "Flags": 0,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null
+          },
+          {
+            "__type": "Sandbox.UI.Panels.ChatPanel",
+            "__guid": "844630d4-8e46-4f32-a9f4-d920196346fc",
+            "__enabled": true,
+            "Flags": 0,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null
+          },
+          {
+            "__type": "Sandbox.UI.Panels.DeveloperMenuPanel",
+            "__guid": "2a8cd6bb-d3c8-4a66-a343-1af88768c18f",
+            "__enabled": true,
+            "Flags": 0,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null
+          },
+          {
+            "__type": "Sandbox.Components.CrosshairComponent",
+            "__guid": "54b6c5ab-9e90-40df-90bd-b2c98591b167",
+            "__enabled": true,
+            "Flags": 0,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "1fbe1885-c54f-4870-916f-05a56271e8fd",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "Spectating",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.Components.SingletonComponents.SpectateSystemSingletonComponent",
+            "__guid": "f220d064-34fb-4a75-b828-3e5b7a2d49ab",
+            "__enabled": true,
+            "Flags": 0,
+            "FreecamController": null,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null
+          }
+        ],
+        "Children": [
+          {
+            "__guid": "322b4155-b464-45d6-a500-3868c11b2350",
+            "__version": 2,
+            "__Prefab": "prefabs/player/spectate.prefab",
+            "__PrefabInstancePatch": {
+              "AddedObjects": [
+                {
+                  "Id": {
+                    "Type": "GameObject",
+                    "IdValue": "196dfe33-42b7-4988-916c-b12c7ff06ab4"
+                  },
+                  "Parent": {
+                    "Type": "GameObject",
+                    "IdValue": "89e9bfbf-5479-448a-be07-24914e1c82c3"
+                  },
+                  "PreviousElement": {
+                    "Type": "GameObject",
+                    "IdValue": "ce351d81-326c-49d1-8f55-9bcefe0e518b"
+                  },
+                  "ContainerProperty": "Children",
+                  "IsContainerArray": true,
+                  "Data": {
+                    "__guid": "196dfe33-42b7-4988-916c-b12c7ff06ab4",
+                    "__version": 2,
+                    "Flags": 0,
+                    "Name": "GameObject",
+                    "Position": "0,0,0",
+                    "Rotation": "0,0,0,1",
+                    "Scale": "1,1,1",
+                    "Tags": "",
+                    "Enabled": false,
+                    "NetworkMode": 2,
+                    "NetworkFlags": 0,
+                    "NetworkOrphaned": 0,
+                    "NetworkTransmit": true,
+                    "OwnerTransfer": 1,
+                    "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+                    "Components": [],
+                    "Children": []
+                  }
+                },
+                {
+                  "Id": {
+                    "Type": "GameObject",
+                    "IdValue": "4ebe8b8d-312c-49e0-adfc-86b37ed9a452"
+                  },
+                  "Parent": {
+                    "Type": "GameObject",
+                    "IdValue": "89e9bfbf-5479-448a-be07-24914e1c82c3"
+                  },
+                  "PreviousElement": {
+                    "Type": "GameObject",
+                    "IdValue": "196dfe33-42b7-4988-916c-b12c7ff06ab4"
+                  },
+                  "ContainerProperty": "Children",
+                  "IsContainerArray": true,
+                  "Data": {
+                    "__guid": "4ebe8b8d-312c-49e0-adfc-86b37ed9a452",
+                    "__version": 2,
+                    "Flags": 0,
+                    "Name": "GameObject",
+                    "Position": "0,0,0",
+                    "Rotation": "0,0,0,1",
+                    "Scale": "1,1,1",
+                    "Tags": "",
+                    "Enabled": false,
+                    "NetworkMode": 2,
+                    "NetworkFlags": 0,
+                    "NetworkOrphaned": 0,
+                    "NetworkTransmit": true,
+                    "OwnerTransfer": 1,
+                    "__EditorPrefabNestedInstance": "prefabs/player/cameras/default_player_camera.prefab",
+                    "Components": [],
+                    "Children": []
+                  }
+                }
+              ],
+              "RemovedObjects": [],
+              "PropertyOverrides": [],
+              "MovedObjects": [
+                {
+                  "Id": {
+                    "Type": "GameObject",
+                    "IdValue": "ce351d81-326c-49d1-8f55-9bcefe0e518b"
+                  },
+                  "NewParent": {
+                    "Type": "GameObject",
+                    "IdValue": "89e9bfbf-5479-448a-be07-24914e1c82c3"
+                  },
+                  "NewContainerProperty": "Children",
+                  "IsNewContainerArray": true,
+                  "NewPreviousElement": {
+                    "Type": "GameObject",
+                    "IdValue": "76bb9bb6-92d1-4dca-9a77-929eb5a55cb6"
+                  }
+                }
+              ]
+            },
+            "__PrefabIdToInstanceId": {
+              "89e9bfbf-5479-448a-be07-24914e1c82c3": "322b4155-b464-45d6-a500-3868c11b2350",
+              "1a368c00-bf11-4536-a008-fab6ddbc0b5a": "d3fca0c4-4068-4180-86c8-5d898baba61e",
+              "20f970fe-0a0d-40d3-863d-80a13199c2f6": "5ebb2cc6-2acb-4982-b4f9-11e93e581340",
+              "9cbd9d13-7226-40fc-bd17-2ef0fd0d3d51": "8d3f8fec-a4c7-43b0-8b2a-9e7c97ffaebf",
+              "76bb9bb6-92d1-4dca-9a77-929eb5a55cb6": "7a8c4bdd-0944-4032-a00b-de5ebc81a263",
+              "ce351d81-326c-49d1-8f55-9bcefe0e518b": "0edffdff-489a-4bd2-9aac-d7bf39d8d905",
+              "f4a1d088-28d5-473f-9cc0-a475148916ea": "fdaf77cd-bb4d-442f-880c-39c37a25c22e",
+              "d5d1fce0-7a95-4de4-b568-1ae30ad291a7": "bd4899d8-8608-4eae-b467-74b808b44573",
+              "43fddf12-51f7-4ca9-8d70-9f39b7b2aec5": "73439664-445d-46ec-952b-efe45da4ab2a",
+              "97e48470-33b2-49df-b8e1-05dbfc804f43": "89ce89fc-5f0e-4b28-8b33-95b4544a708b",
+              "c035e368-f276-40b4-ac34-21ef167b7aae": "2d646686-c728-4cf8-9371-a96fabae6f15",
+              "8c155965-7fff-44aa-9bc8-6119373c1b08": "a24e5ae8-fe17-44e4-9c12-a5477b482830",
+              "9d4730f1-360d-4626-b3b2-5709bb758b5c": "7149bbbf-cc4c-4240-92f8-ed69789c142b",
+              "9fe48041-2eea-4dc2-bd02-f5ca339a3587": "437b5db7-6283-4363-8f7b-b3c0f8f6b5b1",
+              "e38cce1b-5838-4be7-a0c7-15fd50becf3f": "e8699fac-b744-4bdc-8681-e6af9ef0cea4",
+              "dbc4192b-5039-4508-b595-3ad7d9fd5822": "f5bdcac0-db38-487e-ace4-74308a41ebea",
+              "d8f531b6-bd9b-4105-9b83-b0f37baedf8e": "362b2250-3f3d-4558-8a94-64b31582aadc",
+              "75c9429c-fb55-468b-85f1-1f9449e22e08": "652502f1-acab-432b-8cea-478792944a6a"
+            }
+          }
+        ]
+      },
+      {
+        "__guid": "3951a691-bb25-49f8-9a58-e276f08222cf",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "PauseMenu",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.ScreenPanel",
+            "__guid": "b4ca6d36-f647-49b3-9151-8ef4c63aeddd",
+            "__enabled": true,
+            "Flags": 0,
+            "AutoScreenScale": true,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Opacity": 1,
+            "Scale": 1,
+            "ScaleStrategy": "ConsistentHeight",
+            "TargetCamera": null,
+            "ZIndex": 999
+          },
+          {
+            "__type": "Sandbox.UI.Panels.PauseMenuPanel",
+            "__guid": "b068270c-bfc9-4fab-924e-602c905a2a34",
+            "__enabled": true,
+            "Flags": 0,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "50de49ef-0287-435d-b570-e48047718014",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "ScreenShaker",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.Components.ScreenShakerComponent",
+            "__guid": "3240b3e8-8451-4b0c-af2a-ab30faa0e00b",
+            "__enabled": true,
+            "Flags": 0,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null
+          }
+        ],
+        "Children": []
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}
