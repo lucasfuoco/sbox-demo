@@ -20,7 +20,7 @@
         "__guid": "1a368c00-bf11-4536-a008-fab6ddbc0b5a",
         "__enabled": true,
         "Flags": 0,
-        "FlySpeed": 10,
+        "FlySpeed": 1000,
         "HealthComponent": null,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
@@ -34,22 +34,14 @@
         "__guid": "20f970fe-0a0d-40d3-863d-80a13199c2f6",
         "__enabled": true,
         "Flags": 0,
-        "Boom": null,
-        "CameraObject": null,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null
-      },
-      {
-        "__type": "Sandbox.Components.PawnCameraControllerComponent",
-        "__guid": "9cbd9d13-7226-40fc-bd17-2ef0fd0d3d51",
-        "__enabled": true,
-        "Flags": 0,
-        "Boom": null,
-        "CameraObject": null,
+        "Boom": {
+          "_type": "gameobject",
+          "go": "76bb9bb6-92d1-4dca-9a77-929eb5a55cb6"
+        },
+        "CameraObject": {
+          "_type": "gameobject",
+          "go": "ce351d81-326c-49d1-8f55-9bcefe0e518b"
+        },
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,

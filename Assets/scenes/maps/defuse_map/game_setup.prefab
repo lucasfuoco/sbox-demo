@@ -158,7 +158,12 @@
             "__guid": "f220d064-34fb-4a75-b828-3e5b7a2d49ab",
             "__enabled": true,
             "Flags": 0,
-            "FreecamController": null,
+            "FreecamController": {
+              "_type": "component",
+              "component_id": "d3fca0c4-4068-4180-86c8-5d898baba61e",
+              "go": "322b4155-b464-45d6-a500-3868c11b2350",
+              "component_type": "SpectateControllerPawnComponent"
+            },
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
             "OnComponentEnabled": null,
@@ -177,7 +182,7 @@
                 {
                   "Id": {
                     "Type": "GameObject",
-                    "IdValue": "196dfe33-42b7-4988-916c-b12c7ff06ab4"
+                    "IdValue": "6752a7a5-d276-4cef-8da8-45955accbe95"
                   },
                   "Parent": {
                     "Type": "GameObject",
@@ -190,7 +195,7 @@
                   "ContainerProperty": "Children",
                   "IsContainerArray": true,
                   "Data": {
-                    "__guid": "196dfe33-42b7-4988-916c-b12c7ff06ab4",
+                    "__guid": "6752a7a5-d276-4cef-8da8-45955accbe95",
                     "__version": 2,
                     "Flags": 0,
                     "Name": "GameObject",
@@ -212,7 +217,7 @@
                 {
                   "Id": {
                     "Type": "GameObject",
-                    "IdValue": "4ebe8b8d-312c-49e0-adfc-86b37ed9a452"
+                    "IdValue": "7e33ad4b-fe21-4a1d-ae0d-781297866ef0"
                   },
                   "Parent": {
                     "Type": "GameObject",
@@ -220,12 +225,12 @@
                   },
                   "PreviousElement": {
                     "Type": "GameObject",
-                    "IdValue": "196dfe33-42b7-4988-916c-b12c7ff06ab4"
+                    "IdValue": "6752a7a5-d276-4cef-8da8-45955accbe95"
                   },
                   "ContainerProperty": "Children",
                   "IsContainerArray": true,
                   "Data": {
-                    "__guid": "4ebe8b8d-312c-49e0-adfc-86b37ed9a452",
+                    "__guid": "7e33ad4b-fe21-4a1d-ae0d-781297866ef0",
                     "__version": 2,
                     "Flags": 0,
                     "Name": "GameObject",
@@ -270,7 +275,6 @@
               "89e9bfbf-5479-448a-be07-24914e1c82c3": "322b4155-b464-45d6-a500-3868c11b2350",
               "1a368c00-bf11-4536-a008-fab6ddbc0b5a": "d3fca0c4-4068-4180-86c8-5d898baba61e",
               "20f970fe-0a0d-40d3-863d-80a13199c2f6": "5ebb2cc6-2acb-4982-b4f9-11e93e581340",
-              "9cbd9d13-7226-40fc-bd17-2ef0fd0d3d51": "8d3f8fec-a4c7-43b0-8b2a-9e7c97ffaebf",
               "76bb9bb6-92d1-4dca-9a77-929eb5a55cb6": "7a8c4bdd-0944-4032-a00b-de5ebc81a263",
               "ce351d81-326c-49d1-8f55-9bcefe0e518b": "0edffdff-489a-4bd2-9aac-d7bf39d8d905",
               "f4a1d088-28d5-473f-9cc0-a475148916ea": "fdaf77cd-bb4d-442f-880c-39c37a25c22e",

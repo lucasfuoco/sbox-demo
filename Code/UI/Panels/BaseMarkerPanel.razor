@@ -1,0 +1,13 @@
+@inherits Panel
+@using Sandbox.Valids
+@namespace Sandbox.UI.Panels
+
+<root>
+
+</root>
+
+@code
+{
+    public MarkerPanel Marker { get; set; }
+    public IMarkerObjectValid Object => Marker.Object;
+}
