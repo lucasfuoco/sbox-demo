@@ -3,7 +3,7 @@ using Sandbox.GameEvents;
 using Sandbox.Attributes;
 using Sandbox.GameResources;
 
-namespace Sandbox.Components.EquipmentComponents.WeaponInputActionEquipmentComponents;
+namespace Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 
 [Icon( "yard" )]
 [Title( "Bomb Planting" ), Group( "Weapon Components" )]

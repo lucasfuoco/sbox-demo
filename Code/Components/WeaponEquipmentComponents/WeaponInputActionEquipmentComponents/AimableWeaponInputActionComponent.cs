@@ -1,4 +1,4 @@
-namespace Sandbox.Components.EquipmentComponents.WeaponInputActionEquipmentComponents;
+namespace Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 
 [Title( "ADS (Aim Down Sight)" ), Group( "Weapon Components" )]
 public partial class AimableWeaponInputActionEquipmentComponent : WeaponInputActionEquipmentComponent

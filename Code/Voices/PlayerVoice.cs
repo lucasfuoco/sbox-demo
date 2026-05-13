@@ -21,6 +21,7 @@ public partial class PlayerVoice : Voice
 	protected override void OnStart()
 	{
 		Filter = Scene.GetAllComponents<IVoiceFilter>().FirstOrDefault();
+		Log.Info( $"Filter: {Filter}" );
 		TargetMixer = Mixer.FindMixerByName( "Voice" );
 	}
 

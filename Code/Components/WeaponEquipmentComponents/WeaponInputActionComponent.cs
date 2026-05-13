@@ -1,6 +1,6 @@
 using Sandbox.GameEvents;
 
-namespace Sandbox.Components.EquipmentComponents;
+namespace Sandbox.Components.WeaponEquipmentComponents;
 
 /// <summary>
 /// A weapon component that reacts to input actions.

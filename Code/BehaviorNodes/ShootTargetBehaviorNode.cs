@@ -1,6 +1,6 @@
 using Sandbox.Components;
 using Sandbox.Components.PawnComponents;
-using Sandbox.Components.EquipmentComponents.WeaponInputActionEquipmentComponents;
+using Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 
 namespace Sandbox.BehaviorNodes;
 

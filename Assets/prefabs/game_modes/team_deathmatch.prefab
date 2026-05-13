@@ -30,7 +30,7 @@
         "OnComponentStart": null,
         "OnComponentUpdate": null,
         "Title": "TDM",
-        "UnlimitedMoney": false
+        "UnlimitedMoney": true
       },
       {
         "__type": "Sandbox.Components.TeamScoringComponent",

@@ -1,9 +1,9 @@
 using Sandbox.Components.PawnComponents;
-using Sandbox.Components.EquipmentComponents;
+using Sandbox.Components.WeaponEquipmentComponents;
 using Sandbox.GameEvents;
 using Sandbox.Attributes;
 using Sandbox.SceneEvents;
-using Sandbox.Components.EquipmentComponents.WeaponInputActionEquipmentComponents;
+using Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 
 namespace Sandbox.Components.PawnCameraControllerComponents;
 

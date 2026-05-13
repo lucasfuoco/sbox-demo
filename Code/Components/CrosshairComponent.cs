@@ -1,5 +1,5 @@
 using Sandbox;
-using Sandbox.Components.EquipmentComponents;
+using Sandbox.Components.WeaponEquipmentComponents;
 using Sandbox.Components.PawnCameraControllerComponents;
 using Sandbox.Components.PawnComponents;
 using Sandbox.GameEvents;
