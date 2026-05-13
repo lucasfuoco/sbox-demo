@@ -2,9 +2,9 @@ using Sandbox.GameEvents;
 using Sandbox.Attributes;
 using Sandbox.GameResources;
 using Sandbox.Components.WeaponModelComponents;
-using Sandbox.Components.EquipmentComponents;
+using Sandbox.Components.WeaponEquipmentComponents;
 
-namespace Sandbox.Components.EquipmentComponents.WeaponInputActionEquipmentComponents;
+namespace Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 
 [Title( "Throw Weapon" ), Group( "Weapon Components" )]
 public partial class ThrowableWeaponInputActionEquipmentComponent : WeaponInputActionEquipmentComponent,

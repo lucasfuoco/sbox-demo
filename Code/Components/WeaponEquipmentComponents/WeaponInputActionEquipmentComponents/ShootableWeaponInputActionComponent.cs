@@ -1,7 +1,7 @@
 using Sandbox.GameEvents;
 using Sandbox.Attributes;
 
-namespace Sandbox.Components.EquipmentComponents.WeaponInputActionEquipmentComponents;
+namespace Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 
 public enum FireMode
 {

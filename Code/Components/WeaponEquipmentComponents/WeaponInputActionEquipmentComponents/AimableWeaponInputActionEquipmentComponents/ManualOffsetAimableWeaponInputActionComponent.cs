@@ -1,4 +1,4 @@
-namespace Sandbox.Components.EquipmentComponents.WeaponInputActionEquipmentComponents.AimableWeaponInputActionEquipmentComponents;
+namespace Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.AimableWeaponInputActionEquipmentComponents;
 
 public interface IViewWeaponModelOffset
 {

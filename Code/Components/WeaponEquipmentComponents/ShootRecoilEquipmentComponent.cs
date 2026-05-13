@@ -1,4 +1,4 @@
-namespace Sandbox.Components.EquipmentComponents;
+namespace Sandbox.Components.WeaponEquipmentComponents;
 
 [Title( "Recoil" ), Group( "Weapon Components" )]
 public partial class ShootRecoilEquipmentComponent : WeaponEquipmentComponent

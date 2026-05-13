@@ -1,8 +1,8 @@
-using Sandbox.Components.EquipmentComponents;
+using Sandbox.Components.WeaponEquipmentComponents;
 using Sandbox.Components;
 using Sandbox.GameEvents;
 
-namespace Sandbox.Components.EquipmentComponents.WeaponInputActionEquipmentComponents;
+namespace Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 
 [Title( "Reload" ), Group( "Weapon Components" )]
 public partial class ReloadableWeaponInputActionEquipmentComponent : WeaponInputActionEquipmentComponent,

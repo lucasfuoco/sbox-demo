@@ -1,10 +1,10 @@
-using Sandbox.Components.EquipmentComponents.WeaponInputActionEquipmentComponents;
+using Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 using Sandbox.Components.PawnComponents;
 using Sandbox.GameResources;
 using Sandbox.Components.SingletonComponents;
 using Sandbox.GameEvents;
 
-namespace Sandbox.Components.EquipmentComponents.WeaponInputActionEquipmentComponents;
+namespace Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 
 [Title( "2D Scope" ), Group( "Weapon Components" )]
 public class FlatScopeWeaponActionEquipmentComponent : WeaponInputActionEquipmentComponent

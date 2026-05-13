@@ -2,9 +2,9 @@ using Sandbox;
 using Sandbox.GameEvents;
 using Sandbox.Components.PawnComponents;
 using Sandbox.SceneEvents;
-using Sandbox.Components.EquipmentComponents.WeaponInputActionEquipmentComponents.AimableWeaponInputActionEquipmentComponents;
+using Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.AimableWeaponInputActionEquipmentComponents;
 using Sandbox.GameResources;
-using Sandbox.Components.EquipmentComponents.WeaponInputActionEquipmentComponents;
+using Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 
 namespace Sandbox.Components.WeaponModelComponents;
 

@@ -4,7 +4,7 @@ using Sandbox.GameEvents;
 using Sandbox.Components.PawnComponents;
 using Sandbox.Components.SingletonComponents;
 using Sandbox.GameResources;
-using Sandbox.Components.EquipmentComponents.WeaponInputActionEquipmentComponents;
+using Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 
 namespace Sandbox.Components;
 
