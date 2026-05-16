@@ -130,7 +130,7 @@
             "DryShootDelay": 0.15,
             "EjectionPrefab": null,
             "FireModeSwitchDelay": 0.3,
-            "FireRate": 0.2,
+            "FireRate": 450,
             "InAirSpreadMultiplier": 2,
             "InputActions": [
               "Attack1"
@@ -185,7 +185,7 @@
             "__guid": "21df41a1-90eb-4d3b-af40-4cfca7a88302",
             "__enabled": true,
             "Flags": 0,
-            "HorizontalSpread": "0",
+            "HorizontalSpread": "1.2 -1.2",
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
             "OnComponentEnabled": null,
@@ -201,7 +201,7 @@
             "ResetTime": 0.3,
             "Scale": "2,5",
             "UseRecoilPattern": false,
-            "VerticalSpread": "0"
+            "VerticalSpread": "2.5"
           },
           {
             "__type": "Sandbox.Components.WeaponEquipmentComponents.ViewPunchWeaponEquipmentComponent",

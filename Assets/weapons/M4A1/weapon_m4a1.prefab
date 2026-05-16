@@ -185,7 +185,7 @@
             "__guid": "993ea7c3-be5f-4de4-b2ef-899a0402c715",
             "__enabled": true,
             "Flags": 0,
-            "HorizontalSpread": "0",
+            "HorizontalSpread": "2 -2",
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
             "OnComponentEnabled": null,
@@ -201,7 +201,7 @@
             "ResetTime": 0.3,
             "Scale": "2,5",
             "UseRecoilPattern": false,
-            "VerticalSpread": "0"
+            "VerticalSpread": "3.5"
           },
           {
             "__type": "Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.AimableWeaponInputActionEquipmentComponents.ManualOffsetAimableWeaponInputActionEquipmentComponent",

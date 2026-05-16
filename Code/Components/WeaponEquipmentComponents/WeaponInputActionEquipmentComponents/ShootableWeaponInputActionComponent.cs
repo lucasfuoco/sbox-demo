@@ -16,6 +16,7 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 	IGameEventHandler<EquipmentHolsteredEvent>
 {
 	[Property, Group( "Bullet" ), EquipmentResourceProperty] public float BaseDamage { get; set; } = 25.0f;
+	/// <summary>Seconds between shots if under 60 (e.g. 0.2), otherwise rounds per minute (e.g. 450).</summary>
 	[Property, Group( "Bullet" ), EquipmentResourceProperty] public float FireRate { get; set; } = 0.2f;
 	[Property, Group( "Bullet" )] public float DryShootDelay { get; set; } = 0.15f;
 	[Property, Group( "Bullet" )] public float BulletSize { get; set; } = 1.0f;
@@ -134,7 +135,35 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 
 	protected override void OnEnabled()
 	{
+		if ( !AmmoComponent.IsValid() )
+			AmmoComponent = GetComponent<WeaponAmmoComponent>();
+
 		BindTag( "no_ammo", () => AmmoComponent.IsValid() && !AmmoComponent.HasAmmo );
+	}
+
+	/// <summary>
+	/// Viewmodels often split the arms and weapon onto different <see cref="SkinnedModelRenderer"/>s (bone merge).
+	/// Fire / slide graph parameters must be pushed to every anim-graph renderer on the viewmodel and world model roots.
+	/// </summary>
+	private void SetAnimGraphBoolOnWeaponMeshes( string parameterName, bool value )
+	{
+		void TryRoot( GameObject root )
+		{
+			if ( !root.IsValid() )
+				return;
+
+			foreach ( var renderer in root.Components.GetAll<SkinnedModelRenderer>( FindMode.EverythingInSelfAndDescendants ) )
+			{
+				if ( renderer.IsValid() && renderer.UseAnimGraph )
+					renderer.Set( parameterName, value );
+			}
+		}
+
+		if ( Equipment.ViewWeaponModel.IsValid() )
+			TryRoot( Equipment.ViewWeaponModel.GameObject );
+
+		if ( Equipment.WorldWeaponModel.IsValid() )
+			TryRoot( Equipment.WorldWeaponModel.GameObject );
 	}
 
 	/// <summary>
@@ -189,9 +218,8 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		if ( Equipment.Owner.IsValid() && Equipment.Owner.BodyRenderer.IsValid() )
 			Equipment.Owner.BodyRenderer.Set( "b_attack", true );
 
-		// First person
-		if ( Equipment.ViewWeaponModel.IsValid() )
-			Equipment.ViewWeaponModel.ModelRenderer.Set( "b_attack", true );
+		// First-person weapon mesh + arms, and third-person held weapon (slide / bolt lives on the gun renderer).
+		SetAnimGraphBoolOnWeaponMeshes( "b_attack", true );
 	}
 
 	private void CreateImpactEffects( GameObject hitObject, Surface surface, Vector3 pos, Vector3 normal )
@@ -300,8 +328,7 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 			Log.Trace( $"Shootable: ShootSound {DryFireSound.ResourceName}" );
 		}
 
-		// First person
-		Equipment.ViewWeaponModel?.ModelRenderer.Set( "b_attack_dry", true );
+		SetAnimGraphBoolOnWeaponMeshes( "b_attack_dry", true );
 	}
 
 	protected IEnumerable<SceneTraceResult> DoTraceBullet( Vector3 start, Vector3 end, float radius )
@@ -345,13 +372,16 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		var hits = new List<SceneTraceResult>();
 
 		var start = WeaponRay.Position;
-		var rot = Rotation.LookAt( WeaponRay.Forward );
+		var forward = WeaponRay.Forward;
+		if ( forward.IsNearlyZero() )
+			forward = Vector3.Forward;
+		else
+			forward = forward.Normal;
 
-		var forward = rot.Forward;
 		forward += (Vector3.Random + Vector3.Random + Vector3.Random + Vector3.Random) * (BulletSpread + Equipment.Owner.Spread) * 0.25f;
 		forward = forward.Normal;
 
-		var original = DoTraceBullet( start, WeaponRay.Position + forward * MaxRange, BulletSize );
+		var original = DoTraceBullet( start, start + forward * MaxRange, BulletSize );
 
 		if ( original.Count() < 1 ) return original;
 
@@ -420,9 +450,14 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		return true;
 	}
 
+	/// <summary>Minimum time between shots; see <see cref="FireRate"/>.</summary>
 	protected float RPMToSeconds()
 	{
-		return 60 / FireRate;
+		if ( FireRate <= 0f )
+			return 0f;
+		if ( FireRate < 60f )
+			return FireRate;
+		return 60f / FireRate;
 	}
 
 	/// <summary>
@@ -501,7 +536,7 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 			if ( !CanShoot() )
 			{
 				// Dry fire
-				if ( !AmmoComponent.HasAmmo )
+				if ( AmmoComponent.IsValid() && !AmmoComponent.HasAmmo )
 				{
 					if ( TimeSinceShoot < DryShootDelay )
 						return;
