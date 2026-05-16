@@ -46,6 +46,14 @@ public sealed class HumanOutfitterComponent : Component,
 		}
 
 		Renderer.Model = Game.Random.FromList( usable );
+
+		// Swapping the body model can wake ragdoll physics; keep alive players animated.
+		if ( PlayerPawn.IsValid() && PlayerPawn.Body.IsValid()
+			&& PlayerPawn.HealthComponent.IsValid() && PlayerPawn.HealthComponent.State == LifeState.Alive )
+		{
+			PlayerPawn.Body.SetRagdoll( false );
+		}
+
 		PlayerPawn?.Body?.Refresh();
 	}
 

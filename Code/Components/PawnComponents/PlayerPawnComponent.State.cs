@@ -167,6 +167,7 @@ public partial class PlayerPawnComponent
 		if ( Body is not null )
 		{
 			Body.DamageTakenForce = Vector3.Zero;
+			Body.SetRagdoll( false );
 		}
 
 		PlayerBoxCollider.Enabled = true;

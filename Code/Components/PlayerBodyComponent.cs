@@ -41,6 +41,13 @@ public partial class PlayerBodyComponent : Component
 		Transform.ClearInterpolation();
 	}
 
+	protected override void OnStart()
+	{
+		// Prefab keeps ModelPhysics on the component; without this, pawns (especially bots) can spawn as a collapsed ragdoll.
+		if ( Player.IsValid() && Player.HealthComponent.IsValid() && Player.HealthComponent.State == LifeState.Alive )
+			SetRagdoll( false );
+	}
+
 	internal void ApplyRagdollImpulses( Vector3 position, Vector3 force )
 	{
 		if ( !Physics.IsValid() || !Physics.PhysicsGroup.IsValid() )
