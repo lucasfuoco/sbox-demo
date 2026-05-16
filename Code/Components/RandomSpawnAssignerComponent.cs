@@ -73,14 +73,14 @@ public sealed class RandomSpawnAssignerComponent : Component, ISpawnAssigner
 	{
 		var allPlayers = GameUtils.PlayerPawns
 			.Where( x => x.Client != player )
-			.Where( x => x.HealthComponent.State == LifeState.Alive )
+			.Where( x => x.HealthComponent is { State: LifeState.Alive } )
 			.Select( x => x.Transform.World )
 			.ToArray();
 
 		var enemyPlayers = GameUtils.PlayerPawns
 			.Where( x => x.Client != player )
 			.Where( x => !x.Client.IsFriendly( player ) )
-			.Where( x => x.HealthComponent.State == LifeState.Alive )
+			.Where( x => x.HealthComponent is { State: LifeState.Alive } )
 			.Select( x => x.Transform.World )
 			.ToArray();
 

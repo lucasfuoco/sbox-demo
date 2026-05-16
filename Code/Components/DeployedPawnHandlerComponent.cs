@@ -23,11 +23,12 @@ public partial class DeployedPawnHandlerComponent : Component
 		Pawn?.Possess();
 	}
 
-	public static DeployedPawnHandlerComponent Create( PawnComponent pawn )
+	public static DeployedPawnHandlerComponent Create( PawnComponent pawn, ClientComponent client )
 	{
 		Assert.True( Networking.IsHost );
+		Assert.True( client.IsValid() );
 
-		var handler = pawn.Client.GetOrAddComponent<DeployedPawnHandlerComponent>();
+		var handler = client.GetOrAddComponent<DeployedPawnHandlerComponent>();
 		handler.Pawn = pawn;
 
 		return handler;

@@ -1061,9 +1061,6 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.MovieMaker.MovieRecorderSystem": {
-        "DisableClientRecording": false
-      },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
           "$blob": "d7ef2083-1f02-4ddc-9f90-ec34b9e70c83"
@@ -1073,6 +1070,9 @@
         "Data": {
           "SelectionSets": []
         }
+      },
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
       }
     }
   },

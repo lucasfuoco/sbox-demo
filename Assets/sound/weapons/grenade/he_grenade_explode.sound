@@ -5,7 +5,7 @@
   "Decibels": 10000,
   "SelectionMode": "Random",
   "Sounds": [
-    "sounds/weapons/grenade/he_grenade_explode.vsnd"
+    "sound/weapons/grenade/he_grenade_explode.vsnd"
   ],
   "Occlusion": false,
   "AirAbsorption": false,
@@ -15,25 +15,38 @@
   "Distance": 13000,
   "Falloff": [
     {
+      "x": 0,
       "y": 1,
-      "out": -1.8
+      "in": 0,
+      "out": -1.8,
+      "mode": "Mirrored"
     },
     {
       "x": 0.05,
       "y": 0.22,
       "in": 3.5,
-      "out": -3.5
+      "out": -3.5,
+      "mode": "Mirrored"
     },
     {
       "x": 0.2,
       "y": 0.04,
       "in": 0.16,
-      "out": -0.16
+      "out": -0.16,
+      "mode": "Mirrored"
     },
     {
-      "x": 1
+      "x": 1,
+      "y": 0,
+      "in": 0,
+      "out": 0,
+      "mode": "Mirrored"
     }
   ],
+  "DefaultMixer": {
+    "Name": "unknown",
+    "Id": "00000000-0000-0000-0000-000000000000"
+  },
   "__references": [],
   "__version": 1
 }

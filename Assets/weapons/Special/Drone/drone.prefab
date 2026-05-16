@@ -1,0 +1,418 @@
+{
+  "RootObject": {
+    "__guid": "d7e3a5b5-e9e0-4a9e-b42e-87df7e59991b",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "drone",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "noblockaudio",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.Components.HealthComponent",
+        "__guid": "4078a8a3-0850-481a-98a2-b8781bd82417",
+        "__enabled": true,
+        "Flags": 0,
+        "IsGodMode": false,
+        "MaxHealth": 100,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "OnHealthChanged": null
+      },
+      {
+        "__type": "Sandbox.Rigidbody",
+        "__guid": "bb946ee0-afb8-4c03-98da-7952742a6940",
+        "__enabled": true,
+        "Flags": 0,
+        "AngularDamping": 0,
+        "EnableImpactDamage": true,
+        "EnhancedCcd": false,
+        "Gravity": true,
+        "GravityScale": 1,
+        "ImpactDamage": 0,
+        "LinearDamping": 0,
+        "Locking": {
+          "X": false,
+          "Y": false,
+          "Z": false,
+          "Pitch": false,
+          "Yaw": false,
+          "Roll": false
+        },
+        "MassCenterOverride": "0,0,0",
+        "MassOverride": 0,
+        "MinImpactDamageSpeed": 500,
+        "MotionEnabled": true,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "OverrideMassCenter": false,
+        "PreciseContacts": false,
+        "RigidbodyFlags": 0,
+        "SleepThreshold": 2,
+        "StartAsleep": false
+      },
+      {
+        "__type": "Sandbox.BoxCollider",
+        "__guid": "8d833fa2-a74d-4565-be04-a4b0908f049a",
+        "__enabled": true,
+        "Flags": 0,
+        "Center": "0,0,0",
+        "ColliderFlags": 0,
+        "Elasticity": null,
+        "Friction": null,
+        "IsTrigger": false,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "OnObjectTriggerEnter": null,
+        "OnObjectTriggerExit": null,
+        "OnTriggerEnter": null,
+        "OnTriggerExit": null,
+        "RollingResistance": null,
+        "Scale": "40,40,10",
+        "Static": false,
+        "Surface": null,
+        "SurfaceVelocity": "0,0,0"
+      },
+      {
+        "__type": "Sandbox.Components.PawnComponents.DronePawnComponent",
+        "__guid": "48824528-c803-4665-8fe5-485333c79410",
+        "__enabled": true,
+        "Flags": 0,
+        "AltitudeAcceleration": 1000,
+        "Explosion": {
+          "_type": "gameobject",
+          "prefab": "prefabs/equipment/decoy_grenade_explode.prefab"
+        },
+        "HealthComponent": {
+          "_type": "component",
+          "component_id": "4078a8a3-0850-481a-98a2-b8781bd82417",
+          "go": "d7e3a5b5-e9e0-4a9e-b42e-87df7e59991b",
+          "component_type": "HealthComponent"
+        },
+        "LeanMaxVelocity": 1000,
+        "LeanWeight": 0.5,
+        "Model": {
+          "_type": "component",
+          "component_id": "d9d7105f-5147-4a07-87f2-ef20e48bddcf",
+          "go": "acbd53a6-325d-4471-a75a-02a57ea091cc",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "MovementAcceleration": 2500,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Rigidbody": {
+          "_type": "component",
+          "component_id": "bb946ee0-afb8-4c03-98da-7952742a6940",
+          "go": "d7e3a5b5-e9e0-4a9e-b42e-87df7e59991b",
+          "component_type": "Rigidbody"
+        },
+        "Turbines": [
+          {
+            "_type": "gameobject",
+            "go": "baf9ce54-3d23-4a1f-b5d8-2357cbca27c9"
+          },
+          {
+            "_type": "gameobject",
+            "go": "36733d62-84e4-4537-800f-b0219db945d2"
+          },
+          {
+            "_type": "gameobject",
+            "go": "ead219e3-7555-480b-a88b-06c1ce90f1a4"
+          },
+          {
+            "_type": "gameobject",
+            "go": "ebff2285-7b20-4b64-9e36-7f215c54f853"
+          }
+        ],
+        "UprightDot": 0.5,
+        "UprightSpeed": 5000,
+        "YawSpeed": 3000
+      },
+      {
+        "__type": "Sandbox.Components.DroneSoundsComponent",
+        "__guid": "bc8ef830-f7ab-4514-bba6-c91e94fc6606",
+        "__enabled": true,
+        "Flags": 0,
+        "Drone": {
+          "_type": "component",
+          "component_id": "48824528-c803-4665-8fe5-485333c79410",
+          "go": "d7e3a5b5-e9e0-4a9e-b42e-87df7e59991b",
+          "component_type": "DronePawnComponent"
+        },
+        "DroneSound": "sound/vehicles/fpv_drone/drone_fly_loop.sound",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      },
+      {
+        "__type": "Sandbox.Components.PawnCameraControllerComponent",
+        "__guid": "715b851d-2d0a-4fb0-ae41-8b3da74c0278",
+        "__enabled": true,
+        "Flags": 0,
+        "Boom": {
+          "_type": "gameobject",
+          "go": "4599308c-acab-4e57-8a3e-8fc83088350d"
+        },
+        "CameraObject": {
+          "_type": "gameobject",
+          "go": "012209ae-dc97-482a-9c4b-dbc1f738fc27"
+        },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "acbd53a6-325d-4471-a75a-02a57ea091cc",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "Model",
+        "Position": "0,0,0",
+        "Rotation": "0,0,1,1.94707198E-07",
+        "Scale": "0.400000006,0.400000006,0.400000006",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.SkinnedModelRenderer",
+            "__guid": "d9d7105f-5147-4a07-87f2-ef20e48bddcf",
+            "__enabled": true,
+            "Flags": 0,
+            "AnimationGraph": null,
+            "BodyGroups": 18446744073709551615,
+            "BoneMergeTarget": null,
+            "CreateAttachments": false,
+            "CreateBoneObjects": true,
+            "LodOverride": null,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
+            "Model": "entities/drone/drone.vmdl",
+            "Morphs": {},
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "PlaybackRate": 1,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
+            "RenderType": "On",
+            "Sequence": {
+              "Name": null,
+              "Looping": true,
+              "Blending": false
+            },
+            "Tint": "1,1,1,1",
+            "UseAnimGraph": true
+          }
+        ],
+        "Children": [
+          {
+            "__guid": "baf9ce54-3d23-4a1f-b5d8-2357cbca27c9",
+            "__version": 2,
+            "Flags": 1028,
+            "Name": "turbine_a",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [],
+            "Children": []
+          },
+          {
+            "__guid": "36733d62-84e4-4537-800f-b0219db945d2",
+            "__version": 2,
+            "Flags": 1028,
+            "Name": "turbine_b",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [],
+            "Children": []
+          },
+          {
+            "__guid": "ead219e3-7555-480b-a88b-06c1ce90f1a4",
+            "__version": 2,
+            "Flags": 1028,
+            "Name": "turbine_c",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [],
+            "Children": []
+          },
+          {
+            "__guid": "ebff2285-7b20-4b64-9e36-7f215c54f853",
+            "__version": 2,
+            "Flags": 1028,
+            "Name": "turbine_d",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [],
+            "Children": []
+          }
+        ]
+      },
+      {
+        "__guid": "4599308c-acab-4e57-8a3e-8fc83088350d",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "Boom",
+        "Position": "12.4984798,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [],
+        "Children": [
+          {
+            "__guid": "012209ae-dc97-482a-9c4b-dbc1f738fc27",
+            "__version": 2,
+            "__Prefab": "prefabs/player/cameras/default_player_camera.prefab",
+            "__PrefabInstancePatch": {
+              "AddedObjects": [],
+              "RemovedObjects": [],
+              "PropertyOverrides": [
+                {
+                  "Target": {
+                    "Type": "GameObject",
+                    "IdValue": "91c92300-c9e5-4a0d-b4ae-d26a91936fc8"
+                  },
+                  "Property": "Name",
+                  "Value": "Camera"
+                }
+              ],
+              "MovedObjects": []
+            },
+            "__PrefabIdToInstanceId": {
+              "91c92300-c9e5-4a0d-b4ae-d26a91936fc8": "012209ae-dc97-482a-9c4b-dbc1f738fc27",
+              "da762119-5dde-4e71-b670-7d89847453bb": "31cbab38-aa51-4bc4-8a7f-63b48955b12c",
+              "c283a749-a1b4-4d71-97cd-6cfe6e0269f0": "a185fbe7-790a-45d7-9fe0-28b67c2a6005",
+              "9a1e8dd1-ce52-4988-a0a6-2192d8401241": "25f86dfd-8c55-4270-929a-bbf4c3bfa851",
+              "aa00f6d6-044f-4303-b133-b1db76e26a95": "28fd2fb9-4072-4c19-9fa3-f5d6d19a2ae4",
+              "84567d97-73e3-488c-9ec1-ecfea74f2603": "982cd7ae-d2a0-4b11-8300-09f6c8b46a69",
+              "09775e98-d3bd-4fe7-b742-4888e27b545c": "461bdfb0-01a3-487a-a538-73280bff82c8",
+              "a1574d00-56c9-4791-9885-9c2ce4d6d170": "07a3385a-b716-4e4a-8bd4-4d215e6dbcb2",
+              "fea821b4-2c14-4aa3-ab38-da30ee64a3a3": "950a9772-5aa9-43e6-baab-772ce30e62bd",
+              "9d21f25e-4845-4991-8273-82f901d917f4": "fd621ee5-1447-4db3-9c7c-77b3b5cbe150",
+              "f454dfa0-11ae-4273-98bb-4cab30eecc08": "21bebcd0-302f-427d-a384-c03489f08aa6",
+              "8508e342-b8bf-4ada-9ba3-494ca655ac72": "0e9fa01e-2193-4729-9e9f-c6842cc14321",
+              "e4d86c77-f57a-43fb-b915-a2a5b90c7033": "13bc235d-e37e-45ff-8ff0-19cf4a2e6a40"
+            }
+          }
+        ]
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [
+    "rust.drone#26713"
+  ],
+  "__version": 2
+}

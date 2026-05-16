@@ -45,17 +45,24 @@ public sealed class WaitForPlayersComponent : Component,
 
 	void IGameEventHandler<UpdateStateEvent>.OnGameEvent( UpdateStateEvent eventArgs )
 	{
-		var playerCount = GameUtils.PlayerPawns.Count();
+		var stateMachine = GameModeSingletonComponent.Instance.StateMachine;
+		var playerCount = GameUtils.AllPlayers.Count( x => x.IsConnected );
 
 		if ( IsPostponed || playerCount < MinPlayerCount )
 		{
-			GameModeSingletonComponent.Instance.StateMachine.Transition( eventArgs.State.DefaultNextState!, eventArgs.State.DefaultDuration );
+			stateMachine.ClearTransition();
 			return;
 		}
 
 		if ( playerCount >= SkipPlayerCount )
 		{
-			GameModeSingletonComponent.Instance.StateMachine.Transition( eventArgs.State.DefaultNextState! );
+			stateMachine.Transition( eventArgs.State.DefaultNextState! );
+			return;
+		}
+
+		if ( stateMachine.NextState is null || float.IsPositiveInfinity( stateMachine.NextStateTime ) )
+		{
+			stateMachine.Transition( eventArgs.State.DefaultNextState!, eventArgs.State.DefaultDuration );
 		}
 	}
 

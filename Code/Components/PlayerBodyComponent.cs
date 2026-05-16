@@ -19,8 +19,11 @@ public partial class PlayerBodyComponent : Component
 
 	internal void SetRagdoll( bool ragdoll )
 	{
-		Physics.Enabled = ragdoll;
-		Renderer.UseAnimGraph = !ragdoll;
+		if ( Physics.IsValid() )
+			Physics.Enabled = ragdoll;
+
+		if ( Renderer.IsValid() )
+			Renderer.UseAnimGraph = !ragdoll;
 
 		GameObject.Tags.Set( "ragdoll", ragdoll );
 
@@ -58,12 +61,13 @@ public partial class PlayerBodyComponent : Component
 	{
 		IsFirstPerson = firstPerson;
 
-		if ( Player.CurrentEquipment.IsValid() )
+		if ( Player is { } pl && pl.CurrentEquipment.IsValid() )
 		{
-			Player.CurrentEquipment.UpdateRenderMode();
+			pl.CurrentEquipment.UpdateRenderMode();
 		}
 
-		FirstPersonBody.Enabled = IsFirstPerson;
+		if ( FirstPersonBody.IsValid() )
+			FirstPersonBody.Enabled = IsFirstPerson;
 	}
 
 	protected override void OnUpdate()
@@ -81,6 +85,8 @@ public partial class PlayerBodyComponent : Component
 	internal void UpdateRotation( Rotation rotation )
 	{
 		WorldRotation = rotation;
-		FirstPersonBody.WorldRotation = rotation;
+
+		if ( FirstPersonBody.IsValid() )
+			FirstPersonBody.WorldRotation = rotation;
 	}
 }

@@ -20,10 +20,11 @@ public sealed class BotWeaponAllocatorComponent : Component,
 	/// </summary>
 	private List<EquipmentResource> GetWeaponsForTeam( Team team )
 	{
-		if ( TeamLoadouts.FirstOrDefault( x => x.Team == team ) is { } loadout )
-		{
-			return loadout.Equipment;
-		}
+		if ( TeamLoadouts is null || TeamLoadouts.Count == 0 )
+			return new();
+
+		if ( TeamLoadouts.FirstOrDefault( x => x.Team == team ) is { Equipment: { } equipment } )
+			return equipment;
 
 		// Fallback to first loadout if no team-specific one exists
 		return TeamLoadouts.FirstOrDefault()?.Equipment ?? new();

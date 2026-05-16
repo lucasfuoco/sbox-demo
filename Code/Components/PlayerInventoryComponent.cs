@@ -326,6 +326,12 @@ public partial class PlayerInventoryComponent : Component
 			Parent = Player.GameObject
 		} );
 		var component = gameObject.GetComponentInChildren<EquipmentComponent>( true );
+		if ( !component.IsValid() )
+		{
+			Log.Error( $"equipment prefab has no EquipmentComponent: {resource}" );
+			gameObject.Destroy();
+			return null;
+		}
 		component.Owner = Player;
 		gameObject.NetworkSpawn( Player.Network.Owner );
 

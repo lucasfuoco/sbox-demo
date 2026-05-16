@@ -1,20 +1,34 @@
 {
   "RootObject": {
     "__guid": "f3a00090-d124-4fe9-b1e3-b5846a2ad3dd",
+    "__version": 2,
     "Flags": 0,
     "Name": "wm_knife_bayonet",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
     "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
     "Components": [
       {
         "__type": "Sandbox.SkinnedModelRenderer",
         "__guid": "021866f7-aefb-48e4-a6ad-024110b74821",
+        "__enabled": true,
+        "Flags": 0,
         "AnimationGraph": null,
         "BodyGroups": 18446744073709551615,
         "BoneMergeTarget": null,
         "CreateAttachments": false,
         "CreateBoneObjects": false,
+        "LodOverride": null,
         "MaterialGroup": null,
         "MaterialOverride": null,
+        "Materials": null,
         "Model": "models/weapons/sbox_melee_m9bayonet/w_m9bayonet.vmdl",
         "Morphs": {},
         "OnComponentDestroy": null,
@@ -39,14 +53,18 @@
         },
         "RenderType": "On",
         "Sequence": {
-          "Name": null
+          "Name": null,
+          "Looping": true,
+          "Blending": false
         },
         "Tint": "1,1,1,1",
         "UseAnimGraph": true
       },
       {
-        "__type": "Facepunch.WorldModel",
-        "__guid": "4e02db6b-8d06-42db-b6bf-715b6d49f1ad",
+        "__type": "Sandbox.Components.WorldModelComponent",
+        "__guid": "df5b7602-d06f-4d1f-8c36-8084998257b3",
+        "__enabled": true,
+        "Flags": 0,
         "EjectionPort": null,
         "ModelRenderer": {
           "_type": "component",
@@ -64,38 +82,35 @@
       }
     ],
     "Children": [],
-    "__variables": [],
     "__properties": {
-      "FixedUpdateFrequency": 50,
-      "MaxFixedUpdates": 5,
-      "NetworkFrequency": 30,
       "NetworkInterpolation": true,
-      "PhysicsSubSteps": 1,
-      "ThreadedAnimation": true,
       "TimeScale": 1,
-      "UseFixedUpdate": true,
+      "WantsSystemScene": true,
       "Metadata": {},
       "NavMesh": {
         "Enabled": false,
         "IncludeStaticBodies": true,
         "IncludeKeyframedBodies": true,
-        "EditorAutoUpdate": true,
+        "EditorAutoUpdate": false,
         "AgentHeight": 64,
         "AgentRadius": 16,
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
       }
-    }
+    },
+    "__variables": []
   },
+  "ResourceVersion": 2,
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
-  "ResourceVersion": 1,
   "__references": [
     "facepunch.w_m9bayonet#59685"
   ],
-  "__version": 1
+  "__version": 2
 }

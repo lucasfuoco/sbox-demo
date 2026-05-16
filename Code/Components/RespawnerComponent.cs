@@ -30,8 +30,7 @@ public abstract class RespawnerComponent : Component,
 
 			if ( !AllowSpectatorsToSpawn && player.Team == Team.Unassigned )
 			{
-				// don't spawn these guys right now
-				return;
+				continue;
 			}
 
 			switch ( player.RespawnState )

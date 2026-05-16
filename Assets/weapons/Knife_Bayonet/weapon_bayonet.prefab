@@ -1,18 +1,30 @@
 {
   "RootObject": {
     "__guid": "a9609d9e-aa5a-4e77-8a5e-1410999a3a7f",
+    "__version": 2,
     "Flags": 0,
-    "Name": "w_bayonet",
+    "Name": "weapon_bayonet",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
     "Tags": "player",
     "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "Facepunch.Equipment",
-        "__guid": "f46bf723-97c8-4415-a45d-069538684bd6",
+        "__type": "Sandbox.Components.EquipmentComponent",
+        "__guid": "8ba3639e-3915-45fa-b6b0-d935722505f5",
+        "__enabled": true,
+        "Flags": 0,
+        "AimFovOffset": -5,
         "CrosshairType": "Shotgun",
-        "DeploySound": "sounds/guns/knife/knife.deploy.sound",
+        "DeploySound": "sound/guns/knife/knife.deploy.sound",
         "Handedness": "Right",
-        "HoldType": "None",
+        "HoldType": "Swing",
         "MountedPrefab": {
           "_type": "gameobject",
           "prefab": "weapons/knife_bayonet/mount_knife_bayonet.prefab"
@@ -28,8 +40,10 @@
         "UseCrosshair": true
       },
       {
-        "__type": "Facepunch.TagBinder",
-        "__guid": "b2de65d3-2a49-4d42-a7af-0b4faf9f7a41",
+        "__type": "Sandbox.Components.TagBinderComponent",
+        "__guid": "49812f9f-607c-4444-9d5e-0b191af732e1",
+        "__enabled": true,
+        "Flags": 0,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -41,13 +55,25 @@
     "Children": [
       {
         "__guid": "e0b6f84a-933e-4d12-9c33-4e41df80b06a",
+        "__version": 2,
         "Flags": 0,
         "Name": "Functions",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
         "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
         "Components": [
           {
-            "__type": "Facepunch.Melee",
-            "__guid": "78a7e471-152c-4266-b4e9-53992ee7c202",
+            "__type": "Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.MeleeWeaponInputActionEquipmentComponent",
+            "__guid": "885bb35e-0d42-45c0-8e75-f9c75fbdb2d5",
+            "__enabled": true,
+            "Flags": 0,
             "BaseDamage": 50,
             "FireRate": 1,
             "InputActions": [
@@ -64,41 +90,39 @@
             "OnInputAction": null,
             "RequiresAllInputActions": false,
             "Size": 16,
-            "SwingSound": "sounds/guns/knife/knife.swing.sound"
+            "SwingSound": "sound/guns/knife/knife.swing.sound"
           }
-        ]
+        ],
+        "Children": []
       }
     ],
-    "__variables": [],
     "__properties": {
-      "FixedUpdateFrequency": 50,
-      "MaxFixedUpdates": 5,
-      "NetworkFrequency": 30,
       "NetworkInterpolation": true,
-      "PhysicsSubSteps": 1,
-      "ThreadedAnimation": true,
       "TimeScale": 1,
-      "UseFixedUpdate": true,
+      "WantsSystemScene": true,
       "Metadata": {},
       "NavMesh": {
         "Enabled": false,
         "IncludeStaticBodies": true,
         "IncludeKeyframedBodies": true,
-        "EditorAutoUpdate": true,
+        "EditorAutoUpdate": false,
         "AgentHeight": 64,
         "AgentRadius": 16,
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
       }
-    }
+    },
+    "__variables": []
   },
+  "ResourceVersion": 2,
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
   "DontBreakAsTemplate": false,
-  "ResourceVersion": 1,
   "__references": [],
-  "__version": 1
+  "__version": 2
 }

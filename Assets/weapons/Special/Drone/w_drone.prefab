@@ -1,46 +1,86 @@
 {
   "RootObject": {
     "__guid": "537a3752-47c2-491f-b7a8-84d06247b15b",
+    "__version": 2,
     "Flags": 0,
     "Name": "w_drone",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
     "Tags": "player",
     "Enabled": true,
     "NetworkMode": 2,
-    "NetworkInterpolation": true,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "Facepunch.Equipment",
-        "__guid": "fe1fe626-a1a6-40ab-b2f5-1ce554531845",
-        "DeploySound": "sounds/guns/switch/weapon_switch.sound",
+        "__type": "Sandbox.Components.EquipmentComponent",
+        "__guid": "6921e2e4-93e3-46d7-add6-736a1872f531",
+        "__enabled": true,
+        "Flags": 0,
+        "AimFovOffset": -5,
+        "CrosshairType": "Default",
+        "DeploySound": "sound/guns/switch/weapon_switch.sound",
         "Handedness": "Both",
         "HoldType": "HoldItem",
-        "ModelRenderer": {
-          "_type": "component",
-          "component_id": "1eb80683-612c-46c7-9d0c-e6713e0f027e",
-          "go": "fccf584a-67cf-4b26-ae4b-c0fafa897f5e",
-          "component_type": "SkinnedModelRenderer"
-        },
         "MountedPrefab": {
           "_type": "gameobject",
           "prefab": "weapons/special/drone/mount_drone.prefab"
         },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
         "Resource": "weapons/special/drone/drone.equip",
-        "SpeedPenalty": 20
+        "SpeedPenalty": 0,
+        "UseCrosshair": true
       },
       {
-        "__type": "Facepunch.TagBinder",
-        "__guid": "8acf7f5b-f598-4b06-bee2-07501c3e874f"
+        "__type": "Sandbox.Components.TagBinderComponent",
+        "__guid": "7932fcd3-1123-4e90-ba73-3853ee5d984e",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
       },
       {
-        "__type": "Facepunch.Deployable",
-        "__guid": "e48f80cb-31cb-44b1-a78d-fbaf9398b879",
+        "__type": "Sandbox.Components.TagBinderComponent",
+        "__guid": "b3bc40fd-0bbe-49db-a913-8cab661954ae",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      },
+      {
+        "__type": "Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.DeployableWeaponInputActionComponent",
+        "__guid": "1747ca90-9889-411a-ad38-e963e01cb02e",
+        "__enabled": true,
+        "Flags": 0,
         "InputActions": [
           "Attack1"
         ],
-        "InputType": "Pressed",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "OnInputAction": null,
         "PrefabToSpawn": {
           "_type": "gameobject",
-          "prefab": "prefabs/player/drone.prefab"
+          "prefab": "weapons/special/drone/drone.prefab"
         },
         "RequiresAllInputActions": false
       }
@@ -48,35 +88,98 @@
     "Children": [
       {
         "__guid": "fccf584a-67cf-4b26-ae4b-c0fafa897f5e",
+        "__version": 2,
         "Flags": 0,
         "Name": "Model",
-        "Rotation": "0,0,1,0.0000001947072",
+        "Position": "0,0,0",
+        "Rotation": "0,0,1,1.94707198E-07",
         "Scale": "0.5,0.5,0.5",
+        "Tags": "",
         "Enabled": true,
         "NetworkMode": 2,
-        "NetworkInterpolation": true,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
         "Components": [
           {
             "__type": "Sandbox.SkinnedModelRenderer",
             "__guid": "1eb80683-612c-46c7-9d0c-e6713e0f027e",
+            "__enabled": true,
+            "Flags": 0,
+            "AnimationGraph": null,
             "BodyGroups": 18446744073709551615,
+            "BoneMergeTarget": null,
+            "CreateAttachments": false,
             "CreateBoneObjects": false,
+            "LodOverride": null,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
             "Model": "entities/drone/drone.vmdl",
+            "Morphs": {},
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "PlaybackRate": 1,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
             "RenderType": "On",
+            "Sequence": {
+              "Name": null,
+              "Looping": true,
+              "Blending": false
+            },
             "Tint": "1,1,1,1",
             "UseAnimGraph": true
           }
-        ]
+        ],
+        "Children": []
       }
     ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
+      }
+    },
     "__variables": []
   },
+  "ResourceVersion": 2,
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
-  "ResourceVersion": 1,
+  "DontBreakAsTemplate": false,
   "__references": [
     "rust.drone#26713"
   ],
-  "__version": 1
+  "__version": 2
 }

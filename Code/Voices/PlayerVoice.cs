@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Sandbox.Audio;
 using Sandbox.Components;
 
@@ -20,9 +22,33 @@ public partial class PlayerVoice : Voice
 
 	protected override void OnStart()
 	{
-		Filter = Scene.GetAllComponents<IVoiceFilter>().FirstOrDefault();
-		Log.Info( $"Filter: {Filter}" );
-		TargetMixer = Mixer.FindMixerByName( "Voice" );
+		Filter = Scene?.GetAllComponents<IVoiceFilter>().FirstOrDefault();
+		TargetMixer = ResolveVoiceMixer();
+	}
+
+	static Mixer ResolveVoiceMixer()
+	{
+		foreach ( var name in new[] { "voice", "Voice" } )
+		{
+			var byName = Mixer.FindMixerByName( name );
+			if ( byName is not null )
+				return byName;
+		}
+
+		var children = Mixer.Master?.GetChildren();
+		if ( children is not null )
+		{
+			foreach ( var c in children )
+			{
+				if ( c?.Name is { } n && n.Equals( "voice", StringComparison.OrdinalIgnoreCase ) )
+					return c;
+			}
+
+			if ( children.Length > 4 )
+				return children[4];
+		}
+
+		return Mixer.Master;
 	}
 
 	protected override IEnumerable<Connection> ExcludeFilter()

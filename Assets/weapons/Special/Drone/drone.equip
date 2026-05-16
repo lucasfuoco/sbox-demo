@@ -13,13 +13,18 @@
     "_type": "gameobject",
     "prefab": "weapons/special/drone/weapon_drone.prefab"
   },
+  "WorldModelPrefab": {
+    "_type": "gameobject",
+    "prefab": "weapons/special/drone/drone.prefab"
+  },
   "ViewModelPrefab": {
     "_type": "gameobject",
     "prefab": "weapons/special/drone/vm_drone.prefab"
   },
   "WorldModel": "entities/drone/drone.vmdl",
-  "DroppedSize": "10,30,10",
-  "DroppedCenter": "0,0,5.8",
+  "ArmorReduction": null,
+  "HelmetReduction": null,
+  "WorldModelBodyGroups": 0,
   "__references": [
     "rust.drone#26713"
   ],

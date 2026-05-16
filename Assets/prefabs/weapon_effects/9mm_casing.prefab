@@ -1,0 +1,201 @@
+{
+  "RootObject": {
+    "__guid": "a4339880-82d8-419e-a4d1-3425ad0bc050",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "9mm_casing",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "magazine",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.Components.DestroyAfterComponent",
+        "__guid": "1c4d3825-2d02-4ee0-9633-171aed70c7b6",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Time": 15,
+        "TimeUntilDestroy": {
+          "Absolute": 732.9893,
+          "Relative": -145.14374,
+          "Passed": 145.14374,
+          "Fraction": 1
+        },
+        "WaitForChildEffects": false
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "f435e28b-7886-42f9-aa4a-84b8f881aed4",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "9mm_ejectbrass",
+        "Position": "0,0,0",
+        "Rotation": "-0.178370893,0.232630998,-0.911459327,0.288631707",
+        "Scale": "1,1,1",
+        "Tags": "particles",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.LegacyParticleSystem",
+            "__guid": "80a6856e-cb98-42b1-a583-034b53986d57",
+            "__enabled": true,
+            "Flags": 0,
+            "ControlPoints": [
+              {
+                "Value": "GameObject",
+                "StringCP": "",
+                "VectorValue": "0,0,0",
+                "FloatValue": 0,
+                "ColorValue": "0,0,0,0",
+                "GameObjectValue": {
+                  "_type": "gameobject",
+                  "go": "a4339880-82d8-419e-a4d1-3425ad0bc050"
+                }
+              }
+            ],
+            "Looped": false,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Particles": null,
+            "PlaybackSpeed": 1
+          }
+        ],
+        "Children": []
+      },
+      {
+        "__guid": "cde326c9-9930-4a20-8a56-0e86e31e1530",
+        "__version": 2,
+        "__Prefab": "prefabs/weapon_effects/ejectionport_gas.prefab",
+        "__PrefabInstancePatch": {
+          "AddedObjects": [
+            {
+              "Id": {
+                "Type": "Component",
+                "IdValue": "82cca078-c60a-4e3f-bc5a-beeaa1e99c49"
+              },
+              "Parent": {
+                "Type": "GameObject",
+                "IdValue": "ce7f03e5-7ba1-4bc9-abee-16cfd254a1b3"
+              },
+              "PreviousElement": null,
+              "ContainerProperty": "Components",
+              "IsContainerArray": true,
+              "Data": {
+                "__type": "Sandbox.Components.DestroyAfterComponent",
+                "__guid": "82cca078-c60a-4e3f-bc5a-beeaa1e99c49",
+                "__enabled": true,
+                "Flags": 0,
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Time": 1,
+                "TimeUntilDestroy": {
+                  "Absolute": 0,
+                  "Relative": -878.13306,
+                  "Passed": 878.13306,
+                  "Fraction": 1
+                },
+                "WaitForChildEffects": false
+              }
+            }
+          ],
+          "RemovedObjects": [],
+          "PropertyOverrides": [
+            {
+              "Target": {
+                "Type": "Component",
+                "IdValue": "3fe76ea2-6303-4a78-ad73-2d31327b15a5"
+              },
+              "Property": "TimeUntilDestroy",
+              "Value": {
+                "Absolute": 0,
+                "Relative": -878.13306,
+                "Passed": 878.13306,
+                "Fraction": 1
+              }
+            }
+          ],
+          "MovedObjects": [
+            {
+              "Id": {
+                "Type": "Component",
+                "IdValue": "3fe76ea2-6303-4a78-ad73-2d31327b15a5"
+              },
+              "NewParent": {
+                "Type": "GameObject",
+                "IdValue": "ce7f03e5-7ba1-4bc9-abee-16cfd254a1b3"
+              },
+              "NewContainerProperty": "Components",
+              "IsNewContainerArray": true,
+              "NewPreviousElement": {
+                "Type": "Component",
+                "IdValue": "82cca078-c60a-4e3f-bc5a-beeaa1e99c49"
+              }
+            }
+          ]
+        },
+        "__PrefabIdToInstanceId": {
+          "ce7f03e5-7ba1-4bc9-abee-16cfd254a1b3": "cde326c9-9930-4a20-8a56-0e86e31e1530",
+          "3fe76ea2-6303-4a78-ad73-2d31327b15a5": "5e809cf8-5569-4644-8bb7-4014a7e08fc6",
+          "feaf8da1-0480-4536-b695-32edb366917c": "71c13fd6-0cfd-4770-aecd-dc891a43f363",
+          "3ca9f7e9-c502-40bb-a817-f82d4d979a7e": "5539aa67-560f-4089-bd20-6c6beda73da1",
+          "0b4d4e00-dc8b-42a5-97cd-5d67a943cb59": "0ce43df6-d859-4c89-9f11-1b6a3e02d7ab",
+          "6f05c4ad-2a26-4dab-b945-34a12be9958e": "7a88bf62-199b-4632-bd8a-f5d8110b666d"
+        }
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}
