@@ -24,19 +24,18 @@ public partial class ShootRecoilEquipmentComponent : WeaponEquipmentComponent
 
 		TimeSinceLastShot = 0;
 
-		var timeDelta = Time.Delta;
-
+		// Per-shot kick in degrees. Do not use Time.Delta here: Shoot() is invoked from FixedUpdate where Delta is often zero.
 		if ( UseRecoilPattern )
 		{
 			var point = RecoilPattern.GetPoint( ref currentFrame );
 
-			var newAngles = new Angles( -point.y * Scale.y, -point.x * Scale.x, 0 ) * timeDelta;
+			var newAngles = new Angles( -point.y * Scale.y, -point.x * Scale.x, 0 );
 			Current = Current + newAngles;
 			currentFrame++;
 		}
 		else
 		{
-			var newAngles = new Angles( -VerticalSpread.GetValue() * timeDelta, HorizontalSpread.GetValue() * timeDelta, 0 );
+			var newAngles = new Angles( -VerticalSpread.GetValue(), HorizontalSpread.GetValue(), 0 );
 			Current = Current + newAngles;
 		}
 

@@ -70,9 +70,10 @@
         "OwnerTransfer": 1,
         "Components": [
           {
-            "__type": "Facepunch.Lowerable",
-            "__guid": "58a00c3e-5677-420c-b773-599a9a3d3b3c",
+            "__type": "Sandbox.Components.WeaponEquipmentComponents.LowerableEquipmentComponent",
+            "__guid": "4753ed96-8339-4ecd-b9ce-f92df0f7c829",
             "__enabled": true,
+            "Flags": 0,
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
             "OnComponentEnabled": null,
@@ -81,9 +82,10 @@
             "OnComponentUpdate": null
           },
           {
-            "__type": "Facepunch.WeaponAmmo",
-            "__guid": "72985b07-5d29-42bd-bf46-4f45bff4f605",
+            "__type": "Sandbox.Components.WeaponAmmoComponent",
+            "__guid": "d844ec8d-5ad7-43ba-b3b5-0e565df1d16b",
             "__enabled": true,
+            "Flags": 0,
             "Ammo": 13,
             "HasAmmo": true,
             "MaxAmmo": 13,
@@ -95,29 +97,18 @@
             "OnComponentUpdate": null
           },
           {
-            "__type": "Facepunch.Shootable",
-            "__guid": "472bf679-f1f4-4f4b-8c4a-4973ac34651b",
+            "__type": "Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.ShootableWeaponInputActionEquipmentComponent",
+            "__guid": "bcb92873-0b32-4c8f-a280-c731740ae5f4",
             "__enabled": true,
-            "AmmoComponent": {
-              "_type": "component",
-              "component_id": "72985b07-5d29-42bd-bf46-4f45bff4f605",
-              "go": "15f7fb9d-7f2c-4b64-9c2a-b179524dc1cd",
-              "component_type": "WeaponAmmo"
-            },
-            "BaseDamage": 18,
+            "Flags": 0,
+            "AmmoComponent": null,
+            "BaseDamage": 15,
             "BaseDamageFalloff": [
               {
                 "x": 0,
                 "y": 1,
                 "in": 0,
                 "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.45386904,
-                "y": 0.44311067,
-                "in": 1.6585169,
-                "out": -1.6585169,
                 "mode": "Mirrored"
               },
               {
@@ -134,15 +125,15 @@
             "BulletSpread": 0,
             "BurstAmount": 3,
             "BurstEndDelay": 0.2,
-            "CurrentFireMode": "Semi",
-            "DryFireSound": "sounds/guns/gun_dryfire.sound",
+            "CurrentFireMode": "Automatic",
+            "DryFireSound": "sound/guns/gun_dryfire.sound",
             "DryShootDelay": 0.15,
             "EjectionPrefab": {
               "_type": "gameobject",
               "prefab": "prefabs/weapon_effects/9mm_casing.prefab"
             },
             "FireModeSwitchDelay": 0.3,
-            "FireRate": 450,
+            "FireRate": 0.2,
             "InAirSpreadMultiplier": 2,
             "InputActions": [
               "Attack1"
@@ -152,7 +143,7 @@
             "MaxRicochetAngle": 45,
             "MuzzleFlashPrefab": {
               "_type": "gameobject",
-              "prefab": "prefabs/weapon_effects/suppressed_muzzleflash.prefab"
+              "prefab": "prefabs/weapon_effects/pistol_muzzleflash.prefab"
             },
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
@@ -164,28 +155,29 @@
             "PenetrationThickness": 32,
             "PlayerVelocityLimit": 300,
             "RequiresAllInputActions": false,
-            "RequiresHasAmmo": true,
+            "RequiresHasAmmo": false,
             "RicochetMaxHits": 2,
-            "ShootSound": "sounds/weapons/usp/usp_sd.sound",
+            "ShootSound": "sound/guns/m1911/pistol_shoot.sound",
             "SupportedFireModes": [
-              "Semi"
+              "Automatic"
             ],
             "VelocitySpreadScale": 0.25
           },
           {
-            "__type": "Facepunch.Reloadable",
-            "__guid": "d9163708-bb46-4eb8-97ce-91acdf9d4ef1",
+            "__type": "Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.ReloadableWeaponInputActionEquipmentComponent",
+            "__guid": "2f338bf7-5a1b-462c-968d-3f2e77edd798",
             "__enabled": true,
+            "Flags": 0,
             "AmmoComponent": {
               "_type": "component",
-              "component_id": "72985b07-5d29-42bd-bf46-4f45bff4f605",
+              "component_id": "d844ec8d-5ad7-43ba-b3b5-0e565df1d16b",
               "go": "15f7fb9d-7f2c-4b64-9c2a-b179524dc1cd",
-              "component_type": "WeaponAmmo"
+              "component_type": "WeaponAmmoComponent"
             },
             "EmptyReloadSounds": {
-              "0": "sounds/guns/m1911/reload/m1911.reload.sound",
-              "0.5": "sounds/guns/m1911/reload/m1911.reload.fow.sound",
-              "1.2": "sounds/guns/m1911/reload/m1911.reload.load.sound"
+              "0": "sound/guns/m1911/reload/m1911.reload.sound",
+              "0.5": "sound/guns/m1911/reload/m1911.reload.fow.sound",
+              "1": "sound/guns/m1911/reload/m1911.reload.load.sound"
             },
             "EmptyReloadTime": 2,
             "InputActions": [
@@ -202,15 +194,16 @@
             "RequiresAllInputActions": false,
             "SingleReload": false,
             "TimedReloadSounds": {
-              "0": "sounds/guns/m1911/reload/m1911.reload.sound",
-              "1": "sounds/guns/m1911/reload/m1911.reload.out.sound"
+              "0": "sound/guns/m1911/reload/m1911.reload.sound",
+              "1": "sound/guns/m1911/reload/m1911.reload.out.sound"
             }
           },
           {
-            "__type": "Facepunch.ShootRecoil",
-            "__guid": "47ac5945-4100-4add-83a6-0d38c0641d66",
+            "__type": "Sandbox.Components.WeaponEquipmentComponents.ShootRecoilEquipmentComponent",
+            "__guid": "448892e1-8d04-45cd-9280-310574b0e65a",
             "__enabled": true,
-            "HorizontalSpread": "1.4 -1.4",
+            "Flags": 0,
+            "HorizontalSpread": "1.39999998",
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
             "OnComponentEnabled": null,
@@ -226,53 +219,36 @@
             "ResetTime": 0.3,
             "Scale": "2,5",
             "UseRecoilPattern": false,
-            "VerticalSpread": "1.5"
+            "VerticalSpread": "1.4"
           },
           {
-            "__type": "Facepunch.ViewPunch",
-            "__guid": "7825e1e5-532d-4709-8785-8d823e6a7c94",
+            "__type": "Sandbox.Components.WeaponEquipmentComponents.ViewPunchWeaponEquipmentComponent",
+            "__guid": "d5a6d828-9a1b-48d7-85d9-3b07e4e9977f",
             "__enabled": true,
-            "AnglesOffset": "-0.5,0.1,0.5",
-            "Curve": [
-              {
-                "x": 0,
-                "y": 0,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 0.20089285,
-                "y": 1,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              },
-              {
-                "x": 1,
-                "y": 0,
-                "in": 0,
-                "out": 0,
-                "mode": "Mirrored"
-              }
-            ],
+            "Flags": 0,
+            "AnglesOffset": "-0.5,0.100000001,0.5",
+            "Curve": {
+              "rangex": "0,0",
+              "rangey": "0,0"
+            },
             "Lifetime": 0.1,
-            "MaxAnglesOffset": "-0.5,0.1,0.5",
-            "MaxPositionOffset": "0.5,0.2,1.5",
+            "MaxAnglesOffset": "-0.5,0.100000001,0.5",
+            "MaxPositionOffset": "0.5,0.200000003,1.5",
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
             "OnComponentEnabled": null,
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
-            "PositionOffset": "0.5,0.2,1.5"
+            "PositionOffset": "0.5,0.200000003,1.5"
           },
           {
-            "__type": "Facepunch.ManualOffset",
-            "__guid": "5ba0d215-2632-4d0e-80a1-f271735cf7e1",
+            "__type": "Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.AimableWeaponInputActionEquipmentComponents.ManualOffsetAimableWeaponInputActionEquipmentComponent",
+            "__guid": "fbae1e81-ed24-4542-9848-e9835b09baa3",
             "__enabled": true,
+            "Flags": 0,
             "AimAngleOffset": "0,0,0",
-            "AimOffset": "0,0,-0.2",
+            "AimOffset": "0,-0.200000003,0",
             "InputActions": [
               "Attack2"
             ],
