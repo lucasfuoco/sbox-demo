@@ -25,6 +25,9 @@ public sealed class DefaultEquipmentComponent : Component,
 
 	public Loadout GetLoadout( Team team )
 	{
+		if ( TeamLoadouts is null || TeamLoadouts.Count == 0 )
+			return null;
+
 		if ( TeamLoadouts.FirstOrDefault( x => x.Team == team ) is { } loadout )
 		{
 			return loadout;
@@ -38,7 +41,7 @@ public sealed class DefaultEquipmentComponent : Component,
 		var loadout = GetLoadout( team );
 		if ( loadout is null ) return false;
 
-		return loadout.Equipment.Contains( resource );
+		return loadout.Equipment is not null && loadout.Equipment.Contains( resource );
 	}
 
 	void IGameEventHandler<PlayerSpawnedEvent>.OnGameEvent( PlayerSpawnedEvent eventArgs )
@@ -49,16 +52,22 @@ public sealed class DefaultEquipmentComponent : Component,
 
 		var player = eventArgs.Player;
 
-		if ( LoadoutsEnabled )
+		if ( LoadoutsEnabled && player.Client.Loadout.Equipment is { } clientEquipment )
 		{
-			foreach ( var resource in player.Client.Loadout.Equipment )
+			foreach ( var resource in clientEquipment )
 			{
+				if ( resource is null )
+					continue;
+
 				if ( !player.Inventory.HasInSlot( resource.Slot ) )
 				{
 					player.Inventory.Give( resource, false );
 				}
 			}
 		}
+
+		if ( loadout.Equipment is null )
+			return;
 
 		foreach ( var weapon in loadout.Equipment )
 		{

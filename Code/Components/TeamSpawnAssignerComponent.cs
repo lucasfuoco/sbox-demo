@@ -42,7 +42,7 @@ public sealed class TeamSpawnAssignerComponent : Component,
 		var playerPositions = GameUtils.PlayerPawns
 			.Where( x => x.Client != player )
 			.Where( x => x.TimeSinceLastRespawn < 1f )
-			.Where( x => x.HealthComponent.State == LifeState.Alive )
+			.Where( x => x.HealthComponent is { State: LifeState.Alive } )
 			.Select( x => (x.WorldPosition, Tags: x.SpawnPointTags) )
 			.ToArray();
 

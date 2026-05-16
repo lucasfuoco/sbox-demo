@@ -31,7 +31,7 @@
           "prefab": "prefabs/player/player.prefab"
         },
         "SteamId": 0,
-        "Team": "Unassigned"
+        "Team": "Terrorist"
       },
       {
         "__type": "Sandbox.Components.PlayerLoadoutComponent",
@@ -129,12 +129,88 @@
         "OnComponentUpdate": null,
         "PushToTalkInput": "voice",
         "Renderer": null,
-        "VoiceMixer": {
-          "Name": "unknown",
-          "Id": "00000000-0000-0000-0000-000000000000"
-        },
         "Volume": 1,
         "WorldspacePlayback": true
+      },
+      {
+        "__type": "Sandbox.Components.PlayerLoadoutComponent",
+        "__guid": "11001de9-5868-4c74-96d4-e26005cfeba3",
+        "__enabled": true,
+        "Flags": 0,
+        "Client": {
+          "_type": "component",
+          "component_id": "5b3f57d1-ba08-4a4e-b38b-927326a9fa25",
+          "go": "13e05e7e-a93c-4a2a-8d00-3f5d066be661",
+          "component_type": "ClientComponent"
+        },
+        "Equipment": [],
+        "HasDefuseKit": false,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      },
+      {
+        "__type": "Sandbox.Components.PlayerLoadoutComponent",
+        "__guid": "11001de9-5868-4c74-96d4-e26005cfeba3",
+        "__enabled": true,
+        "Flags": 0,
+        "Client": {
+          "_type": "component",
+          "component_id": "5b3f57d1-ba08-4a4e-b38b-927326a9fa25",
+          "go": "13e05e7e-a93c-4a2a-8d00-3f5d066be661",
+          "component_type": "ClientComponent"
+        },
+        "Equipment": [],
+        "HasDefuseKit": false,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      },
+      {
+        "__type": "Sandbox.Components.PlayerLoadoutComponent",
+        "__guid": "11001de9-5868-4c74-96d4-e26005cfeba3",
+        "__enabled": true,
+        "Flags": 0,
+        "Client": {
+          "_type": "component",
+          "component_id": "5b3f57d1-ba08-4a4e-b38b-927326a9fa25",
+          "go": "13e05e7e-a93c-4a2a-8d00-3f5d066be661",
+          "component_type": "ClientComponent"
+        },
+        "Equipment": [],
+        "HasDefuseKit": false,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      },
+      {
+        "__type": "Sandbox.Components.PlayerLoadoutComponent",
+        "__guid": "11001de9-5868-4c74-96d4-e26005cfeba3",
+        "__enabled": true,
+        "Flags": 0,
+        "Client": {
+          "_type": "component",
+          "component_id": "5b3f57d1-ba08-4a4e-b38b-927326a9fa25",
+          "go": "13e05e7e-a93c-4a2a-8d00-3f5d066be661",
+          "component_type": "ClientComponent"
+        },
+        "Equipment": [],
+        "HasDefuseKit": false,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
       },
       {
         "__type": "Sandbox.Components.PlayerLoadoutComponent",

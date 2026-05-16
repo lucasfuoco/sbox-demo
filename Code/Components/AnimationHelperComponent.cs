@@ -6,6 +6,8 @@ public sealed class AnimationHelperComponent : Component
 
 	[Property] public GameObject EyeSource { get; set; }
 
+	bool AnimTargetOk => Target is not null && Target.IsValid();
+
 
 	[Property, Range( 0.5f, 1.5f )] public float Height { get; set; } = 1.0f;
 
@@ -16,6 +18,9 @@ public sealed class AnimationHelperComponent : Component
 
 	public void ProceduralHitReaction( float damageScale = 1.0f, Vector3 force = default )
 	{
+		if ( !AnimTargetOk )
+			return;
+
 		var boneId = 0;
 		var tx = Target.GetBoneObject( boneId );
 
@@ -33,26 +38,32 @@ public sealed class AnimationHelperComponent : Component
 
 	protected override void OnUpdate()
 	{
+		if ( !AnimTargetOk )
+			return;
+
 		Target.Set( "scale_height", Height );
 
 		// SetIk( "left_hand", ... );
 		// SetIk( "right_hand", ... );
 
-		if ( IkLeftHand.IsValid() && IkLeftHand.Active ) SetIk( "hand_left", IkLeftHand.Transform.World );
+		if ( IkLeftHand is not null && IkLeftHand.IsValid() && IkLeftHand.Active ) SetIk( "hand_left", IkLeftHand.Transform.World );
 		else ClearIk( "hand_left" );
 
-		if ( IkRightHand.IsValid() && IkRightHand.Active ) SetIk( "hand_right", IkRightHand.Transform.World );
+		if ( IkRightHand is not null && IkRightHand.IsValid() && IkRightHand.Active ) SetIk( "hand_right", IkRightHand.Transform.World );
 		else ClearIk( "hand_right" );
 
-		if ( IkLeftFoot.IsValid() && IkLeftFoot.Active ) SetIk( "foot_left", IkLeftFoot.Transform.World );
+		if ( IkLeftFoot is not null && IkLeftFoot.IsValid() && IkLeftFoot.Active ) SetIk( "foot_left", IkLeftFoot.Transform.World );
 		else ClearIk( "foot_left" );
 
-		if ( IkRightFoot.IsValid() && IkRightFoot.Active ) SetIk( "foot_right", IkRightFoot.Transform.World );
+		if ( IkRightFoot is not null && IkRightFoot.IsValid() && IkRightFoot.Active ) SetIk( "foot_right", IkRightFoot.Transform.World );
 		else ClearIk( "foot_right" );
 	}
 
 	public void SetIk( string name, Transform tx )
 	{
+		if ( !AnimTargetOk )
+			return;
+
 		// convert local to model
 		tx = Target.Transform.World.ToLocal( tx );
 
@@ -63,6 +74,9 @@ public sealed class AnimationHelperComponent : Component
 
 	public void ClearIk( string name )
 	{
+		if ( !AnimTargetOk )
+			return;
+
 		Target.Set( $"ik.{name}.enabled", false );
 	}
 
@@ -70,7 +84,7 @@ public sealed class AnimationHelperComponent : Component
 	{
 		get
 		{
-			if ( EyeSource.IsValid() ) return EyeSource.Transform.World;
+			if ( EyeSource is not null && EyeSource.IsValid() ) return EyeSource.Transform.World;
 
 			return Transform.World;
 		}
@@ -82,12 +96,18 @@ public sealed class AnimationHelperComponent : Component
 	/// </summary>
 	public void WithLook( Vector3 lookDirection )
 	{
+		if ( !AnimTargetOk )
+			return;
+
 		Target.SetLookDirection( "aim_body", lookDirection );
 		Target.Set( "aim_body_weight", 1f );
 	}
 
 	public void WithVelocity( Vector3 Velocity )
 	{
+		if ( !AnimTargetOk )
+			return;
+
 		var dir = Velocity;
 		var forward = Target.WorldRotation.Forward.Dot( dir );
 		var sideward = Target.WorldRotation.Right.Dot( dir );
@@ -104,6 +124,9 @@ public sealed class AnimationHelperComponent : Component
 
 	public void WithWishVelocity( Vector3 Velocity )
 	{
+		if ( !AnimTargetOk )
+			return;
+
 		var dir = Velocity;
 		var forward = Target.WorldRotation.Forward.Dot( dir );
 		var sideward = Target.WorldRotation.Right.Dot( dir );
@@ -122,6 +145,9 @@ public sealed class AnimationHelperComponent : Component
 	{
 		set
 		{
+			if ( !AnimTargetOk )
+				return;
+
 			value = Target.WorldRotation.Inverse * value;
 			var ang = value.Angles();
 
@@ -133,62 +159,112 @@ public sealed class AnimationHelperComponent : Component
 
 	public float FootShuffle
 	{
-		get => Target.GetFloat( "move_shuffle" );
-		set => Target.Set( "move_shuffle", value );
+		get => AnimTargetOk ? Target.GetFloat( "move_shuffle" ) : 0f;
+		set
+		{
+			if ( !AnimTargetOk )
+				return;
+			Target.Set( "move_shuffle", value );
+		}
 	}
 
 	public float DuckLevel
 	{
-		get => Target.GetFloat( "duck" );
-		set => Target.Set( "duck", value );
+		get => AnimTargetOk ? Target.GetFloat( "duck" ) : 0f;
+		set
+		{
+			if ( !AnimTargetOk )
+				return;
+			Target.Set( "duck", value );
+		}
 	}
 
 	public float VoiceLevel
 	{
-		get => Target.GetFloat( "voice" );
-		set => Target.Set( "voice", value );
+		get => AnimTargetOk ? Target.GetFloat( "voice" ) : 0f;
+		set
+		{
+			if ( !AnimTargetOk )
+				return;
+			Target.Set( "voice", value );
+		}
 	}
 
 	public bool IsSitting
 	{
-		get => Target.GetBool( "b_sit" );
-		set => Target.Set( "b_sit", value );
+		get => AnimTargetOk && Target.GetBool( "b_sit" );
+		set
+		{
+			if ( !AnimTargetOk )
+				return;
+			Target.Set( "b_sit", value );
+		}
 	}
 
 	public bool IsGrounded
 	{
-		get => Target.GetBool( "b_grounded" );
-		set => Target.Set( "b_grounded", value );
+		get => AnimTargetOk && Target.GetBool( "b_grounded" );
+		set
+		{
+			if ( !AnimTargetOk )
+				return;
+			Target.Set( "b_grounded", value );
+		}
 	}
 
 	public bool IsSwimming
 	{
-		get => Target.GetBool( "b_swim" );
-		set => Target.Set( "b_swim", value );
+		get => AnimTargetOk && Target.GetBool( "b_swim" );
+		set
+		{
+			if ( !AnimTargetOk )
+				return;
+			Target.Set( "b_swim", value );
+		}
 	}
 
 	public float SkidAmount
 	{
-		get => Target.GetFloat( "skid" );
-		set => Target.Set( "skid", value );
+		get => AnimTargetOk ? Target.GetFloat( "skid" ) : 0f;
+		set
+		{
+			if ( !AnimTargetOk )
+				return;
+			Target.Set( "skid", value );
+		}
 	}
 
 	public bool IsClimbing
 	{
-		get => Target.GetBool( "b_climbing" );
-		set => Target.Set( "b_climbing", value );
+		get => AnimTargetOk && Target.GetBool( "b_climbing" );
+		set
+		{
+			if ( !AnimTargetOk )
+				return;
+			Target.Set( "b_climbing", value );
+		}
 	}
 
 	public bool IsNoclipping
 	{
-		get => Target.GetBool( "b_noclip" );
-		set => Target.Set( "b_noclip", value );
+		get => AnimTargetOk && Target.GetBool( "b_noclip" );
+		set
+		{
+			if ( !AnimTargetOk )
+				return;
+			Target.Set( "b_noclip", value );
+		}
 	}
 
 	public bool IsWeaponLowered
 	{
-		get => Target.GetBool( "b_weapon_lower" );
-		set => Target.Set( "b_weapon_lower", value );
+		get => AnimTargetOk && Target.GetBool( "b_weapon_lower" );
+		set
+		{
+			if ( !AnimTargetOk )
+				return;
+			Target.Set( "b_weapon_lower", value );
+		}
 	}
 
 	public enum HoldTypes
@@ -205,8 +281,13 @@ public sealed class AnimationHelperComponent : Component
 
 	public HoldTypes HoldType
 	{
-		get => (HoldTypes)Target.GetInt( "holdtype" );
-		set => Target.Set( "holdtype", (int)value );
+		get => !AnimTargetOk ? HoldTypes.None : (HoldTypes)Target.GetInt( "holdtype" );
+		set
+		{
+			if ( !AnimTargetOk )
+				return;
+			Target.Set( "holdtype", (int)value );
+		}
 	}
 
 	public enum Hand
@@ -218,17 +299,28 @@ public sealed class AnimationHelperComponent : Component
 
 	public Hand Handedness
 	{
-		get => (Hand)Target.GetInt( "holdtype_handedness" );
-		set => Target.Set( "holdtype_handedness", (int)value );
+		get => !AnimTargetOk ? Hand.Both : (Hand)Target.GetInt( "holdtype_handedness" );
+		set
+		{
+			if ( !AnimTargetOk )
+				return;
+			Target.Set( "holdtype_handedness", (int)value );
+		}
 	}
 
 	public void TriggerJump()
 	{
+		if ( !AnimTargetOk )
+			return;
+
 		Target.Set( "b_jump", true );
 	}
 
 	public void TriggerDeploy()
 	{
+		if ( !AnimTargetOk )
+			return;
+
 		Target.Set( "b_deploy", true );
 	}
 
@@ -244,7 +336,12 @@ public sealed class AnimationHelperComponent : Component
 	/// </summary>
 	public MoveStyles MoveStyle
 	{
-		get => (MoveStyles)Target.GetInt( "move_style" );
-		set => Target.Set( "move_style", (int)value );
+		get => !AnimTargetOk ? MoveStyles.Auto : (MoveStyles)Target.GetInt( "move_style" );
+		set
+		{
+			if ( !AnimTargetOk )
+				return;
+			Target.Set( "move_style", (int)value );
+		}
 	}
 }

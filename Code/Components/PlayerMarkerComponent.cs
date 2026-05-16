@@ -1,4 +1,5 @@
 using Sandbox.Components.PawnComponents;
+using Sandbox.UI.Panels;
 using Sandbox.Valids;
 using Sandbox.Valids.MinimapElementValids;
 using Sandbox.Valids.MinimapElementValids.MinimapIconValids;
@@ -24,7 +25,7 @@ public partial class PlayerMarkerComponent : Component, IMarkerObjectValid, IDir
 	/// <summary>
 	/// Defines a custom marker panel type to instantiate. Might remove this later.
 	/// </summary>
-	Type IMarkerObjectValid.MarkerPanelTypeOverride => typeof( PlayerMarkerComponent );
+	Type IMarkerObjectValid.MarkerPanelTypeOverride => typeof( PlayerMarkerPanel );
 
 	private Vector3 DistOffset
 	{

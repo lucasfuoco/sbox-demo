@@ -55,7 +55,7 @@ public partial class ClientComponent
 
 		Log.Info( $"Spawning player.. ( {GameObject.Name} ({DisplayName}, {Team}), {spawnPoint.Position}, [{string.Join( ", ", spawnPoint.Tags )}] )" );
 
-		if ( forceNew || !PlayerPawn.IsValid() || PlayerPawn.HealthComponent.State == LifeState.Dead )
+		if ( forceNew || !PlayerPawn.IsValid() || PlayerPawn.HealthComponent is null || PlayerPawn.HealthComponent.State == LifeState.Dead )
 		{
 			PlayerPawn?.GameObject?.Destroy();
 			PlayerPawn = null;

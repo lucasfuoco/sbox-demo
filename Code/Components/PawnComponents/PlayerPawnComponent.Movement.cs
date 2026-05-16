@@ -189,7 +189,7 @@ public partial class PlayerPawnComponent : IGameEventHandler<WeaponShotEvent>
 
 			foreach ( var helper in Body.AnimationHelpers )
 			{
-				if ( !helper.IsValid() ) continue;
+				if ( !helper.IsValid() || helper.Target is null || !helper.Target.IsValid() ) continue;
 
 				helper.WithVelocity( cc.Velocity );
 				helper.WithWishVelocity( WishVelocity );
@@ -350,9 +350,15 @@ public partial class PlayerPawnComponent : IGameEventHandler<WeaponShotEvent>
 	[Rpc.Broadcast]
 	public void BroadcastPlayerJumped()
 	{
+		if ( !Body.IsValid() || Body.AnimationHelpers is null )
+		{
+			OnJump?.Invoke();
+			return;
+		}
+
 		foreach ( var helper in Body.AnimationHelpers )
 		{
-			if ( !helper.IsValid() ) continue;
+			if ( !helper.IsValid() || helper.Target is null || !helper.Target.IsValid() ) continue;
 			helper.TriggerJump();
 		}
 

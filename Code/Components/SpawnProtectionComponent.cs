@@ -54,7 +54,8 @@ public sealed class SpawnProtectionComponent : Component,
 	{
 		_spawnProtectedSince[player] = 0f;
 
-		player.HealthComponent.IsGodMode = true;
+		if ( player.HealthComponent.IsValid() )
+			player.HealthComponent.IsGodMode = true;
 
 		if ( !player.Client.IsBot )
 		{
@@ -79,7 +80,9 @@ public sealed class SpawnProtectionComponent : Component,
 			return;
 
 		_spawnProtectedSince.Remove( player );
-		player.HealthComponent.IsGodMode = false;
+
+		if ( player.HealthComponent.IsValid() )
+			player.HealthComponent.IsGodMode = false;
 
 		using ( Rpc.FilterInclude( player.Client.Connection ) )
 		{

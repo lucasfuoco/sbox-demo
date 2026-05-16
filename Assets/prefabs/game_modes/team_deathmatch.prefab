@@ -295,7 +295,7 @@
                 "__guid": "14015847-da35-40c1-8b88-e6735a93d675",
                 "__enabled": true,
                 "Flags": 0,
-                "MinPlayerCount": 2,
+                "MinPlayerCount": 1,
                 "OnComponentDestroy": null,
                 "OnComponentDisabled": null,
                 "OnComponentEnabled": null,
@@ -835,9 +835,10 @@
                     "OnUpdateState": null
                   },
                   {
-                    "__type": "Facepunch.PlayRadio",
-                    "__guid": "afed815e-6a51-4e66-b94c-3bda199ea631",
+                    "__type": "Sandbox.Components.PlayRadioComponent",
+                    "__guid": "16936051-b79c-4024-a48f-02cb1367dbb6",
                     "__enabled": true,
+                    "Flags": 0,
                     "BothTeams": false,
                     "OnComponentDestroy": null,
                     "OnComponentDisabled": null,
@@ -849,9 +850,10 @@
                     "Team": "Terrorist"
                   },
                   {
-                    "__type": "Facepunch.PlayRadio",
-                    "__guid": "a611e014-1844-472b-b1b2-d35d21b56eef",
+                    "__type": "Sandbox.Components.PlayRadioComponent",
+                    "__guid": "babb30ae-5917-4534-8f6a-b4baacaa3861",
                     "__enabled": true,
+                    "Flags": 0,
                     "BothTeams": false,
                     "OnComponentDestroy": null,
                     "OnComponentDisabled": null,
@@ -863,9 +865,10 @@
                     "Team": "CounterTerrorist"
                   },
                   {
-                    "__type": "Facepunch.ShowToast",
-                    "__guid": "ea1adeea-9fa1-4666-ab56-e0e0c00e58cb",
+                    "__type": "Sandbox.Components.ShowToastComponent",
+                    "__guid": "9989555e-b6e3-4011-b494-86f3389a4e80",
                     "__enabled": true,
+                    "Flags": 0,
                     "Message": "Scores are Tied!",
                     "OnComponentDestroy": null,
                     "OnComponentDisabled": null,
@@ -917,9 +920,10 @@
                     "OnUpdateState": null
                   },
                   {
-                    "__type": "Facepunch.PlayRadio",
-                    "__guid": "00d323b8-6637-4615-bf9c-4acefc31c448",
+                    "__type": "Sandbox.Components.PlayRadioComponent",
+                    "__guid": "cd929561-a83a-4f16-b6a1-964fbb51bbed",
                     "__enabled": true,
+                    "Flags": 0,
                     "BothTeams": false,
                     "OnComponentDestroy": null,
                     "OnComponentDisabled": null,
@@ -931,9 +935,10 @@
                     "Team": "Terrorist"
                   },
                   {
-                    "__type": "Facepunch.PlayRadio",
-                    "__guid": "4d013707-b969-48aa-9b32-3ec46ecb8977",
+                    "__type": "Sandbox.Components.PlayRadioComponent",
+                    "__guid": "e6da7244-d856-4cbe-a290-dfc23cbb11e3",
                     "__enabled": true,
+                    "Flags": 0,
                     "BothTeams": false,
                     "OnComponentDestroy": null,
                     "OnComponentDisabled": null,
@@ -945,10 +950,11 @@
                     "Team": "CounterTerrorist"
                   },
                   {
-                    "__type": "Facepunch.ShowToast",
-                    "__guid": "5356112e-1fb8-47aa-820f-0dbbf60caeed",
+                    "__type": "Sandbox.Components.ShowToastComponent",
+                    "__guid": "6cdd30c3-fb13-4af0-8492-794fd3a9998e",
                     "__enabled": true,
-                    "Message": "Anarchists Win!",
+                    "Flags": 0,
+                    "Message": "Terrorists Win!",
                     "OnComponentDestroy": null,
                     "OnComponentDisabled": null,
                     "OnComponentEnabled": null,
@@ -958,9 +964,10 @@
                     "Type": "TerroristsWin"
                   },
                   {
-                    "__type": "Facepunch.ShowStatusText",
-                    "__guid": "45a9b96f-c3ca-4120-81cc-909eb2aa4111",
+                    "__type": "Sandbox.Components.ShowStatusTextComponent",
+                    "__guid": "b343c0e4-e2fc-46e7-8048-a12c2ee55858",
                     "__enabled": true,
+                    "Flags": 0,
                     "BothTeams": false,
                     "OnComponentDestroy": null,
                     "OnComponentDisabled": null,
@@ -972,9 +979,10 @@
                     "Team": "Terrorist"
                   },
                   {
-                    "__type": "Facepunch.ShowStatusText",
-                    "__guid": "04dbb62e-024d-49a5-8406-a82525261799",
+                    "__type": "Sandbox.Components.ShowStatusTextComponent",
+                    "__guid": "a7339521-7058-4562-8d04-69ec33e67919",
                     "__enabled": true,
+                    "Flags": 0,
                     "BothTeams": false,
                     "OnComponentDestroy": null,
                     "OnComponentDisabled": null,
@@ -986,9 +994,10 @@
                     "Team": "CounterTerrorist"
                   },
                   {
-                    "__type": "Facepunch.StatIncrementer",
-                    "__guid": "307b4c84-f018-4384-87e3-0c43ed3659e7",
+                    "__type": "Sandbox.Components.StatIncrementerComponent",
+                    "__guid": "24802a66-b772-440c-adb0-d56c46ad40bc",
                     "__enabled": true,
+                    "Flags": 0,
                     "Amount": 1,
                     "OnComponentDestroy": null,
                     "OnComponentDisabled": null,
@@ -996,8 +1005,8 @@
                     "OnComponentFixedUpdate": null,
                     "OnComponentStart": null,
                     "OnComponentUpdate": null,
-                    "SendExtraGameModeStat": true,
-                    "StatName": "wins",
+                    "SendExtraGameModeStat": false,
+                    "StatName": "Wins",
                     "TeamFilter": "Terrorist"
                   }
                 ],
@@ -1042,9 +1051,10 @@
                     "OnUpdateState": null
                   },
                   {
-                    "__type": "Facepunch.PlayRadio",
-                    "__guid": "a3c71da9-fdac-4273-85cb-06f10444a501",
+                    "__type": "Sandbox.Components.PlayRadioComponent",
+                    "__guid": "5166c522-2a36-4089-81e0-4bbcc932822e",
                     "__enabled": true,
+                    "Flags": 0,
                     "BothTeams": false,
                     "OnComponentDestroy": null,
                     "OnComponentDisabled": null,
@@ -1056,9 +1066,10 @@
                     "Team": "CounterTerrorist"
                   },
                   {
-                    "__type": "Facepunch.PlayRadio",
-                    "__guid": "1b9c9d4a-e513-4025-8ba4-8975bf498b6f",
+                    "__type": "Sandbox.Components.PlayRadioComponent",
+                    "__guid": "22d64223-5e51-42ed-b2f8-843a15121a3b",
                     "__enabled": true,
+                    "Flags": 0,
                     "BothTeams": false,
                     "OnComponentDestroy": null,
                     "OnComponentDisabled": null,
@@ -1070,10 +1081,11 @@
                     "Team": "Terrorist"
                   },
                   {
-                    "__type": "Facepunch.ShowToast",
-                    "__guid": "470a668e-f7be-471b-adb7-b92686430ad2",
+                    "__type": "Sandbox.Components.ShowToastComponent",
+                    "__guid": "1864f8d5-1d26-47b3-9064-28ac0878452f",
                     "__enabled": true,
-                    "Message": "Operators Win!",
+                    "Flags": 0,
+                    "Message": "Counter Terrorists Win!",
                     "OnComponentDestroy": null,
                     "OnComponentDisabled": null,
                     "OnComponentEnabled": null,
@@ -1083,9 +1095,10 @@
                     "Type": "CounterTerroristsWin"
                   },
                   {
-                    "__type": "Facepunch.ShowStatusText",
-                    "__guid": "ef00cd8e-0e42-45d1-99d3-9db06a912677",
+                    "__type": "Sandbox.Components.ShowStatusTextComponent",
+                    "__guid": "8c04916e-4ab8-4ba8-a6ac-f1e47f1282c6",
                     "__enabled": true,
+                    "Flags": 0,
                     "BothTeams": false,
                     "OnComponentDestroy": null,
                     "OnComponentDisabled": null,
@@ -1097,9 +1110,10 @@
                     "Team": "CounterTerrorist"
                   },
                   {
-                    "__type": "Facepunch.ShowStatusText",
-                    "__guid": "dd670bdb-d28d-4c3a-860d-51bdba991934",
+                    "__type": "Sandbox.Components.ShowStatusTextComponent",
+                    "__guid": "edf7a46c-bb55-4008-91c2-b22db9d5b861",
                     "__enabled": true,
+                    "Flags": 0,
                     "BothTeams": false,
                     "OnComponentDestroy": null,
                     "OnComponentDisabled": null,
@@ -1111,9 +1125,10 @@
                     "Team": "Terrorist"
                   },
                   {
-                    "__type": "Facepunch.StatIncrementer",
-                    "__guid": "9b9b18a7-d286-40d8-b3af-8e957af2b900",
+                    "__type": "Sandbox.Components.StatIncrementerComponent",
+                    "__guid": "d5116587-e028-4f44-9c30-c559c06f71a6",
                     "__enabled": true,
+                    "Flags": 0,
                     "Amount": 1,
                     "OnComponentDestroy": null,
                     "OnComponentDisabled": null,
@@ -1121,8 +1136,8 @@
                     "OnComponentFixedUpdate": null,
                     "OnComponentStart": null,
                     "OnComponentUpdate": null,
-                    "SendExtraGameModeStat": true,
-                    "StatName": "wins",
+                    "SendExtraGameModeStat": false,
+                    "StatName": "Wins",
                     "TeamFilter": "CounterTerrorist"
                   }
                 ],

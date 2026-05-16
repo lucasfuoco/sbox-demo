@@ -543,7 +543,7 @@
           {
             "__type": "Sandbox.ModelPhysics",
             "__guid": "c132631d-1bbf-46b4-949e-acd121c89190",
-            "__enabled": false,
+            "__enabled": true,
             "Flags": 0,
             "Bodies": [],
             "IgnoreRoot": false,
@@ -746,7 +746,19 @@
               "go": "d5948881-7e0d-4ca0-8054-85c77a3cc5af",
               "component_type": "SkinnedModelRenderer"
             },
-            "TeamBaseModels": {}
+            "TeamBaseModels": {
+              "Terrorist": {
+                "Models": [
+                  "models/player/t_side/t_side_player_01/t_side_player_01_v2.vmdl"
+                ]
+              },
+              "CounterTerrorist": {
+                "Models": [
+                  "models/player/ct_side/ct_side_riot_player/ct_side_riot_player.vmdl",
+                  "models/player/ct_side/ct_side_player_01/ct_side_player_01_v2.vmdl"
+                ]
+              }
+            }
           }
         ],
         "Children": [
@@ -2541,22 +2553,12 @@
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
-            "Target": null
-          },
-          {
-            "__type": "Sandbox.Components.HumanOutfitterComponent",
-            "__guid": "d4057f28-760e-481b-9399-b42a2ca5f8db",
-            "__enabled": true,
-            "Flags": 0,
-            "OnComponentDestroy": null,
-            "OnComponentDisabled": null,
-            "OnComponentEnabled": null,
-            "OnComponentFixedUpdate": null,
-            "OnComponentStart": null,
-            "OnComponentUpdate": null,
-            "PlayerPawn": null,
-            "Renderer": null,
-            "TeamBaseModels": {}
+            "Target": {
+              "_type": "component",
+              "component_id": "c9151cf0-e367-46c5-bca7-93c87770ef2e",
+              "go": "9945dfb9-6a37-4971-919f-8fa47251e676",
+              "component_type": "SkinnedModelRenderer"
+            }
           }
         ],
         "Children": [

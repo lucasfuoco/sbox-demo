@@ -1,16 +1,28 @@
 {
   "RootObject": {
     "__guid": "a1738cd9-71d8-4459-9255-aa68ff8e2b7a",
+    "__version": 2,
     "Flags": 0,
     "Name": "vm_drone",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
     "Tags": "player,viewmodel",
     "Enabled": true,
     "NetworkMode": 0,
-    "NetworkInterpolation": true,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "Facepunch.ViewModel",
-        "__guid": "4a31b873-dc13-4a96-845e-37f70669bc0e",
+        "__type": "Sandbox.Components.WeaponModelComponents.ViewWeaponModelComponent",
+        "__guid": "724674a2-febc-4533-8db6-d2abdc4fe0c3",
+        "__enabled": true,
+        "Flags": 0,
+        "Arms": null,
+        "EjectionPort": null,
+        "IronsightsFireScale": 0.2,
         "IsThrowable": false,
         "ModelRenderer": {
           "_type": "component",
@@ -18,28 +30,76 @@
           "go": "184742ff-3746-4da8-9f12-e05f8b745904",
           "component_type": "SkinnedModelRenderer"
         },
-        "ThrowableType": "HEGrenade"
+        "Muzzle": null,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "ReloadSpeed": 1,
+        "UseMovementInertia": true
       }
     ],
     "Children": [
       {
         "__guid": "184742ff-3746-4da8-9f12-e05f8b745904",
+        "__version": 2,
         "Flags": 0,
         "Name": "Object",
-        "Position": "15,0,-13.17982",
-        "Rotation": "0.1895834,-0.2519828,0.03880027,0.9481865",
+        "Position": "15,0,-13.1798201",
+        "Rotation": "0.189583406,-0.251982808,0.0388002694,0.948186517",
         "Scale": "0.5,0.5,0.5",
+        "Tags": "",
         "Enabled": true,
         "NetworkMode": 2,
-        "NetworkInterpolation": true,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
         "Components": [
           {
             "__type": "Sandbox.SkinnedModelRenderer",
             "__guid": "29fa1c9f-4f24-4026-995d-3085b7034937",
+            "__enabled": true,
+            "Flags": 0,
+            "AnimationGraph": null,
             "BodyGroups": 18446744073709551615,
+            "BoneMergeTarget": null,
+            "CreateAttachments": false,
             "CreateBoneObjects": true,
+            "LodOverride": null,
+            "MaterialGroup": null,
+            "MaterialOverride": null,
+            "Materials": null,
             "Model": "entities/drone/drone.vmdl",
+            "Morphs": {},
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Parameters": {
+              "bools": {},
+              "ints": {},
+              "floats": {},
+              "vectors": {},
+              "rotations": {}
+            },
+            "PlaybackRate": 1,
+            "RenderOptions": {
+              "GameLayer": true,
+              "OverlayLayer": false,
+              "BloomLayer": false,
+              "AfterUILayer": false
+            },
             "RenderType": "Off",
+            "Sequence": {
+              "Name": null,
+              "Looping": true,
+              "Blending": false
+            },
             "Tint": "1,1,1,1",
             "UseAnimGraph": true
           }
@@ -47,51 +107,108 @@
         "Children": [
           {
             "__guid": "3a535604-d807-450e-b7da-55539c5b3c56",
+            "__version": 2,
             "Flags": 4,
             "Name": "turbine_a",
             "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
             "Enabled": true,
             "NetworkMode": 2,
-            "NetworkInterpolation": true
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [],
+            "Children": []
           },
           {
             "__guid": "19543afa-dbe5-4cfa-8f65-edb917ac45a3",
+            "__version": 2,
             "Flags": 4,
             "Name": "turbine_b",
             "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
             "Enabled": true,
             "NetworkMode": 2,
-            "NetworkInterpolation": true
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [],
+            "Children": []
           },
           {
             "__guid": "c0cbe064-5e89-4e12-8f43-7ec55da6bb09",
+            "__version": 2,
             "Flags": 4,
             "Name": "turbine_c",
             "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
             "Enabled": true,
             "NetworkMode": 2,
-            "NetworkInterpolation": true
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [],
+            "Children": []
           },
           {
             "__guid": "623941dc-71e0-443b-9a3c-e3c50bd37cc6",
+            "__version": 2,
             "Flags": 4,
             "Name": "turbine_d",
             "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
             "Enabled": true,
             "NetworkMode": 2,
-            "NetworkInterpolation": true
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [],
+            "Children": []
           }
         ]
       }
     ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
+      }
+    },
     "__variables": []
   },
+  "ResourceVersion": 2,
   "ShowInMenu": false,
   "MenuPath": null,
   "MenuIcon": null,
-  "ResourceVersion": 1,
+  "DontBreakAsTemplate": false,
   "__references": [
     "rust.drone#26713"
   ],
-  "__version": 1
+  "__version": 2
 }

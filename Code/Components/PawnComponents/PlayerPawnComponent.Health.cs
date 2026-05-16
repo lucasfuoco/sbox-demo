@@ -34,6 +34,7 @@ public partial class PlayerPawnComponent : IGameEventHandler<DamageGivenEvent>, 
 		{
 			foreach ( var helper in Body.AnimationHelpers )
 			{
+				if ( !helper.IsValid() ) continue;
 				helper.ProceduralHitReaction( damageInfo.Damage / 100f, force );
 			}
 		}

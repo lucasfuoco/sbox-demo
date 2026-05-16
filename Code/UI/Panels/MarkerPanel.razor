@@ -45,7 +45,7 @@
 
     public MarkerPanel Marker { get; set; }
 
-    MarkerPanel CustomPanel { get; set; }
+    BaseMarkerPanel CustomPanel { get; set; }
 
 
     private float ChevronAngle 
@@ -73,6 +73,7 @@
 
     public override void Tick()
     {
+        if ( Object is null ) return;
         if ( Object.MarkerPanelTypeOverride is null ) return;
         if ( CustomPanel.IsValid() ) return;
 
@@ -88,6 +89,7 @@
     {
         CustomPanel?.Delete( true );
 
+        if ( Object is null ) return;
         if ( Object.MarkerPanelTypeOverride is null ) return;
 
         Log.Info( $"MarkerPanelTypeOverride: {Object.MarkerPanelTypeOverride}" );
@@ -95,7 +97,9 @@
         var desc = TypeLibrary.GetType( Object.MarkerPanelTypeOverride );
         if ( desc is null ) return;
 
-        var inst = desc.Create<MarkerPanel>();
+        var inst = desc.Create<BaseMarkerPanel>();
+        if ( inst is null || !inst.IsValid() ) return;
+
         inst.Marker = this;
 
         CustomPanel = inst;

@@ -1,7 +1,7 @@
 {
   "RootObject": {
     "__guid": "2514056e-40f9-46e5-b46d-108407380602",
-    "__version": 1,
+    "__version": 2,
     "Flags": 0,
     "Name": "weapon_usp_sd",
     "Position": "0,0,0",
@@ -10,18 +10,19 @@
     "Tags": "player",
     "Enabled": true,
     "NetworkMode": 2,
-    "NetworkInterpolation": true,
+    "NetworkFlags": 0,
     "NetworkOrphaned": 0,
     "NetworkTransmit": true,
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "Facepunch.Equipment",
-        "__guid": "806f0060-495c-44b8-b31a-277735480ce1",
+        "__type": "Sandbox.Components.EquipmentComponent",
+        "__guid": "9c9a0b7a-dd27-4e0b-8f21-4cc9e55082ac",
         "__enabled": true,
+        "Flags": 0,
         "AimFovOffset": -5,
         "CrosshairType": "ThreeLines",
-        "DeploySound": "sounds/guns/switch/weapon_switch.sound",
+        "DeploySound": "sound/guns/switch/weapon_switch.sound",
         "Handedness": "Right",
         "HoldType": "Pistol",
         "MountedPrefab": {
@@ -39,9 +40,10 @@
         "UseCrosshair": true
       },
       {
-        "__type": "Facepunch.TagBinder",
-        "__guid": "af26acc1-d4db-4244-baa6-85b2780ac83f",
+        "__type": "Sandbox.Components.TagBinderComponent",
+        "__guid": "95b9824b-f332-4c6f-a0bb-21a2ce6233eb",
         "__enabled": true,
+        "Flags": 0,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -53,7 +55,7 @@
     "Children": [
       {
         "__guid": "15f7fb9d-7f2c-4b64-9c2a-b179524dc1cd",
-        "__version": 1,
+        "__version": 2,
         "Flags": 0,
         "Name": "Functions",
         "Position": "0,0,0",
@@ -62,7 +64,7 @@
         "Tags": "",
         "Enabled": true,
         "NetworkMode": 2,
-        "NetworkInterpolation": true,
+        "NetworkFlags": 0,
         "NetworkOrphaned": 0,
         "NetworkTransmit": true,
         "OwnerTransfer": 1,
@@ -296,13 +298,15 @@
         "Enabled": false,
         "IncludeStaticBodies": true,
         "IncludeKeyframedBodies": true,
-        "EditorAutoUpdate": true,
+        "EditorAutoUpdate": false,
         "AgentHeight": 64,
         "AgentRadius": 16,
         "AgentStepSize": 18,
         "AgentMaxSlope": 40,
         "ExcludedBodies": "",
-        "IncludedBodies": ""
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
       }
     },
     "__variables": []
