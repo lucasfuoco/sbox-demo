@@ -149,7 +149,7 @@
             "PenetrationThickness": 32,
             "PlayerVelocityLimit": 300,
             "RequiresAllInputActions": false,
-            "RequiresHasAmmo": false,
+            "RequiresHasAmmo": true,
             "RicochetMaxHits": 2,
             "ShootSound": null,
             "SupportedFireModes": [

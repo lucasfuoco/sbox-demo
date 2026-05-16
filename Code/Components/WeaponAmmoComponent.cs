@@ -6,9 +6,15 @@ namespace Sandbox.Components;
 [Title( "Ammo" ), Group( "Weapon Components" )]
 public partial class WeaponAmmoComponent : Component, IDroppedWeaponState<WeaponAmmoComponent>
 {
+	/// <summary>
 	/// How much ammo are we holding?
 	/// </summary>
-	[Property, Sync] public int Ammo { get; set; } = 0;
+	[Property, Sync] public int Ammo
+	{
+		get => _ammo;
+		set => _ammo = Math.Max( 0, value );
+	}
+	private int _ammo;
 
 	[Property] public int MaxAmmo { get; set; } = 30;
 

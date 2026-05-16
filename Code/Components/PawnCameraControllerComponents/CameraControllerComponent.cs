@@ -51,7 +51,7 @@ public sealed class CameraControllerComponent : PawnCameraControllerComponent, I
 		{
 			if ( Camera.IsValid() )
 			{
-				return new( Camera.WorldPosition + Camera.WorldRotation.Forward, Camera.WorldRotation.Forward );
+				return new Ray( Camera.WorldPosition, Camera.WorldRotation.Forward );
 			}
 
 			return new( WorldPosition + Vector3.Up * 64f, Player.EyeAngles.ToRotation().Forward );

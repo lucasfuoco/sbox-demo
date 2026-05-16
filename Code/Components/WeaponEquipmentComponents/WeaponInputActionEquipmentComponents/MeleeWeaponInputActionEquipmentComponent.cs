@@ -1,4 +1,5 @@
 using Sandbox.Attributes;
+using Sandbox.Components;
 using Sandbox.Components.WeaponEquipmentComponents;
 using Sandbox.Components.WeaponModelComponents;
 using Sandbox.GameEvents;
@@ -52,12 +53,12 @@ public partial class MeleeWeaponInputActionEquipmentComponent : WeaponInputActio
 		// Third person
 		Equipment?.Owner?.BodyRenderer?.Set( "b_attack", true );
 
-		// First person
-		Equipment?.ViewWeaponModel?.ModelRenderer.Set( "b_attack", true );
+		// First-person weapon + arms, third-person held weapon
+		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_attack", true );
 
 		if ( hit.IsValid() )
 		{
-			Equipment?.ViewWeaponModel?.ModelRenderer.Set( "b_attack_has_hit", true );
+			WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_attack_has_hit", true );
 		}
 	}
 

@@ -116,15 +116,15 @@ public partial class ReloadableWeaponInputActionEquipmentComponent : WeaponInput
 		if ( SingleReload )
 		{
 			// Tags will be better so we can just react to stimuli.
-			Equipment.ViewWeaponModel?.ModelRenderer?.Set( "b_reloading", true );
+			WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_reloading", true );
 
 			bool hasAmmo = AmmoComponent.HasAmmo;
-			Equipment.ViewWeaponModel?.ModelRenderer.Set( !hasAmmo ? "b_reloading_first_shell" : "b_reloading_shell", true );
+			WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, !hasAmmo ? "b_reloading_first_shell" : "b_reloading_shell", true );
 		}
 		else
 		{
 			// Tags will be better so we can just react to stimuli.
-			Equipment.ViewWeaponModel?.ModelRenderer?.Set( "b_reload", true );
+			WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_reload", true );
 		}
 
 
@@ -144,9 +144,9 @@ public partial class ReloadableWeaponInputActionEquipmentComponent : WeaponInput
 			IsReloading = false;
 
 		// Tags will be better so we can just react to stimuli.
-		Equipment.ViewWeaponModel?.ModelRenderer?.Set( "b_reload", false );
+		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_reload", false );
 		Equipment.Owner?.BodyRenderer?.Set( "b_reload", false );
-		Equipment.ViewWeaponModel?.ModelRenderer?.Set( "b_reloading", false );
+		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_reloading", false );
 	}
 
 	[Rpc.Owner]
@@ -164,7 +164,7 @@ public partial class ReloadableWeaponInputActionEquipmentComponent : WeaponInput
 					StartReload();
 				else
 				{
-					Equipment.ViewWeaponModel?.ModelRenderer?.Set( "b_reloading", false );
+					WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_reloading", false );
 					IsReloading = false;
 				}
 			}
@@ -177,7 +177,7 @@ public partial class ReloadableWeaponInputActionEquipmentComponent : WeaponInput
 		}
 
 		// Tags will be better so we can just react to stimuli.
-		Equipment.ViewWeaponModel?.ModelRenderer.Set( "b_reload", false );
+		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_reload", false );
 	}
 
 	[Property] public Dictionary<float, SoundEvent> TimedReloadSounds { get; set; } = new();

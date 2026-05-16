@@ -1,4 +1,5 @@
 using Sandbox;
+using Sandbox.Components;
 using Sandbox.GameEvents;
 using Sandbox.Components.PawnComponents;
 using Sandbox.SceneEvents;
@@ -86,7 +87,7 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 
 	protected override void OnAwake()
 	{
-		ModelRenderer?.Set( "b_deploy_skip", true );
+		SetOnAnimGraphRenderers( "b_deploy_skip", true );
 	}
 
 	protected override void OnStart()
@@ -107,18 +108,19 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 
 	void OnPlayerJumped()
 	{
-		ModelRenderer?.Set( "b_jump", true );
+		SetOnAnimGraphRenderers( "b_jump", true );
 	}
 
 	void ApplyAnimationTransform()
 	{
-		if ( !ModelRenderer.IsValid() ) return;
-		if ( !ModelRenderer.Enabled ) return;
+		var meshRenderer = WeaponMeshRenderer;
+		if ( !meshRenderer.IsValid() ) return;
+		if ( !meshRenderer.Enabled ) return;
 		if ( !Equipment.IsValid() ) return;
 		if ( !Equipment.Owner.IsValid() ) return;
-		if ( !ModelRenderer.SceneModel.IsValid() ) return;
+		if ( !meshRenderer.SceneModel.IsValid() ) return;
 
-		var bone = ModelRenderer.SceneModel.GetBoneLocalTransform( "camera" );
+		var bone = meshRenderer.SceneModel.GetBoneLocalTransform( "camera" );
 		var camera = Equipment.Owner.CameraGameObject;
 		if ( !camera.IsValid() ) return;
 
@@ -210,7 +212,7 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 
 		// Set move_bob based on movement
 		lenMult = lenMult.LerpTo( isMoving ? moveLen.Remap( 0, 300, 0, 1, true ) : 0, Time.Delta * 10f );
-		ModelRenderer?.Set( "move_bob", lenMult );
+		SetOnAnimGraphRenderers( "move_bob", lenMult );
 
 		// Handle cycle when moving vs stopped
 		float cycleProgress;
@@ -239,13 +241,13 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 			cycleProgress = LastStepProgress;
 		}
 
-		ModelRenderer?.Set( "move_bob_cycle_control", cycleProgress );
+		SetOnAnimGraphRenderers( "move_bob_cycle_control", cycleProgress );
 
 		if ( UseMovementInertia )
 			YawInertia += lerpedWishMove.y * 10f;
 
-		ModelRenderer?.Set( "aim_yaw_inertia", YawInertia * YawInertiaScale );
-		ModelRenderer?.Set( "aim_pitch_inertia", PitchInertia * PitchInertiaScale );
+		SetOnAnimGraphRenderers( "aim_yaw_inertia", YawInertia * YawInertiaScale );
+		SetOnAnimGraphRenderers( "aim_pitch_inertia", PitchInertia * PitchInertiaScale );
 	}
 
 	private float FieldOfViewOffset = 0f;
@@ -253,27 +255,27 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 
 	void ApplyAnimationParameters()
 	{
-		ModelRenderer.Set( "b_sprint", Owner.IsSprinting );
-		ModelRenderer.Set( "b_grounded", Owner.IsGrounded );
+		SetOnAnimGraphRenderers( "b_sprint", Owner.IsSprinting );
+		SetOnAnimGraphRenderers( "b_grounded", Owner.IsGrounded );
 
 		var aiming = Equipment.HasTag( "aiming" );
 		// Ironsights
-		ModelRenderer.Set( "ironsights", aiming ? 1 : 0 );
-		ModelRenderer.Set( "ironsights_fire_scale", aiming ? IronsightsFireScale : 0f );
+		SetOnAnimGraphRenderers( "ironsights", aiming ? 1 : 0 );
+		SetOnAnimGraphRenderers( "ironsights_fire_scale", aiming ? IronsightsFireScale : 0f );
 
-		ModelRenderer.Set( "speed_ironsights", 1 );
+		SetOnAnimGraphRenderers( "speed_ironsights", 1f );
 
-		ModelRenderer.Set( "reload_speed", ReloadSpeed );
+		SetOnAnimGraphRenderers( "reload_speed", ReloadSpeed );
 
-		ModelRenderer.Set( "b_grab", Owner.Hovered.IsValid() );
+		SetOnAnimGraphRenderers( "b_grab", Owner.Hovered.IsValid() );
 
-		ModelRenderer.Set( "b_lower_weapon", Equipment.HasTag( "lowered" ) );
+		SetOnAnimGraphRenderers( "b_lower_weapon", Equipment.HasTag( "lowered" ) );
 
 		// Handedness
-		ModelRenderer.Set( "b_twohanded", true );
+		SetOnAnimGraphRenderers( "b_twohanded", true );
 
 		// Weapon state
-		ModelRenderer.Set( "b_empty", !Equipment.GetComponentInChildren<WeaponAmmoComponent>()?.HasAmmo ?? false );
+		SetOnAnimGraphRenderers( "b_empty", !Equipment.GetComponentInChildren<WeaponAmmoComponent>()?.HasAmmo ?? false );
 	}
 
 	/// <summary>
@@ -283,8 +285,8 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 	{
 		set
 		{
-			ModelRenderer?.Set( "b_deploy", value );
-			ModelRenderer?.Set( "b_deploy_skip", !value );
+			SetOnAnimGraphRenderers( "b_deploy", value );
+			SetOnAnimGraphRenderers( "b_deploy_skip", !value );
 		}
 	}
 
@@ -298,9 +300,9 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 		if ( !throwFn.IsValid() )
 			return;
 
-		ModelRenderer.Set( "b_idle", throwFn.ThrowState == ThrowableWeaponInputActionEquipmentComponent.State.Idle );
-		ModelRenderer.Set( "b_pull", throwFn.ThrowState == ThrowableWeaponInputActionEquipmentComponent.State.Cook );
-		ModelRenderer.Set( "b_throw", throwFn.ThrowState == ThrowableWeaponInputActionEquipmentComponent.State.Throwing );
+		SetOnAnimGraphRenderers( "b_idle", throwFn.ThrowState == ThrowableWeaponInputActionEquipmentComponent.State.Idle );
+		SetOnAnimGraphRenderers( "b_pull", throwFn.ThrowState == ThrowableWeaponInputActionEquipmentComponent.State.Cook );
+		SetOnAnimGraphRenderers( "b_throw", throwFn.ThrowState == ThrowableWeaponInputActionEquipmentComponent.State.Throwing );
 	}
 
 	public void OnFireMode( FireMode currentFireMode )
@@ -313,11 +315,11 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 			_ => 0
 		};
 
-		ModelRenderer.Set( "firing_mode", mode );
+		SetOnAnimGraphRenderers( "firing_mode", mode );
 	}
 
 	void IGameEventHandler<PlayerUseEvent>.OnGameEvent( PlayerUseEvent e )
 	{
-		ModelRenderer.Set( "grab_action", (int)e.Object.GetGrabAction() );
+		SetOnAnimGraphRenderers( "grab_action", (int)e.Object.GetGrabAction() );
 	}
 }

@@ -1,3 +1,4 @@
+using Sandbox.Components;
 using Sandbox.GameEvents;
 using Sandbox.Attributes;
 
@@ -109,10 +110,20 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 	[Sync] public TimeSince TimeSinceBurstFinished { get; set; }
 	[Sync] public bool IsBurstFiring { get; set; }
 
+	bool UsesAmmo => AmmoComponent.IsValid();
+
 	/// <summary>
-	/// Accessor for the aim ray.
+	/// Aim ray for bullet traces (muzzle origin when available).
 	/// </summary>
-	protected Ray WeaponRay => Equipment.Owner.AimRay;
+	protected Ray GetWeaponRay()
+	{
+		var aimRay = Equipment.Owner.AimRay;
+
+		if ( Effector.IsValid() && Effector.Muzzle.IsValid() )
+			return new Ray( Effector.Muzzle.WorldPosition, aimRay.Forward );
+
+		return aimRay;
+	}
 
 	/// <summary>
 	/// How long since we shot?
@@ -139,31 +150,6 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 			AmmoComponent = GetComponent<WeaponAmmoComponent>();
 
 		BindTag( "no_ammo", () => AmmoComponent.IsValid() && !AmmoComponent.HasAmmo );
-	}
-
-	/// <summary>
-	/// Viewmodels often split the arms and weapon onto different <see cref="SkinnedModelRenderer"/>s (bone merge).
-	/// Fire / slide graph parameters must be pushed to every anim-graph renderer on the viewmodel and world model roots.
-	/// </summary>
-	private void SetAnimGraphBoolOnWeaponMeshes( string parameterName, bool value )
-	{
-		void TryRoot( GameObject root )
-		{
-			if ( !root.IsValid() )
-				return;
-
-			foreach ( var renderer in root.Components.GetAll<SkinnedModelRenderer>( FindMode.EverythingInSelfAndDescendants ) )
-			{
-				if ( renderer.IsValid() && renderer.UseAnimGraph )
-					renderer.Set( parameterName, value );
-			}
-		}
-
-		if ( Equipment.ViewWeaponModel.IsValid() )
-			TryRoot( Equipment.ViewWeaponModel.GameObject );
-
-		if ( Equipment.WorldWeaponModel.IsValid() )
-			TryRoot( Equipment.WorldWeaponModel.GameObject );
 	}
 
 	/// <summary>
@@ -219,7 +205,7 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 			Equipment.Owner.BodyRenderer.Set( "b_attack", true );
 
 		// First-person weapon mesh + arms, and third-person held weapon (slide / bolt lives on the gun renderer).
-		SetAnimGraphBoolOnWeaponMeshes( "b_attack", true );
+		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_attack", true );
 	}
 
 	private void CreateImpactEffects( GameObject hitObject, Surface surface, Vector3 pos, Vector3 normal )
@@ -245,9 +231,12 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 	/// </summary>
 	public void Shoot()
 	{
+		if ( UsesAmmo && !AmmoComponent.HasAmmo )
+			return;
+
 		TimeSinceShoot = 0;
 
-		if ( AmmoComponent.IsValid() )
+		if ( UsesAmmo )
 			AmmoComponent.Ammo--;
 
 		if ( CurrentFireMode == FireMode.Burst )
@@ -328,7 +317,7 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 			Log.Trace( $"Shootable: ShootSound {DryFireSound.ResourceName}" );
 		}
 
-		SetAnimGraphBoolOnWeaponMeshes( "b_attack_dry", true );
+		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_attack_dry", true );
 	}
 
 	protected IEnumerable<SceneTraceResult> DoTraceBullet( Vector3 start, Vector3 end, float radius )
@@ -371,8 +360,9 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 	{
 		var hits = new List<SceneTraceResult>();
 
-		var start = WeaponRay.Position;
-		var forward = WeaponRay.Forward;
+		var weaponRay = GetWeaponRay();
+		var start = weaponRay.Position;
+		var forward = weaponRay.Forward;
 		if ( forward.IsNearlyZero() )
 			forward = Vector3.Forward;
 		else
@@ -482,8 +472,11 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		if ( TimeSinceShoot < RPMToSeconds() )
 			return false;
 
-		// Ammo checks
-		if ( RequiresHasAmmo && (!AmmoComponent.IsValid() || !AmmoComponent.HasAmmo) )
+		// Ammo checks — always when a magazine exists; RequiresHasAmmo blocks weapons configured without one.
+		if ( UsesAmmo && !AmmoComponent.HasAmmo )
+			return false;
+
+		if ( RequiresHasAmmo && !AmmoComponent.IsValid() )
 			return false;
 
 		return true;
