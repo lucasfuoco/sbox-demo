@@ -1,0 +1,30 @@
+{
+  "Name": "Makarov",
+  "Description": "9mm pistol",
+  "Slot": "Secondary",
+  "Team": "Unassigned",
+  "CanOtherTeamPickUp": true,
+  "DropOnDisconnect": false,
+  "Icon": null,
+  "IsPurchasable": true,
+  "Price": 0,
+  "KillReward": 300,
+  "MainPrefab": {
+    "_type": "gameobject",
+    "prefab": "prefabs/weapons/makarov/weapon_makarov.prefab"
+  },
+  "WorldModelPrefab": {
+    "_type": "gameobject",
+    "prefab": "prefabs/weapons/makarov/wm_makarov.prefab"
+  },
+  "ViewModelPrefab": {
+    "_type": "gameobject",
+    "prefab": "prefabs/weapons/makarov/vm_makarov.prefab"
+  },
+  "WorldModel": "models/weapons/makarov/makarov.vmdl",
+  "ArmorReduction": 0.775,
+  "HelmetReduction": 0.4,
+  "WorldModelBodyGroups": 0,
+  "__references": [],
+  "__version": 0
+}

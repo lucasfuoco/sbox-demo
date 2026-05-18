@@ -1,0 +1,217 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc30:version{8c2d7a91-9c42-4bf0-883a-5a3b1762d4f1} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "MaterialGroupList"
+				children = 
+				[
+					{
+						_class = "DefaultMaterialGroup"
+						remaps = 
+						[
+							{
+								from = "base_male_arm_skintone_01.vmat"
+								to = "materials/skin/base_male_arm_skintone.vmat"
+							},
+							{
+								from = "mechanix_col_black.vmat"
+								to = "materials/gloves/mechanix/mechanix_black.vmat"
+							},
+						]
+						use_global_default = false
+						global_default_material = ""
+					},
+					{
+						_class = "MaterialGroup"
+						name = "black"
+						remaps = [  ]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "alice"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/mechanix/mechanix_black.vmat"
+								to = "materials/gloves/mechanix/mechanix_alice.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "coma_a"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/mechanix/mechanix_black.vmat"
+								to = "materials/gloves/mechanix/mechanix_camo_a.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "coma_e"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/mechanix/mechanix_black.vmat"
+								to = "materials/gloves/mechanix/mechanix_camo_e.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "cayote"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/mechanix/mechanix_black.vmat"
+								to = "materials/gloves/mechanix/mechanix_cayote.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "white"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/mechanix/mechanix_black.vmat"
+								to = "materials/gloves/mechanix/mechanix_col_white.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "diguise"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/mechanix/mechanix_black.vmat"
+								to = "materials/gloves/mechanix/mechanix_disguise.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "green"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/mechanix/mechanix_black.vmat"
+								to = "materials/gloves/mechanix/mechanix_green.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "grey"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/mechanix/mechanix_black.vmat"
+								to = "materials/gloves/mechanix/mechanix_grey.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "grinch_green"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/mechanix/mechanix_black.vmat"
+								to = "materials/gloves/mechanix/mechanix_grinch_green.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "grinch"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/mechanix/mechanix_black.vmat"
+								to = "materials/gloves/mechanix/mechanix_grinch.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "minotaur"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/mechanix/mechanix_black.vmat"
+								to = "materials/gloves/mechanix/mechanix_minotaur.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "otter"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/mechanix/mechanix_black.vmat"
+								to = "materials/gloves/mechanix/mechanix_otter.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "tan"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/mechanix/mechanix_black.vmat"
+								to = "materials/gloves/mechanix/mechanix_tan.vmat"
+							},
+						]
+					},
+				]
+			},
+			{
+				_class = "RenderMeshList"
+				children = 
+				[
+					{
+						_class = "RenderMeshFile"
+						filename = "models/gloves/mechanix.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 1.0
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = true
+							exception_list = 
+							[
+								"mechanix_base",
+							]
+						}
+					},
+				]
+			},
+			{
+				_class = "AnimationList"
+				children = 
+				[
+
+				]
+				default_root_bone_name = ""
+			},
+		]
+		model_archetype = ""
+		primary_associated_entity = ""
+		anim_graph_name = ""
+		base_model_name = ""
+	}
+}

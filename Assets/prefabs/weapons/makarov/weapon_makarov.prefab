@@ -1,0 +1,307 @@
+{
+  "RootObject": {
+    "__guid": "e5f9f948-7380-4e9f-a949-613868bb0373",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "weapon_makarov",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "player",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.Components.EquipmentComponent",
+        "__guid": "8b035893-21ec-476e-8142-5089a5e5a7ae",
+        "__enabled": true,
+        "Flags": 0,
+        "AimFovOffset": -5,
+        "CrosshairType": "Default",
+        "DeploySound": "sound/guns/switch/weapon_switch.sound",
+        "Handedness": "Right",
+        "HoldType": "Pistol",
+        "MountedPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/weapons/makarov/mount_makarov.prefab"
+        },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Resource": "prefabs/weapons/makarov/makarov.equip",
+        "SpeedPenalty": 20,
+        "UseCrosshair": true
+      },
+      {
+        "__type": "Sandbox.Components.TagBinderComponent",
+        "__guid": "7572c17b-483a-4d85-b164-ebb7db7d7b80",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "faeb1538-b19e-45dd-88d8-3f6c15122bc8",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "Functions",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.Components.WeaponEquipmentComponents.LowerableEquipmentComponent",
+            "__guid": "393a33be-efa9-4eba-a471-0db9a1b3e857",
+            "__enabled": true,
+            "Flags": 0,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null
+          },
+          {
+            "__type": "Sandbox.Components.WeaponAmmoComponent",
+            "__guid": "c4320fa1-cc7f-40b9-b8ee-f94fbfac4e49",
+            "__enabled": true,
+            "Flags": 0,
+            "Ammo": 12,
+            "HasAmmo": true,
+            "MaxAmmo": 12,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null
+          },
+          {
+            "__type": "Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.ShootableWeaponInputActionEquipmentComponent",
+            "__guid": "142444b3-b295-42d6-96f0-d818ed3f8815",
+            "__enabled": true,
+            "Flags": 0,
+            "AmmoComponent": null,
+            "BaseDamage": 25,
+            "BaseDamageFalloff": [
+              {
+                "x": 0,
+                "y": 1,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              },
+              {
+                "x": 1,
+                "y": 0,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              }
+            ],
+            "BloodEjectDistance": 512,
+            "BulletCount": 1,
+            "BulletSize": 1,
+            "BulletSpread": 0,
+            "BurstAmount": 3,
+            "BurstEndDelay": 0.2,
+            "CurrentFireMode": "Semi",
+            "DryFireSound": "sound/weapons/makarov/makarov_hammer.sound",
+            "DryShootDelay": 0.15,
+            "EjectionPrefab": {
+              "_type": "gameobject",
+              "prefab": "prefabs/weapon_effects/9mm_casing.prefab"
+            },
+            "FireModeSwitchDelay": 0.3,
+            "FireRate": 335,
+            "InAirSpreadMultiplier": 2,
+            "InputActions": [
+              "Attack1"
+            ],
+            "MaxEffectsPlayDistance": 4194304,
+            "MaxRange": 1024000,
+            "MaxRicochetAngle": 45,
+            "MuzzleFlashPrefab": {
+              "_type": "gameobject",
+              "prefab": "prefabs/weapon_effects/pistol_muzzleflash.prefab"
+            },
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "OnInputAction": null,
+            "PenetrationThickness": 32,
+            "PlayerVelocityLimit": 300,
+            "RequiresAllInputActions": false,
+            "RequiresHasAmmo": true,
+            "RicochetMaxHits": 2,
+            "ShootSound": "sound/weapons/makarov/makarov_fire.sound",
+            "SupportedFireModes": [
+              "Semi"
+            ],
+            "VelocitySpreadScale": 0.25
+          },
+          {
+            "__type": "Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.ReloadableWeaponInputActionEquipmentComponent",
+            "__guid": "b8b70f3c-d241-476b-a67e-32b5bcc60ca2",
+            "__enabled": true,
+            "Flags": 0,
+            "AmmoComponent": {
+              "_type": "component",
+              "component_id": "c4320fa1-cc7f-40b9-b8ee-f94fbfac4e49",
+              "go": "faeb1538-b19e-45dd-88d8-3f6c15122bc8",
+              "component_type": "WeaponAmmoComponent"
+            },
+            "EmptyReloadSounds": {},
+            "EmptyReloadTime": 2,
+            "InputActions": [
+              "Reload"
+            ],
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "OnInputAction": null,
+            "ReloadTime": 1.5,
+            "RequiresAllInputActions": false,
+            "SingleReload": false,
+            "TimedReloadSounds": {}
+          },
+          {
+            "__type": "Sandbox.Components.WeaponEquipmentComponents.ShootRecoilEquipmentComponent",
+            "__guid": "a1c4e8f2-3b9d-4e7a-9f12-6d8b0e5a2c41",
+            "__enabled": true,
+            "Flags": 0,
+            "HorizontalSpread": "-0.5 1",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "RecoilPattern": {
+              "Points": [],
+              "LoopStart": 0,
+              "LoopEnd": 0,
+              "IsLooping": false
+            },
+            "ResetTime": 0.3,
+            "Scale": "2,5",
+            "UseRecoilPattern": false,
+            "VerticalSpread": "0 0.05"
+          },
+          {
+            "__type": "Sandbox.Components.WeaponEquipmentComponents.ViewPunchWeaponEquipmentComponent",
+            "__guid": "b2d5f9a3-4c0e-5f8b-a023-7e9c1f6b3d52",
+            "__enabled": true,
+            "Flags": 0,
+            "AnglesOffset": "-0.5,0.1,0.5",
+            "Curve": [
+              {
+                "x": 0.5,
+                "y": 0.5,
+                "in": 0,
+                "out": 0,
+                "mode": "Mirrored"
+              }
+            ],
+            "Lifetime": 0.3,
+            "MaxAnglesOffset": "-0.5,0.1,0.5",
+            "MaxPositionOffset": "0.5,0.2,0.75",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "PositionOffset": "0.5,0.2,0.75"
+          },
+          {
+            "__type": "Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.AimableWeaponInputActionEquipmentComponents.ManualOffsetAimableWeaponInputActionEquipmentComponent",
+            "__guid": "c3e6a0b4-5d1f-6a9c-b134-8f0d2a7c4e63",
+            "__enabled": true,
+            "Flags": 0,
+            "AimAngleOffset": "0,0,0",
+            "AimOffset": "0.15,0,0",
+            "InputActions": [
+              "Attack2"
+            ],
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "OnInputAction": null,
+            "RequiresAllInputActions": false
+          },
+          {
+            "__type": "Sandbox.Components.WeaponEquipmentComponents.WeaponAttachmentLoadoutComponent",
+            "__guid": "d4f7b1c5-6e20-7b0d-c245-9a1e3b8d5f74",
+            "__enabled": true,
+            "Flags": 0,
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null
+          }
+        ],
+        "Children": []
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

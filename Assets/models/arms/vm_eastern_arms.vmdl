@@ -1,0 +1,173 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc30:version{8c2d7a91-9c42-4bf0-883a-5a3b1762d4f1} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "MaterialGroupList"
+				children = 
+				[
+					{
+						_class = "DefaultMaterialGroup"
+						remaps = 
+						[
+							{
+								from = "gorka_col_1.vmat"
+								to = "materials/sleeves/gorka/vm_bale_sleeves.vmat"
+							},
+							{
+								from = "opforce_juggernaut_armor.vmat"
+								to = "materials/sleeves/ssg/mp_western_lynch_kneepad.vmat"
+							},
+						]
+						use_global_default = false
+						global_default_material = ""
+					},
+					{
+						_class = "MaterialGroup"
+						name = "gorka_1"
+						remaps = 
+						[
+							{
+								from = "materials/sleeves/gorka/vm_bale_sleeves.vmat"
+								to = "materials/sleeves/gorka/gorka_1.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "gorka_2"
+						remaps = 
+						[
+							{
+								from = "materials/sleeves/gorka/vm_bale_sleeves.vmat"
+								to = "materials/sleeves/gorka/gorka_2.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "gorka_3"
+						remaps = 
+						[
+							{
+								from = "materials/sleeves/gorka/vm_bale_sleeves.vmat"
+								to = "materials/sleeves/gorka/gorka_3.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "gorka_4"
+						remaps = 
+						[
+							{
+								from = "materials/sleeves/gorka/vm_bale_sleeves.vmat"
+								to = "materials/sleeves/gorka/gorka_4.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "gorka_5"
+						remaps = 
+						[
+							{
+								from = "materials/sleeves/gorka/vm_bale_sleeves.vmat"
+								to = "materials/sleeves/gorka/gorka_5.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "gorka_6"
+						remaps = 
+						[
+							{
+								from = "materials/sleeves/gorka/vm_bale_sleeves.vmat"
+								to = "materials/sleeves/gorka/gorka_6.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "gorka_7"
+						remaps = 
+						[
+							{
+								from = "materials/sleeves/gorka/vm_bale_sleeves.vmat"
+								to = "materials/sleeves/gorka/gorka_7.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "gorka_8"
+						remaps = 
+						[
+							{
+								from = "materials/sleeves/gorka/vm_bale_sleeves.vmat"
+								to = "materials/sleeves/gorka/gorka_8.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "gorka_9"
+						remaps = 
+						[
+							{
+								from = "materials/sleeves/gorka/vm_bale_sleeves.vmat"
+								to = "materials/sleeves/gorka/gorka_9.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "vm_bale_sleeves"
+						remaps = [  ]
+					},
+				]
+			},
+			{
+				_class = "RenderMeshList"
+				children = 
+				[
+					{
+						_class = "RenderMeshFile"
+						filename = "models/arms/vm_eastern_arms.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						import_rotation = [ 0.0, -90.0, 0.0 ]
+						import_scale = 1.0
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = true
+							exception_list = 
+							[
+								"viewhands_opforce_juggernaut_002",
+							]
+						}
+					},
+				]
+			},
+			{
+				_class = "AnimationList"
+				children = 
+				[
+
+				]
+				default_root_bone_name = ""
+			},
+		]
+		model_archetype = ""
+		primary_associated_entity = ""
+		anim_graph_name = ""
+		base_model_name = ""
+	}
+}

@@ -1,0 +1,455 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc30:version{8c2d7a91-9c42-4bf0-883a-5a3b1762d4f1} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "MaterialGroupList"
+				children = 
+				[
+					{
+						_class = "DefaultMaterialGroup"
+						remaps = 
+						[
+							{
+								from = "base_male_arm_skintone_01.vmat"
+								to = "materials/skin/base_male_arm_skintone.vmat"
+							},
+							{
+								from = "mp_western_dday_shirt_a.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+							},
+						]
+						use_global_default = false
+						global_default_material = ""
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_1"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_c.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_2"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_a.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_2.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_3"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_b.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_3.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_4"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_d.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_4.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_5"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_crowfoot.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_5.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_6"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_e.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_6.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_7"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_f.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_7.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_8"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_g.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_8.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_9"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_9.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_10"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_10.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_11"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_11.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_12"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_12.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_13"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_13.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_14"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_14.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_15"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_15.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_16"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_16.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_17"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_17.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_18"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_18.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_19"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_19.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_20"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_20.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_21"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_21.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_22"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_22.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_23"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_23.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_24"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_24.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_25"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_25.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "sleeve_26"
+						remaps = 
+						[
+							{
+								from = "materials/skin/base_male_arm_skintone.vmat"
+								to = "materials/skin/skin_ghost.vmat"
+							},
+							{
+								from = "materials/sleeves/milsim_western/mil_sleeve_1.vmat"
+								to = "materials/sleeves/milsim_western/mil_sleeve_26.vmat"
+							},
+						]
+					},
+				]
+			},
+			{
+				_class = "RenderMeshList"
+				children = 
+				[
+					{
+						_class = "RenderMeshFile"
+						filename = "models/arms/vm_western_arms.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 1.0
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = true
+							exception_list = 
+							[
+								"mp_western_vm_arms",
+							]
+						}
+					},
+				]
+			},
+			{
+				_class = "AnimationList"
+				children = 
+				[
+			
+				]
+				default_root_bone_name = ""
+			},
+		]
+		model_archetype = ""
+		primary_associated_entity = ""
+		anim_graph_name = ""
+		base_model_name = ""
+	}
+}

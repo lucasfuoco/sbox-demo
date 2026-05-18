@@ -1,0 +1,3198 @@
+{
+  "RootObject": {
+    "__guid": "d2b5629f-642e-4f38-a92a-5b421be16b29",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "vm_makarov",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "player,viewmodel",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.SkinnedModelRenderer",
+        "__guid": "82053a73-97c1-4bcd-b464-7f4ec40ec6e9",
+        "__enabled": true,
+        "Flags": 0,
+        "AnimationGraph": null,
+        "BodyGroups": 18446744073709551615,
+        "BoneMergeTarget": null,
+        "CreateAttachments": false,
+        "CreateBoneObjects": true,
+        "LodOverride": null,
+        "MaterialGroup": null,
+        "MaterialOverride": null,
+        "Materials": null,
+        "Model": "models/weapons/makarov/makarov.vmdl",
+        "Morphs": {},
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Parameters": {
+          "bools": {},
+          "ints": {},
+          "floats": {},
+          "vectors": {},
+          "rotations": {}
+        },
+        "PlaybackRate": 1,
+        "RenderOptions": {
+          "GameLayer": false,
+          "OverlayLayer": true,
+          "BloomLayer": false,
+          "AfterUILayer": false
+        },
+        "RenderType": "On",
+        "Sequence": {
+          "Name": null,
+          "Looping": true,
+          "Blending": false
+        },
+        "Tint": "1,1,1,1",
+        "UseAnimGraph": true
+      },
+      {
+        "__type": "Sandbox.Components.WeaponModelComponents.ViewWeaponModelComponent",
+        "__guid": "c31ad56b-c5e1-4e58-b79c-fe31f7daba16",
+        "__enabled": true,
+        "Flags": 0,
+        "ArmsPrefab": {
+          "_type": "gameobject",
+          "prefab": "prefabs/arms/vm_eastern_arms.prefab"
+        },
+        "EjectionPort": null,
+        "GlovesPrefab": null,
+        "IronsightsFireScale": 0.2,
+        "IsThrowable": false,
+        "ModelRenderer": {
+          "_type": "component",
+          "component_id": "82053a73-97c1-4bcd-b464-7f4ec40ec6e9",
+          "go": "d2b5629f-642e-4f38-a92a-5b421be16b29",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "Muzzle": {
+          "_type": "gameobject",
+          "go": "454595c8-8703-4343-8a2d-039fd9f701d9"
+        },
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "ReloadSpeed": 1,
+        "UseMovementInertia": true
+      }
+    ],
+    "Children": [
+      {
+        "__guid": "92a9df3b-3d11-4077-8ef8-68689e794659",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "tag_pistol_offset",
+        "Position": "0,0,0",
+        "Rotation": "-6.84004533E-08,8.57700988E-15,-2.98023259E-08,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [],
+        "Children": [
+          {
+            "__guid": "d390297b-499b-4043-b1b7-193420b77e1d",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "j_hammer",
+            "Position": "-34.8998909,5.17913986E-06,34.2998962",
+            "Rotation": "7.10542736E-15,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [],
+            "Children": []
+          },
+          {
+            "__guid": "b1ee049d-5b48-4a26-a2ab-ba5c306fd151",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "j_trigger",
+            "Position": "239.499466,2.56693056E-07,3.39999986",
+            "Rotation": "-7.10542736E-15,5.02429621E-15,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [],
+            "Children": []
+          },
+          {
+            "__guid": "b5fc1e85-9289-4c43-893d-4903c1611f15",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "j_slide",
+            "Position": "225.699585,5.8888254E-06,77.9999008",
+            "Rotation": "-1.42108547E-14,1.00485924E-14,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [],
+            "Children": [
+              {
+                "__guid": "e4e62b87-3c2a-4ee9-bc2c-b40f6d3aa825",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "tag_sight_on",
+                "Position": "28.3000031,9.96568997E-06,65.999794",
+                "Rotation": "7.10542736E-15,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [],
+                "Children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "__guid": "b6c5bd75-27ee-40f0-9206-c1830343083a",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "tag_mag_attach",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [],
+        "Children": []
+      },
+      {
+        "__guid": "409e6ae7-b6a2-47d2-80e8-b70baf922c1c",
+        "__version": 2,
+        "Flags": 4,
+        "Name": "ValveBiped_Bip01_R_Hand",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [],
+        "Children": [
+          {
+            "__guid": "f96555fe-04bf-4bb3-8984-587de9d7dd16",
+            "__version": 2,
+            "Flags": 4,
+            "Name": "tag_pistol_offset",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [],
+            "Children": [
+              {
+                "__guid": "bf8db760-c7e5-4108-ab45-6d99fca75346",
+                "__version": 2,
+                "Flags": 4,
+                "Name": "j_hammer",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [],
+                "Children": []
+              },
+              {
+                "__guid": "9a1f36a3-0421-4a50-ab8c-ddf9fa2f9c30",
+                "__version": 2,
+                "Flags": 4,
+                "Name": "j_trigger",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [],
+                "Children": []
+              },
+              {
+                "__guid": "454595c8-8703-4343-8a2d-039fd9f701d9",
+                "__version": 2,
+                "Flags": 4,
+                "Name": "tag_barrel_attach",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [],
+                "Children": [
+                  {
+                    "__guid": "1903ce85-9431-4471-8aeb-8cb8e5324b3b",
+                    "__version": 2,
+                    "Flags": 4,
+                    "Name": "j_slide",
+                    "Position": "0,0,0",
+                    "Rotation": "0,0,0,1",
+                    "Scale": "1,1,1",
+                    "Tags": "",
+                    "Enabled": true,
+                    "NetworkMode": 2,
+                    "NetworkFlags": 0,
+                    "NetworkOrphaned": 0,
+                    "NetworkTransmit": true,
+                    "OwnerTransfer": 1,
+                    "Components": [],
+                    "Children": [
+                      {
+                        "__guid": "a5a95f82-a2ed-450a-b480-6435b8b7c4b4",
+                        "__version": 2,
+                        "Flags": 4,
+                        "Name": "tag_sight_on",
+                        "Position": "0,0,0",
+                        "Rotation": "0,0,0,1",
+                        "Scale": "1,1,1",
+                        "Tags": "",
+                        "Enabled": true,
+                        "NetworkMode": 2,
+                        "NetworkFlags": 0,
+                        "NetworkOrphaned": 0,
+                        "NetworkTransmit": true,
+                        "OwnerTransfer": 1,
+                        "Components": [],
+                        "Children": []
+                      },
+                      {
+                        "__guid": "1654d758-b993-4bc3-b890-239bb72b13b8",
+                        "__version": 2,
+                        "Flags": 4,
+                        "Name": "tag_reflex",
+                        "Position": "0,0,0",
+                        "Rotation": "0,0,0,1",
+                        "Scale": "1,1,1",
+                        "Tags": "",
+                        "Enabled": true,
+                        "NetworkMode": 2,
+                        "NetworkFlags": 0,
+                        "NetworkOrphaned": 0,
+                        "NetworkTransmit": true,
+                        "OwnerTransfer": 1,
+                        "Components": [],
+                        "Children": []
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "__guid": "78bb4de7-93dd-45dc-903f-7ec4d06aa7aa",
+                "__version": 2,
+                "Flags": 4,
+                "Name": "tag_brass",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [],
+                "Children": []
+              },
+              {
+                "__guid": "f9441b59-0d20-4840-a563-548c26a7af50",
+                "__version": 2,
+                "Flags": 4,
+                "Name": "tag_laser_show",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [],
+                "Children": [
+                  {
+                    "__guid": "11cdee5c-a9b4-46ee-861f-ed6e9fe56fc8",
+                    "__version": 2,
+                    "Flags": 4,
+                    "Name": "tag_laser_attach",
+                    "Position": "0,0,0",
+                    "Rotation": "0,0,0,1",
+                    "Scale": "1,1,1",
+                    "Tags": "",
+                    "Enabled": true,
+                    "NetworkMode": 2,
+                    "NetworkFlags": 0,
+                    "NetworkOrphaned": 0,
+                    "NetworkTransmit": true,
+                    "OwnerTransfer": 1,
+                    "Components": [],
+                    "Children": []
+                  }
+                ]
+              },
+              {
+                "__guid": "62b10743-74b4-428c-80eb-6a3a860aac15",
+                "__version": 2,
+                "Flags": 4,
+                "Name": "tag_mag_attach",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [],
+                "Children": []
+              },
+              {
+                "__guid": "d0894836-820e-4ef0-89a8-750c250ac3eb",
+                "__version": 2,
+                "Flags": 4,
+                "Name": "tag_pistolgrip_attach",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [],
+                "Children": []
+              },
+              {
+                "__guid": "9261a73e-3117-47d6-aa5a-496701c3692d",
+                "__version": 2,
+                "Flags": 4,
+                "Name": "tag_stock_attach",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [],
+                "Children": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "__guid": "27a8c938-0213-43aa-8aa7-5275d00f6488",
+        "__version": 2,
+        "Flags": 4,
+        "Name": "j_gun",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [],
+        "Children": []
+      },
+      {
+        "__guid": "67bb6c6e-015b-4d35-8e72-ec6c26d1ee2b",
+        "__version": 2,
+        "__Prefab": "prefabs/weapons/makarov/vm_eastern_arms.prefab",
+        "__PrefabInstancePatch": {
+          "AddedObjects": [],
+          "RemovedObjects": [],
+          "PropertyOverrides": [
+            {
+              "Target": {
+                "Type": "GameObject",
+                "IdValue": "a11e4d1a-4b58-4efd-a5ef-b4727a720e46"
+              },
+              "Property": "Name",
+              "Value": "Arms"
+            }
+          ],
+          "MovedObjects": []
+        },
+        "__PrefabIdToInstanceId": {
+          "138bd2fe-6639-491f-8a5a-8bddbd7cb066": "42fe9ac0-f5c1-4943-aaa0-e1ad4991cde7"
+        }
+      },
+      {
+        "__guid": "76ada414-bd43-4f8c-b6dc-52c2d5a14880",
+        "__version": 2,
+        "__Prefab": "prefabs/arms/vm_eastern_arms.prefab",
+        "__PrefabInstancePatch": {
+          "AddedObjects": [],
+          "RemovedObjects": [],
+          "PropertyOverrides": [
+            {
+              "Target": {
+                "Type": "GameObject",
+                "IdValue": "a11e4d1a-4b58-4efd-a5ef-b4727a720e46"
+              },
+              "Property": "Name",
+              "Value": "Arms"
+            },
+            {
+              "Target": {
+                "Type": "Component",
+                "IdValue": "56087908-c483-4126-9205-e835446cf715"
+              },
+              "Property": "BoneMergeTarget",
+              "Value": {
+                "_type": "component",
+                "component_id": "82053a73-97c1-4bcd-b464-7f4ec40ec6e9",
+                "go": "d2b5629f-642e-4f38-a92a-5b421be16b29",
+                "component_type": "SkinnedModelRenderer"
+              }
+            }
+          ],
+          "MovedObjects": []
+        },
+        "__PrefabIdToInstanceId": {
+          "a11e4d1a-4b58-4efd-a5ef-b4727a720e46": "76ada414-bd43-4f8c-b6dc-52c2d5a14880",
+          "56087908-c483-4126-9205-e835446cf715": "803769e6-8ea2-4f7d-8ad8-6cebc2f560f3",
+          "cb6a94ff-b818-4f0b-8bd7-856d056ac30a": "27a6b6c1-bb7d-4edb-836b-337b121cda13",
+          "4e6dec7c-3c63-413a-8325-64a2c7dd72cd": "c51348f7-fdb0-4a2f-b7b1-471bcf0e2cae",
+          "4c08d45d-f3c2-4c65-8cb1-7d242dbd9f41": "0f3bc174-6906-4d26-aa01-20a72b3e4541",
+          "0b69c61f-7ead-444c-80a8-ebf70e101d70": "781ccc5a-2c3b-4ff0-9c96-dfad1b1f69d0",
+          "98a3f3c4-992d-46b1-8fce-7a10fb1ceecc": "de205360-2bf7-4b0b-9212-4e95eefaf847",
+          "a7fcbb50-99f6-446c-928a-cfef790a7fcc": "144555fd-617a-427c-8050-146c1375d358",
+          "61685c95-42cd-4736-9e99-3be836912ff8": "94bbf782-13f9-4ecd-88f3-66b0ff8ddedc",
+          "1806ad49-5359-464e-874a-8a43aa3435bb": "572b8bb7-781a-4c52-a037-57c69b27dfde",
+          "d1a4f766-6b24-4471-a33e-4a5b04cc076c": "904c5061-4104-4ceb-8fd2-104d446fc5d3",
+          "15f9a44d-fb54-4ba1-aca7-10482285b889": "bfe6a45e-20f9-4931-b5b9-1fc0bdda570d",
+          "9d7ce86f-fe62-43c4-a741-84aae7d431c6": "ef37aa55-74db-4575-8c3d-863d0b22a8e3",
+          "3b1803f1-7741-4d2b-91c0-7e5447600758": "f22ebd1b-c220-4038-b513-85921ac1ff40",
+          "02ddd92a-7515-4dd8-a3e8-41608d9dc927": "ac83c34c-6e27-4a68-9e95-fbd1b3b2a2bc",
+          "3b23f20a-a5e0-4f73-a896-1772bfd21283": "5a446acb-4276-44b2-b8a9-980782c1daea",
+          "c88c3f73-0d25-4886-a924-0a6e27f0076e": "6ad34a3b-fd72-4301-ac69-f203e34ae433",
+          "95a6894f-6bfe-4611-ab83-cf3baf2a172c": "f015686d-4a17-4faa-a38d-02b8d0918757"
+        }
+      },
+      {
+        "__guid": "cc670901-e1b1-40b4-ab7b-a33daf13a55b",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "profile",
+        "Position": "-576.359253,956.578491,144.290192",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.Components.WeaponAttachmentProfileComponent",
+            "__guid": "6c4ab395-9c21-4f6a-9742-bd8e45289dd1",
+            "__enabled": true,
+            "Flags": 0,
+            "Barrel": {
+              "_type": "component",
+              "component_id": "c295c66d-60c1-419d-a64c-bf08b90148b2",
+              "go": "8b054191-b375-4463-b1fb-28bc36b374e8",
+              "component_type": "WeaponAttachmentSlotComponent"
+            },
+            "Grip": {
+              "_type": "component",
+              "component_id": "5d6b1388-3455-4203-9b65-2b43c5e68234",
+              "go": "903aeb61-c8f1-4b59-a098-87ce7a7b0c89",
+              "component_type": "WeaponAttachmentSlotComponent"
+            },
+            "Laser": {
+              "_type": "component",
+              "component_id": "049aa7b0-de0d-4010-bb6c-2a2fda233a82",
+              "go": "86753c1b-254b-4e7b-933b-b6295af79efd",
+              "component_type": "WeaponAttachmentSlotComponent"
+            },
+            "Mag": {
+              "_type": "component",
+              "component_id": "a8938916-1ceb-4f84-a0b8-3e7c678a7bff",
+              "go": "9f5ab680-f97e-4022-a54a-a3de623f5d94",
+              "component_type": "WeaponAttachmentSlotComponent"
+            },
+            "Muzzle": {
+              "_type": "component",
+              "component_id": "c2048650-5b3d-44f4-9478-fa91d27a8922",
+              "go": "31805da3-9432-4ecd-a008-153b04dc835a",
+              "component_type": "WeaponAttachmentSlotComponent"
+            },
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "Perk": {
+              "_type": "component",
+              "component_id": "47b99b8f-7079-4f8e-9c19-9f3759ad2c91",
+              "go": "f6816668-5115-4f23-af55-cbf31e2fe9fd",
+              "component_type": "WeaponAttachmentSlotComponent"
+            },
+            "Sight": {
+              "_type": "component",
+              "component_id": "8e0fb825-167e-4881-94ac-484e091818d6",
+              "go": "4c1a8ec7-1881-40be-9ee5-4e5c83d53d34",
+              "component_type": "WeaponAttachmentSlotComponent"
+            },
+            "StandardShootSound": "sound/weapons/makarov/makarov_fire.sound",
+            "Stock": {
+              "_type": "component",
+              "component_id": "945300ea-fb73-47d6-9f00-5b197481714c",
+              "go": "946173c9-6669-4ccd-bca7-69780f1a3807",
+              "component_type": "WeaponAttachmentSlotComponent"
+            },
+            "SuppressedShootSound": "sound/weapons/makarov/makarov_supressed_fire.sound"
+          }
+        ],
+        "Children": [
+          {
+            "__guid": "f6816668-5115-4f23-af55-cbf31e2fe9fd",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "perk",
+            "Position": "576.359253,-956.578491,-144.290192",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponAttachmentSlotComponent",
+                "__guid": "47b99b8f-7079-4f8e-9c19-9f3759ad2c91",
+                "__enabled": true,
+                "Flags": 0,
+                "Category": "Perk",
+                "DefaultOption": {
+                  "_type": "component",
+                  "component_id": "aabe3b0a-5bc5-4044-ba47-0515b2295f0b",
+                  "go": "1ccef640-6f18-47aa-ac48-15497385d2e3",
+                  "component_type": "WeaponAttachmentOptionComponent"
+                },
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Options": [
+                  {
+                    "_type": "component",
+                    "component_id": "aabe3b0a-5bc5-4044-ba47-0515b2295f0b",
+                    "go": "1ccef640-6f18-47aa-ac48-15497385d2e3",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "3869ec64-2f1a-4f8b-9670-59ac6aeeba6f",
+                    "go": "7831f8eb-abb3-47db-9bb0-66d13e004019",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "a68c874c-5581-47f5-9892-284bae4726f5",
+                    "go": "9c1b7374-42dc-4b6b-af6f-16f2e6817cf6",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "b1c00eec-e95e-47f3-b05d-815fad2cddb8",
+                    "go": "73321504-1ba6-45c3-93eb-104162ab67de",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "713a1bc8-c294-41dc-b444-3feff4e74f4a",
+                    "go": "4106a1b9-4cc4-44e7-a905-d709871f507c",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  }
+                ]
+              }
+            ],
+            "Children": [
+              {
+                "__guid": "1ccef640-6f18-47aa-ac48-15497385d2e3",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_perk_none",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "aabe3b0a-5bc5-4044-ba47-0515b2295f0b",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "perk_none"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "7831f8eb-abb3-47db-9bb0-66d13e004019",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_perk_soh",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "3869ec64-2f1a-4f8b-9670-59ac6aeeba6f",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 0.85,
+                      "EmptyReloadTimeMultiplier": 0.85,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "perk_soh"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "9c1b7374-42dc-4b6b-af6f-16f2e6817cf6",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_perk_fmj",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "a68c874c-5581-47f5-9892-284bae4726f5",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "perk_fmj"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "73321504-1ba6-45c3-93eb-104162ab67de",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_perk_ricochet",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "b1c00eec-e95e-47f3-b05d-815fad2cddb8",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "perk_ricochet"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "4106a1b9-4cc4-44e7-a905-d709871f507c",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_perk_fastswap",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "713a1bc8-c294-41dc-b444-3feff4e74f4a",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "perk_fastswap"
+                  }
+                ],
+                "Children": []
+              }
+            ]
+          },
+          {
+            "__guid": "946173c9-6669-4ccd-bca7-69780f1a3807",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "stock",
+            "Position": "576.359253,-956.578491,-144.290192",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponAttachmentSlotComponent",
+                "__guid": "945300ea-fb73-47d6-9f00-5b197481714c",
+                "__enabled": true,
+                "Flags": 0,
+                "Category": "Stock",
+                "DefaultOption": {
+                  "_type": "component",
+                  "component_id": "4fe4c372-aac6-4500-a3ce-e2346ca96844",
+                  "go": "42182085-5212-4d2d-8724-95cac9002207",
+                  "component_type": "WeaponAttachmentOptionComponent"
+                },
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Options": [
+                  {
+                    "_type": "component",
+                    "component_id": "4fe4c372-aac6-4500-a3ce-e2346ca96844",
+                    "go": "42182085-5212-4d2d-8724-95cac9002207",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "1efb7b47-87b4-46bc-b761-4fc2e7dac082",
+                    "go": "35be769b-0913-45a7-85df-bdf2c94ce892",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "06d97300-ceac-46cf-ae2f-24dca01ab695",
+                    "go": "41fb54b1-6172-4e0a-aefc-986a58c71622",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  }
+                ]
+              }
+            ],
+            "Children": [
+              {
+                "__guid": "42182085-5212-4d2d-8724-95cac9002207",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_stock_none",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "4fe4c372-aac6-4500-a3ce-e2346ca96844",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "stock_none"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "35be769b-0913-45a7-85df-bdf2c94ce892",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_stock_stockl",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "1efb7b47-87b4-46bc-b761-4fc2e7dac082",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 0.9,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "-0.150000006,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "stock_stockl"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "41fb54b1-6172-4e0a-aefc-986a58c71622",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_stock_stockh",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "06d97300-ceac-46cf-ae2f-24dca01ab695",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 0.9,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "stock_stockh"
+                  }
+                ],
+                "Children": []
+              }
+            ]
+          },
+          {
+            "__guid": "31805da3-9432-4ecd-a008-153b04dc835a",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "muzzle",
+            "Position": "576.359253,-956.578491,-144.290192",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponAttachmentSlotComponent",
+                "__guid": "c2048650-5b3d-44f4-9478-fa91d27a8922",
+                "__enabled": true,
+                "Flags": 0,
+                "Category": "Muzzle",
+                "DefaultOption": {
+                  "_type": "component",
+                  "component_id": "4b4ed5e1-ca81-4952-a123-d984ef6bb772",
+                  "go": "97cd5c6b-374a-47f6-bb87-e0931441cfad",
+                  "component_type": "WeaponAttachmentOptionComponent"
+                },
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Options": [
+                  {
+                    "_type": "component",
+                    "component_id": "4b4ed5e1-ca81-4952-a123-d984ef6bb772",
+                    "go": "97cd5c6b-374a-47f6-bb87-e0931441cfad",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "821a36dd-0e33-41bc-a0cb-c4205d071250",
+                    "go": "1430675a-5d5e-4711-8fc1-47f698061a5f",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "bba2441b-f7c7-4710-b2d6-b1c5620bd760",
+                    "go": "69d35575-90f0-4f05-8069-53a7f26f21a5",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "19ef2389-fcde-4d6b-b1b7-266a06828dcb",
+                    "go": "208e0b86-d046-43bc-bc2a-524d8d247db6",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "3f45ddb8-6dd6-4b10-acc5-07789579b6db",
+                    "go": "31e539d4-4d2f-4f16-9582-e46280edb67c",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "42dfe959-ba40-4d66-9885-0c4a7dcdc435",
+                    "go": "10253125-8b38-4b8d-8616-ecbca06168a7",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "d340980a-3d28-42a0-8699-cd4c0241ebdb",
+                    "go": "82b17562-0920-43eb-acdf-1f9b0f720a6c",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "98e32d75-5495-47ba-8c40-45a93d840549",
+                    "go": "efeec586-db58-4322-86ef-eb647139c937",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  }
+                ]
+              }
+            ],
+            "Children": [
+              {
+                "__guid": "97cd5c6b-374a-47f6-bb87-e0931441cfad",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_muzzle_none",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "4b4ed5e1-ca81-4952-a123-d984ef6bb772",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "muzzle_none"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "1430675a-5d5e-4711-8fc1-47f698061a5f",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_muzzle_flashhider",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "821a36dd-0e33-41bc-a0cb-c4205d071250",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "muzzle_flashhider"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "69d35575-90f0-4f05-8069-53a7f26f21a5",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_muzzle_compensator",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "bba2441b-f7c7-4710-b2d6-b1c5620bd760",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "muzzle_compensator"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "208e0b86-d046-43bc-bc2a-524d8d247db6",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_muzzle_muzzlebrake",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "19ef2389-fcde-4d6b-b1b7-266a06828dcb",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "muzzle_muzzlebrake"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "31e539d4-4d2f-4f16-9582-e46280edb67c",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_muzzle_silencer01",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "3f45ddb8-6dd6-4b10-acc5-07789579b6db",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": true
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "muzzle_silencer01"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "10253125-8b38-4b8d-8616-ecbca06168a7",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_muzzle_silencer02",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "42dfe959-ba40-4d66-9885-0c4a7dcdc435",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": true
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "muzzle_silencer02"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "82b17562-0920-43eb-acdf-1f9b0f720a6c",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_muzzle_silencer04",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "d340980a-3d28-42a0-8699-cd4c0241ebdb",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": true
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "muzzle_sliencer04"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "efeec586-db58-4322-86ef-eb647139c937",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_muzzle_oilfilter",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "98e32d75-5495-47ba-8c40-45a93d840549",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": true
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "muzzle_oilfilter"
+                  }
+                ],
+                "Children": []
+              }
+            ]
+          },
+          {
+            "__guid": "4c1a8ec7-1881-40be-9ee5-4e5c83d53d34",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "sight",
+            "Position": "576.359253,-956.578491,-144.290192",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponAttachmentSlotComponent",
+                "__guid": "8e0fb825-167e-4881-94ac-484e091818d6",
+                "__enabled": true,
+                "Flags": 0,
+                "Category": "Sight",
+                "DefaultOption": {
+                  "_type": "component",
+                  "component_id": "d848b415-cc38-4211-9b22-1ff3d4ecd34f",
+                  "go": "27df312e-1684-4556-b2de-ef6f0aab863d",
+                  "component_type": "WeaponAttachmentOptionComponent"
+                },
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Options": [
+                  {
+                    "_type": "component",
+                    "component_id": "d848b415-cc38-4211-9b22-1ff3d4ecd34f",
+                    "go": "27df312e-1684-4556-b2de-ef6f0aab863d",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "6fc44a7b-0bef-40d8-8541-159d4e392c46",
+                    "go": "b6a04cbe-471c-41fb-abe1-014b06be96b9",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "c6383067-81f1-45b6-9d89-5371b36de0d9",
+                    "go": "5f63c143-2791-4461-884a-c9d69eac7a5f",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "3adfeee9-3159-4528-96f6-faab4985d687",
+                    "go": "96856389-33f8-4f75-b0db-48296a70feb3",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  }
+                ]
+              }
+            ],
+            "Children": [
+              {
+                "__guid": "27df312e-1684-4556-b2de-ef6f0aab863d",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_sight_none",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "d848b415-cc38-4211-9b22-1ff3d4ecd34f",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "sight_none"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "b6a04cbe-471c-41fb-abe1-014b06be96b9",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_sight_minireddot01",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "6fc44a7b-0bef-40d8-8541-159d4e392c46",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,-0.5,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "sight_minireddot01"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "5f63c143-2791-4461-884a-c9d69eac7a5f",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_sight_minireddot02",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "c6383067-81f1-45b6-9d89-5371b36de0d9",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,-0.5,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "sight_minireddot02"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "96856389-33f8-4f75-b0db-48296a70feb3",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_sight_minireddot03",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "3adfeee9-3159-4528-96f6-faab4985d687",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,-0.5,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "sight_minireddot03"
+                  }
+                ],
+                "Children": []
+              }
+            ]
+          },
+          {
+            "__guid": "8b054191-b375-4463-b1fb-28bc36b374e8",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "barrel",
+            "Position": "576.359253,-956.578491,-144.290192",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponAttachmentSlotComponent",
+                "__guid": "c295c66d-60c1-419d-a64c-bf08b90148b2",
+                "__enabled": true,
+                "Flags": 0,
+                "Category": "Barrel",
+                "DefaultOption": {
+                  "_type": "component",
+                  "component_id": "9138ea07-0bd2-46b0-9399-16ea6df9b80b",
+                  "go": "65fde12c-a00c-49de-84b0-345f03c892c1",
+                  "component_type": "WeaponAttachmentOptionComponent"
+                },
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Options": [
+                  {
+                    "_type": "component",
+                    "component_id": "9aaf3c6e-7b0d-447c-badd-7dc267c7e179",
+                    "go": "08aede1a-4b52-4259-8e31-06da647d752a",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "d8aef3c9-7afa-440c-aac1-485ce5675483",
+                    "go": "89a717d0-1f5a-4c85-9d18-7ed699eca530",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "dedc85ea-47c8-4376-9d8f-95b7e090855f",
+                    "go": "4cbb018c-5e8f-47a3-944e-bf505422c73e",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "9138ea07-0bd2-46b0-9399-16ea6df9b80b",
+                    "go": "65fde12c-a00c-49de-84b0-345f03c892c1",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  }
+                ]
+              }
+            ],
+            "Children": [
+              {
+                "__guid": "08aede1a-4b52-4259-8e31-06da647d752a",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_barrel_barsil",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "b1c2d3e4-f5a6-4789-bcde-f01234567804",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "82053a73-97c1-4bcd-b464-7f4ec40ec6e9",
+                      "go": "d2b5629f-642e-4f38-a92a-5b421be16b29",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/weapons/makarov/makarov_barsil.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": false,
+                      "OverlayLayer": true,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "9aaf3c6e-7b0d-447c-badd-7dc267c7e179",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": true
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "barrel_barsil"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "89a717d0-1f5a-4c85-9d18-7ed699eca530",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_barrel_barlight",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "b1c2d3e4-f5a6-4789-bcde-f01234567805",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "82053a73-97c1-4bcd-b464-7f4ec40ec6e9",
+                      "go": "d2b5629f-642e-4f38-a92a-5b421be16b29",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/weapons/makarov/makarov_barlight.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": false,
+                      "OverlayLayer": true,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "d8aef3c9-7afa-440c-aac1-485ce5675483",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "barrel_barlight"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "4cbb018c-5e8f-47a3-944e-bf505422c73e",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_barrel_barauto",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "b1c2d3e4-f5a6-4789-bcde-f01234567806",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "82053a73-97c1-4bcd-b464-7f4ec40ec6e9",
+                      "go": "d2b5629f-642e-4f38-a92a-5b421be16b29",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/weapons/makarov/makarov_barauto.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": false,
+                      "OverlayLayer": true,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "dedc85ea-47c8-4376-9d8f-95b7e090855f",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": 800,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1.3,
+                      "HorizontalRecoilMultiplier": 1.3,
+                      "ForceAutomatic": true,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "barrel_barauto"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "65fde12c-a00c-49de-84b0-345f03c892c1",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_barrel_barrel",
+                "Position": "115.388199,811.34082,28.8475037",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "b1c2d3e4-f5a6-4789-bcde-f01234567803",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "82053a73-97c1-4bcd-b464-7f4ec40ec6e9",
+                      "go": "d2b5629f-642e-4f38-a92a-5b421be16b29",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/weapons/makarov/makarov_barrel.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": false,
+                      "OverlayLayer": true,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "9138ea07-0bd2-46b0-9399-16ea6df9b80b",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "barrel_barrel"
+                  }
+                ],
+                "Children": []
+              }
+            ]
+          },
+          {
+            "__guid": "86753c1b-254b-4e7b-933b-b6295af79efd",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "lazer",
+            "Position": "576.359253,-956.578491,-144.290192",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponAttachmentSlotComponent",
+                "__guid": "049aa7b0-de0d-4010-bb6c-2a2fda233a82",
+                "__enabled": true,
+                "Flags": 0,
+                "Category": "Laser",
+                "DefaultOption": {
+                  "_type": "component",
+                  "component_id": "c12afff3-576e-4848-af43-5906e4a899f9",
+                  "go": "3f1016de-001d-441c-bd32-77fd594351d8",
+                  "component_type": "WeaponAttachmentOptionComponent"
+                },
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Options": [
+                  {
+                    "_type": "component",
+                    "component_id": "c12afff3-576e-4848-af43-5906e4a899f9",
+                    "go": "3f1016de-001d-441c-bd32-77fd594351d8",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "96e5ae7f-46c4-4a68-a306-d24ff1639dd0",
+                    "go": "8fbef7be-23d3-4c2c-8469-5b0a1860dd14",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "c4d1250e-b39c-404d-9308-4965e6a4d2c7",
+                    "go": "076c726f-a28d-473e-b030-03f3e8b2c07d",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "71631e78-4919-4655-9bb1-68f50ba1d1fa",
+                    "go": "36064ed4-899c-460e-86ad-098a19378c8f",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  }
+                ]
+              }
+            ],
+            "Children": [
+              {
+                "__guid": "3f1016de-001d-441c-bd32-77fd594351d8",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_laser_none",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "c12afff3-576e-4848-af43-5906e4a899f9",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "lazer_none"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "8fbef7be-23d3-4c2c-8469-5b0a1860dd14",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_laser_laser01",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "96e5ae7f-46c4-4a68-a306-d24ff1639dd0",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "lazer_lazer01"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "076c726f-a28d-473e-b030-03f3e8b2c07d",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_laser_laser02",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "c4d1250e-b39c-404d-9308-4965e6a4d2c7",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "lazer_lazer02"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "36064ed4-899c-460e-86ad-098a19378c8f",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_laser_laser03",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "71631e78-4919-4655-9bb1-68f50ba1d1fa",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "lazer_lazer03"
+                  }
+                ],
+                "Children": []
+              }
+            ]
+          },
+          {
+            "__guid": "9f5ab680-f97e-4022-a54a-a3de623f5d94",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "mag",
+            "Position": "576.359253,-956.578491,-144.290192",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponAttachmentSlotComponent",
+                "__guid": "a8938916-1ceb-4f84-a0b8-3e7c678a7bff",
+                "__enabled": true,
+                "Flags": 0,
+                "Category": "Mag",
+                "DefaultOption": {
+                  "_type": "component",
+                  "component_id": "df200745-aa4e-4e7e-9092-41378e187774",
+                  "go": "1dac20f0-c85d-47bc-b8a8-9e332a8db8ae",
+                  "component_type": "WeaponAttachmentOptionComponent"
+                },
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Options": [
+                  {
+                    "_type": "component",
+                    "component_id": "b94668d5-9901-4767-a2ed-f9a135fb3b87",
+                    "go": "35a36fe1-25d1-45b3-8e1b-53a097fe4076",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "d767c27f-82e3-4f4b-a920-12100b0efa68",
+                    "go": "5fb492f6-f781-4317-b258-fd71efcf9cc0",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "df200745-aa4e-4e7e-9092-41378e187774",
+                    "go": "1dac20f0-c85d-47bc-b8a8-9e332a8db8ae",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  }
+                ]
+              }
+            ],
+            "Children": [
+              {
+                "__guid": "35a36fe1-25d1-45b3-8e1b-53a097fe4076",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_mag_xmags",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "3de76ff8-ed6f-4242-8529-0bfb144f475c",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "82053a73-97c1-4bcd-b464-7f4ec40ec6e9",
+                      "go": "d2b5629f-642e-4f38-a92a-5b421be16b29",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/weapons/makarov/makarov_xmags.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": true,
+                      "OverlayLayer": false,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "b94668d5-9901-4767-a2ed-f9a135fb3b87",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": 20,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "mag_xmags"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "5fb492f6-f781-4317-b258-fd71efcf9cc0",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_mag_drummag",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "f6b9ccbf-9dec-41dd-a104-8291898b4f05",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "82053a73-97c1-4bcd-b464-7f4ec40ec6e9",
+                      "go": "d2b5629f-642e-4f38-a92a-5b421be16b29",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/weapons/makarov/makarov_drummag.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": true,
+                      "OverlayLayer": false,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "d767c27f-82e3-4f4b-a920-12100b0efa68",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": 80,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 0.9,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "mag_drummag"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "1dac20f0-c85d-47bc-b8a8-9e332a8db8ae",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_mag_mag",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "b1c2d3e4-f5a6-4789-bcde-f01234567801",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "82053a73-97c1-4bcd-b464-7f4ec40ec6e9",
+                      "go": "d2b5629f-642e-4f38-a92a-5b421be16b29",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/weapons/makarov/makarov_mag.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": false,
+                      "OverlayLayer": true,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "df200745-aa4e-4e7e-9092-41378e187774",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": 12,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "mag_mag"
+                  }
+                ],
+                "Children": []
+              }
+            ]
+          },
+          {
+            "__guid": "903aeb61-c8f1-4b59-a098-87ce7a7b0c89",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "grip",
+            "Position": "576.359253,-956.578491,-144.290192",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponAttachmentSlotComponent",
+                "__guid": "5d6b1388-3455-4203-9b65-2b43c5e68234",
+                "__enabled": true,
+                "Flags": 0,
+                "Category": "Grip",
+                "DefaultOption": {
+                  "_type": "component",
+                  "component_id": "61ed8c15-fd59-44d7-9b4f-8dd9762fe16b",
+                  "go": "1fb7a60c-d66a-4abb-b836-cfefea057145",
+                  "component_type": "WeaponAttachmentOptionComponent"
+                },
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Options": [
+                  {
+                    "_type": "component",
+                    "component_id": "4c347e69-8b92-4744-b8d7-ee85f98da08d",
+                    "go": "c7cccb80-086d-43ba-994d-b5245620ac55",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "c661d5a8-7ec0-48e7-a5b6-066a1f3a29f2",
+                    "go": "930d119b-eeaa-4360-89ff-7c3420708484",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "6bd01e05-93aa-44af-b14d-7e82955f6312",
+                    "go": "2e7194d8-fcad-4c3d-a598-6effc284ad6a",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "61ed8c15-fd59-44d7-9b4f-8dd9762fe16b",
+                    "go": "1fb7a60c-d66a-4abb-b836-cfefea057145",
+                    "component_type": "WeaponAttachmentOptionComponent"
+                  }
+                ]
+              }
+            ],
+            "Children": [
+              {
+                "__guid": "c7cccb80-086d-43ba-994d-b5245620ac55",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_grip_pistolgrip01",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "a54d25df-faf6-4711-9f09-dfb8216533cb",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "82053a73-97c1-4bcd-b464-7f4ec40ec6e9",
+                      "go": "d2b5629f-642e-4f38-a92a-5b421be16b29",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/weapons/makarov/makarov_pistolgrip01.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": true,
+                      "OverlayLayer": false,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "4c347e69-8b92-4744-b8d7-ee85f98da08d",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 0.9,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "grip_pistolgrip01"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "930d119b-eeaa-4360-89ff-7c3420708484",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_grip_pistolgrip02",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "c661d5a8-7ec0-48e7-a5b6-066a1f3a29f2",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "grip_pistolgrip02"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "2e7194d8-fcad-4c3d-a598-6effc284ad6a",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_grip_pistolgrip03",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": false,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "6bd01e05-93aa-44af-b14d-7e82955f6312",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "grip_pistolgrip03"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "1fb7a60c-d66a-4abb-b836-cfefea057145",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "slot_grip_grip",
+                "Position": "0,0,0",
+                "Rotation": "-6.84004391E-08,6.84004391E-08,4.67861994E-15,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "b1c2d3e4-f5a6-4789-bcde-f01234567802",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "82053a73-97c1-4bcd-b464-7f4ec40ec6e9",
+                      "go": "d2b5629f-642e-4f38-a92a-5b421be16b29",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/weapons/makarov/makarov_grip.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": false,
+                      "OverlayLayer": true,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.WeaponAttachmentOptionComponent",
+                    "__guid": "61ed8c15-fd59-44d7-9b4f-8dd9762fe16b",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "Modifiers": {
+                      "MaxAmmo": null,
+                      "FireRate": null,
+                      "ReloadTimeMultiplier": 1,
+                      "EmptyReloadTimeMultiplier": 1,
+                      "ReloadSpeedMultiplier": 1,
+                      "VerticalRecoilMultiplier": 1,
+                      "HorizontalRecoilMultiplier": 1,
+                      "ForceAutomatic": false,
+                      "AimOffsetDelta": "0,0,0",
+                      "SuppressesSound": false
+                    },
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "grip_grip"
+                  }
+                ],
+                "Children": []
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
+      }
+    },
+    "__variables": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

@@ -1,0 +1,1602 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc30:version{8c2d7a91-9c42-4bf0-883a-5a3b1762d4f1} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "AnimationList"
+				children = 
+				[
+					{
+						_class = "Folder"
+						name = "Sprint"
+						children = 
+						[
+							{
+								_class = "AnimFile"
+								name = "super_sprint_out"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/super_sprint_out.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "super_sprint_in"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/super_sprint_in.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "sprint_out_to_sub"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/sprint_out_to_sub.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "sprint_out"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/sprint_out.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "sprint_offset_to_sub"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/sprint_offset_to_sub.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "sprint_in_to_sub"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/sprint_in_to_sub.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "sprint_in"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/sprint_in.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "sprint_idle_to_sub"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/sprint_idle_to_sub.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+						]
+					},
+					{
+						_class = "Folder"
+						name = "Reload"
+						children = 
+						[
+							{
+								_class = "AnimFile"
+								name = "reload_xmaglrg_fast_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_xmaglrg_fast_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_xmaglrg_fast"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_xmaglrg_fast.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_xmaglrg_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_xmaglrg_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_xmaglrg"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_xmaglrg.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_xmag_fast_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_xmag_fast_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_empty_xmag_fast"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_empty_xmag_fast.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_xmag_fast"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_xmag_fast.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_xmag_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_xmag_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_xmag"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_xmag.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_mmag_fast_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_mmag_fast_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_mmag_fast"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_mmag_fast.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_mmag_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_mmag_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_mmag"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_mmag.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_fast_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_fast_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_fast"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_fast.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_empty_xmaglrg_fast_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_empty_xmaglrg_fast_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_empty_xmaglrg_fast"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_empty_xmaglrg_fast.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_empty_xmaglrg_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_empty_xmaglrg_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_empty_xmaglrg"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_empty_xmaglrg.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_empty_mmag_fast_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_empty_mmag_fast_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_empty_mmag_fast"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_empty_mmag_fast.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_empty_mmag_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_empty_mmag_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_empty_mmag"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_empty_mmag.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_empty_fast_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_empty_fast_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_empty_fast"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_empty_fast.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_empty_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_empty_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_empty"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_empty.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "reload_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/reload_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+						]
+					},
+					{
+						_class = "Folder"
+						name = "Melee"
+						children = 
+						[
+							{
+								_class = "AnimFile"
+								name = "melee_miss_03"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/melee_miss_03.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "melee_miss_02"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/melee_miss_02.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "melee_miss_01"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/melee_miss_01.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "melee_hit_03"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/melee_hit_03.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "melee_hit_02"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/melee_hit_02.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "melee_hit_01"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/melee_hit_01.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "melee_fatal_01"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/melee_fatal_01.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+						]
+					},
+					{
+						_class = "Folder"
+						name = "Draw"
+						children = 
+						[
+							{
+								_class = "AnimFile"
+								name = "draw_first_drum"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/draw_first_drum.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "draw_first"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/draw_first.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "draw"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/draw.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+						]
+					},
+					{
+						_class = "Folder"
+						name = "Fire"
+						children = 
+						[
+							{
+								_class = "AnimFile"
+								name = "fire"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/fire.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "fire_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/fire_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "fire_last"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/fire_last.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "fire_last_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/fire_last_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+						]
+					},
+					{
+						_class = "Folder"
+						name = "Jog"
+						children = 
+						[
+							{
+								_class = "AnimFile"
+								name = "jog_idle_to_sub"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/jog_idle_to_sub.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "jog_in"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/jog_in.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "jog_in_to_sub"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/jog_in_to_sub.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "jog_offset_to_sub"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/jog_offset_to_sub.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "jog_out"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/jog_out.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "jog_out_to_sub"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/jog_out_to_sub.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+						]
+					},
+					{
+						_class = "Folder"
+						name = "Jump"
+						children = 
+						[
+							{
+								_class = "AnimFile"
+								name = "jump"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/jump.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "jump_land"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/jump_land.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "jump_land_to_sub"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/jump_land_to_sub.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "jump_to_sub"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/jump_to_sub.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+						]
+					},
+					{
+						_class = "Folder"
+						name = "Inspect"
+						children = 
+						[
+							{
+								_class = "AnimFile"
+								name = "inspect"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/inspect.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "inspect_drum"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/inspect_drum.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "inspect_xmag"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/inspect_xmag.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+						]
+					},
+					{
+						_class = "Folder"
+						name = "Charge"
+						children = 
+						[
+							{
+								_class = "AnimFile"
+								name = "charge_2"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/charge_2.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+							{
+								_class = "AnimFile"
+								name = "charge"
+								activity_name = ""
+								activity_weight = 1
+								weight_list_name = ""
+								fade_in_time = 0.2
+								fade_out_time = 0.2
+								looping = false
+								delta = false
+								worldSpace = false
+								hidden = false
+								anim_markup_ordered = false
+								disable_compression = false
+								disable_interpolation = false
+								enable_scale = false
+								source_filename = "models/animations/pistol/charge.fbx"
+								start_frame = -1
+								end_frame = -1
+								framerate = -1.0
+								take = 0
+								reverse = false
+							},
+						]
+					},
+				]
+				default_root_bone_name = ""
+			},
+		]
+		model_archetype = ""
+		primary_associated_entity = ""
+		anim_graph_name = ""
+		base_model_name = ""
+	}
+}
