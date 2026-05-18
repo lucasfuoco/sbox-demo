@@ -1,0 +1,255 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc30:version{8c2d7a91-9c42-4bf0-883a-5a3b1762d4f1} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "MaterialGroupList"
+				children = 
+				[
+					{
+						_class = "DefaultMaterialGroup"
+						remaps = 
+						[
+							{
+								from = "base_male_arm_skintone_01.vmat"
+								to = "materials/skin/base_male_arm_skintone.vmat"
+							},
+							{
+								from = "knuckled_col_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_bale.vmat"
+							},
+						]
+						use_global_default = false
+						global_default_material = ""
+					},
+					{
+						_class = "MaterialGroup"
+						name = "alex_a"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_alex_a.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "alex_b"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_alex_b.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "clan"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_clan.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "zane"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_col_zane.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "ghost_a"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_ghost_a.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "ghost_b"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_ghost_b.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "ghost_c"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_ghost_c.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "krauger_a"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_kreuger_a.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "krauger_b"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_kreuger_b.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "krauger_c"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_kreuger_c.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "milsim"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_milsim.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "rodion_a"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_rodion_a.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "rodion_b"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_rodion_b.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "wyatt_a"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_wyatt_a.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "wyatt_b"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_wyatt_b.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "wyatt_c"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_wyatt_c.vmat"
+							},
+						]
+					},
+					{
+						_class = "MaterialGroup"
+						name = "wyatt_d"
+						remaps = 
+						[
+							{
+								from = "materials/gloves/knuckled/knuckled_bale.vmat"
+								to = "materials/gloves/knuckled/knuckled_wyatt_d.vmat"
+							},
+						]
+					},
+				]
+			},
+			{
+				_class = "RenderMeshList"
+				children = 
+				[
+					{
+						_class = "RenderMeshFile"
+						filename = "models/gloves/oakley_base.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 1.0
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = true
+							exception_list = 
+							[
+								"oakley_base",
+							]
+						}
+					},
+				]
+			},
+			{
+				_class = "AnimationList"
+				children = 
+				[
+				]
+				default_root_bone_name = ""
+			},
+		]
+		model_archetype = ""
+		primary_associated_entity = ""
+		anim_graph_name = ""
+		base_model_name = ""
+	}
+}

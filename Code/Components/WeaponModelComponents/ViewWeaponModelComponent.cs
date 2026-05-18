@@ -13,7 +13,7 @@ namespace Sandbox.Components.WeaponModelComponents;
 /// A weapon's viewmodel. It's responsibility is to listen to events from a weapon.
 /// It should only exist on the client for the currently possessed pawn.
 /// </summary>
-public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSetup, IGameEventHandler<PlayerUseEvent>
+public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSetup, IGameEventHandler<PlayerUseEvent>, Component.ExecuteInEditor
 {
 	/// <summary>
 	/// A reference to the <see cref="Equipment"/> we want to listen to.
@@ -26,9 +26,29 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 	public EquipmentResource Resource { get; set; }
 
 	/// <summary>
-	/// A reference to the viewmodel's arms.
+	/// Arms rig prefab (sleeves, profile, loadout). Spawned as a child at runtime.
 	/// </summary>
-	[Property, Group( "Components" )] public SkinnedModelRenderer Arms { get; set; }
+	[Property, Group( "Prefabs" )] public GameObject ArmsPrefab { get; set; }
+
+	/// <summary>
+	/// Optional glove slot prefab, parented under the arms instance when spawned.
+	/// </summary>
+	[Property, Group( "Prefabs" )] public GameObject GlovesPrefab { get; set; }
+
+	/// <summary>
+	/// Spawned arms instance. Use for slot authoring root (sleeves).
+	/// </summary>
+	public GameObject ArmsInstance { get; private set; }
+
+	/// <summary>
+	/// Spawned gloves instance when <see cref="GlovesPrefab"/> is set.
+	/// </summary>
+	public GameObject GlovesInstance { get; private set; }
+
+	/// <summary>
+	/// Arms mesh used for the anim graph. Resolved from <see cref="ArmsPrefab"/> or an embedded Arms child.
+	/// </summary>
+	public SkinnedModelRenderer Arms { get; private set; }
 
 	/// <summary>
 	/// Is this a throwable?
@@ -92,6 +112,9 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 
 	protected override void OnStart()
 	{
+		EnsureRigPrefabs();
+		ResolveAttachmentPoints();
+
 		// Somehow?
 		if ( Owner.IsValid() )
 			Owner.OnJump += OnPlayerJumped;
@@ -104,6 +127,185 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 		{
 			OnFireMode( shoot.CurrentFireMode );
 		}
+	}
+
+	protected override void OnDestroy()
+	{
+		DestroyRigPrefabs();
+	}
+
+	protected override void OnValidate()
+	{
+		if ( !Game.IsEditor )
+			return;
+
+		EnsureRigPrefabs();
+	}
+
+	/// <summary>
+	/// Root object for attachment slots in a category (sleeves on arms, gloves on gloves prefab when set).
+	/// </summary>
+	public GameObject GetSlotRoot( string category )
+	{
+		if ( category.Equals( "glove", StringComparison.OrdinalIgnoreCase ) && GlovesInstance.IsValid() )
+			return GlovesInstance;
+
+		if ( ArmsInstance.IsValid() )
+			return ArmsInstance;
+
+		return Arms.IsValid() ? Arms.GameObject : null;
+	}
+
+	void EnsureRigPrefabs()
+	{
+		if ( !Game.IsEditor )
+			ApplyOwnerRigPrefabs();
+
+		if ( ArmsPrefab.IsValid() && !ArmsInstance.IsValid() )
+			SpawnArmsPrefab();
+
+		if ( GlovesPrefab.IsValid() && !GlovesInstance.IsValid() )
+			SpawnGlovesPrefab();
+
+		if ( !Arms.IsValid() )
+			ResolveEmbeddedArms();
+
+		if ( Arms.IsValid() && !ModelRenderer.IsValid() )
+			ModelRenderer = Arms;
+
+		ArmsInstance?.GetComponent<ViewModelArmsLoadoutComponent>()?.Apply();
+	}
+
+	/// <summary>
+	/// Re-spawns arms/gloves from the owner's <see cref="PlayerViewModelRigComponent"/> (e.g. after team change).
+	/// </summary>
+	public void RefreshArmsRig()
+	{
+		DestroyRigPrefabs();
+		EnsureRigPrefabs();
+	}
+
+	void ApplyOwnerRigPrefabs()
+	{
+		if ( !Owner.IsValid() )
+			return;
+
+		var rig = Owner.GetComponent<PlayerViewModelRigComponent>();
+		if ( !rig.IsValid() )
+			return;
+
+		var entry = rig.GetActiveRig();
+		if ( entry.ArmsPrefab.IsValid() )
+			ArmsPrefab = entry.ArmsPrefab;
+
+		GlovesPrefab = entry.GlovesPrefab.IsValid() ? entry.GlovesPrefab : null;
+	}
+
+	void SpawnArmsPrefab()
+	{
+		ArmsInstance = ArmsPrefab.Clone( new CloneConfig
+		{
+			Parent = GameObject,
+			Transform = new(),
+			StartEnabled = true
+		} );
+
+		ArmsInstance.Name = "Arms";
+		Arms = FindArmsRenderer( ArmsInstance );
+	}
+
+	void SpawnGlovesPrefab()
+	{
+		var parent = ArmsInstance.IsValid() ? ArmsInstance : GameObject;
+
+		GlovesInstance = GlovesPrefab.Clone( new CloneConfig
+		{
+			Parent = parent,
+			Transform = new(),
+			StartEnabled = true
+		} );
+
+		GlovesInstance.Name = "Gloves";
+	}
+
+	void DestroyRigPrefabs()
+	{
+		if ( GlovesInstance.IsValid() )
+		{
+			GlovesInstance.Destroy();
+			GlovesInstance = null;
+		}
+
+		if ( ArmsInstance.IsValid() )
+		{
+			ArmsInstance.Destroy();
+			ArmsInstance = null;
+		}
+
+		Arms = null;
+	}
+
+	/// <summary>
+	/// Legacy: arms embedded directly on the viewmodel prefab instead of via <see cref="ArmsPrefab"/>.
+	/// </summary>
+	void ResolveEmbeddedArms()
+	{
+		foreach ( var go in GameObject.GetAllObjects( true ) )
+		{
+			if ( !go.Name.Equals( "Arms", StringComparison.OrdinalIgnoreCase ) )
+				continue;
+
+			if ( go == ArmsInstance || go == GlovesInstance )
+				continue;
+
+			var renderer = FindArmsRenderer( go );
+			if ( !renderer.IsValid() )
+				continue;
+
+			ArmsInstance = go;
+			Arms = renderer;
+			return;
+		}
+	}
+
+	static SkinnedModelRenderer FindArmsRenderer( GameObject go )
+	{
+		if ( !go.IsValid() )
+			return null;
+
+		var renderer = go.Components.Get<SkinnedModelRenderer>();
+		if ( renderer.IsValid() )
+			return renderer;
+
+		return go.Components.GetInChildren<SkinnedModelRenderer>();
+	}
+
+	/// <summary>
+	/// Prefer skeleton bones from <see cref="SkinnedModelRenderer.CreateBoneObjects"/> when present.
+	/// </summary>
+	void ResolveAttachmentPoints()
+	{
+		var muzzleBone = FindDescendant( "tag_barrel_attach", "tag_silencer" );
+		if ( muzzleBone.IsValid() )
+			Muzzle = muzzleBone;
+
+		var ejectionBone = FindDescendant( "slide" );
+		if ( ejectionBone.IsValid() )
+			EjectionPort = ejectionBone;
+	}
+
+	GameObject FindDescendant( params string[] names )
+	{
+		foreach ( var name in names )
+		{
+			foreach ( var child in GameObject.GetAllObjects( true ) )
+			{
+				if ( child.Name.Equals( name, StringComparison.OrdinalIgnoreCase ) )
+					return child;
+			}
+		}
+
+		return null;
 	}
 
 	void OnPlayerJumped()
