@@ -64,7 +64,7 @@
 						align_origin_y_type = "None"
 						align_origin_z_type = "None"
 						filename = "models/weapons/makarov/makarov_physics.fbx"
-						import_scale = 1.0
+						import_scale = 0.03937
 						maxMeshVertices = 0
 						qemError = 0.0
 						import_filter = 

@@ -8,7 +8,7 @@ namespace Sandbox.Components.WeaponEquipmentComponents;
 
 /// <summary>
 /// Applies weapon attachment selections to gameplay stats and viewmodel slot meshes.
-/// Profile is resolved from a sibling <see cref="WeaponAttachmentProfileComponent"/>.
+/// Profile is resolved from <see cref="WeaponModelComponents.ViewWeaponModelComponent.AttachmentProfile"/>.
 /// Viewmodel children: slot_{category}_{option} (e.g. slot_barrel_barsil).
 /// </summary>
 [Title( "Attachment Loadout" ), Group( "Weapon Components" )]
@@ -93,11 +93,11 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 
 	WeaponAttachmentProfileComponent ResolveProfileComponent()
 	{
-		var onEquipment = Equipment.GetComponentInChildren<WeaponAttachmentProfileComponent>();
-		if ( onEquipment.IsValid() )
-			return onEquipment;
+		var viewModel = Equipment.ViewWeaponModel;
+		if ( viewModel.IsValid() && viewModel.AttachmentProfile.IsValid() )
+			return viewModel.AttachmentProfile;
 
-		return Equipment.ViewWeaponModel?.GetComponentInChildren<WeaponAttachmentProfileComponent>();
+		return Equipment.GetComponentInChildren<WeaponAttachmentProfileComponent>();
 	}
 
 	void EnsureDefaultSelections()
@@ -289,12 +289,18 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 
 	public void ApplyMeshVisibility()
 	{
-		var vmRoot = Equipment.ViewWeaponModel?.GameObject;
-		if ( !vmRoot.IsValid() || _resolvedProfile is null )
+		var viewModel = Equipment.ViewWeaponModel;
+		if ( !viewModel.IsValid() || _resolvedProfile is null )
 			return;
 
 		foreach ( var slot in _resolvedProfile.Slots )
-			AttachmentSlotUtility.SetSlotVisible( vmRoot, slot.Category, GetSelection( slot.Category ) );
+		{
+			var root = viewModel.GetSlotRoot( slot.Category );
+			if ( !root.IsValid() )
+				continue;
+
+			AttachmentSlotUtility.SetSlotVisible( root, slot.Category, GetSelection( slot.Category ) );
+		}
 	}
 
 	// --- Dev helpers ---

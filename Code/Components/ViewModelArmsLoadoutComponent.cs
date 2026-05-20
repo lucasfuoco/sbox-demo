@@ -1,12 +1,10 @@
 using Sandbox.Attributes;
-using Sandbox.Components.WeaponModelComponents;
 
 namespace Sandbox.Components;
 
 /// <summary>
-/// Applies sleeve and glove selections via prefab slot meshes under the viewmodel Arms object.
-/// Profile from <see cref="ViewModelArmsProfileComponent"/>.
-/// Prefab children: slot_{category}_{option} (e.g. slot_glove_mechanix_black).
+/// Applies glove selections via prefab slot meshes on the arms rig.
+/// Profile from <see cref="ViewModelArmsRigComponent.ArmsProfile"/>.
 /// </summary>
 [Title( "Arms Loadout" ), Group( "Viewmodel" )]
 public partial class ViewModelArmsLoadoutComponent : Component, Component.ExecuteInEditor
@@ -15,12 +13,9 @@ public partial class ViewModelArmsLoadoutComponent : Component, Component.Execut
 	public NetDictionary<string, string> Selections { get; private set; } = new();
 
 	[Property, Group( "Editor Preview" )]
-	public string EditorSleeve { get; set; } = "gorka_1";
-
-	[Property, Group( "Editor Preview" )]
 	public string EditorGlove { get; set; } = "mechanix_black";
 
-	ViewWeaponModelComponent _viewModel;
+	ViewModelArmsRigComponent _armsRig;
 	ViewModelArmsProfile _profile;
 
 	protected override void OnStart()
@@ -52,17 +47,24 @@ public partial class ViewModelArmsLoadoutComponent : Component, Component.Execut
 
 	bool TryInitialize()
 	{
-		_viewModel ??= GetComponentInParent<ViewWeaponModelComponent>();
-		_profile ??= GetComponent<ViewModelArmsProfileComponent>()?.Profile;
+		_armsRig ??= GetComponent<ViewModelArmsRigComponent>()
+			?? GetComponentInParent<ViewModelArmsRigComponent>();
+
+		if ( !_armsRig.IsValid() )
+			return false;
+
+		_armsRig.ResolveComponents();
+
+		if ( Game.IsEditor )
+			_armsRig.EnsureProfile();
+
+		_profile ??= _armsRig.ArmsProfile?.Profile;
 
 		if ( _profile is null )
 			return false;
 
-		if ( !_viewModel.IsValid() || !_viewModel.Arms.IsValid() )
+		if ( !_armsRig.Arms.IsValid() )
 			return false;
-
-		if ( string.IsNullOrWhiteSpace( EditorSleeve ) )
-			EditorSleeve = _profile.GetDefaultOption( "sleeve" );
 
 		if ( string.IsNullOrWhiteSpace( EditorGlove ) )
 			EditorGlove = _profile.GetDefaultOption( "glove" );
@@ -84,15 +86,8 @@ public partial class ViewModelArmsLoadoutComponent : Component, Component.Execut
 
 	public string GetSelection( string category )
 	{
-		if ( Game.IsEditor )
-		{
-			return category switch
-			{
-				"sleeve" => EditorSleeve,
-				"glove" => EditorGlove,
-				_ => _profile?.GetDefaultOption( category ) ?? "none"
-			};
-		}
+		if ( Game.IsEditor && category.Equals( "glove", StringComparison.OrdinalIgnoreCase ) )
+			return EditorGlove;
 
 		if ( Selections.TryGetValue( category, out var selected ) )
 			return selected;
@@ -109,15 +104,10 @@ public partial class ViewModelArmsLoadoutComponent : Component, Component.Execut
 		if ( slot is null || slot.FindOption( optionId ) is null )
 			return;
 
-		if ( Game.IsEditor )
-		{
-			if ( category == "sleeve" ) EditorSleeve = optionId;
-			if ( category == "glove" ) EditorGlove = optionId;
-		}
+		if ( Game.IsEditor && category.Equals( "glove", StringComparison.OrdinalIgnoreCase ) )
+			EditorGlove = optionId;
 		else
-		{
 			Selections[category] = optionId;
-		}
 
 		Apply();
 	}
@@ -140,7 +130,7 @@ public partial class ViewModelArmsLoadoutComponent : Component, Component.Execut
 
 	public void Apply()
 	{
-		if ( _profile is null || !_viewModel.IsValid() || !_viewModel.Arms.IsValid() )
+		if ( _profile is null || !_armsRig.IsValid() || !_armsRig.Arms.IsValid() )
 			return;
 
 		ApplyMeshVisibility();
@@ -148,12 +138,12 @@ public partial class ViewModelArmsLoadoutComponent : Component, Component.Execut
 
 	public void ApplyMeshVisibility()
 	{
-		if ( !_viewModel.IsValid() )
+		if ( !_armsRig.IsValid() )
 			return;
 
 		foreach ( var slot in _profile.Slots )
 		{
-			var root = _viewModel.GetSlotRoot( slot.Category );
+			var root = _armsRig.GetSlotRoot( slot.Category );
 			if ( !root.IsValid() )
 				continue;
 
@@ -163,9 +153,6 @@ public partial class ViewModelArmsLoadoutComponent : Component, Component.Execut
 
 	// --- Dev helpers ---
 
-	[DeveloperCommand( "Arms Cycle Sleeve", "Weapons" )]
-	private static void DevCycleSleeve() => WithLoadout( l => l.CycleSelection( "sleeve" ) );
-
 	[DeveloperCommand( "Arms Cycle Glove", "Weapons" )]
 	private static void DevCycleGlove() => WithLoadout( l => l.CycleSelection( "glove" ) );
 
@@ -173,17 +160,16 @@ public partial class ViewModelArmsLoadoutComponent : Component, Component.Execut
 	private static void DevRefreshArms() => WithLoadout( l =>
 	{
 		l.Apply();
-		Log.Info( $"Arms refreshed: sleeve={l.GetSelection( "sleeve" )}, glove={l.GetSelection( "glove" )}" );
+		Log.Info( $"Arms refreshed: glove={l.GetSelection( "glove" )}" );
 	} );
 
 	static void WithLoadout( Action<ViewModelArmsLoadoutComponent> action )
 	{
-		var loadout = ClientComponent.Local?.PlayerPawn?.CurrentEquipment?.ViewWeaponModel
-			?.GetComponent<ViewModelArmsLoadoutComponent>();
+		var loadout = ClientComponent.Local?.PlayerPawn?.CurrentEquipment?.ViewWeaponModel?.ArmsRig?.Loadout;
 
 		if ( !loadout.IsValid() )
 		{
-			Log.Warning( "Current viewmodel has no ViewModelArmsLoadoutComponent." );
+			Log.Warning( "Current viewmodel has no arms loadout." );
 			return;
 		}
 

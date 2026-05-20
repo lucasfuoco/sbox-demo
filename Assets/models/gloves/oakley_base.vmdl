@@ -243,6 +243,10 @@
 				_class = "AnimationList"
 				children = 
 				[
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_list_fix.vmdl_prefab"
+					},
 				]
 				default_root_bone_name = ""
 			},

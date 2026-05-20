@@ -21,7 +21,8 @@ public class ViewModelArmsSlotDefinition
 }
 
 /// <summary>
-/// Sleeve and glove slot options. Prefab children: slot_sleeve_gorka_1, slot_glove_mechanix_black, etc.
+/// Glove slot options. Built from <see cref="Components.ViewModelArmsSlotComponent"/> references.
+/// Prefab meshes: slot_glove_mechanix_black, etc.
 /// </summary>
 public class ViewModelArmsProfile
 {

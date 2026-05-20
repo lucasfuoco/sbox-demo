@@ -6,8 +6,8 @@ using Sandbox.GameEvents;
 namespace Sandbox.Components;
 
 /// <summary>
-/// Per-character viewmodel arms and gloves prefabs (western vs eastern by team).
-/// Pair with <see cref="ViewWeaponModelComponent"/> on weapons (weapon prefab arms are editor fallbacks only).
+/// Per-character viewmodel arms prefab (western vs eastern by team). Glove slots live on the arms prefab.
+/// Pair with <see cref="ViewWeaponModelComponent"/>; arms prefabs need <see cref="ViewModelArmsRigComponent"/>.
 /// </summary>
 [Title( "Viewmodel Arms Rig" ), Group( "Player" )]
 public sealed class PlayerViewModelRigComponent : Component,
@@ -16,7 +16,6 @@ public sealed class PlayerViewModelRigComponent : Component,
 	public struct FactionRigEntry
 	{
 		[Property] public GameObject ArmsPrefab { get; set; }
-		[Property] public GameObject GlovesPrefab { get; set; }
 	}
 
 	[Property] public PlayerPawnComponent PlayerPawn { get; set; }
@@ -45,7 +44,7 @@ public sealed class PlayerViewModelRigComponent : Component,
 	}
 
 	/// <summary>
-	/// Re-spawns arms/gloves on the locally equipped viewmodel after a team change.
+	/// Re-spawns arms on the locally equipped viewmodel after a team change.
 	/// </summary>
 	public void RefreshActiveViewWeaponArms()
 	{

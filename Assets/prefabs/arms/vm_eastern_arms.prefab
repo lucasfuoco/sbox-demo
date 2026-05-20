@@ -3,7 +3,7 @@
     "__guid": "a11e4d1a-4b58-4efd-a5ef-b4727a720e46",
     "__version": 2,
     "Flags": 0,
-    "Name": "Arms",
+    "Name": "vm_eastern_arms",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
@@ -17,7 +17,7 @@
     "Components": [
       {
         "__type": "Sandbox.SkinnedModelRenderer",
-        "__guid": "56087908-c483-4126-9205-e835446cf715",
+        "__guid": "1f73c290-e1fa-4905-b07f-5cf0f4b33df1",
         "__enabled": true,
         "Flags": 0,
         "AnimationGraph": null,
@@ -46,12 +46,12 @@
         },
         "PlaybackRate": 1,
         "RenderOptions": {
-          "GameLayer": false,
-          "OverlayLayer": true,
+          "GameLayer": true,
+          "OverlayLayer": false,
           "BloomLayer": false,
           "AfterUILayer": false
         },
-        "RenderType": "Off",
+        "RenderType": "On",
         "Sequence": {
           "Name": null,
           "Looping": true,
@@ -61,22 +61,22 @@
         "UseAnimGraph": true
       },
       {
-        "__type": "Sandbox.Components.ViewModelArmsProfileComponents.EasternViewModelArmsProfileComponent",
-        "__guid": "cb6a94ff-b818-4f0b-8bd7-856d056ac30a",
+        "__type": "Sandbox.Components.ViewModelArmsRigComponent",
+        "__guid": "f91bbcf2-10fc-4b24-8d23-e07166556ca0",
         "__enabled": true,
         "Flags": 0,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null
-      },
-      {
-        "__type": "Sandbox.Components.ViewModelArmsLoadoutComponent",
-        "__guid": "4e6dec7c-3c63-413a-8325-64a2c7dd72cd",
-        "__enabled": true,
-        "Flags": 0,
+        "Arms": {
+          "_type": "component",
+          "component_id": "1f73c290-e1fa-4905-b07f-5cf0f4b33df1",
+          "go": "a11e4d1a-4b58-4efd-a5ef-b4727a720e46",
+          "component_type": "SkinnedModelRenderer"
+        },
+        "ArmsProfile": {
+          "_type": "component",
+          "component_id": "e849f91d-97b0-483a-a45d-234346764cfc",
+          "go": "4be8b6e7-4331-485f-ab8f-6ed94ba41526",
+          "component_type": "ViewModelArmsProfileComponent"
+        },
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -344,8 +344,812 @@
             "Children": []
           }
         ]
+      },
+      {
+        "__guid": "4be8b6e7-4331-485f-ab8f-6ed94ba41526",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "profile",
+        "Position": "0,0,0",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.Components.ViewModelArmsProfileComponent",
+            "__guid": "e849f91d-97b0-483a-a45d-234346764cfc",
+            "__enabled": true,
+            "Flags": 0,
+            "Glove": {
+              "_type": "component",
+              "component_id": "1b5c2c64-b423-4a04-9ac4-0397a0cfb995",
+              "go": "bccf5e11-82ad-4fce-8d8d-494dc62ba7d1",
+              "component_type": "ViewModelArmsSlotComponent"
+            },
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null
+          }
+        ],
+        "Children": [
+          {
+            "__guid": "bccf5e11-82ad-4fce-8d8d-494dc62ba7d1",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "glove",
+            "Position": "0,0,0",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.ViewModelArmsSlotComponent",
+                "__guid": "1b5c2c64-b423-4a04-9ac4-0397a0cfb995",
+                "__enabled": true,
+                "Flags": 0,
+                "Category": "Glove",
+                "DefaultOption": {
+                  "_type": "component",
+                  "component_id": "6ce3fe2f-49bb-4e15-96d1-9e4c91933ce8",
+                  "go": "1441c61d-b7db-40f7-b85a-3576f0421e7a",
+                  "component_type": "ViewModelArmsOptionComponent"
+                },
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Options": [
+                  {
+                    "_type": "component",
+                    "component_id": "6ce3fe2f-49bb-4e15-96d1-9e4c91933ce8",
+                    "go": "1441c61d-b7db-40f7-b85a-3576f0421e7a",
+                    "component_type": "ViewModelArmsOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "e82e2149-0b41-45a2-bc43-2eacf4571569",
+                    "go": "a245e900-cc3e-4161-806e-23a847f55673",
+                    "component_type": "ViewModelArmsOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "9f9a60ef-d49a-43da-a031-401c45c50b7c",
+                    "go": "e0e3d413-5551-42be-b91e-f3a44256bf84",
+                    "component_type": "ViewModelArmsOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "5ba5c999-57fc-4b26-98dc-7fd86f9266ba",
+                    "go": "6a16dcf4-c863-466a-b4fb-7938bb6f1fea",
+                    "component_type": "ViewModelArmsOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "cf2d6e9a-365c-4c80-839e-eff23f220c93",
+                    "go": "8c73211e-dca4-4fc7-aa90-7667bf261473",
+                    "component_type": "ViewModelArmsOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "a542dcba-0a66-481c-bb57-f18d2cbe6007",
+                    "go": "58e82a36-c008-45d0-9293-64e3163daadf",
+                    "component_type": "ViewModelArmsOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "9eeb5bce-9313-4ff7-8dd6-47af191f8f92",
+                    "go": "6fc066b6-234d-4eec-966f-c0d1bd23d0b6",
+                    "component_type": "ViewModelArmsOptionComponent"
+                  },
+                  {
+                    "_type": "component",
+                    "component_id": "152e92cb-11a3-415c-b0be-8f2f0bcf0b44",
+                    "go": "d518727f-1d28-462a-b63d-252a36dd327e",
+                    "component_type": "ViewModelArmsOptionComponent"
+                  }
+                ]
+              }
+            ],
+            "Children": [
+              {
+                "__guid": "1441c61d-b7db-40f7-b85a-3576f0421e7a",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "compacted",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "877f7d13-10c2-4733-8439-17d6dd5ade13",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "1f73c290-e1fa-4905-b07f-5cf0f4b33df1",
+                      "go": "a11e4d1a-4b58-4efd-a5ef-b4727a720e46",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/gloves/compacted.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": true,
+                      "OverlayLayer": false,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.ViewModelArmsOptionComponent",
+                    "__guid": "6ce3fe2f-49bb-4e15-96d1-9e4c91933ce8",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "compacted"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "a245e900-cc3e-4161-806e-23a847f55673",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "eastern_fireteam_dmr",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "9381df49-7be4-4da6-b2fe-1c9f0c1ffd95",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "1f73c290-e1fa-4905-b07f-5cf0f4b33df1",
+                      "go": "a11e4d1a-4b58-4efd-a5ef-b4727a720e46",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/gloves/eastern_fireteam_dmr.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": true,
+                      "OverlayLayer": false,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.ViewModelArmsOptionComponent",
+                    "__guid": "e82e2149-0b41-45a2-bc43-2eacf4571569",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "eastern_fireteam_dmr"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "e0e3d413-5551-42be-b91e-f3a44256bf84",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "mechanix",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "d2918ab5-a8d4-4e95-9cc9-fe381abdd66d",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "1f73c290-e1fa-4905-b07f-5cf0f4b33df1",
+                      "go": "a11e4d1a-4b58-4efd-a5ef-b4727a720e46",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/gloves/mechanix.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": true,
+                      "OverlayLayer": false,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.ViewModelArmsOptionComponent",
+                    "__guid": "9f9a60ef-d49a-43da-a031-401c45c50b7c",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "mechanix"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "6a16dcf4-c863-466a-b4fb-7938bb6f1fea",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "oakley_base",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "898fe0bd-bff8-4f8b-8113-22075f9253b4",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "1f73c290-e1fa-4905-b07f-5cf0f4b33df1",
+                      "go": "a11e4d1a-4b58-4efd-a5ef-b4727a720e46",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/gloves/oakley_base.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": true,
+                      "OverlayLayer": false,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.ViewModelArmsOptionComponent",
+                    "__guid": "5ba5c999-57fc-4b26-98dc-7fd86f9266ba",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "oakley_base"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "8c73211e-dca4-4fc7-aa90-7667bf261473",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "oakley_fingerless",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "99df98b4-5500-4575-b627-0e2cf522d4b3",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "1f73c290-e1fa-4905-b07f-5cf0f4b33df1",
+                      "go": "a11e4d1a-4b58-4efd-a5ef-b4727a720e46",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/gloves/oakley_fingerless.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": true,
+                      "OverlayLayer": false,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.ViewModelArmsOptionComponent",
+                    "__guid": "cf2d6e9a-365c-4c80-839e-eff23f220c93",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "oakley_fingerless"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "58e82a36-c008-45d0-9293-64e3163daadf",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "technician",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.Components.ViewModelArmsOptionComponent",
+                    "__guid": "a542dcba-0a66-481c-bb57-f18d2cbe6007",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "technician"
+                  },
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "78b3444e-51fb-4889-9e99-b668452c04d6",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "1f73c290-e1fa-4905-b07f-5cf0f4b33df1",
+                      "go": "a11e4d1a-4b58-4efd-a5ef-b4727a720e46",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/gloves/technician.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": true,
+                      "OverlayLayer": false,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "6fc066b6-234d-4eec-966f-c0d1bd23d0b6",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "vm_mp_eastern_fireteam",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "003bdd7f-7016-460f-8e5c-8e46eb9ceb1d",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "1f73c290-e1fa-4905-b07f-5cf0f4b33df1",
+                      "go": "a11e4d1a-4b58-4efd-a5ef-b4727a720e46",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/gloves/vm_mp_eastern_fireteam.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": true,
+                      "OverlayLayer": false,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.ViewModelArmsOptionComponent",
+                    "__guid": "9eeb5bce-9313-4ff7-8dd6-47af191f8f92",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "vm_mp_eastern_fireteam"
+                  }
+                ],
+                "Children": []
+              },
+              {
+                "__guid": "d518727f-1d28-462a-b63d-252a36dd327e",
+                "__version": 2,
+                "Flags": 0,
+                "Name": "nomex",
+                "Position": "0,0,0",
+                "Rotation": "0,0,0,1",
+                "Scale": "1,1,1",
+                "Tags": "",
+                "Enabled": true,
+                "NetworkMode": 2,
+                "NetworkFlags": 0,
+                "NetworkOrphaned": 0,
+                "NetworkTransmit": true,
+                "OwnerTransfer": 1,
+                "Components": [
+                  {
+                    "__type": "Sandbox.SkinnedModelRenderer",
+                    "__guid": "172a3bc9-f0db-4fd2-a5e6-1c6e82ac021d",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "AnimationGraph": null,
+                    "BodyGroups": 18446744073709551615,
+                    "BoneMergeTarget": {
+                      "_type": "component",
+                      "component_id": "1f73c290-e1fa-4905-b07f-5cf0f4b33df1",
+                      "go": "a11e4d1a-4b58-4efd-a5ef-b4727a720e46",
+                      "component_type": "SkinnedModelRenderer"
+                    },
+                    "CreateAttachments": false,
+                    "CreateBoneObjects": false,
+                    "LodOverride": null,
+                    "MaterialGroup": null,
+                    "MaterialOverride": null,
+                    "Materials": null,
+                    "Model": "models/gloves/nomex.vmdl",
+                    "Morphs": {},
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "Parameters": {
+                      "bools": {},
+                      "ints": {},
+                      "floats": {},
+                      "vectors": {},
+                      "rotations": {}
+                    },
+                    "PlaybackRate": 1,
+                    "RenderOptions": {
+                      "GameLayer": true,
+                      "OverlayLayer": false,
+                      "BloomLayer": false,
+                      "AfterUILayer": false
+                    },
+                    "RenderType": "On",
+                    "Sequence": {
+                      "Name": null,
+                      "Looping": true,
+                      "Blending": false
+                    },
+                    "Tint": "1,1,1,1",
+                    "UseAnimGraph": true
+                  },
+                  {
+                    "__type": "Sandbox.Components.ViewModelArmsOptionComponent",
+                    "__guid": "152e92cb-11a3-415c-b0be-8f2f0bcf0b44",
+                    "__enabled": true,
+                    "Flags": 0,
+                    "OnComponentDestroy": null,
+                    "OnComponentDisabled": null,
+                    "OnComponentEnabled": null,
+                    "OnComponentFixedUpdate": null,
+                    "OnComponentStart": null,
+                    "OnComponentUpdate": null,
+                    "OptionId": "nomex"
+                  }
+                ],
+                "Children": []
+              }
+            ]
+          }
+        ]
       }
-    ]
+    ],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "DeferGeneration": false,
+        "CustomBounds": false
+      }
+    },
+    "__variables": []
   },
   "ResourceVersion": 2,
   "ShowInMenu": false,

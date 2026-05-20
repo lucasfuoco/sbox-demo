@@ -110,7 +110,9 @@ public partial class EquipmentComponent : Component, Component.INetworkListener,
 		var player = ClientComponent.Local.PlayerPawn;
 
 		player.CurrentEquipment.ViewWeaponModel.ModelRenderer.Enabled = !player.CurrentEquipment.ViewWeaponModel.ModelRenderer.Enabled;
-		player.CurrentEquipment.ViewWeaponModel.Arms.Enabled = !player.CurrentEquipment.ViewWeaponModel.Arms.Enabled;
+
+		if ( player.CurrentEquipment.ViewWeaponModel.Arms.IsValid() )
+			player.CurrentEquipment.ViewWeaponModel.Arms.Enabled = !player.CurrentEquipment.ViewWeaponModel.Arms.Enabled;
 	}
 
 	/// <summary>

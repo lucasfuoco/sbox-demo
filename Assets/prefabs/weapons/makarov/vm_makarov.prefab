@@ -69,8 +69,16 @@
           "_type": "gameobject",
           "prefab": "prefabs/arms/vm_eastern_arms.prefab"
         },
-        "EjectionPort": null,
-        "GlovesPrefab": null,
+        "AttachmentProfile": {
+          "_type": "component",
+          "component_id": "6c4ab395-9c21-4f6a-9742-bd8e45289dd1",
+          "go": "cc670901-e1b1-40b4-ab7b-a33daf13a55b",
+          "component_type": "WeaponAttachmentProfileComponent"
+        },
+        "EjectionPort": {
+          "_type": "gameobject",
+          "go": "1903ce85-9431-4471-8aeb-8cb8e5324b3b"
+        },
         "IronsightsFireScale": 0.2,
         "IsThrowable": false,
         "ModelRenderer": {
@@ -499,7 +507,7 @@
           "MovedObjects": []
         },
         "__PrefabIdToInstanceId": {
-          "138bd2fe-6639-491f-8a5a-8bddbd7cb066": "42fe9ac0-f5c1-4943-aaa0-e1ad4991cde7"
+          "d9fdf955-176e-404f-80a8-3f48501410b9": "cceb894f-eab3-4cc8-9e3f-c0c03405e0c0"
         }
       },
       {
@@ -517,28 +525,13 @@
               },
               "Property": "Name",
               "Value": "Arms"
-            },
-            {
-              "Target": {
-                "Type": "Component",
-                "IdValue": "56087908-c483-4126-9205-e835446cf715"
-              },
-              "Property": "BoneMergeTarget",
-              "Value": {
-                "_type": "component",
-                "component_id": "82053a73-97c1-4bcd-b464-7f4ec40ec6e9",
-                "go": "d2b5629f-642e-4f38-a92a-5b421be16b29",
-                "component_type": "SkinnedModelRenderer"
-              }
             }
           ],
           "MovedObjects": []
         },
         "__PrefabIdToInstanceId": {
           "a11e4d1a-4b58-4efd-a5ef-b4727a720e46": "76ada414-bd43-4f8c-b6dc-52c2d5a14880",
-          "56087908-c483-4126-9205-e835446cf715": "803769e6-8ea2-4f7d-8ad8-6cebc2f560f3",
-          "cb6a94ff-b818-4f0b-8bd7-856d056ac30a": "27a6b6c1-bb7d-4edb-836b-337b121cda13",
-          "4e6dec7c-3c63-413a-8325-64a2c7dd72cd": "c51348f7-fdb0-4a2f-b7b1-471bcf0e2cae",
+          "4be8b6e7-4331-485f-ab8f-6ed94ba41526": "872d39d6-8dd0-4b7e-b349-dfd99c7ca9d1",
           "4c08d45d-f3c2-4c65-8cb1-7d242dbd9f41": "0f3bc174-6906-4d26-aa01-20a72b3e4541",
           "0b69c61f-7ead-444c-80a8-ebf70e101d70": "781ccc5a-2c3b-4ff0-9c96-dfad1b1f69d0",
           "98a3f3c4-992d-46b1-8fce-7a10fb1ceecc": "de205360-2bf7-4b0b-9212-4e95eefaf847",
@@ -552,7 +545,36 @@
           "02ddd92a-7515-4dd8-a3e8-41608d9dc927": "ac83c34c-6e27-4a68-9e95-fbd1b3b2a2bc",
           "3b23f20a-a5e0-4f73-a896-1772bfd21283": "5a446acb-4276-44b2-b8a9-980782c1daea",
           "c88c3f73-0d25-4886-a924-0a6e27f0076e": "6ad34a3b-fd72-4301-ac69-f203e34ae433",
-          "95a6894f-6bfe-4611-ab83-cf3baf2a172c": "f015686d-4a17-4faa-a38d-02b8d0918757"
+          "95a6894f-6bfe-4611-ab83-cf3baf2a172c": "f015686d-4a17-4faa-a38d-02b8d0918757",
+          "e849f91d-97b0-483a-a45d-234346764cfc": "c0fa0ef4-aab3-454e-8890-2b3b9b70de50",
+          "bccf5e11-82ad-4fce-8d8d-494dc62ba7d1": "daee2ac2-9992-47e7-8b0d-972e8d0f81b0",
+          "1441c61d-b7db-40f7-b85a-3576f0421e7a": "c3ca527a-575d-444d-b9da-6238207d7652",
+          "1b5c2c64-b423-4a04-9ac4-0397a0cfb995": "392270ea-912c-4b20-b8d9-7deae39693a5",
+          "a245e900-cc3e-4161-806e-23a847f55673": "eef0e23a-3069-4d9c-ba2e-1945b770710b",
+          "e0e3d413-5551-42be-b91e-f3a44256bf84": "63f1515a-9dfb-4f81-a409-b2cf72c58cf9",
+          "6a16dcf4-c863-466a-b4fb-7938bb6f1fea": "bab6841b-0a6b-4c9f-b8b6-428927c05af8",
+          "8c73211e-dca4-4fc7-aa90-7667bf261473": "2b8cd864-f6bd-4fbf-a813-a075885c216d",
+          "58e82a36-c008-45d0-9293-64e3163daadf": "fe8526b5-77f9-44d2-b6f0-7c48172d0a5b",
+          "6fc066b6-234d-4eec-966f-c0d1bd23d0b6": "53fe1bf3-42cf-4996-8127-e9c674abad14",
+          "6ce3fe2f-49bb-4e15-96d1-9e4c91933ce8": "f4c09d17-61eb-4173-804a-de19747a0eb5",
+          "e82e2149-0b41-45a2-bc43-2eacf4571569": "e4f57df7-ed69-403c-8998-56a17f0ac762",
+          "9f9a60ef-d49a-43da-a031-401c45c50b7c": "ea91ad11-9f70-473e-8519-c13559391cdc",
+          "5ba5c999-57fc-4b26-98dc-7fd86f9266ba": "f99a5598-e9ed-48f3-8abc-2b51420f298f",
+          "cf2d6e9a-365c-4c80-839e-eff23f220c93": "1676e7f7-09b2-496d-a868-880a60e5c193",
+          "a542dcba-0a66-481c-bb57-f18d2cbe6007": "85b3c433-b6f7-48a5-90c1-b1e9f05fc0e2",
+          "9eeb5bce-9313-4ff7-8dd6-47af191f8f92": "6ca90f45-4dc0-4631-83bd-39be03a7d6cd",
+          "877f7d13-10c2-4733-8439-17d6dd5ade13": "408d37b1-8a50-41ad-9971-bcda556c63d8",
+          "9381df49-7be4-4da6-b2fe-1c9f0c1ffd95": "57d4c009-be65-404e-b5b5-6f750f3f23ec",
+          "d518727f-1d28-462a-b63d-252a36dd327e": "0fe0a493-c4a9-41b4-9c3d-e0020f76f9ac",
+          "d2918ab5-a8d4-4e95-9cc9-fe381abdd66d": "e927d9df-226e-440d-9a0e-d748ee258b34",
+          "898fe0bd-bff8-4f8b-8113-22075f9253b4": "42622445-8d9b-45ec-8897-9a2f2525aa0f",
+          "99df98b4-5500-4575-b627-0e2cf522d4b3": "c7eca40a-ddb9-4ade-b4ae-c27697f975d1",
+          "78b3444e-51fb-4889-9e99-b668452c04d6": "5544eeb8-bf2d-4ab3-b552-d577584fa425",
+          "003bdd7f-7016-460f-8e5c-8e46eb9ceb1d": "ec92d64e-a7ab-49b1-b098-79cf10a17d42",
+          "172a3bc9-f0db-4fd2-a5e6-1c6e82ac021d": "3eb64b1d-ea52-4b81-b40f-25121f0e12ef",
+          "1f73c290-e1fa-4905-b07f-5cf0f4b33df1": "f36f1583-5ec1-441a-9e0d-d7ad5f8e76dc",
+          "152e92cb-11a3-415c-b0be-8f2f0bcf0b44": "54cbf9bd-8151-4520-9a10-00ac9fc92037",
+          "f91bbcf2-10fc-4b24-8d23-e07166556ca0": "63eda664-af7b-48d8-bdf9-4fde2b9e84bb"
         }
       },
       {
@@ -3164,6 +3186,24 @@
             ]
           }
         ]
+      },
+      {
+        "__guid": "c139372f-68be-433d-9f71-2eeb637a8e45",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "Muzzle",
+        "Position": "34.6410522,0,3.13421631",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [],
+        "Children": []
       }
     ],
     "__properties": {

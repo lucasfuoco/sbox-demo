@@ -1,33 +1,52 @@
+using Sandbox;
 
 namespace Sandbox.Components;
 
 /// <summary>
-/// Defines sleeve and glove slot options. Pair with <see cref="ViewModelArmsLoadoutComponent"/>.
+/// Builds an arms profile from assigned <see cref="ViewModelArmsSlotComponent"/> references.
+/// Assign on <see cref="ViewModelArmsRigComponent"/>; pair with <see cref="ViewModelArmsLoadoutComponent"/>.
 /// </summary>
 [Title( "Arms Profile" ), Group( "Viewmodel" )]
-public abstract class ViewModelArmsProfileComponent : Component, Component.ExecuteInEditor
+public class ViewModelArmsProfileComponent : Component, Component.ExecuteInEditor
 {
+	[Property, Group( "Slots" )] public ViewModelArmsSlotComponent Glove { get; set; }
+
 	public ViewModelArmsProfile Profile { get; private set; }
 
-	protected override void OnAwake()
+	protected override void OnAwake() => RebuildProfile();
+
+	protected override void OnValidate()
 	{
-		Profile = CreateProfile();
+		if ( Game.IsEditor )
+			RebuildProfile();
 	}
 
-	protected abstract ViewModelArmsProfile CreateProfile();
-
-	protected static ViewModelArmsSlotDefinition Slot( string category, string defaultOption, params ViewModelArmsOptionDefinition[] options )
+	public void RebuildProfile()
 	{
-		return new ViewModelArmsSlotDefinition
+		Profile = BuildFromAssignedSlots();
+	}
+
+	ViewModelArmsProfile BuildFromAssignedSlots()
+	{
+		var profile = new ViewModelArmsProfile();
+
+		foreach ( var slot in GetAssignedSlots() )
 		{
-			Category = category,
-			DefaultOption = defaultOption,
-			Options = options.ToList()
-		};
+			if ( !slot.IsValid() )
+				continue;
+
+			var definition = slot.ToDefinition();
+			if ( definition.Options.Count == 0 )
+				continue;
+
+			profile.Slots.Add( definition );
+		}
+
+		return profile;
 	}
 
-	protected static ViewModelArmsOptionDefinition Opt( string id )
+	public IEnumerable<ViewModelArmsSlotComponent> GetAssignedSlots()
 	{
-		return new ViewModelArmsOptionDefinition { Id = id };
+		yield return Glove;
 	}
 }
