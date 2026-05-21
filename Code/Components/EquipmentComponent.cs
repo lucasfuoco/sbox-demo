@@ -288,7 +288,7 @@ public partial class EquipmentComponent : Component, Component.INetworkListener,
 			if ( !viewWeaponModelComponent.IsValid() )
 				return;
 
-			viewWeaponModelComponent.PlayDeployEffects = playDeployEffects;
+			viewWeaponModelComponent.SetPlayDeployEffects( playDeployEffects );
 
 			ViewWeaponModel = viewWeaponModelComponent;
 

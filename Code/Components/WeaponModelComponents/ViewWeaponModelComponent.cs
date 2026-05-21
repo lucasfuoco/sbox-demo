@@ -32,6 +32,14 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 	public WeaponAttachmentProfileComponent AttachmentProfile { get; set; }
 
 	/// <summary>
+	/// Sequence-based viewmodel states (replaces per-weapon <c>animations.lua</c>).
+	/// </summary>
+	[Property, Group( "Animations" )]
+	public WeaponViewModelAnimationProfileComponent AnimationProfile { get; set; }
+
+	public WeaponViewModelAnimationControllerComponent AnimationController { get; private set; }
+
+	/// <summary>
 	/// Arms rig prefab (must include <see cref="ViewModelArmsRigComponent"/>). Spawned as a child at runtime.
 	/// </summary>
 	[Property, Group( "Prefabs" )] public GameObject ArmsPrefab { get; set; }
@@ -87,7 +95,7 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 		{
 			ApplyThrowableAnimations();
 		}
-		else
+		else if ( !UsesSequenceAnimations )
 		{
 			ApplyAnimationParameters();
 		}
@@ -109,6 +117,7 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 	protected override void OnStart()
 	{
 		EnsureAttachmentProfile();
+		EnsureAnimationProfile();
 		EnsureRigPrefabs();
 		ResolveAttachmentPoints();
 
@@ -137,6 +146,7 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 			return;
 
 		EnsureAttachmentProfile();
+		EnsureAnimationProfile();
 		EnsureRigPrefabs();
 	}
 
@@ -149,10 +159,62 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 			AttachmentProfile.RebuildProfile();
 	}
 
+	void EnsureAnimationProfile()
+	{
+		if ( !AnimationProfile.IsValid() )
+			AnimationProfile = GetComponentInChildren<WeaponViewModelAnimationProfileComponent>();
+
+		if ( Game.IsEditor && AnimationProfile.IsValid() )
+			AnimationProfile.RebuildProfile();
+
+		if ( !AnimationController.IsValid() )
+			AnimationController = GetComponentInChildren<WeaponViewModelAnimationControllerComponent>();
+
+		if ( AnimationController.IsValid() )
+			AnimationController.ResolveReferences();
+	}
+
+	public bool UsesSequenceAnimations =>
+		AnimationController.IsValid() && AnimationController.HasProfile;
+
+	public bool TryPlayAnimation( string stateId )
+	{
+		EnsureAnimationProfile();
+		return AnimationController.IsValid() && AnimationController.Play( stateId );
+	}
+
+	public bool TryPlayFireAnimation( bool isLastShot )
+	{
+		if ( !AnimationProfile.IsValid() )
+			return false;
+
+		return TryPlayAnimation( AnimationProfile.ResolveFireStateId( isLastShot ) );
+	}
+
+	public bool TryPlayReloadAnimation( bool hasAmmoInMag )
+	{
+		if ( !AnimationProfile.IsValid() )
+			return false;
+
+		return TryPlayAnimation( AnimationProfile.ResolveReloadStateId( hasAmmoInMag ) );
+	}
+
+	public bool TryGetAnimationDuration( string stateId, out float duration )
+	{
+		EnsureAnimationProfile();
+		if ( !AnimationController.IsValid() )
+		{
+			duration = 0f;
+			return false;
+		}
+
+		return AnimationController.TryGetDuration( stateId, out duration );
+	}
+
 	/// <summary>
 	/// Root object for slot meshes (weapon attachments on this viewmodel, gloves on <see cref="ArmsRig"/>).
 	/// </summary>
-	public GameObject GetSlotRoot( string category )
+	public override GameObject GetSlotRoot( string category )
 	{
 		if ( category.Equals( "glove", StringComparison.OrdinalIgnoreCase ) && ArmsRig.IsValid() )
 			return ArmsRig.GetSlotRoot( category );
@@ -165,17 +227,58 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 		if ( !Game.IsEditor )
 			ApplyOwnerRigPrefabs();
 
-		if ( ArmsPrefab.IsValid() && !ArmsRig.IsValid() )
-			SpawnArmsPrefab();
-
+		// Prefer arms already on the prefab (editor preview). Runtime spawns from player rig.
 		if ( !ArmsRig.IsValid() )
 			ResolveEmbeddedArmsRig();
+
+		if ( !Game.IsEditor && ArmsPrefab.IsValid() && !ArmsRig.IsValid() )
+			SpawnArmsPrefab();
+
+		if ( Game.IsEditor )
+			CleanupDuplicateArmsInEditor();
 
 		if ( Arms.IsValid() && !ModelRenderer.IsValid() )
 			ModelRenderer = Arms;
 
 		ArmsRig?.ResolveComponents();
 		ArmsRig?.Loadout?.Apply();
+	}
+
+	/// <summary>
+	/// Removes extra "Arms" children left from editor OnValidate spawning (prefab should have at most one preview rig).
+	/// </summary>
+	void CleanupDuplicateArmsInEditor()
+	{
+		if ( !Game.IsEditor )
+			return;
+
+		var rigs = new List<ViewModelArmsRigComponent>();
+		foreach ( var go in GameObject.GetAllObjects( true ) )
+		{
+			if ( !go.Name.Equals( "Arms", StringComparison.OrdinalIgnoreCase ) )
+				continue;
+
+			var rig = go.Components.Get<ViewModelArmsRigComponent>();
+			if ( !rig.IsValid() )
+				rig = go.Components.GetInChildren<ViewModelArmsRigComponent>();
+
+			if ( rig.IsValid() )
+				rigs.Add( rig );
+		}
+
+		if ( rigs.Count <= 1 )
+			return;
+
+		if ( !ArmsRig.IsValid() )
+			BindArmsRig( rigs[0].GameObject, rigs[0] );
+
+		foreach ( var rig in rigs )
+		{
+			if ( ArmsRig.IsValid() && rig == ArmsRig )
+				continue;
+
+			rig.GameObject.Destroy();
+		}
 	}
 
 	/// <summary>
@@ -254,7 +357,19 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 		if ( !ArmsRig.IsValid() )
 			ArmsRig = instance.Components.GetInChildren<ViewModelArmsRigComponent>();
 
-		ArmsRig?.ResolveComponents();
+		if ( !ArmsRig.IsValid() )
+			return;
+
+		ArmsRig.ResolveComponents();
+		BindArmsToWeaponRenderer();
+	}
+
+	void BindArmsToWeaponRenderer()
+	{
+		if ( !ArmsRig.IsValid() )
+			return;
+
+		ArmsRig.ApplyBoneMerge( WeaponMeshRenderer );
 	}
 
 	/// <summary>
@@ -460,13 +575,17 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 	/// <summary>
 	/// Should we play deploy effects?
 	/// </summary>
-	public bool PlayDeployEffects
+	public bool PlayDeployEffects { get; private set; } = true;
+
+	public void SetPlayDeployEffects( bool value )
 	{
-		set
-		{
-			SetOnAnimGraphRenderers( "b_deploy", value );
-			SetOnAnimGraphRenderers( "b_deploy_skip", !value );
-		}
+		PlayDeployEffects = value;
+
+		if ( UsesSequenceAnimations )
+			return;
+
+		SetOnAnimGraphRenderers( "b_deploy", value );
+		SetOnAnimGraphRenderers( "b_deploy_skip", !value );
 	}
 
 	private void ApplyThrowableAnimations()

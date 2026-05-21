@@ -1,15 +1,17 @@
 using Sandbox.Attributes;
+using Sandbox.Components.PawnComponents;
 using Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 using Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.AimableWeaponInputActionEquipmentComponents;
+using Sandbox.Components.WeaponModelComponents;
 using Sandbox.GameResources;
 using Sandbox;
 
 namespace Sandbox.Components.WeaponEquipmentComponents;
 
 /// <summary>
-/// Applies weapon attachment selections to gameplay stats and viewmodel slot meshes.
-/// Profile is resolved from <see cref="WeaponModelComponents.ViewWeaponModelComponent.AttachmentProfile"/>.
-/// Viewmodel children: slot_{category}_{option} (e.g. slot_barrel_barsil).
+/// Applies weapon attachment selections to gameplay stats and weapon mesh slot visibility.
+/// Profile is resolved from <see cref="ViewWeaponModelComponent.AttachmentProfile"/>.
+/// Slot meshes: slot_{category}_{option} (e.g. slot_barrel_barsil) on view, world, and holstered mount models.
 /// </summary>
 [Title( "Attachment Loadout" ), Group( "Weapon Components" )]
 public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent, IViewWeaponModelOffset
@@ -42,7 +44,7 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 	float _baseReloadSpeed;
 	int _baseMaxAmmo;
 
-	bool _viewModelBound;
+	int _lastAttachmentTargetCount = -1;
 
 	protected override void OnStart()
 	{
@@ -65,17 +67,15 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 
 	protected override void OnUpdate()
 	{
-		if ( Equipment.ViewWeaponModel.IsValid() )
+		var targetCount = EnumerateAttachmentTargets().Count();
+		if ( targetCount > 0 && targetCount != _lastAttachmentTargetCount )
 		{
-			if ( !_viewModelBound )
-			{
-				_viewModelBound = true;
-				ApplyMeshVisibility();
-			}
+			_lastAttachmentTargetCount = targetCount;
+			ApplyMeshVisibility();
 		}
-		else
+		else if ( targetCount == 0 )
 		{
-			_viewModelBound = false;
+			_lastAttachmentTargetCount = -1;
 		}
 	}
 
@@ -289,18 +289,61 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 
 	public void ApplyMeshVisibility()
 	{
-		var viewModel = Equipment.ViewWeaponModel;
-		if ( !viewModel.IsValid() || _resolvedProfile is null )
+		if ( _resolvedProfile is null )
+			return;
+
+		foreach ( var model in EnumerateAttachmentTargets() )
+			ApplyMeshVisibilityToModel( model );
+	}
+
+	void ApplyMeshVisibilityToModel( WeaponModelComponent model )
+	{
+		if ( !model.IsValid() )
 			return;
 
 		foreach ( var slot in _resolvedProfile.Slots )
 		{
-			var root = viewModel.GetSlotRoot( slot.Category );
+			if ( slot.Category.Equals( "glove", StringComparison.OrdinalIgnoreCase )
+				&& model is not ViewWeaponModelComponent )
+				continue;
+
+			var root = model.GetSlotRoot( slot.Category );
 			if ( !root.IsValid() )
 				continue;
 
 			AttachmentSlotUtility.SetSlotVisible( root, slot.Category, GetSelection( slot.Category ) );
 		}
+	}
+
+	IEnumerable<WeaponModelComponent> EnumerateAttachmentTargets()
+	{
+		if ( Equipment.ViewWeaponModel.IsValid() )
+			yield return Equipment.ViewWeaponModel;
+
+		if ( Equipment.WorldWeaponModel.IsValid() )
+			yield return Equipment.WorldWeaponModel;
+
+		var mounted = TryGetMountedWeaponModel();
+		if ( mounted.IsValid() )
+			yield return mounted;
+	}
+
+	WeaponModelComponent TryGetMountedWeaponModel()
+	{
+		var owner = Equipment.Owner;
+		if ( !owner.IsValid() )
+			return null;
+
+		var mountPoints = owner.Components.Get<EquipmentMountPointsComponent>();
+		if ( !mountPoints.IsValid() )
+			return null;
+
+		var mount = mountPoints.GetMount( Equipment );
+		if ( mount is null || !mount.Mounted.TryGetValue( Equipment, out var mountedGo ) || !mountedGo.IsValid() )
+			return null;
+
+		return mountedGo.Components.GetInChildren<WorldWeaponModelComponent>()
+			?? mountedGo.Components.GetInChildren<WeaponModelComponent>();
 	}
 
 	// --- Dev helpers ---

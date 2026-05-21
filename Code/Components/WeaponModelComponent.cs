@@ -83,4 +83,10 @@ public abstract class WeaponModelComponent : Component
 	{
 		SetOnAnimGraphRenderers( "b_deploy", true );
 	}
+
+	/// <summary>
+	/// Root object for <c>slot_{category}_{option}</c> attachment meshes.
+	/// Viewmodels may redirect categories (e.g. gloves) to a child rig.
+	/// </summary>
+	public virtual GameObject GetSlotRoot( string category ) => GameObject;
 }

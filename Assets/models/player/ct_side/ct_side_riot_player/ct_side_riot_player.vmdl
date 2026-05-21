@@ -144,10 +144,6 @@
 				_class = "AnimationList"
 				children = 
 				[
-					{
-						_class = "Prefab"
-						target_file = "models/player/prefabs_v2/prefab_animation_list.vmdl_prefab"
-					},
 				]
 				default_root_bone_name = ""
 			},

@@ -65,6 +65,12 @@
         "__guid": "c31ad56b-c5e1-4e58-b79c-fe31f7daba16",
         "__enabled": true,
         "Flags": 0,
+        "AnimationProfile": {
+          "_type": "component",
+          "component_id": "ee40686a-2808-4205-a781-255f876c444d",
+          "go": "4e42a990-b98f-48c4-98a0-a4355263fc78",
+          "component_type": "WeaponViewModelAnimationProfileComponent"
+        },
         "ArmsPrefab": {
           "_type": "gameobject",
           "prefab": "prefabs/arms/vm_eastern_arms.prefab"
@@ -99,6 +105,30 @@
         "OnComponentUpdate": null,
         "ReloadSpeed": 1,
         "UseMovementInertia": true
+      },
+      {
+        "__type": "Sandbox.Components.WeaponViewModelAnimationControllerComponent",
+        "__guid": "f7e3b2a1-8d4c-5e6f-b7a8-9c0d1e2f3a4b",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "ProfileSource": {
+          "_type": "component",
+          "component_id": "ee40686a-2808-4205-a781-255f876c444d",
+          "go": "4e42a990-b98f-48c4-98a0-a4355263fc78",
+          "component_type": "WeaponViewModelAnimationProfileComponent"
+        },
+        "ViewModel": {
+          "_type": "component",
+          "component_id": "c31ad56b-c5e1-4e58-b79c-fe31f7daba16",
+          "go": "d2b5629f-642e-4f38-a92a-5b421be16b29",
+          "component_type": "ViewWeaponModelComponent"
+        }
       }
     ],
     "Children": [
@@ -488,100 +518,10 @@
         "Children": []
       },
       {
-        "__guid": "67bb6c6e-015b-4d35-8e72-ec6c26d1ee2b",
-        "__version": 2,
-        "__Prefab": "prefabs/weapons/makarov/vm_eastern_arms.prefab",
-        "__PrefabInstancePatch": {
-          "AddedObjects": [],
-          "RemovedObjects": [],
-          "PropertyOverrides": [
-            {
-              "Target": {
-                "Type": "GameObject",
-                "IdValue": "a11e4d1a-4b58-4efd-a5ef-b4727a720e46"
-              },
-              "Property": "Name",
-              "Value": "Arms"
-            }
-          ],
-          "MovedObjects": []
-        },
-        "__PrefabIdToInstanceId": {
-          "d9fdf955-176e-404f-80a8-3f48501410b9": "cceb894f-eab3-4cc8-9e3f-c0c03405e0c0"
-        }
-      },
-      {
-        "__guid": "76ada414-bd43-4f8c-b6dc-52c2d5a14880",
-        "__version": 2,
-        "__Prefab": "prefabs/arms/vm_eastern_arms.prefab",
-        "__PrefabInstancePatch": {
-          "AddedObjects": [],
-          "RemovedObjects": [],
-          "PropertyOverrides": [
-            {
-              "Target": {
-                "Type": "GameObject",
-                "IdValue": "a11e4d1a-4b58-4efd-a5ef-b4727a720e46"
-              },
-              "Property": "Name",
-              "Value": "Arms"
-            }
-          ],
-          "MovedObjects": []
-        },
-        "__PrefabIdToInstanceId": {
-          "a11e4d1a-4b58-4efd-a5ef-b4727a720e46": "76ada414-bd43-4f8c-b6dc-52c2d5a14880",
-          "4be8b6e7-4331-485f-ab8f-6ed94ba41526": "872d39d6-8dd0-4b7e-b349-dfd99c7ca9d1",
-          "4c08d45d-f3c2-4c65-8cb1-7d242dbd9f41": "0f3bc174-6906-4d26-aa01-20a72b3e4541",
-          "0b69c61f-7ead-444c-80a8-ebf70e101d70": "781ccc5a-2c3b-4ff0-9c96-dfad1b1f69d0",
-          "98a3f3c4-992d-46b1-8fce-7a10fb1ceecc": "de205360-2bf7-4b0b-9212-4e95eefaf847",
-          "a7fcbb50-99f6-446c-928a-cfef790a7fcc": "144555fd-617a-427c-8050-146c1375d358",
-          "61685c95-42cd-4736-9e99-3be836912ff8": "94bbf782-13f9-4ecd-88f3-66b0ff8ddedc",
-          "1806ad49-5359-464e-874a-8a43aa3435bb": "572b8bb7-781a-4c52-a037-57c69b27dfde",
-          "d1a4f766-6b24-4471-a33e-4a5b04cc076c": "904c5061-4104-4ceb-8fd2-104d446fc5d3",
-          "15f9a44d-fb54-4ba1-aca7-10482285b889": "bfe6a45e-20f9-4931-b5b9-1fc0bdda570d",
-          "9d7ce86f-fe62-43c4-a741-84aae7d431c6": "ef37aa55-74db-4575-8c3d-863d0b22a8e3",
-          "3b1803f1-7741-4d2b-91c0-7e5447600758": "f22ebd1b-c220-4038-b513-85921ac1ff40",
-          "02ddd92a-7515-4dd8-a3e8-41608d9dc927": "ac83c34c-6e27-4a68-9e95-fbd1b3b2a2bc",
-          "3b23f20a-a5e0-4f73-a896-1772bfd21283": "5a446acb-4276-44b2-b8a9-980782c1daea",
-          "c88c3f73-0d25-4886-a924-0a6e27f0076e": "6ad34a3b-fd72-4301-ac69-f203e34ae433",
-          "95a6894f-6bfe-4611-ab83-cf3baf2a172c": "f015686d-4a17-4faa-a38d-02b8d0918757",
-          "e849f91d-97b0-483a-a45d-234346764cfc": "c0fa0ef4-aab3-454e-8890-2b3b9b70de50",
-          "bccf5e11-82ad-4fce-8d8d-494dc62ba7d1": "daee2ac2-9992-47e7-8b0d-972e8d0f81b0",
-          "1441c61d-b7db-40f7-b85a-3576f0421e7a": "c3ca527a-575d-444d-b9da-6238207d7652",
-          "1b5c2c64-b423-4a04-9ac4-0397a0cfb995": "392270ea-912c-4b20-b8d9-7deae39693a5",
-          "a245e900-cc3e-4161-806e-23a847f55673": "eef0e23a-3069-4d9c-ba2e-1945b770710b",
-          "e0e3d413-5551-42be-b91e-f3a44256bf84": "63f1515a-9dfb-4f81-a409-b2cf72c58cf9",
-          "6a16dcf4-c863-466a-b4fb-7938bb6f1fea": "bab6841b-0a6b-4c9f-b8b6-428927c05af8",
-          "8c73211e-dca4-4fc7-aa90-7667bf261473": "2b8cd864-f6bd-4fbf-a813-a075885c216d",
-          "58e82a36-c008-45d0-9293-64e3163daadf": "fe8526b5-77f9-44d2-b6f0-7c48172d0a5b",
-          "6fc066b6-234d-4eec-966f-c0d1bd23d0b6": "53fe1bf3-42cf-4996-8127-e9c674abad14",
-          "6ce3fe2f-49bb-4e15-96d1-9e4c91933ce8": "f4c09d17-61eb-4173-804a-de19747a0eb5",
-          "e82e2149-0b41-45a2-bc43-2eacf4571569": "e4f57df7-ed69-403c-8998-56a17f0ac762",
-          "9f9a60ef-d49a-43da-a031-401c45c50b7c": "ea91ad11-9f70-473e-8519-c13559391cdc",
-          "5ba5c999-57fc-4b26-98dc-7fd86f9266ba": "f99a5598-e9ed-48f3-8abc-2b51420f298f",
-          "cf2d6e9a-365c-4c80-839e-eff23f220c93": "1676e7f7-09b2-496d-a868-880a60e5c193",
-          "a542dcba-0a66-481c-bb57-f18d2cbe6007": "85b3c433-b6f7-48a5-90c1-b1e9f05fc0e2",
-          "9eeb5bce-9313-4ff7-8dd6-47af191f8f92": "6ca90f45-4dc0-4631-83bd-39be03a7d6cd",
-          "877f7d13-10c2-4733-8439-17d6dd5ade13": "408d37b1-8a50-41ad-9971-bcda556c63d8",
-          "9381df49-7be4-4da6-b2fe-1c9f0c1ffd95": "57d4c009-be65-404e-b5b5-6f750f3f23ec",
-          "d518727f-1d28-462a-b63d-252a36dd327e": "0fe0a493-c4a9-41b4-9c3d-e0020f76f9ac",
-          "d2918ab5-a8d4-4e95-9cc9-fe381abdd66d": "e927d9df-226e-440d-9a0e-d748ee258b34",
-          "898fe0bd-bff8-4f8b-8113-22075f9253b4": "42622445-8d9b-45ec-8897-9a2f2525aa0f",
-          "99df98b4-5500-4575-b627-0e2cf522d4b3": "c7eca40a-ddb9-4ade-b4ae-c27697f975d1",
-          "78b3444e-51fb-4889-9e99-b668452c04d6": "5544eeb8-bf2d-4ab3-b552-d577584fa425",
-          "003bdd7f-7016-460f-8e5c-8e46eb9ceb1d": "ec92d64e-a7ab-49b1-b098-79cf10a17d42",
-          "172a3bc9-f0db-4fd2-a5e6-1c6e82ac021d": "3eb64b1d-ea52-4b81-b40f-25121f0e12ef",
-          "1f73c290-e1fa-4905-b07f-5cf0f4b33df1": "f36f1583-5ec1-441a-9e0d-d7ad5f8e76dc",
-          "152e92cb-11a3-415c-b0be-8f2f0bcf0b44": "54cbf9bd-8151-4520-9a10-00ac9fc92037",
-          "f91bbcf2-10fc-4b24-8d23-e07166556ca0": "63eda664-af7b-48d8-bdf9-4fde2b9e84bb"
-        }
-      },
-      {
         "__guid": "cc670901-e1b1-40b4-ab7b-a33daf13a55b",
         "__version": 2,
         "Flags": 0,
-        "Name": "profile",
+        "Name": "attachment_profile",
         "Position": "-576.359253,956.578491,144.290192",
         "Rotation": "0,0,0,1",
         "Scale": "1,1,1",
@@ -3188,6 +3128,719 @@
         ]
       },
       {
+        "__guid": "4e42a990-b98f-48c4-98a0-a4355263fc78",
+        "__version": 2,
+        "Flags": 0,
+        "Name": "animation_profile",
+        "Position": "228.860703,-173.706589,193.967194",
+        "Rotation": "0,0,0,1",
+        "Scale": "1,1,1",
+        "Tags": "",
+        "Enabled": true,
+        "NetworkMode": 2,
+        "NetworkFlags": 0,
+        "NetworkOrphaned": 0,
+        "NetworkTransmit": true,
+        "OwnerTransfer": 1,
+        "Components": [
+          {
+            "__type": "Sandbox.Components.WeaponViewModelAnimationProfileComponent",
+            "__guid": "ee40686a-2808-4205-a781-255f876c444d",
+            "__enabled": true,
+            "Flags": 0,
+            "DefaultStateId": "Idle",
+            "DrawStateId": "Draw",
+            "EquipStateId": "Equip",
+            "FireLastStateId": "Fire_Last",
+            "FireStateId": "Fire",
+            "HolsterStateId": "Holster",
+            "IdleStateId": "Idle",
+            "OnComponentDestroy": null,
+            "OnComponentDisabled": null,
+            "OnComponentEnabled": null,
+            "OnComponentFixedUpdate": null,
+            "OnComponentStart": null,
+            "OnComponentUpdate": null,
+            "ReloadEmptyStateId": "Reload_Empty",
+            "ReloadStateId": "Reload",
+            "States": [
+              {
+                "_type": "component",
+                "component_id": "92594e64-624f-48be-a90b-60271468c5d7",
+                "go": "75b598b7-3d89-4416-915c-7916e29c5fd8",
+                "component_type": "WeaponViewModelAnimationStateComponent"
+              },
+              {
+                "_type": "component",
+                "component_id": "212566f7-9ae4-442d-aad0-1023d3f62718",
+                "go": "deebc7fa-e22a-4464-87aa-1813ba1bf515",
+                "component_type": "WeaponViewModelAnimationStateComponent"
+              },
+              {
+                "_type": "component",
+                "component_id": "b202ea29-30e0-43aa-9ec4-226f8d044bf9",
+                "go": "4ee2944f-fae4-46fc-9300-fac6ee7d723e",
+                "component_type": "WeaponViewModelAnimationStateComponent"
+              },
+              {
+                "_type": "component",
+                "component_id": "ad7f386c-b813-4c24-b580-e3cc43b2cfc4",
+                "go": "2ab2cfb3-7f72-4635-91d4-203e4f305b27",
+                "component_type": "WeaponViewModelAnimationStateComponent"
+              },
+              {
+                "_type": "component",
+                "component_id": "4462ad8c-dacc-43a3-a38d-1e03d622d2fb",
+                "go": "37ba60c0-54a8-40a4-ad95-25d725924026",
+                "component_type": "WeaponViewModelAnimationStateComponent"
+              },
+              {
+                "_type": "component",
+                "component_id": "d869906a-a9fe-4195-af3a-4af753edcee8",
+                "go": "a0c62924-d042-40a1-9ea9-55284df0a29c",
+                "component_type": "WeaponViewModelAnimationStateComponent"
+              },
+              {
+                "_type": "component",
+                "component_id": "2a4a7184-8a77-4727-82bf-5053a78e4be4",
+                "go": "87ce2791-77e8-45dd-a9f2-4c1a10836f75",
+                "component_type": "WeaponViewModelAnimationStateComponent"
+              },
+              {
+                "_type": "component",
+                "component_id": "4863e31f-cb35-40d0-a55d-c17c3b36d06b",
+                "go": "1e07463e-dfe6-440f-9e7d-0075abf571c4",
+                "component_type": "WeaponViewModelAnimationStateComponent"
+              },
+              {
+                "_type": "component",
+                "component_id": "61fc1d80-c5cf-4b35-90fd-3d97ba4a107b",
+                "go": "3eee801b-8631-40fe-9752-2664dd0ce43b",
+                "component_type": "WeaponViewModelAnimationStateComponent"
+              },
+              {
+                "_type": "component",
+                "component_id": "67edb702-a336-443d-981d-c4241fc3d5ff",
+                "go": "9618c086-871a-4f0d-aa62-d491660d9c37",
+                "component_type": "WeaponViewModelAnimationStateComponent"
+              },
+              {
+                "_type": "component",
+                "component_id": "400b242d-353d-4dc6-a4d0-5ce2e74c6b45",
+                "go": "ae99e23a-069e-4caf-8d26-9b73d93e17a4",
+                "component_type": "WeaponViewModelAnimationStateComponent"
+              },
+              {
+                "_type": "component",
+                "component_id": "2d5dd2d7-1997-486e-b9cf-b46070b02b4b",
+                "go": "2fafb6fb-fbed-46f2-943f-397c64939e23",
+                "component_type": "WeaponViewModelAnimationStateComponent"
+              },
+              {
+                "_type": "component",
+                "component_id": "b1d4a90f-9b23-4698-9601-6e438e0315ee",
+                "go": "fe10e661-f06f-4a74-8046-e0c5b9ca5bc6",
+                "component_type": "WeaponViewModelAnimationStateComponent"
+              },
+              {
+                "_type": "component",
+                "component_id": "475c70ef-1c8b-4100-a2e7-79f7c309455b",
+                "go": "78cec46e-722f-46ad-a2e1-2a2e6f178ea1",
+                "component_type": "WeaponViewModelAnimationStateComponent"
+              }
+            ]
+          }
+        ],
+        "Children": [
+          {
+            "__guid": "75b598b7-3d89-4416-915c-7916e29c5fd8",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Idle",
+            "Position": "-805.219971,1130.28503,-49.677002",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponViewModelAnimationStateComponent",
+                "__guid": "92594e64-624f-48be-a90b-60271468c5d7",
+                "__enabled": true,
+                "Flags": 0,
+                "Events": [],
+                "Fps": 30,
+                "Length": 0,
+                "Loop": true,
+                "NextStateId": "",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Sequences": [
+                  "idle"
+                ],
+                "StateId": "Idle"
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "deebc7fa-e22a-4464-87aa-1813ba1bf515",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Draw",
+            "Position": "-805.219971,1130.28503,-49.677002",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponViewModelAnimationStateComponent",
+                "__guid": "212566f7-9ae4-442d-aad0-1023d3f62718",
+                "__enabled": true,
+                "Flags": 0,
+                "Events": [],
+                "Fps": 30,
+                "Length": 0.3,
+                "Loop": false,
+                "NextStateId": "Idle",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Sequences": [
+                  "draw"
+                ],
+                "StateId": "Draw"
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "4ee2944f-fae4-46fc-9300-fac6ee7d723e",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Holster",
+            "Position": "-805.219971,1130.28503,-49.677002",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponViewModelAnimationStateComponent",
+                "__guid": "b202ea29-30e0-43aa-9ec4-226f8d044bf9",
+                "__enabled": true,
+                "Flags": 0,
+                "Events": [],
+                "Fps": 30,
+                "Length": 0.4,
+                "Loop": false,
+                "NextStateId": "",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Sequences": [
+                  "holster"
+                ],
+                "StateId": "Holster"
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "2ab2cfb3-7f72-4635-91d4-203e4f305b27",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Equip",
+            "Position": "-805.219971,1130.28503,-49.677002",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponViewModelAnimationStateComponent",
+                "__guid": "ad7f386c-b813-4c24-b580-e3cc43b2cfc4",
+                "__enabled": true,
+                "Flags": 0,
+                "Events": [],
+                "Fps": 30,
+                "Length": 1,
+                "Loop": false,
+                "NextStateId": "Idle",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Sequences": [
+                  "draw_First"
+                ],
+                "StateId": "Equip"
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "37ba60c0-54a8-40a4-ad95-25d725924026",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Fire",
+            "Position": "-805.219971,1130.28503,-49.677002",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponViewModelAnimationStateComponent",
+                "__guid": "4462ad8c-dacc-43a3-a38d-1e03d622d2fb",
+                "__enabled": true,
+                "Flags": 0,
+                "Events": [
+                  {
+                    "Time": 0,
+                    "Action": "MuzzleFlash",
+                    "Sound": null,
+                    "AttachmentPoint": "muzzle"
+                  },
+                  {
+                    "Time": 0,
+                    "Action": "ShellEject",
+                    "Sound": null,
+                    "AttachmentPoint": "shell_eject"
+                  }
+                ],
+                "Fps": 60,
+                "Length": 0,
+                "Loop": false,
+                "NextStateId": "Idle",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Sequences": [
+                  "fire"
+                ],
+                "StateId": "Fire"
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "a0c62924-d042-40a1-9ea9-55284df0a29c",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Fire_Last",
+            "Position": "-805.219971,1130.28503,-49.677002",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponViewModelAnimationStateComponent",
+                "__guid": "d869906a-a9fe-4195-af3a-4af753edcee8",
+                "__enabled": true,
+                "Flags": 0,
+                "Events": [
+                  {
+                    "Time": 0,
+                    "Action": "MuzzleFlash",
+                    "Sound": null,
+                    "AttachmentPoint": "muzzle"
+                  },
+                  {
+                    "Time": 0,
+                    "Action": "ShellEject",
+                    "Sound": null,
+                    "AttachmentPoint": "shell_eject"
+                  }
+                ],
+                "Fps": 60,
+                "Length": 0,
+                "Loop": false,
+                "NextStateId": "Idle",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Sequences": [
+                  "fire_last"
+                ],
+                "StateId": "Fire_Last"
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "87ce2791-77e8-45dd-a9f2-4c1a10836f75",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Reload",
+            "Position": "-805.219971,1130.28503,-49.677002",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponViewModelAnimationStateComponent",
+                "__guid": "2a4a7184-8a77-4727-82bf-5053a78e4be4",
+                "__enabled": true,
+                "Flags": 0,
+                "Events": [],
+                "Fps": 30,
+                "Length": 1.66,
+                "Loop": false,
+                "NextStateId": "Idle",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Sequences": [
+                  "reload"
+                ],
+                "StateId": "Reload"
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "1e07463e-dfe6-440f-9e7d-0075abf571c4",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Reload_Empty",
+            "Position": "-805.219971,1130.28503,-49.677002",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponViewModelAnimationStateComponent",
+                "__guid": "4863e31f-cb35-40d0-a55d-c17c3b36d06b",
+                "__enabled": true,
+                "Flags": 0,
+                "Events": [],
+                "Fps": 30,
+                "Length": 2.26,
+                "Loop": false,
+                "NextStateId": "Idle",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Sequences": [
+                  "reload_empty"
+                ],
+                "StateId": "Reload_Empty"
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "3eee801b-8631-40fe-9752-2664dd0ce43b",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Ads_In",
+            "Position": "-805.219971,1130.28503,-49.677002",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponViewModelAnimationStateComponent",
+                "__guid": "61fc1d80-c5cf-4b35-90fd-3d97ba4a107b",
+                "__enabled": true,
+                "Flags": 0,
+                "Events": [],
+                "Fps": 45,
+                "Length": 0.3,
+                "Loop": false,
+                "NextStateId": "Idle",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Sequences": [
+                  "ads_in"
+                ],
+                "StateId": "Ads_In"
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "9618c086-871a-4f0d-aa62-d491660d9c37",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Ads_Out",
+            "Position": "-805.219971,1130.28503,-49.677002",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponViewModelAnimationStateComponent",
+                "__guid": "67edb702-a336-443d-981d-c4241fc3d5ff",
+                "__enabled": true,
+                "Flags": 0,
+                "Events": [],
+                "Fps": 45,
+                "Length": 0.3,
+                "Loop": false,
+                "NextStateId": "Idle",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Sequences": [
+                  "ads_out"
+                ],
+                "StateId": "Ads_Out"
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "ae99e23a-069e-4caf-8d26-9b73d93e17a4",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Sprint_In",
+            "Position": "-805.219971,1130.28503,-49.677002",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponViewModelAnimationStateComponent",
+                "__guid": "400b242d-353d-4dc6-a4d0-5ce2e74c6b45",
+                "__enabled": true,
+                "Flags": 0,
+                "Events": [],
+                "Fps": 30,
+                "Length": 0,
+                "Loop": false,
+                "NextStateId": "",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Sequences": [
+                  "sprint_in"
+                ],
+                "StateId": "Sprint_In"
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "2fafb6fb-fbed-46f2-943f-397c64939e23",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Sprint_Loop",
+            "Position": "-805.219971,1130.28503,-49.677002",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponViewModelAnimationStateComponent",
+                "__guid": "2d5dd2d7-1997-486e-b9cf-b46070b02b4b",
+                "__enabled": true,
+                "Flags": 0,
+                "Events": [],
+                "Fps": 30,
+                "Length": 0,
+                "Loop": true,
+                "NextStateId": "Sprint_Loop",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Sequences": [
+                  "sprint_loop"
+                ],
+                "StateId": "Sprint_Loop"
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "fe10e661-f06f-4a74-8046-e0c5b9ca5bc6",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Sprint_Out",
+            "Position": "-805.219971,1130.28503,-49.677002",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponViewModelAnimationStateComponent",
+                "__guid": "b1d4a90f-9b23-4698-9601-6e438e0315ee",
+                "__enabled": true,
+                "Flags": 0,
+                "Events": [],
+                "Fps": 30,
+                "Length": 0.2,
+                "Loop": false,
+                "NextStateId": "Idle",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Sequences": [
+                  "sprint_out"
+                ],
+                "StateId": "Sprint_Out"
+              }
+            ],
+            "Children": []
+          },
+          {
+            "__guid": "78cec46e-722f-46ad-a2e1-2a2e6f178ea1",
+            "__version": 2,
+            "Flags": 0,
+            "Name": "Inspect",
+            "Position": "-805.219971,1130.28503,-49.677002",
+            "Rotation": "0,0,0,1",
+            "Scale": "1,1,1",
+            "Tags": "",
+            "Enabled": true,
+            "NetworkMode": 2,
+            "NetworkFlags": 0,
+            "NetworkOrphaned": 0,
+            "NetworkTransmit": true,
+            "OwnerTransfer": 1,
+            "Components": [
+              {
+                "__type": "Sandbox.Components.WeaponViewModelAnimationStateComponent",
+                "__guid": "475c70ef-1c8b-4100-a2e7-79f7c309455b",
+                "__enabled": true,
+                "Flags": 0,
+                "Events": [],
+                "Fps": 30,
+                "Length": 5,
+                "Loop": false,
+                "NextStateId": "Idle",
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null,
+                "Sequences": [
+                  "inspect"
+                ],
+                "StateId": "Inspect"
+              }
+            ],
+            "Children": []
+          }
+        ]
+      },
+      {
         "__guid": "c139372f-68be-433d-9f71-2eeb637a8e45",
         "__version": 2,
         "Flags": 0,
@@ -3204,6 +3857,94 @@
         "OwnerTransfer": 1,
         "Components": [],
         "Children": []
+      },
+      {
+        "__guid": "787fcdb1-4458-4293-b8bd-e713cf6ae1f2",
+        "__version": 2,
+        "__Prefab": "prefabs/arms/vm_eastern_arms.prefab",
+        "__PrefabInstancePatch": {
+          "AddedObjects": [],
+          "RemovedObjects": [],
+          "PropertyOverrides": [
+            {
+              "Target": {
+                "Type": "GameObject",
+                "IdValue": "a11e4d1a-4b58-4efd-a5ef-b4727a720e46"
+              },
+              "Property": "Name",
+              "Value": "Arms"
+            },
+            {
+              "Target": {
+                "Type": "Component",
+                "IdValue": "f91bbcf2-10fc-4b24-8d23-e07166556ca0"
+              },
+              "Property": "BoneMergeTarget",
+              "Value": {
+                "_type": "component",
+                "component_id": "82053a73-97c1-4bcd-b464-7f4ec40ec6e9",
+                "go": "d2b5629f-642e-4f38-a92a-5b421be16b29",
+                "component_type": "SkinnedModelRenderer"
+              }
+            },
+            {
+              "Target": {
+                "Type": "Component",
+                "IdValue": "f91bbcf2-10fc-4b24-8d23-e07166556ca0"
+              },
+              "Property": "UseBoneMerge",
+              "Value": false
+            }
+          ],
+          "MovedObjects": []
+        },
+        "__PrefabIdToInstanceId": {
+          "a11e4d1a-4b58-4efd-a5ef-b4727a720e46": "787fcdb1-4458-4293-b8bd-e713cf6ae1f2",
+          "1f73c290-e1fa-4905-b07f-5cf0f4b33df1": "00808cc3-6cb7-499b-a788-2627b4c98238",
+          "f91bbcf2-10fc-4b24-8d23-e07166556ca0": "eb2fb596-90a3-4417-bc3a-9452bf2bc009",
+          "4c08d45d-f3c2-4c65-8cb1-7d242dbd9f41": "457aa77c-a8ef-402a-b2fc-f1893c263098",
+          "0b69c61f-7ead-444c-80a8-ebf70e101d70": "f9279e4b-00ca-4c25-ad6d-44f370449d2f",
+          "98a3f3c4-992d-46b1-8fce-7a10fb1ceecc": "ad510cf6-1a81-4b1e-b270-6b867f1c493b",
+          "a7fcbb50-99f6-446c-928a-cfef790a7fcc": "d4d9491e-fb36-4972-b0ee-6dcb4ddf8883",
+          "61685c95-42cd-4736-9e99-3be836912ff8": "f05d9ab8-d4a0-4bae-9a1f-d125376b6c71",
+          "1806ad49-5359-464e-874a-8a43aa3435bb": "f9402077-15b3-4af8-87a6-5b554dccde66",
+          "d1a4f766-6b24-4471-a33e-4a5b04cc076c": "d8d13a2a-1b9e-4d40-ba01-36672c291ca3",
+          "15f9a44d-fb54-4ba1-aca7-10482285b889": "f5115c25-615e-4361-b430-0534ddb4d10d",
+          "9d7ce86f-fe62-43c4-a741-84aae7d431c6": "494a2b99-44de-4b24-a7d3-f8808c50f2df",
+          "3b1803f1-7741-4d2b-91c0-7e5447600758": "602a57bd-ea10-4fc7-9db1-ff1fb8d9909b",
+          "02ddd92a-7515-4dd8-a3e8-41608d9dc927": "62eebfff-4b2e-486c-adc9-0e4bc25354c8",
+          "3b23f20a-a5e0-4f73-a896-1772bfd21283": "9abb7779-11d1-463f-a81e-e66cd9dc5f52",
+          "c88c3f73-0d25-4886-a924-0a6e27f0076e": "80fe6274-140a-4216-adf7-1584c5e856c8",
+          "95a6894f-6bfe-4611-ab83-cf3baf2a172c": "d35776ee-1b03-4527-be75-cd56594ba59d",
+          "4be8b6e7-4331-485f-ab8f-6ed94ba41526": "44f0a4ee-78f2-46ff-ab55-27b972494384",
+          "e849f91d-97b0-483a-a45d-234346764cfc": "bb2f45ca-e0e5-4a84-aea1-a4cd171f8ff2",
+          "bccf5e11-82ad-4fce-8d8d-494dc62ba7d1": "aa999823-9965-4577-a7df-45c32749034f",
+          "1b5c2c64-b423-4a04-9ac4-0397a0cfb995": "f283da5c-c74f-4c43-8522-f193f2ea4b6c",
+          "1441c61d-b7db-40f7-b85a-3576f0421e7a": "d368ce28-00dc-4526-a957-9d784f81b699",
+          "877f7d13-10c2-4733-8439-17d6dd5ade13": "10c7c1ca-ab77-4866-9e51-9448cb72ee02",
+          "6ce3fe2f-49bb-4e15-96d1-9e4c91933ce8": "d219f117-5ac9-45a0-9572-95b01cd40c8f",
+          "a245e900-cc3e-4161-806e-23a847f55673": "44809f1e-6afe-414e-abc5-0b5efe79de87",
+          "9381df49-7be4-4da6-b2fe-1c9f0c1ffd95": "0be12808-1c0c-4fbe-9ba1-e94d83a56c89",
+          "e82e2149-0b41-45a2-bc43-2eacf4571569": "feed348f-1f3c-4565-9883-af8b3e14f93b",
+          "e0e3d413-5551-42be-b91e-f3a44256bf84": "bc403ff0-8502-41de-a17e-d80000d86804",
+          "d2918ab5-a8d4-4e95-9cc9-fe381abdd66d": "3732dc7b-05a3-4ba2-a159-0a44e9792b72",
+          "9f9a60ef-d49a-43da-a031-401c45c50b7c": "d011173d-0d5e-457b-9dd2-59cbeeb3ff99",
+          "6a16dcf4-c863-466a-b4fb-7938bb6f1fea": "c43d3c7b-2b13-46bc-9515-fd3faf07f3ef",
+          "898fe0bd-bff8-4f8b-8113-22075f9253b4": "d0564530-baed-416d-92d3-413baa6999b1",
+          "5ba5c999-57fc-4b26-98dc-7fd86f9266ba": "25893f56-4be0-48fc-9f4a-ae5b58ffc36e",
+          "8c73211e-dca4-4fc7-aa90-7667bf261473": "c3d583bd-9cea-431d-a883-300a96c14c1a",
+          "99df98b4-5500-4575-b627-0e2cf522d4b3": "515fe36d-4fd0-4cbd-86f7-1b8a4732931b",
+          "cf2d6e9a-365c-4c80-839e-eff23f220c93": "814468c0-040c-49c6-b641-4ac50bb3c658",
+          "58e82a36-c008-45d0-9293-64e3163daadf": "dc74d802-5c05-4bc1-930e-1dac52ca8ac5",
+          "a542dcba-0a66-481c-bb57-f18d2cbe6007": "07758be2-557c-4bd4-8d76-ec3da995b768",
+          "78b3444e-51fb-4889-9e99-b668452c04d6": "a049fd5c-e4ff-4164-a328-81828cfdd9fa",
+          "6fc066b6-234d-4eec-966f-c0d1bd23d0b6": "8ffb159b-b22e-48f9-abc1-e281b15402e1",
+          "003bdd7f-7016-460f-8e5c-8e46eb9ceb1d": "d9b138ea-39be-480f-aa56-781e04621d64",
+          "9eeb5bce-9313-4ff7-8dd6-47af191f8f92": "36629cfe-7eb5-4f20-95c9-149e11da0d80",
+          "d518727f-1d28-462a-b63d-252a36dd327e": "570af537-27eb-4247-afe1-8cbe22e16b82",
+          "172a3bc9-f0db-4fd2-a5e6-1c6e82ac021d": "29e89785-2bfb-4ae2-9cf4-8c5984f5c961",
+          "152e92cb-11a3-415c-b0be-8f2f0bcf0b44": "bd7d4456-0035-48f0-a2e3-db003f600e15"
+        }
       }
     ],
     "__properties": {

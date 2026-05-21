@@ -161,36 +161,22 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		if ( !Effector.ModelRenderer.IsValid() )
 			return;
 
-		// Create a muzzle flash from a GameObject / prefab
-		if ( MuzzleFlashPrefab.IsValid() )
+		var viewModel = Equipment.ViewWeaponModel;
+		if ( viewModel.IsValid() && viewModel.TryPlayFireAnimation( AmmoComponent.IsValid() && AmmoComponent.Ammo <= 0 ) )
 		{
-			if ( Effector.Muzzle.IsValid() )
-			{
-				MuzzleFlashPrefab.Clone( new CloneConfig()
-				{
-					Parent = Effector.Muzzle,
-					Transform = new(),
-					StartEnabled = true,
-					Name = $"Muzzle flash: {Equipment.GameObject}"
-				} );
-			}
+			PlayShootSound();
+			PlayThirdPersonAttack();
+			return;
 		}
 
-		// Eject casing using GameObject / prefab
-		if ( EjectionPrefab.IsValid() )
-		{
-			if ( Effector.EjectionPort.IsValid() )
-			{
-				EjectionPrefab.Clone( new CloneConfig()
-				{
-					Parent = Effector.EjectionPort,
-					Transform = new(),
-					StartEnabled = true,
-					Name = $"Bullet ejection: {Equipment.GameObject}"
-				} );
-			}
-		}
+		SpawnMuzzleFlash();
+		SpawnShellEject();
+		PlayShootSound();
+		PlayThirdPersonAttack();
+	}
 
+	void PlayShootSound()
+	{
 		if ( ShootSound is not null )
 		{
 			if ( Sound.Play( ShootSound, Equipment.WorldPosition ) is { } snd )
@@ -200,11 +186,41 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 			}
 		}
 
-		// Third person
+	}
+
+	public void SpawnMuzzleFlash()
+	{
+		if ( !MuzzleFlashPrefab.IsValid() || !Effector.IsValid() || !Effector.Muzzle.IsValid() )
+			return;
+
+		MuzzleFlashPrefab.Clone( new CloneConfig()
+		{
+			Parent = Effector.Muzzle,
+			Transform = new(),
+			StartEnabled = true,
+			Name = $"Muzzle flash: {Equipment.GameObject}",
+		} );
+	}
+
+	public void SpawnShellEject()
+	{
+		if ( !EjectionPrefab.IsValid() || !Effector.IsValid() || !Effector.EjectionPort.IsValid() )
+			return;
+
+		EjectionPrefab.Clone( new CloneConfig()
+		{
+			Parent = Effector.EjectionPort,
+			Transform = new(),
+			StartEnabled = true,
+			Name = $"Bullet ejection: {Equipment.GameObject}",
+		} );
+	}
+
+	void PlayThirdPersonAttack()
+	{
 		if ( Equipment.Owner.IsValid() && Equipment.Owner.BodyRenderer.IsValid() )
 			Equipment.Owner.BodyRenderer.Set( "b_attack", true );
 
-		// First-person weapon mesh + arms, and third-person held weapon (slide / bolt lives on the gun renderer).
 		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_attack", true );
 	}
 
