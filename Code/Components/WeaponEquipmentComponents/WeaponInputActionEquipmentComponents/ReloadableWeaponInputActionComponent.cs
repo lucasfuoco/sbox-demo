@@ -88,15 +88,9 @@ public partial class ReloadableWeaponInputActionEquipmentComponent : WeaponInput
 
 	float GetReloadTime()
 	{
-		var viewModel = Equipment.ViewWeaponModel;
-		if ( viewModel.IsValid() && viewModel.AnimationProfile.IsValid() )
-		{
-			var stateId = viewModel.AnimationProfile.ResolveReloadStateId( AmmoComponent.HasAmmo );
-			if ( viewModel.TryGetAnimationDuration( stateId, out var duration ) && duration > 0f )
-				return duration;
-		}
+		if ( !AmmoComponent.HasAmmo )
+			return EmptyReloadTime;
 
-		if ( !AmmoComponent.HasAmmo ) return EmptyReloadTime;
 		return ReloadTime;
 	}
 
@@ -131,8 +125,7 @@ public partial class ReloadableWeaponInputActionEquipmentComponent : WeaponInput
 		}
 		else
 		{
-			if ( !Equipment.ViewWeaponModel.IsValid() || !Equipment.ViewWeaponModel.TryPlayReloadAnimation( AmmoComponent.HasAmmo ) )
-				WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_reload", true );
+			WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_reload", true );
 		}
 
 

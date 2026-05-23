@@ -32,14 +32,6 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 	public WeaponAttachmentProfileComponent AttachmentProfile { get; set; }
 
 	/// <summary>
-	/// Sequence-based viewmodel states (replaces per-weapon <c>animations.lua</c>).
-	/// </summary>
-	[Property, Group( "Animations" )]
-	public WeaponViewModelAnimationProfileComponent AnimationProfile { get; set; }
-
-	public WeaponViewModelAnimationControllerComponent AnimationController { get; private set; }
-
-	/// <summary>
 	/// Arms rig prefab (must include <see cref="ViewModelArmsRigComponent"/>). Spawned as a child at runtime.
 	/// </summary>
 	[Property, Group( "Prefabs" )] public GameObject ArmsPrefab { get; set; }
@@ -95,7 +87,7 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 		{
 			ApplyThrowableAnimations();
 		}
-		else if ( !UsesSequenceAnimations )
+		else
 		{
 			ApplyAnimationParameters();
 		}
@@ -117,7 +109,6 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 	protected override void OnStart()
 	{
 		EnsureAttachmentProfile();
-		EnsureAnimationProfile();
 		EnsureRigPrefabs();
 		ResolveAttachmentPoints();
 
@@ -146,7 +137,6 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 			return;
 
 		EnsureAttachmentProfile();
-		EnsureAnimationProfile();
 		EnsureRigPrefabs();
 	}
 
@@ -157,58 +147,6 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 
 		if ( Game.IsEditor && AttachmentProfile.IsValid() )
 			AttachmentProfile.RebuildProfile();
-	}
-
-	void EnsureAnimationProfile()
-	{
-		if ( !AnimationProfile.IsValid() )
-			AnimationProfile = GetComponentInChildren<WeaponViewModelAnimationProfileComponent>();
-
-		if ( Game.IsEditor && AnimationProfile.IsValid() )
-			AnimationProfile.RebuildProfile();
-
-		if ( !AnimationController.IsValid() )
-			AnimationController = GetComponentInChildren<WeaponViewModelAnimationControllerComponent>();
-
-		if ( AnimationController.IsValid() )
-			AnimationController.ResolveReferences();
-	}
-
-	public bool UsesSequenceAnimations =>
-		AnimationController.IsValid() && AnimationController.HasProfile;
-
-	public bool TryPlayAnimation( string stateId )
-	{
-		EnsureAnimationProfile();
-		return AnimationController.IsValid() && AnimationController.Play( stateId );
-	}
-
-	public bool TryPlayFireAnimation( bool isLastShot )
-	{
-		if ( !AnimationProfile.IsValid() )
-			return false;
-
-		return TryPlayAnimation( AnimationProfile.ResolveFireStateId( isLastShot ) );
-	}
-
-	public bool TryPlayReloadAnimation( bool hasAmmoInMag )
-	{
-		if ( !AnimationProfile.IsValid() )
-			return false;
-
-		return TryPlayAnimation( AnimationProfile.ResolveReloadStateId( hasAmmoInMag ) );
-	}
-
-	public bool TryGetAnimationDuration( string stateId, out float duration )
-	{
-		EnsureAnimationProfile();
-		if ( !AnimationController.IsValid() )
-		{
-			duration = 0f;
-			return false;
-		}
-
-		return AnimationController.TryGetDuration( stateId, out duration );
 	}
 
 	/// <summary>
@@ -580,9 +518,6 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 	public void SetPlayDeployEffects( bool value )
 	{
 		PlayDeployEffects = value;
-
-		if ( UsesSequenceAnimations )
-			return;
 
 		SetOnAnimGraphRenderers( "b_deploy", value );
 		SetOnAnimGraphRenderers( "b_deploy_skip", !value );

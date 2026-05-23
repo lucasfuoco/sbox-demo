@@ -72,13 +72,21 @@
 				_class = "AnimationList"
 				children = 
 				[
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_reload_list.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_idle_list.vmdl_prefab"
+					},
 				]
 				default_root_bone_name = ""
 			},
 		]
 		model_archetype = ""
 		primary_associated_entity = ""
-		anim_graph_name = ""
+		anim_graph_name = "animgraphs/rigged_human_pistol.vanmgrph"
 		base_model_name = ""
 	}
 }

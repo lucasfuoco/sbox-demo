@@ -241,6 +241,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -291,6 +292,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -351,6 +353,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -393,6 +396,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -436,6 +440,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -503,6 +508,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -563,6 +569,7 @@
 									m_bReset = false
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -938,6 +945,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -975,6 +983,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -1035,6 +1044,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -1095,6 +1105,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -1184,6 +1195,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -1244,6 +1256,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -1281,6 +1294,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -1348,6 +1362,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -1408,6 +1423,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -1622,6 +1638,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -1689,6 +1706,7 @@
 									m_bReset = true
 									m_resetCycleOption = "Beginning"
 									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
 									m_blendCurve = 
 									{
 										m_vControlPoint1 = [ 0.5, 0.0 ]
@@ -2472,13 +2490,13 @@
 	}
 	m_previewModels = 
 	[
-		"models/player/t_side/t_side_player_01/t_side_player_01.vmdl",
+		"models/player/t_side/t_side_player_01/t_side_player_01_v2.vmdl",
 	]
 	m_boneMergeModels = [  ]
 	m_cameraSettings = 
 	{
 		m_flFov = 60.0
-		m_sLockBoneName = "Hips"
+		m_sLockBoneName = "pelvis"
 		m_bLockCamera = false
 		m_bViewModelCamera = false
 	}

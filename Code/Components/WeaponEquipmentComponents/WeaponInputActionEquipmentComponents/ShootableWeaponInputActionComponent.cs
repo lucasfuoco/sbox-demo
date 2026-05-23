@@ -161,14 +161,6 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		if ( !Effector.ModelRenderer.IsValid() )
 			return;
 
-		var viewModel = Equipment.ViewWeaponModel;
-		if ( viewModel.IsValid() && viewModel.TryPlayFireAnimation( AmmoComponent.IsValid() && AmmoComponent.Ammo <= 0 ) )
-		{
-			PlayShootSound();
-			PlayThirdPersonAttack();
-			return;
-		}
-
 		SpawnMuzzleFlash();
 		SpawnShellEject();
 		PlayShootSound();
