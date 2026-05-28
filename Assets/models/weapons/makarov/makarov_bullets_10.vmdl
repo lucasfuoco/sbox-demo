@@ -19,7 +19,7 @@
 						align_origin_x_type = "None"
 						align_origin_y_type = "None"
 						align_origin_z_type = "None"
-						parent_bone = "tag_barrel_attach"
+						parent_bone = ""
 						import_filter = 
 						{
 							exclude_by_default = false
@@ -46,7 +46,7 @@
 						remaps = 
 						[
 							{
-								from = "weapon_vm_pi_mike_bullet.vmat"
+								from = "weapon_vm_pi_mike_bullet.011.vmat"
 								to = "materials/weapons/makarov/makarov_bullet.vmat"
 							},
 						]
@@ -56,7 +56,32 @@
 					{
 						_class = "MaterialGroup"
 						name = "bullet"
-						remaps = [  ]
+						remaps = 
+						[
+							{
+								from = "weapon_vm_pi_mike_bullet.011.vmat"
+								to = "materials/weapons/makarov/makarov_bullet.vmat"
+							},
+						]
+					},
+				]
+			},
+			{
+				_class = "BoneMarkupList"
+				bone_cull_type = "None"
+			},
+			{
+				_class = "AttachmentList"
+				children = 
+				[
+					{
+						_class = "Attachment"
+						name = "mag"
+						parent_bone = "tag_mag_attach"
+						relative_origin = [ 0.0, 0.0, 0.0 ]
+						relative_angles = [ 0.0, 0.0, 0.0 ]
+						weight = 1.0
+						ignore_rotation = false
 					},
 				]
 			},

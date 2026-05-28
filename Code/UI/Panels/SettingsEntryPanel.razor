@@ -25,11 +25,11 @@
             <div class="control">
                 @if ( Range is not null )
                 {
-                    <CustomSliderBaseControl style="width: 250px;" class="devslider" Value:bind=@Value Min=@Range.Min Max=@Range.Max Step=@Range.Step ShowTextEntry="@false" />
+                    <CustomSliderBaseControl style="width: 250px;" class="devslider" Value="@NumericValue" ValueChanged="@OnNumericValueChanged" Min="@Range.Min" Max="@Range.Max" Step="@Range.Step" ShowTextEntry="@false" />
                 }
                 else
                 {
-                    <CustomSliderBaseControl class="devslider" Value:bind=@Value />
+                    <CustomSliderBaseControl class="devslider" Value="@NumericValue" ValueChanged="@OnNumericValueChanged" />
                 }
             </div>
         }
@@ -38,7 +38,7 @@
             <div class="with-padding border-bottom grow">
                 <label class="name">@Description.Title</label>
                 <div class="grow" />
-                <Checkbox Value:bind=@Value />
+                <Checkbox Value="@BoolValue" ValueChanged="@OnBoolValueChanged" />
             </div>
         }
         else if ( Description.PropertyType == typeof( Color ) ) 
@@ -48,7 +48,7 @@
             </div>
 
             <div class="control layout column">
-                <ColorPicker Value:bind="@Value" />
+                <ColorPicker Value="@ColorValue" ValueChanged="@OnColorValueChanged" />
             </div>
         }
     }
@@ -75,7 +75,32 @@
             Description.SetValue( Target, value );   
         }
     }
+
+    public float NumericValue
+    {
+        get => Description.PropertyType == typeof( int ) ? (int)Value : Convert.ToSingle( Value );
+        set => Description.SetValue( Target, Description.PropertyType == typeof( int ) ? (int)value : value );
+    }
+
+    public bool BoolValue
+    {
+        get => (bool)Value;
+        set => Description.SetValue( Target, value );
+    }
+
+    public Color ColorValue
+    {
+        get => (Color)Value;
+        set => Description.SetValue( Target, value );
+    }
+
     public PropertyDescription Description { get; set; }
 
     public RangeAttribute Range => Description.GetCustomAttribute<RangeAttribute>();
+
+    void OnNumericValueChanged( float value ) => NumericValue = value;
+
+    void OnBoolValueChanged( bool value ) => BoolValue = value;
+
+    void OnColorValueChanged( Color value ) => ColorValue = value;
 }

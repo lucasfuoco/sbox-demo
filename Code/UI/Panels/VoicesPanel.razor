@@ -4,46 +4,67 @@
 @attribute [StyleSheet]
 @inherits Panel
 
-<root class="">
-    @foreach (var voice in VoiceList.Where( x => CanDisplay( x ) ) )
+<root>
+    @foreach ( var entry in Entries )
     {
         <div class="row">
             <div class="item-row with-background">
-                @{
-                    var player = GetPlayer( voice );
-                }
-
-                <IconPanel class="square rounded shrink-0" File="/ui/chat/radio.png" size="24" style="transform: scale( @GetAmplitudeScale( voice ) )" />
-                <img class="avatar" src="avatar:@player.SteamId" />
-                <PlayerPanel Client=@player />
+                <div class="square rounded shrink-0" style="@entry.RadioStyle"></div>
+                <div class="avatar" style="@entry.AvatarStyle"></div>
+                <label class="name" style="@entry.NameStyle">@entry.DisplayName</label>
             </div>
         </div>
     }
-
 </root>
 
 @code
 {
     public IEnumerable<PlayerVoice> VoiceList => Scene.GetAllComponents<PlayerVoice>().Where( x => x.Client.IsConnected );
 
-    private ClientComponent GetPlayer( PlayerVoice voice )
-    {
-        return voice.GetComponent<ClientComponent>();
-    }
+    private List<VoiceEntry> Entries => VoiceList
+        .Where( CanDisplay )
+        .Select( CreateEntry )
+        .ToList();
 
-    private bool CanDisplay( Voice voice )
-    {
-        return voice.LastPlayed < 0.25f;
-    }
+    private bool CanDisplay( PlayerVoice voice ) => voice.LastPlayed < 0.25f;
 
-    private string GetAmplitudeScale( Voice voice )
+    private VoiceEntry CreateEntry( PlayerVoice voice )
     {
-        var scale = 0.5f + ( voice.Amplitude * 2.365f );
-        return ( 1f + scale ).ToString( "0.#" );
+        var player = voice.GetComponent<ClientComponent>();
+        var teamColor = ( player?.Team.GetColor() ?? Color.White ).Hex;
+        var scale = ( 1f + 0.5f + ( voice.Amplitude * 2.365f ) ).ToString( "0.#" );
+
+        return new VoiceEntry
+        {
+            DisplayName = player?.DisplayName ?? "",
+            AvatarStyle = $"background-image: url(avatar:{player?.SteamId}); width: 28px; height: 28px; border-radius: 100px; background-size: cover; background-position: center; margin-left: 32px;",
+            NameStyle = $"color:{teamColor}",
+            RadioStyle = $"background-image: url(/ui/chat/radio.png); width: 24px; height: 24px; background-size: contain; background-position: center; background-repeat: no-repeat; transform: scale({scale});"
+        };
     }
 
     protected override int BuildHash()
     {
-        return HashCode.Combine( Time.Now );
+        var hash = new HashCode();
+
+        foreach ( var voice in VoiceList )
+        {
+            if ( !CanDisplay( voice ) )
+                continue;
+
+            hash.Add( voice.Amplitude );
+            hash.Add( voice.LastPlayed );
+            hash.Add( voice.GetComponent<ClientComponent>()?.Id );
+        }
+
+        return hash.ToHashCode();
+    }
+
+    private sealed class VoiceEntry
+    {
+        public string DisplayName { get; init; }
+        public string AvatarStyle { get; init; }
+        public string NameStyle { get; init; }
+        public string RadioStyle { get; init; }
     }
 }

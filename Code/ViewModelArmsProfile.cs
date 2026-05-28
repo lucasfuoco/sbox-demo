@@ -21,8 +21,8 @@ public class ViewModelArmsSlotDefinition
 }
 
 /// <summary>
-/// Glove slot options. Built from <see cref="Components.ViewModelArmsSlotComponent"/> references.
-/// Prefab meshes: slot_glove_mechanix_black, etc.
+/// Arms and glove slot options. Built from <see cref="Components.ViewModelArmsSlotComponent"/> references.
+/// Prefab meshes: slot_arms_eastern, slot_glove_mechanix_black, etc.
 /// </summary>
 public class ViewModelArmsProfile
 {

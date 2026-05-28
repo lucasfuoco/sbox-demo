@@ -3,10 +3,29 @@ namespace Sandbox.UI;
 /// <summary>
 /// A relatively simple color slider panel. thank you Alex for your instagib code from 2021
 /// </summary>
-public partial class ColorSlider
+public partial class ColorSlider : Panel
 {
 	public Image Image { get; set; }
 	public Panel Cursor { get; set; }
+
+	Color _value = Color.Red;
+
+	public Color Value
+	{
+		get => _value;
+		set => SetValue( value );
+	}
+
+	public Action<Color> ValueChanged { get; set; }
+
+	void SetValue( Color value )
+	{
+		if ( _value.ToColor32().Equals( value.ToColor32() ) )
+			return;
+
+		_value = value;
+		ValueChanged?.Invoke( value );
+	}
 
 	private bool IsDraggingMouse { get; set; }
 	private byte[] ImageData;
@@ -89,8 +108,9 @@ public partial class ColorSlider
 
 	private void UpdateCursor()
 	{
-		Cursor.Style.Left = Clamp( MousePosition.x * ScaleFromScreen );
-		Cursor.Style.Top = Clamp( MousePosition.y * ScaleFromScreen, false );
+		var localPos = Mouse.Position - Image.Box.Rect.Position;
+		Cursor.Style.Left = Clamp( localPos.x );
+		Cursor.Style.Top = Clamp( localPos.y, false );
 		// Not my proudest moment
 		Cursor.Style.Set( $"background-image: radial-gradient( {Value.Hex}, {Value.Hex} 20%, black 75% );" );
 	}
@@ -124,7 +144,7 @@ public partial class ColorSlider
 	{
 		if ( IsDraggingMouse )
 		{
-			Value = GetFromMouse();
+			SetValue( GetFromMouse() );
 			UpdateCursor();
 		}
 	}

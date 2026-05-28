@@ -1,0 +1,65 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc30:version{8c2d7a91-9c42-4bf0-883a-5a3b1762d4f1} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "AnimationList"
+				children = 
+				[
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_ads_list.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_draw_list.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_fire_list.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_idle_list.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_inspect_list.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_jog_list.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_jump_list.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_melee_list.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_reload_list.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_sprint_list.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_charge_list.vmdl_prefab"
+					},
+				]
+				default_root_bone_name = ""
+			},
+		]
+		model_archetype = ""
+		primary_associated_entity = ""
+		anim_graph_name = ""
+		base_model_name = ""
+	}
+}

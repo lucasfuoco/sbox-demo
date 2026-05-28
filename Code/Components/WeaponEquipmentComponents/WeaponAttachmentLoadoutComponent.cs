@@ -303,7 +303,8 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 
 		foreach ( var slot in _resolvedProfile.Slots )
 		{
-			if ( slot.Category.Equals( "glove", StringComparison.OrdinalIgnoreCase )
+			if ( ( slot.Category.Equals( "arms", StringComparison.OrdinalIgnoreCase )
+					|| slot.Category.Equals( "glove", StringComparison.OrdinalIgnoreCase ) )
 				&& model is not ViewWeaponModelComponent )
 				continue;
 

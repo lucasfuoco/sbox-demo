@@ -2,7 +2,7 @@ namespace Sandbox.Components;
 
 /// <summary>
 /// Root component for a viewmodel arms prefab. Owns the arms mesh, glove profile, and loadout.
-/// Spawned under <see cref="WeaponModelComponents.ViewWeaponModelComponent"/>.
+/// Embedded on the player pawn. Bound to the active weapon viewmodel at runtime.
 /// </summary>
 [Title( "Arms Rig" ), Group( "Viewmodel" )]
 public sealed class ViewModelArmsRigComponent : Component, Component.ExecuteInEditor
@@ -82,6 +82,13 @@ public sealed class ViewModelArmsRigComponent : Component, Component.ExecuteInEd
 			return;
 
 		Arms.BoneMergeTarget = target;
+
+		// Weapon anim graph drives the skeleton; merged arms only follow bones.
+		if ( target.UseAnimGraph )
+		{
+			Arms.UseAnimGraph = false;
+			Arms.AnimationGraph = null;
+		}
 	}
 
 	/// <summary>

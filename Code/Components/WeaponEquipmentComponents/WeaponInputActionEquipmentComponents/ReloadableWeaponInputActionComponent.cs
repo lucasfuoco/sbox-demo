@@ -1,7 +1,7 @@
-using Sandbox.Components.WeaponEquipmentComponents;
 using Sandbox.Components;
+using Sandbox.Components.WeaponEquipmentComponents;
+using Sandbox.Components.WeaponModelComponents;
 using Sandbox.GameEvents;
-
 namespace Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 
 [Title( "Reload" ), Group( "Weapon Components" )]
@@ -117,15 +117,10 @@ public partial class ReloadableWeaponInputActionEquipmentComponent : WeaponInput
 
 		if ( SingleReload )
 		{
-			// Tags will be better so we can just react to stimuli.
 			WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_reloading", true );
 
 			bool hasAmmo = AmmoComponent.HasAmmo;
 			WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, !hasAmmo ? "b_reloading_first_shell" : "b_reloading_shell", true );
-		}
-		else
-		{
-			WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_reload", true );
 		}
 
 
@@ -145,7 +140,6 @@ public partial class ReloadableWeaponInputActionEquipmentComponent : WeaponInput
 			IsReloading = false;
 
 		// Tags will be better so we can just react to stimuli.
-		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_reload", false );
 		Equipment.Owner?.BodyRenderer?.Set( "b_reload", false );
 		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_reloading", false );
 	}
@@ -176,9 +170,6 @@ public partial class ReloadableWeaponInputActionEquipmentComponent : WeaponInput
 				AmmoComponent.Ammo = AmmoComponent.MaxAmmo;
 			}
 		}
-
-		// Tags will be better so we can just react to stimuli.
-		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_reload", false );
 	}
 
 	[Property] public Dictionary<float, SoundEvent> TimedReloadSounds { get; set; } = new();

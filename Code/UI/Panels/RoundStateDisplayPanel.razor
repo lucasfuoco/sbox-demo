@@ -15,9 +15,9 @@
     }
 
     <div class="layout flex column with-background align-center justify-center blur" style="border: 1px solid rgba( black, 0.25 )">
-        @if ( IconPath is { } path )
+        @if ( !string.IsNullOrEmpty( IconPath ) )
         {
-            <IconPanel File="@path" size="64" />
+            <IconPanel File="@IconPath" size="64" />
         }
         else
         {

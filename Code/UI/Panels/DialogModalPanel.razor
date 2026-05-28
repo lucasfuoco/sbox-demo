@@ -26,6 +26,23 @@
     public Action OnCancel { get; set; }
     public Action OnSubmit { get; set; }
 
+    public static void Show( string text, string submitText = "OK", string cancelText = "Cancel", Action submitAction = null, Action cancelAction = null )
+    {
+        var screenPanel = Game.ActiveScene.GetAllComponents<DialogRootPanel>().FirstOrDefault();
+        if ( !screenPanel.IsValid() )
+            return;
+
+        var pnl = new DialogModalPanel
+        {
+            Parent = screenPanel.Panel,
+            Text = text,
+            CancelText = cancelText,
+            OnCancel = cancelAction,
+            OnSubmit = submitAction,
+            SubmitText = submitText
+        };
+    }
+
     private void OnCancelButton()
     {
         OnCancel?.Invoke();

@@ -243,16 +243,18 @@
 				_class = "AnimationList"
 				children = 
 				[
-					{
-						_class = "Prefab"
-						target_file = "models/animations/pistol_animation_reload_list.vmdl_prefab"
-					},
-					{
-						_class = "Prefab"
-						target_file = "models/animations/pistol_animation_idle_list.vmdl_prefab"
-					},
 				]
 				default_root_bone_name = ""
+			},
+			{
+				_class = "WeightListList"
+				children = 
+				[
+					{
+						_class = "Prefab"
+						target_file = "models/animations/arms_weight_list.vmdl_prefab"
+					},
+				]
 			},
 		]
 		model_archetype = ""

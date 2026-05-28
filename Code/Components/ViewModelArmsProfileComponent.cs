@@ -9,6 +9,7 @@ namespace Sandbox.Components;
 [Title( "Arms Profile" ), Group( "Viewmodel" )]
 public class ViewModelArmsProfileComponent : Component, Component.ExecuteInEditor
 {
+	[Property, Group( "Slots" )] public ViewModelArmsSlotComponent Arms { get; set; }
 	[Property, Group( "Slots" )] public ViewModelArmsSlotComponent Glove { get; set; }
 
 	public ViewModelArmsProfile Profile { get; private set; }
@@ -47,6 +48,7 @@ public class ViewModelArmsProfileComponent : Component, Component.ExecuteInEdito
 
 	public IEnumerable<ViewModelArmsSlotComponent> GetAssignedSlots()
 	{
+		yield return Arms;
 		yield return Glove;
 	}
 }

@@ -284,7 +284,8 @@ public partial class EquipmentComponent : Component, Component.INetworkListener,
 
 			viewWeaponModelGameObject.Flags |= GameObjectFlags.Absolute;
 
-			var viewWeaponModelComponent = viewWeaponModelGameObject.GetComponent<ViewWeaponModelComponent>();
+			var viewWeaponModelComponent = viewWeaponModelGameObject.GetComponent<ViewWeaponModelComponent>()
+				?? viewWeaponModelGameObject.GetComponentInChildren<ViewWeaponModelComponent>();
 			if ( !viewWeaponModelComponent.IsValid() )
 				return;
 

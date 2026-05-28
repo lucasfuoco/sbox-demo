@@ -18,7 +18,7 @@
 
         <Body>
             <div class="layout grow padding-insane">
-                <ServerBrowserPanel CurrentLobby:bind=@Lobby  @ref="Browser" />
+                <ServerBrowserPanel CurrentLobby="@Lobby" CurrentLobbyChanged="@OnLobbyChanged" @ref="Browser" />
             </div>
         </Body>
 
@@ -43,6 +43,8 @@
     public ServerBrowserPanel Browser { get; set; }
 
     public Lobby? Lobby { get; set; }
+
+    void OnLobbyChanged( Lobby? lobby ) => Lobby = lobby;
 
     private void Refresh()
     {

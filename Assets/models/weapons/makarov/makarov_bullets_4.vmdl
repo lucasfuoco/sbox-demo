@@ -19,7 +19,7 @@
 						align_origin_x_type = "None"
 						align_origin_y_type = "None"
 						align_origin_z_type = "None"
-						parent_bone = "tag_barrel_attach"
+						parent_bone = ""
 						import_filter = 
 						{
 							exclude_by_default = false
@@ -46,35 +46,7 @@
 						remaps = 
 						[
 							{
-								from = "weapon_vm_pi_mike_body.vmat"
-								to = "materials/weapons/makarov/makarov_body.vmat"
-							},
-							{
-								from = "weapon_vm_pi_mike_barauto.vmat"
-								to = "materials/weapons/makarov/makarov_barauto.vmat"
-							},
-							{
-								from = "weapon_vm_pi_mike_barlight.vmat"
-								to = "materials/weapons/makarov/makarov_barlight.vmat"
-							},
-							{
-								from = "weapon_vm_pi_mike_slide.vmat"
-								to = "materials/weapons/makarov/makarov_slide.vmat"
-							},
-							{
-								from = "weapon_vm_pi_mike_barsil.vmat"
-								to = "materials/weapons/makarov/makarov_barsil.vmat"
-							},
-							{
-								from = "weapon_vm_pi_mike_mag.vmat"
-								to = "materials/weapons/makarov/makarov_mag.vmat"
-							},
-							{
-								from = "weapon_vm_pi_mike_pstlgrip.vmat"
-								to = "materials/weapons/makarov/makarov_pstlgrip.vmat"
-							},
-							{
-								from = "weapon_vm_pi_mike_bullet.vmat"
+								from = "weapon_vm_pi_mike_bullet.017.vmat"
 								to = "materials/weapons/makarov/makarov_bullet.vmat"
 							},
 						]
@@ -87,10 +59,29 @@
 						remaps = 
 						[
 							{
-								from = "materials/weapons/makarov/makarov_body.vmat"
+								from = "weapon_vm_pi_mike_bullet.017.vmat"
 								to = "materials/weapons/makarov/makarov_bullet.vmat"
 							},
 						]
+					},
+				]
+			},
+			{
+				_class = "BoneMarkupList"
+				bone_cull_type = "None"
+			},
+			{
+				_class = "AttachmentList"
+				children = 
+				[
+					{
+						_class = "Attachment"
+						name = "mag"
+						parent_bone = "tag_mag_attach"
+						relative_origin = [ 0.0, 0.0, 0.0 ]
+						relative_angles = [ 0.0, 0.0, 0.0 ]
+						weight = 1.0
+						ignore_rotation = false
 					},
 				]
 			},

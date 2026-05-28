@@ -15,7 +15,7 @@
             <div class="layout group @GroupClasses( slotGroup.Key )">
                 <div class="background" />
 
-                <InputHintPanel Action="Slot@(SlotIndex(slotGroup.Key))" class="small" Size="@InputGlyphSize.Small" />
+                <InputHintPanel Action="@($"Slot{SlotIndex( slotGroup.Key )}")" class="small" Size="@InputGlyphSize.Small" />
 
                 @foreach (var equipment in slotGroup)
                 {

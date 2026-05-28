@@ -1,0 +1,51 @@
+// Created by Crowbar 0.74
+version 1
+nodes
+  0 "tag_mag_attach" -1
+  1 "j_mag1" 0
+  2 "j_mag2" 0
+  3 "j_bullet_01" 1
+  4 "j_bullet_02" 1
+  5 "j_bullet_03" 1
+  6 "j_bullet_04" 1
+  7 "tag_origin" -1
+  8 "tag_view" 7
+  9 "tag_ads" 8
+  10 "tag_torso" 9
+  11 "tag_weapon" 10
+  12 "j_gun" 11
+  13 "tag_sling" 12
+  14 "j_basespring" 1
+  15 "j_bullet_05" 1
+  16 "j_bullet_06" 1
+  17 "j_bullet_07" 1
+  18 "j_bullet_08" 1
+  19 "j_bullet_09" 1
+  20 "j_bullet_10" 1
+  21 "j_bullet_11" 1
+  22 "j_bullet_12" 1
+  23 "j_bullet_13" 1
+  24 "j_bullet_14" 1
+  25 "j_bullet_15" 1
+  26 "j_bullet_16" 1
+  27 "j_bullet_17" 1
+  28 "j_bullet_18" 1
+  29 "j_bullet_19" 1
+  30 "j_bullet_20" 1
+  31 "j_bullet_21" 1
+  32 "j_bullet_22" 1
+  33 "j_bullet_23" 1
+  34 "j_bullet_24" 1
+  35 "j_bullet_25" 1
+  36 "j_bullet_26" 1
+  37 "j_bullet_27" 1
+  38 "j_bullet_28" 1
+  39 "j_bullet_29" 1
+  40 "j_bullet_30" 1
+  41 "j_mag_follower" 14
+end
+skeleton
+  time 0
+    0 0.000000 0.000000 0.000000 0.000000 0.000000 -1.570796
+    7 0.000000 0.000000 0.000000 0.000000 0.000000 -1.570796
+end

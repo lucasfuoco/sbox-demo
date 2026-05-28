@@ -78,11 +78,14 @@
 				]
 			},
 			{
-				_class = "AnimationList"
+				_class = "WeightListList"
 				children = 
 				[
+					{
+						_class = "Prefab"
+						target_file = "models/animations/arms_weight_list.vmdl_prefab"
+					},
 				]
-				default_root_bone_name = ""
 			},
 		]
 		model_archetype = ""

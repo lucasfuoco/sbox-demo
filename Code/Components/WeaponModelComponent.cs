@@ -14,12 +14,13 @@ public abstract class WeaponModelComponent : Component
 	/// Weapon mesh on this root. Viewmodels also have a bone-merged arms child on <see cref="ModelRenderer"/>.
 	/// </summary>
 	protected SkinnedModelRenderer WeaponMeshRenderer =>
-		GameObject.IsValid() ? GameObject.Components.Get<SkinnedModelRenderer>() : null;
+		ModelRenderer.IsValid() ? ModelRenderer
+		: GameObject.IsValid() ? GameObject.Components.Get<SkinnedModelRenderer>() : null;
 
 	/// <summary>
 	/// Every anim-graph renderer on this weapon model hierarchy (gun mesh + bone-merged arms, etc.).
 	/// </summary>
-	protected IEnumerable<SkinnedModelRenderer> GetAnimGraphRenderers()
+	protected virtual IEnumerable<SkinnedModelRenderer> GetAnimGraphRenderers()
 	{
 		if ( !GameObject.IsValid() )
 			yield break;

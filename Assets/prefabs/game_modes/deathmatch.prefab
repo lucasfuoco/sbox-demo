@@ -21,12 +21,12 @@
         "Armor": 100,
         "DefuseKit": false,
         "Helmet": true,
-        "LoadoutsEnabled": true,
+        "LoadoutsEnabled": false,
         "RefillAmmo": true,
         "TeamLoadouts": [
           {
             "Equipment": [
-              "weapons/usp/usp.equip",
+              "prefabs/weapons/makarov/makarov.equip",
               "weapons/knife/knife.equip"
             ]
           }

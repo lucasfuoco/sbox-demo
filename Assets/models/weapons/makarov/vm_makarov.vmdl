@@ -1,0 +1,253 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc30:version{8c2d7a91-9c42-4bf0-883a-5a3b1762d4f1} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "RenderMeshList"
+				children = 
+				[
+					{
+						_class = "RenderMeshFile"
+						name = "makarov"
+						filename = "models/weapons/makarov/vm_makarov.fbx"
+						import_translation = [ 0.0, 0.0, 0.0 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
+						import_scale = 1.0
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						parent_bone = ""
+						import_filter = 
+						{
+							exclude_by_default = false
+							exception_list = [  ]
+						}
+					},
+				]
+			},
+			{
+				_class = "MaterialGroupList"
+				children = 
+				[
+					{
+						_class = "DefaultMaterialGroup"
+						name = "body"
+						remaps = 
+						[
+							{
+								from = "weapon_vm_pi_mike_body.vmat"
+								to = "materials/weapons/makarov/makarov_body.vmat"
+							},
+							{
+								from = "weapon_vm_pi_mike_slide.vmat"
+								to = "materials/weapons/makarov/makarov_slide.vmat"
+							},
+							{
+								from = "weapon_vm_pi_mike_pstlgrip.vmat"
+								to = "materials/weapons/makarov/makarov_pstlgrip.vmat"
+							},
+						]
+						use_global_default = false
+						global_default_material = ""
+					},
+				]
+			},
+			{
+				_class = "PhysicsShapeList"
+				children = 
+				[
+					{
+						_class = "PhysicsMeshFile"
+						name = "makarov_physics"
+						parent_bone = ""
+						surface_prop = "default"
+						collision_tags = "solid"
+						recenter_on_parent_bone = false
+						offset_origin = [ 0.0, 0.0, 0.0 ]
+						offset_angles = [ 0.0, 0.0, 0.0 ]
+						align_origin_x_type = "None"
+						align_origin_y_type = "None"
+						align_origin_z_type = "None"
+						filename = "models/weapons/makarov/makarov_physics.fbx"
+						import_scale = 0.03937
+						maxMeshVertices = 0
+						qemError = 0.0
+						import_filter = 
+						{
+							exclude_by_default = false
+							exception_list = [  ]
+						}
+					},
+				]
+			},
+			{
+				_class = "WeightListList"
+				children = 
+				[
+					{
+						_class = "Prefab"
+						target_file = "models/animations/arms_weight_list.vmdl_prefab"
+					},
+				]
+			},
+			{
+				_class = "AttachmentList"
+				children = 
+				[
+					{
+						_class = "Prefab"
+						target_file = "models/weapons/makarov/prefabs/makarov_attachment_list.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/gloves/prefabs/glove_attachment_list.vmdl_prefab"
+					},
+				]
+			},
+			{
+				_class = "BoneMarkupList"
+				children = 
+				[
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_barrel_attach"
+						ignore_Translation = true
+						ignore_rotation = true
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_sight_on"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_flash"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_sight_on_end"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_flash_end"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_weapon_end"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_weapon_right_end"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_weapon_left_end"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_mag_attach"
+						ignore_Translation = true
+						ignore_rotation = true
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_reflex"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_reflex_end"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_brass"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_brass_end"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_brass_end"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_pistolgrip_attach"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_stock_attach"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = false
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "j_slide"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = true
+					},
+				]
+				bone_cull_type = "None"
+			},
+			{
+				_class = "AnimationList"
+				children = 
+				[
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_list.vmdl_prefab"
+					},
+				]
+				default_root_bone_name = ""
+			},
+		]
+		model_archetype = "animated_model"
+		primary_associated_entity = "prop_dynamic"
+		anim_graph_name = ""
+		base_model_name = ""
+	}
+}

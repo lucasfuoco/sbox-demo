@@ -1,0 +1,11 @@
+// Created by Crowbar 0.74
+version 1
+nodes
+  0 "tag_acog_2" -1
+  1 "tag_lense_hide" 0
+end
+skeleton
+  time 0
+    0 0.000000 0.000000 0.000000 0.000000 0.000000 -1.570796
+    1 -1.208000 -0.005000 1.003000 0.000000 0.000000 0.000000
+end

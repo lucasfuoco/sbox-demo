@@ -1,4 +1,5 @@
 @namespace Sandbox.UI
+@inherits Panel
 
 <style>
     ColorSlider {
@@ -36,8 +37,3 @@
     <img class="layer" @ref="Image" />
     <div class="cursor" @ref="Cursor" />
 </root>
-
-@code
-{
-    public Color Value { get; set; } = Color.Red;
-}

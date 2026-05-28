@@ -70,6 +70,13 @@
 				_class = "BoneMarkupList"
 				bone_cull_type = "None"
 			},
+			{
+				_class = "AnimationList"
+				children = 
+				[
+				]
+				default_root_bone_name = ""
+			},
 		]
 		model_archetype = "animated_model"
 		primary_associated_entity = "prop_dynamic"

@@ -3,7 +3,7 @@ using Sandbox.Attributes;
 namespace Sandbox.Components;
 
 /// <summary>
-/// Applies glove selections via prefab slot meshes on the arms rig.
+/// Applies arms and glove selections via prefab slot meshes on the arms rig.
 /// Profile from <see cref="ViewModelArmsRigComponent.ArmsProfile"/>.
 /// </summary>
 [Title( "Arms Loadout" ), Group( "Viewmodel" )]
@@ -13,10 +13,14 @@ public partial class ViewModelArmsLoadoutComponent : Component, Component.Execut
 	public NetDictionary<string, string> Selections { get; private set; } = new();
 
 	[Property, Group( "Editor Preview" )]
+	public string EditorArms { get; set; } = "eastern";
+
+	[Property, Group( "Editor Preview" )]
 	public string EditorGlove { get; set; } = "mechanix_black";
 
 	ViewModelArmsRigComponent _armsRig;
 	ViewModelArmsProfile _profile;
+	bool _validating;
 
 	protected override void OnStart()
 	{
@@ -38,11 +42,19 @@ public partial class ViewModelArmsLoadoutComponent : Component, Component.Execut
 
 	protected override void OnValidate()
 	{
-		if ( !Game.IsEditor )
+		if ( !Game.IsEditor || _validating )
 			return;
 
-		if ( TryInitialize() )
-			Apply();
+		_validating = true;
+		try
+		{
+			if ( TryInitialize() )
+				Apply();
+		}
+		finally
+		{
+			_validating = false;
+		}
 	}
 
 	bool TryInitialize()
@@ -66,6 +78,9 @@ public partial class ViewModelArmsLoadoutComponent : Component, Component.Execut
 		if ( !_armsRig.Arms.IsValid() )
 			return false;
 
+		if ( string.IsNullOrWhiteSpace( EditorArms ) )
+			EditorArms = _profile.GetDefaultOption( "arms" );
+
 		if ( string.IsNullOrWhiteSpace( EditorGlove ) )
 			EditorGlove = _profile.GetDefaultOption( "glove" );
 
@@ -86,6 +101,9 @@ public partial class ViewModelArmsLoadoutComponent : Component, Component.Execut
 
 	public string GetSelection( string category )
 	{
+		if ( Game.IsEditor && category.Equals( "arms", StringComparison.OrdinalIgnoreCase ) )
+			return EditorArms;
+
 		if ( Game.IsEditor && category.Equals( "glove", StringComparison.OrdinalIgnoreCase ) )
 			return EditorGlove;
 
@@ -104,7 +122,9 @@ public partial class ViewModelArmsLoadoutComponent : Component, Component.Execut
 		if ( slot is null || slot.FindOption( optionId ) is null )
 			return;
 
-		if ( Game.IsEditor && category.Equals( "glove", StringComparison.OrdinalIgnoreCase ) )
+		if ( Game.IsEditor && category.Equals( "arms", StringComparison.OrdinalIgnoreCase ) )
+			EditorArms = optionId;
+		else if ( Game.IsEditor && category.Equals( "glove", StringComparison.OrdinalIgnoreCase ) )
 			EditorGlove = optionId;
 		else
 			Selections[category] = optionId;
@@ -147,11 +167,33 @@ public partial class ViewModelArmsLoadoutComponent : Component, Component.Execut
 			if ( !root.IsValid() )
 				continue;
 
-			AttachmentSlotUtility.SetSlotVisible( root, slot.Category, GetSelection( slot.Category ) );
+			var activeOption = GetSelection( slot.Category );
+			var slotComponent = root.Components.Get<ViewModelArmsSlotComponent>();
+			if ( slotComponent.IsValid() )
+			{
+				foreach ( var option in slotComponent.GetOptionComponents() )
+				{
+					if ( !option.IsValid() )
+						continue;
+
+					var isActive = option.OptionId.Equals( activeOption, StringComparison.OrdinalIgnoreCase );
+					option.GameObject.Enabled = isActive;
+
+					foreach ( var renderer in option.GameObject.Components.GetAll<SkinnedModelRenderer>( FindMode.EverythingInSelf ) )
+						renderer.Enabled = isActive;
+				}
+
+				continue;
+			}
+
+			AttachmentSlotUtility.SetSlotVisible( root, slot.Category, activeOption );
 		}
 	}
 
 	// --- Dev helpers ---
+
+	[DeveloperCommand( "Arms Cycle Arms", "Weapons" )]
+	private static void DevCycleArms() => WithLoadout( l => l.CycleSelection( "arms" ) );
 
 	[DeveloperCommand( "Arms Cycle Glove", "Weapons" )]
 	private static void DevCycleGlove() => WithLoadout( l => l.CycleSelection( "glove" ) );
@@ -160,7 +202,7 @@ public partial class ViewModelArmsLoadoutComponent : Component, Component.Execut
 	private static void DevRefreshArms() => WithLoadout( l =>
 	{
 		l.Apply();
-		Log.Info( $"Arms refreshed: glove={l.GetSelection( "glove" )}" );
+		Log.Info( $"Arms refreshed: arms={l.GetSelection( "arms" )}, glove={l.GetSelection( "glove" )}" );
 	} );
 
 	static void WithLoadout( Action<ViewModelArmsLoadoutComponent> action )

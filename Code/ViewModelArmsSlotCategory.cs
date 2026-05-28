@@ -7,6 +7,9 @@ namespace Sandbox;
 /// </summary>
 public enum ViewModelArmsSlotCategory
 {
+	[Title( "Arms" )]
+	Arms,
+
 	[Title( "Glove" )]
 	Glove
 }

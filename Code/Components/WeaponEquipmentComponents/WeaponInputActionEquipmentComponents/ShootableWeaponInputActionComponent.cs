@@ -1,4 +1,5 @@
 using Sandbox.Components;
+using Sandbox.Components.WeaponModelComponents;
 using Sandbox.GameEvents;
 using Sandbox.Attributes;
 
@@ -213,6 +214,14 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		if ( Equipment.Owner.IsValid() && Equipment.Owner.BodyRenderer.IsValid() )
 			Equipment.Owner.BodyRenderer.Set( "b_attack", true );
 
+		var viewModel = Equipment.ViewWeaponModel;
+		if ( viewModel.IsValid())
+		{
+			var ammo = Equipment.GetComponentInChildren<WeaponAmmoComponent>();
+			var isLast = ammo.IsValid() && ammo.Ammo <= 1;
+			return;
+		}
+
 		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_attack", true );
 	}
 
@@ -325,7 +334,16 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 			Log.Trace( $"Shootable: ShootSound {DryFireSound.ResourceName}" );
 		}
 
-		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_attack_dry", true );
+		var viewModel = Equipment.ViewWeaponModel;
+		if ( viewModel.IsValid())
+		{
+			var ammo = Equipment.GetComponentInChildren<WeaponAmmoComponent>();
+			var isLast = ammo.IsValid() && ammo.Ammo <= 0;
+		}
+		else
+		{
+			WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_attack_dry", true );
+		}
 	}
 
 	protected IEnumerable<SceneTraceResult> DoTraceBullet( Vector3 start, Vector3 end, float radius )

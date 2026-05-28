@@ -3,7 +3,7 @@ using Sandbox;
 namespace Sandbox.Components;
 
 /// <summary>
-/// Glove slot on an arms rig. Assign options in the inspector or as child objects.
+/// Arms or glove slot on an arms rig. Assign options in the inspector or as child objects.
 /// </summary>
 [Title( "Arms Slot" ), Group( "Viewmodel" )]
 public sealed class ViewModelArmsSlotComponent : Component, Component.ExecuteInEditor

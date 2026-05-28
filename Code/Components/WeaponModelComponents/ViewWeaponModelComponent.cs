@@ -1,11 +1,11 @@
 using Sandbox;
 using Sandbox.Components;
-using Sandbox.GameEvents;
 using Sandbox.Components.PawnComponents;
-using Sandbox.SceneEvents;
-using Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.AimableWeaponInputActionEquipmentComponents;
-using Sandbox.GameResources;
 using Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
+using Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.AimableWeaponInputActionEquipmentComponents;
+using Sandbox.GameEvents;
+using Sandbox.GameResources;
+using Sandbox.SceneEvents;
 
 namespace Sandbox.Components.WeaponModelComponents;
 
@@ -18,7 +18,15 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 	/// <summary>
 	/// A reference to the <see cref="Equipment"/> we want to listen to.
 	/// </summary>
-	public EquipmentComponent Equipment { get; set; }
+	EquipmentComponent _equipment;
+	public EquipmentComponent Equipment
+	{
+		get => _equipment;
+		set
+		{
+			_equipment = value;
+		}
+	}
 
 	/// <summary>
 	/// The resource
@@ -32,12 +40,13 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 	public WeaponAttachmentProfileComponent AttachmentProfile { get; set; }
 
 	/// <summary>
-	/// Arms rig prefab (must include <see cref="ViewModelArmsRigComponent"/>). Spawned as a child at runtime.
+	/// Arms rig on this viewmodel prefab. Assign in the editor instead of spawning at runtime.
 	/// </summary>
-	[Property, Group( "Prefabs" )] public GameObject ArmsPrefab { get; set; }
+	[Property, Group( "Configuration" )]
+	public ViewModelArmsRigComponent ArmsRigSource { get; set; }
 
 	/// <summary>
-	/// Spawned arms rig from <see cref="ArmsPrefab"/>.
+	/// Resolved arms rig used for animation and glove attachments.
 	/// </summary>
 	public ViewModelArmsRigComponent ArmsRig { get; private set; }
 
@@ -93,7 +102,6 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 		}
 
 		ApplyVelocity();
-		ApplyAnimationTransform();
 
 		var baseFov = GameSettingsSystem.Current.FieldOfView;
 
@@ -103,13 +111,13 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 
 	protected override void OnAwake()
 	{
-		SetOnAnimGraphRenderers( "b_deploy_skip", true );
+
 	}
 
 	protected override void OnStart()
 	{
 		EnsureAttachmentProfile();
-		EnsureRigPrefabs();
+		EnsureArmsRig();
 		ResolveAttachmentPoints();
 
 		// Somehow?
@@ -128,7 +136,7 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 
 	protected override void OnDestroy()
 	{
-		DestroyRigPrefabs();
+		ArmsRig = null;
 	}
 
 	protected override void OnValidate()
@@ -137,7 +145,7 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 			return;
 
 		EnsureAttachmentProfile();
-		EnsureRigPrefabs();
+		EnsureArmsRig();
 	}
 
 	void EnsureAttachmentProfile()
@@ -160,154 +168,25 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 		return GameObject;
 	}
 
-	void EnsureRigPrefabs()
-	{
-		if ( !Game.IsEditor )
-			ApplyOwnerRigPrefabs();
-
-		// Prefer arms already on the prefab (editor preview). Runtime spawns from player rig.
-		if ( !ArmsRig.IsValid() )
-			ResolveEmbeddedArmsRig();
-
-		if ( !Game.IsEditor && ArmsPrefab.IsValid() && !ArmsRig.IsValid() )
-			SpawnArmsPrefab();
-
-		if ( Game.IsEditor )
-			CleanupDuplicateArmsInEditor();
-
-		if ( Arms.IsValid() && !ModelRenderer.IsValid() )
-			ModelRenderer = Arms;
-
-		ArmsRig?.ResolveComponents();
-		ArmsRig?.Loadout?.Apply();
-	}
-
 	/// <summary>
-	/// Removes extra "Arms" children left from editor OnValidate spawning (prefab should have at most one preview rig).
+	/// Resolve the arms rig for glove slots and anim graph access. Bone merge is authored on the prefab.
 	/// </summary>
-	void CleanupDuplicateArmsInEditor()
+	void EnsureArmsRig()
 	{
-		if ( !Game.IsEditor )
-			return;
-
-		var rigs = new List<ViewModelArmsRigComponent>();
-		foreach ( var go in GameObject.GetAllObjects( true ) )
-		{
-			if ( !go.Name.Equals( "Arms", StringComparison.OrdinalIgnoreCase ) )
-				continue;
-
-			var rig = go.Components.Get<ViewModelArmsRigComponent>();
-			if ( !rig.IsValid() )
-				rig = go.Components.GetInChildren<ViewModelArmsRigComponent>();
-
-			if ( rig.IsValid() )
-				rigs.Add( rig );
-		}
-
-		if ( rigs.Count <= 1 )
-			return;
-
-		if ( !ArmsRig.IsValid() )
-			BindArmsRig( rigs[0].GameObject, rigs[0] );
-
-		foreach ( var rig in rigs )
-		{
-			if ( ArmsRig.IsValid() && rig == ArmsRig )
-				continue;
-
-			rig.GameObject.Destroy();
-		}
-	}
-
-	/// <summary>
-	/// Re-spawns arms from the owner's <see cref="PlayerViewModelRigComponent"/> (e.g. after team change).
-	/// </summary>
-	public void RefreshArmsRig()
-	{
-		DestroyRigPrefabs();
-		EnsureRigPrefabs();
-	}
-
-	void ApplyOwnerRigPrefabs()
-	{
-		if ( !Owner.IsValid() )
-			return;
-
-		var rig = Owner.GetComponent<PlayerViewModelRigComponent>();
-		if ( !rig.IsValid() )
-			return;
-
-		var entry = rig.GetActiveRig();
-		if ( entry.ArmsPrefab.IsValid() )
-			ArmsPrefab = entry.ArmsPrefab;
-	}
-
-	void SpawnArmsPrefab()
-	{
-		var instance = ArmsPrefab.Clone( new CloneConfig
-		{
-			Parent = GameObject,
-			Transform = new(),
-			StartEnabled = true
-		} );
-
-		instance.Name = "Arms";
-		BindArmsRig( instance );
-	}
-
-	void DestroyRigPrefabs()
-	{
-		if ( ArmsRig.IsValid() )
-		{
-			ArmsRig.GameObject.Destroy();
-			ArmsRig = null;
-		}
-	}
-
-	/// <summary>
-	/// Legacy: arms embedded directly on the viewmodel prefab instead of via <see cref="ArmsPrefab"/>.
-	/// </summary>
-	void ResolveEmbeddedArmsRig()
-	{
-		foreach ( var go in GameObject.GetAllObjects( true ) )
-		{
-			if ( !go.Name.Equals( "Arms", StringComparison.OrdinalIgnoreCase ) )
-				continue;
-
-			if ( go == ArmsRig?.GameObject )
-				continue;
-
-			var rig = go.Components.Get<ViewModelArmsRigComponent>();
-			if ( !rig.IsValid() )
-				rig = go.Components.GetInChildren<ViewModelArmsRigComponent>();
-
-			if ( !rig.IsValid() )
-				continue;
-
-			BindArmsRig( go, rig );
-			return;
-		}
-	}
-
-	void BindArmsRig( GameObject instance, ViewModelArmsRigComponent rig = null )
-	{
-		ArmsRig = rig ?? instance.Components.Get<ViewModelArmsRigComponent>();
-		if ( !ArmsRig.IsValid() )
-			ArmsRig = instance.Components.GetInChildren<ViewModelArmsRigComponent>();
-
+		ArmsRig = ResolveArmsRig();
 		if ( !ArmsRig.IsValid() )
 			return;
 
 		ArmsRig.ResolveComponents();
-		BindArmsToWeaponRenderer();
+		ArmsRig.Loadout?.Apply();
 	}
 
-	void BindArmsToWeaponRenderer()
+	ViewModelArmsRigComponent ResolveArmsRig()
 	{
-		if ( !ArmsRig.IsValid() )
-			return;
+		if ( ArmsRigSource.IsValid() )
+			return ArmsRigSource;
 
-		ArmsRig.ApplyBoneMerge( WeaponMeshRenderer );
+		return GetComponentInChildren<ViewModelArmsRigComponent>( true );
 	}
 
 	/// <summary>
@@ -319,7 +198,7 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 		if ( muzzleBone.IsValid() )
 			Muzzle = muzzleBone;
 
-		var ejectionBone = FindDescendant( "slide" );
+		var ejectionBone = FindDescendant( "slide", "j_slide" );
 		if ( ejectionBone.IsValid() )
 			EjectionPort = ejectionBone;
 	}
@@ -340,26 +219,7 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 
 	void OnPlayerJumped()
 	{
-		SetOnAnimGraphRenderers( "b_jump", true );
-	}
-
-	void ApplyAnimationTransform()
-	{
-		var meshRenderer = WeaponMeshRenderer;
-		if ( !meshRenderer.IsValid() ) return;
-		if ( !meshRenderer.Enabled ) return;
-		if ( !Equipment.IsValid() ) return;
-		if ( !Equipment.Owner.IsValid() ) return;
-		if ( !meshRenderer.SceneModel.IsValid() ) return;
-
-		var bone = meshRenderer.SceneModel.GetBoneLocalTransform( "camera" );
-		var camera = Equipment.Owner.CameraGameObject;
-		if ( !camera.IsValid() ) return;
-
-		var scale = GameSettingsSystem.Current.ViewBob / 100f;
-
-		camera.LocalPosition += bone.Position * scale;
-		camera.LocalRotation *= bone.Rotation * scale;
+	
 	}
 
 	private Vector3 scopedOffset = 0;
@@ -487,6 +347,7 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 
 	void ApplyAnimationParameters()
 	{
+
 		SetOnAnimGraphRenderers( "b_sprint", Owner.IsSprinting );
 		SetOnAnimGraphRenderers( "b_grounded", Owner.IsGrounded );
 
@@ -518,9 +379,6 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 	public void SetPlayDeployEffects( bool value )
 	{
 		PlayDeployEffects = value;
-
-		SetOnAnimGraphRenderers( "b_deploy", value );
-		SetOnAnimGraphRenderers( "b_deploy_skip", !value );
 	}
 
 	private void ApplyThrowableAnimations()

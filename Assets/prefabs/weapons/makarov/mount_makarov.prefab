@@ -14,38 +14,7 @@
     "NetworkOrphaned": 0,
     "NetworkTransmit": true,
     "OwnerTransfer": 1,
-    "Components": [
-      {
-        "__type": "Sandbox.Components.WeaponModelComponents.WorldWeaponModelComponent",
-        "__guid": "0edc303c-253f-42d6-88f5-32fcb81183d8",
-        "__enabled": true,
-        "Flags": 0,
-        "ModelRenderer": {
-          "_type": "component",
-          "component_id": "a9eeba9b-0492-4565-ab7c-aae85fb04ca5",
-          "go": "8df12182-32e3-4d83-8120-7169e6d85a97",
-          "component_type": "SkinnedModelRenderer"
-        },
-        "Muzzle": {
-          "_type": "gameobject",
-          "go": "b4a95036-5a1e-4d89-8e77-6fb91b184791"
-        },
-        "EjectionPort": {
-          "_type": "gameobject",
-          "go": "b4a95036-5a1e-4d89-8e77-6fb91b184791"
-        },
-        "AttachmentSlotsRoot": {
-          "_type": "gameobject",
-          "go": "d3bd8e77-65af-48ba-9bf7-bb10d697ca49"
-        },
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null
-      }
-    ],
+    "Components": [],
     "Children": [
       {
         "__guid": "8df12182-32e3-4d83-8120-7169e6d85a97",
@@ -514,7 +483,7 @@
                 "BoneMergeTarget": {
                   "_type": "component",
                   "component_id": "a9eeba9b-0492-4565-ab7c-aae85fb04ca5",
-                  "go": "b4a95036-5a1e-4d89-8e77-6fb91b184791",
+                  "go": "8df12182-32e3-4d83-8120-7169e6d85a97",
                   "component_type": "SkinnedModelRenderer"
                 },
                 "CreateAttachments": false,
@@ -583,7 +552,7 @@
                 "BoneMergeTarget": {
                   "_type": "component",
                   "component_id": "a9eeba9b-0492-4565-ab7c-aae85fb04ca5",
-                  "go": "b4a95036-5a1e-4d89-8e77-6fb91b184791",
+                  "go": "8df12182-32e3-4d83-8120-7169e6d85a97",
                   "component_type": "SkinnedModelRenderer"
                 },
                 "CreateAttachments": false,
@@ -652,7 +621,7 @@
                 "BoneMergeTarget": {
                   "_type": "component",
                   "component_id": "a9eeba9b-0492-4565-ab7c-aae85fb04ca5",
-                  "go": "b4a95036-5a1e-4d89-8e77-6fb91b184791",
+                  "go": "8df12182-32e3-4d83-8120-7169e6d85a97",
                   "component_type": "SkinnedModelRenderer"
                 },
                 "CreateAttachments": false,
@@ -721,7 +690,7 @@
                 "BoneMergeTarget": {
                   "_type": "component",
                   "component_id": "a9eeba9b-0492-4565-ab7c-aae85fb04ca5",
-                  "go": "b4a95036-5a1e-4d89-8e77-6fb91b184791",
+                  "go": "8df12182-32e3-4d83-8120-7169e6d85a97",
                   "component_type": "SkinnedModelRenderer"
                 },
                 "CreateAttachments": false,
@@ -862,7 +831,7 @@
                 "BoneMergeTarget": {
                   "_type": "component",
                   "component_id": "a9eeba9b-0492-4565-ab7c-aae85fb04ca5",
-                  "go": "b4a95036-5a1e-4d89-8e77-6fb91b184791",
+                  "go": "8df12182-32e3-4d83-8120-7169e6d85a97",
                   "component_type": "SkinnedModelRenderer"
                 },
                 "CreateAttachments": false,
@@ -931,7 +900,7 @@
                 "BoneMergeTarget": {
                   "_type": "component",
                   "component_id": "a9eeba9b-0492-4565-ab7c-aae85fb04ca5",
-                  "go": "b4a95036-5a1e-4d89-8e77-6fb91b184791",
+                  "go": "8df12182-32e3-4d83-8120-7169e6d85a97",
                   "component_type": "SkinnedModelRenderer"
                 },
                 "CreateAttachments": false,
@@ -1000,7 +969,7 @@
                 "BoneMergeTarget": {
                   "_type": "component",
                   "component_id": "a9eeba9b-0492-4565-ab7c-aae85fb04ca5",
-                  "go": "b4a95036-5a1e-4d89-8e77-6fb91b184791",
+                  "go": "8df12182-32e3-4d83-8120-7169e6d85a97",
                   "component_type": "SkinnedModelRenderer"
                 },
                 "CreateAttachments": false,
@@ -1069,7 +1038,7 @@
                 "BoneMergeTarget": {
                   "_type": "component",
                   "component_id": "a9eeba9b-0492-4565-ab7c-aae85fb04ca5",
-                  "go": "b4a95036-5a1e-4d89-8e77-6fb91b184791",
+                  "go": "8df12182-32e3-4d83-8120-7169e6d85a97",
                   "component_type": "SkinnedModelRenderer"
                 },
                 "CreateAttachments": false,
@@ -1174,7 +1143,7 @@
                 "BoneMergeTarget": {
                   "_type": "component",
                   "component_id": "a9eeba9b-0492-4565-ab7c-aae85fb04ca5",
-                  "go": "b4a95036-5a1e-4d89-8e77-6fb91b184791",
+                  "go": "8df12182-32e3-4d83-8120-7169e6d85a97",
                   "component_type": "SkinnedModelRenderer"
                 },
                 "CreateAttachments": false,

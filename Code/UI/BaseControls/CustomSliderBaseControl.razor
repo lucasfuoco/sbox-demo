@@ -33,7 +33,7 @@
     @if ( ShowTextEntry )
     {
         <div class="entry">
-            <TextEntry @ref="TextEntryPanel" Value:bind="@Value" Numeric="@true" NumberFormat="@NumberFormat"></TextEntry>
+            <NumberEntry @ref="TextEntryPanel" Value="@TextValue" OnTextEdited="@OnTextValueEdited" Numeric="@true" NumberFormat="@NumberFormat"></NumberEntry>
         </div>
     }
 
@@ -42,6 +42,8 @@
 @code
 {
     public Action<float> OnValueChanged { get; set; }
+
+    public Action<float> ValueChanged { get; set; }
 
     /// <summary>
     /// The right side of the slider.
@@ -89,15 +91,32 @@
 
         set
         {
-            if (_value == value)
+            if ( _value == value )
                 return;
 
-            _value = MathX.Clamp( _value, Min, Max );
-
-            _value = value;
+            _value = MathX.Clamp( value, Min, Max );
+            NotifyValueChanged();
             StateHasChanged();
         }
     }
+
+    public string TextValue
+    {
+        get => Value.ToString( NumberFormat );
+        set
+        {
+            if ( float.TryParse( value, out var parsed ) )
+                Value = parsed;
+        }
+    }
+
+    void NotifyValueChanged()
+    {
+        ValueChanged?.Invoke( Value );
+        OnValueChanged?.Invoke( Value );
+    }
+
+    void OnTextValueEdited( string value ) => TextValue = value;
 
     Panel TrackPanel { get; set; }
     Panel ThumbPanel { get; set; }
@@ -135,7 +154,6 @@
         if ( !HasActive || e.MouseButton == MouseButtons.Middle ) return;
 
         Value = ScreenPosToValue( Mouse.Position );
-        OnValueChanged?.Invoke( Value );
         e.StopPropagation();
     }
 
@@ -147,7 +165,6 @@
         base.OnMouseDown( e );
 
         Value = ScreenPosToValue( Mouse.Position );
-        OnValueChanged?.Invoke( Value );
         e.StopPropagation();
 
         TextEntryPanel?.Blur();

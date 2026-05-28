@@ -1,22 +1,23 @@
 @namespace Sandbox.UI
+@inherits Panel
 
 <root class="layout column">
-    <ColorSlider Value:bind="@Value" />
+    <ColorSlider Value="@Value" ValueChanged="@OnSliderValueChanged" />
 
     <div class="layout padding gap align-center" style="width: 100%; justify-content: center;">
         <div class="layout padding with-background flex center space-between" style="width: 180px;">
             <label class="small slight">Red</label>
-            <TextEntry Value:bind="@Red" />
+            <TextEntry Value="@Red" OnTextEdited="@OnRedEdited" Numeric="@true" />
         </div>
 
         <div class="layout padding with-background flex center space-between" style="width: 180px;">
             <label class="small slight">Green</label>
-            <TextEntry Value:bind="@Green" />
+            <TextEntry Value="@Green" OnTextEdited="@OnGreenEdited" Numeric="@true" />
         </div>
 
         <div class="layout padding with-background flex center space-between" style="width: 180px;">
             <label class="small slight">Blue</label>
-            <TextEntry Value:bind="@Blue" />
+            <TextEntry Value="@Blue" OnTextEdited="@OnBlueEdited" Numeric="@true" />
         </div>
     </div>
 
@@ -24,23 +25,83 @@
 
 @code
 {
-    public Color Value { get; set; } = Color.Red;
+    Color _value = Color.Red;
 
-    public int Red
+    public Color Value
     {
-        get => Value.ToColor32().r;
-        set => Value = Value with { r = (float)value / 255f };
+        get => _value;
+        set
+        {
+            if ( _value.ToColor32().Equals( value.ToColor32() ) )
+                return;
+
+            _value = value;
+            ValueChanged?.Invoke( value );
+        }
     }
 
-    public int Green
+    public Action<Color> ValueChanged { get; set; }
+
+    void OnSliderValueChanged( Color color )
     {
-        get => Value.ToColor32().g;
-        set => Value = Value with { g = (float)value / 255f };
+        if ( _value.ToColor32().Equals( color.ToColor32() ) )
+            return;
+
+        _value = color;
+        ValueChanged?.Invoke( color );
     }
 
-    public int Blue
+    void OnRedEdited( string value ) => Red = value;
+
+    void OnGreenEdited( string value ) => Green = value;
+
+    void OnBlueEdited( string value ) => Blue = value;
+
+    public string Red
     {
-        get => Value.ToColor32().b;
-        set => Value = Value with { b = (float)value / 255f };
+        get => Value.ToColor32().r.ToString();
+        set
+        {
+            if ( !int.TryParse( value, out var channel ) )
+                return;
+
+            var current = Value.ToColor32().r;
+            if ( current == channel )
+                return;
+
+            Value = Value with { r = channel / 255f };
+        }
+    }
+
+    public string Green
+    {
+        get => Value.ToColor32().g.ToString();
+        set
+        {
+            if ( !int.TryParse( value, out var channel ) )
+                return;
+
+            var current = Value.ToColor32().g;
+            if ( current == channel )
+                return;
+
+            Value = Value with { g = channel / 255f };
+        }
+    }
+
+    public string Blue
+    {
+        get => Value.ToColor32().b.ToString();
+        set
+        {
+            if ( !int.TryParse( value, out var channel ) )
+                return;
+
+            var current = Value.ToColor32().b;
+            if ( current == channel )
+                return;
+
+            Value = Value with { b = channel / 255f };
+        }
     }
 }

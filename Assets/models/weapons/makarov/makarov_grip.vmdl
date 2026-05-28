@@ -14,7 +14,7 @@
 						name = "makarov_barauto"
 						filename = "models/weapons/makarov/makarov_grip.fbx"
 						import_translation = [ 0.0, 0.0, 0.0 ]
-						import_rotation = [ 0.0, -90.0, 0.0 ]
+						import_rotation = [ 0.0, 0.0, 0.0 ]
 						import_scale = 1.0
 						align_origin_x_type = "None"
 						align_origin_y_type = "None"
@@ -67,38 +67,41 @@
 				]
 			},
 			{
-				_class = "AnimationList"
+				_class = "BoneMarkupList"
+				bone_cull_type = "None"
+			},
+			{
+				_class = "AttachmentList"
 				children = 
 				[
 					{
-						_class = "AnimFile"
-						name = "charge"
-						activity_name = ""
-						activity_weight = 1
-						weight_list_name = ""
-						fade_in_time = 0.2
-						fade_out_time = 0.2
-						looping = false
-						delta = false
-						worldSpace = false
-						hidden = false
-						anim_markup_ordered = false
-						disable_compression = false
-						disable_interpolation = false
-						enable_scale = false
-						source_filename = "models/animations/pistol/charge.fbx"
-						start_frame = -1
-						end_frame = -1
-						framerate = -1.0
-						take = 0
-						reverse = false
+						_class = "Attachment"
+						name = "pistol_offset"
+						parent_bone = "tag_pistol_offset"
+						relative_origin = [ 0.0, 0.0, 0.0 ]
+						relative_angles = [ 0.0, 0.0, 0.0 ]
+						weight = 1.0
+						ignore_rotation = false
+					},
+					{
+						_class = "Attachment"
+						name = "grip_hide"
+						parent_bone = "tag_pistolgrip_hide"
+						relative_origin = [ 0.0, 0.0, 0.0 ]
+						relative_angles = [ 0.0, 0.0, 0.0 ]
+						weight = 1.0
+						ignore_rotation = false
+					},
+					{
+						_class = "Attachment"
+						name = "grip_hide_end"
+						parent_bone = "tag_pistolgrip_hide_end"
+						relative_origin = [ 0.0, 0.0, 0.0 ]
+						relative_angles = [ 0.0, 0.0, 0.0 ]
+						weight = 1.0
+						ignore_rotation = false
 					},
 				]
-				default_root_bone_name = ""
-			},
-			{
-				_class = "BoneMarkupList"
-				bone_cull_type = "None"
 			},
 		]
 		model_archetype = "animated_model"

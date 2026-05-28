@@ -77,6 +77,14 @@
 
     public Lobby? CurrentLobby { get; set; }
 
+    public Action<Lobby?> CurrentLobbyChanged { get; set; }
+
+    private void SetCurrentLobby( Lobby? lobby )
+    {
+        CurrentLobby = lobby;
+        CurrentLobbyChanged?.Invoke( lobby );
+    }
+
     private List<LobbyInformation> FetchedLobbies { get; set; } = new();
 
     private bool IsSearching = true;
@@ -93,11 +101,11 @@
     {
         if ( CurrentLobby.Equals( lobby ) )
         {
-            CurrentLobby = null;
+            SetCurrentLobby( null );
             return;
         }
 
-        CurrentLobby = lobby;
+        SetCurrentLobby( lobby );
     }
 
     private bool IsEditorLobby( LobbyInformation lobby )
@@ -121,7 +129,7 @@
 
     public void Refresh()
     {
-        CurrentLobby = null;
+        SetCurrentLobby( null );
         StateHasChanged();
         FetchLobbies();
     }

@@ -69,19 +69,28 @@
 				]
 			},
 			{
-				_class = "AnimationList"
+				_class = "WeightListList"
 				children = 
 				[
 					{
 						_class = "Prefab"
-						target_file = "models/animations/pistol_animation_reload_list.vmdl_prefab"
-					},
-					{
-						_class = "Prefab"
-						target_file = "models/animations/pistol_animation_idle_list.vmdl_prefab"
+						target_file = "models/animations/arms_weight_list.vmdl_prefab"
 					},
 				]
-				default_root_bone_name = ""
+			},
+			{
+				_class = "AttachmentList"
+				children = 
+				[
+					{
+						_class = "Prefab"
+						target_file = "models/gloves/prefabs/glove_attachment_list.vmdl_prefab"
+					},
+				]
+			},
+			{
+				_class = "BoneMarkupList"
+				bone_cull_type = "None"
 			},
 		]
 		model_archetype = ""

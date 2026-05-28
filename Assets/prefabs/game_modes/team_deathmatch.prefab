@@ -67,7 +67,7 @@
         "Armor": 100,
         "DefuseKit": false,
         "Helmet": true,
-        "LoadoutsEnabled": true,
+        "LoadoutsEnabled": false,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
@@ -79,14 +79,14 @@
           {
             "Team": "Terrorist",
             "Equipment": [
-              "weapons/usp/usp.equip",
+              "prefabs/weapons/makarov/makarov.equip",
               "weapons/knife/knife.equip"
             ]
           },
           {
             "Team": "CounterTerrorist",
             "Equipment": [
-              "weapons/usp_sd/usp_sd.equip",
+              "prefabs/weapons/makarov/makarov.equip",
               "weapons/knife_bayonet/knife_bayonet.equip"
             ]
           }

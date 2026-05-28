@@ -1,0 +1,11 @@
+// Created by Crowbar 0.74
+version 1
+nodes
+  0 "tag_laser_attach" -1
+  1 "tag_laser" 0
+end
+skeleton
+  time 0
+    0 0.000000 0.000000 0.000000 0.000000 0.000000 -1.570796
+    1 1.304997 0.000000 0.000000 0.000000 0.000000 0.000000
+end

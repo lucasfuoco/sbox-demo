@@ -6,7 +6,7 @@
 <root class="hc1 hud layout grow flex column">
     <div class="layout main with-background padding-extra column">
         <div class="layout flex column padding-extra center">
-            @if ( MapVoteSystem.WinningOption is { } option )
+            @if ( MapVoteSystem.WinningOption.HasValue )
             {
                 <label class="vital white uppercase">Changing Map</label>
             }

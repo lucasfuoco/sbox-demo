@@ -10,172 +10,165 @@
 				children = 
 				[
 					{
-						_class = "Folder"
-						name = "Melee"
-						children = 
-						[
-							{
-								_class = "AnimFile"
-								name = "melee_miss_03"
-								activity_name = ""
-								activity_weight = 1
-								weight_list_name = ""
-								fade_in_time = 0.2
-								fade_out_time = 0.2
-								looping = false
-								delta = false
-								worldSpace = false
-								hidden = false
-								anim_markup_ordered = false
-								disable_compression = false
-								disable_interpolation = false
-								enable_scale = false
-								source_filename = "models/animations/pistol/melee_miss_03.fbx"
-								start_frame = -1
-								end_frame = -1
-								framerate = -1.0
-								take = 0
-								reverse = false
-							},
-							{
-								_class = "AnimFile"
-								name = "melee_miss_02"
-								activity_name = ""
-								activity_weight = 1
-								weight_list_name = ""
-								fade_in_time = 0.2
-								fade_out_time = 0.2
-								looping = false
-								delta = false
-								worldSpace = false
-								hidden = false
-								anim_markup_ordered = false
-								disable_compression = false
-								disable_interpolation = false
-								enable_scale = false
-								source_filename = "models/animations/pistol/melee_miss_02.fbx"
-								start_frame = -1
-								end_frame = -1
-								framerate = -1.0
-								take = 0
-								reverse = false
-							},
-							{
-								_class = "AnimFile"
-								name = "melee_miss_01"
-								activity_name = ""
-								activity_weight = 1
-								weight_list_name = ""
-								fade_in_time = 0.2
-								fade_out_time = 0.2
-								looping = false
-								delta = false
-								worldSpace = false
-								hidden = false
-								anim_markup_ordered = false
-								disable_compression = false
-								disable_interpolation = false
-								enable_scale = false
-								source_filename = "models/animations/pistol/melee_miss_01.fbx"
-								start_frame = -1
-								end_frame = -1
-								framerate = -1.0
-								take = 0
-								reverse = false
-							},
-							{
-								_class = "AnimFile"
-								name = "melee_hit_03"
-								activity_name = ""
-								activity_weight = 1
-								weight_list_name = ""
-								fade_in_time = 0.2
-								fade_out_time = 0.2
-								looping = false
-								delta = false
-								worldSpace = false
-								hidden = false
-								anim_markup_ordered = false
-								disable_compression = false
-								disable_interpolation = false
-								enable_scale = false
-								source_filename = "models/animations/pistol/melee_hit_03.fbx"
-								start_frame = -1
-								end_frame = -1
-								framerate = -1.0
-								take = 0
-								reverse = false
-							},
-							{
-								_class = "AnimFile"
-								name = "melee_hit_02"
-								activity_name = ""
-								activity_weight = 1
-								weight_list_name = ""
-								fade_in_time = 0.2
-								fade_out_time = 0.2
-								looping = false
-								delta = false
-								worldSpace = false
-								hidden = false
-								anim_markup_ordered = false
-								disable_compression = false
-								disable_interpolation = false
-								enable_scale = false
-								source_filename = "models/animations/pistol/melee_hit_02.fbx"
-								start_frame = -1
-								end_frame = -1
-								framerate = -1.0
-								take = 0
-								reverse = false
-							},
-							{
-								_class = "AnimFile"
-								name = "melee_hit_01"
-								activity_name = ""
-								activity_weight = 1
-								weight_list_name = ""
-								fade_in_time = 0.2
-								fade_out_time = 0.2
-								looping = false
-								delta = false
-								worldSpace = false
-								hidden = false
-								anim_markup_ordered = false
-								disable_compression = false
-								disable_interpolation = false
-								enable_scale = false
-								source_filename = "models/animations/pistol/melee_hit_01.fbx"
-								start_frame = -1
-								end_frame = -1
-								framerate = -1.0
-								take = 0
-								reverse = false
-							},
-							{
-								_class = "AnimFile"
-								name = "melee_fatal_01"
-								activity_name = ""
-								activity_weight = 1
-								weight_list_name = ""
-								fade_in_time = 0.2
-								fade_out_time = 0.2
-								looping = false
-								delta = false
-								worldSpace = false
-								hidden = false
-								anim_markup_ordered = false
-								disable_compression = false
-								disable_interpolation = false
-								enable_scale = false
-								source_filename = "models/animations/pistol/melee_fatal_01.fbx"
-								start_frame = -1
-								end_frame = -1
-								framerate = -1.0
-								take = 0
-								reverse = false
-							},
-						]
+						_class = "AnimFile"
+						name = "melee_miss_03"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						disable_interpolation = false
+						enable_scale = false
+						source_filename = "models/animations/pistol/melee_miss_03.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "melee_miss_02"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						disable_interpolation = false
+						enable_scale = false
+						source_filename = "models/animations/pistol/melee_miss_02.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "melee_miss_01"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						disable_interpolation = false
+						enable_scale = false
+						source_filename = "models/animations/pistol/melee_miss_01.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "melee_hit_03"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						disable_interpolation = false
+						enable_scale = false
+						source_filename = "models/animations/pistol/melee_hit_03.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "melee_hit_02"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						disable_interpolation = false
+						enable_scale = false
+						source_filename = "models/animations/pistol/melee_hit_02.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "melee_hit_01"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						disable_interpolation = false
+						enable_scale = false
+						source_filename = "models/animations/pistol/melee_hit_01.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						take = 0
+						reverse = false
+					},
+					{
+						_class = "AnimFile"
+						name = "melee_fatal_01"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						disable_interpolation = false
+						enable_scale = false
+						source_filename = "models/animations/pistol/melee_fatal_01.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						take = 0
+						reverse = false
 					},
 				]
 				default_root_bone_name = ""
