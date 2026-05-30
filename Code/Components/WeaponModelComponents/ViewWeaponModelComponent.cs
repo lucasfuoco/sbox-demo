@@ -1,6 +1,7 @@
 using Sandbox;
 using Sandbox.Components;
 using Sandbox.Components.PawnComponents;
+using Sandbox.Components.WeaponEquipmentComponents;
 using Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 using Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.AimableWeaponInputActionEquipmentComponents;
 using Sandbox.GameEvents;
@@ -13,7 +14,7 @@ namespace Sandbox.Components.WeaponModelComponents;
 /// A weapon's viewmodel. It's responsibility is to listen to events from a weapon.
 /// It should only exist on the client for the currently possessed pawn.
 /// </summary>
-public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSetup, IGameEventHandler<PlayerUseEvent>, Component.ExecuteInEditor
+public class ViewWeaponModelComponent : WeaponModelComponent, ICameraSetup, IGameEventHandler<PlayerUseEvent>, Component.ExecuteInEditor
 {
 	/// <summary>
 	/// A reference to the <see cref="Equipment"/> we want to listen to.
@@ -24,9 +25,57 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 		get => _equipment;
 		set
 		{
+			if ( _equipment == value )
+				return;
+
+			if ( Owner.IsValid() )
+				Owner.OnJump -= OnOwnerJumped;
+
 			_equipment = value;
+
+			if ( !Equipment.IsValid() )
+				return;
+
+			OnEquipmentAssigned();
 		}
 	}
+
+	/// <summary>
+	/// Whether the viewmodel fire animation has finished. Non-anim-graph weapons are always ready.
+	/// </summary>
+	public bool IsFireAnimationReady
+	{
+		get
+		{
+			var ready = true;
+			UpdateFireAnimationReady( ref ready );
+			return ready;
+		}
+	}
+
+	protected virtual void UpdateFireAnimationReady( ref bool ready ) { }
+
+	protected virtual bool UsesCustomAnimationParameters => false;
+
+	protected virtual void EnsureAnimGraphSetup() { }
+
+	protected virtual void ApplyCustomAnimationParameters() { }
+
+	protected virtual void OnOwnerJumped() { }
+
+	public virtual void PulseFire( bool isLastShot ) { }
+
+	public virtual void PulseDraw( bool isFirstDraw = false ) { }
+
+	public virtual void BeginReloadAnimation( bool empty, int reloadType, bool fastReload ) { }
+
+	public virtual void EndReloadAnimation() { }
+
+	public virtual float GetReloadDuration( bool empty ) => 0f;
+
+	public virtual int GetMagReloadType() => 0;
+
+	public virtual bool IsFastReload() => ReloadSpeed > 1f;
 
 	/// <summary>
 	/// The resource
@@ -63,10 +112,16 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 	/// <summary>
 	/// Looks up the tree to find the player controller.
 	/// </summary>
-	PlayerPawnComponent Owner => Equipment.IsValid() ? Equipment.Owner : null;
+	protected PlayerPawnComponent Owner => Equipment.IsValid() ? Equipment.Owner : null;
 
 	[Property, Range( 0, 1 ), Group( "Configuration" )] public float IronsightsFireScale { get; set; } = 0.2f;
 	[Property, Group( "Configuration" )] public bool UseMovementInertia { get; set; } = true;
+
+	/// <summary>
+	/// When enabled in the editor (no equipped owner), snaps this viewmodel to <see cref="Scene.Camera"/> for offset tuning.
+	/// Disable to leave the prefab at its authored world transform.
+	/// </summary>
+	[Property, Group( "Configuration" )] public bool PreviewOnCamera { get; set; } = true;
 
 	[Property]
 	public float ReloadSpeed { get; set; } = 1f;
@@ -83,14 +138,19 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 
 	void ICameraSetup.Setup( CameraComponent cc )
 	{
-		if ( !Owner.IsValid() || !Owner.CharacterController.IsValid() )
+		if ( !Owner.IsValid() )
 			return;
 
 		WorldPosition = cc.WorldPosition;
 		WorldRotation = cc.WorldRotation;
 
-		ApplyInertia();
 		ApplyOffsets();
+
+		if ( Owner.CharacterController.IsValid() )
+		{
+			ApplyInertia();
+			ApplyVelocity();
+		}
 
 		if ( IsThrowable )
 		{
@@ -101,12 +161,66 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 			ApplyAnimationParameters();
 		}
 
-		ApplyVelocity();
-
 		var baseFov = GameSettingsSystem.Current.FieldOfView;
 
 		TargetFieldOfView = TargetFieldOfView.LerpTo( baseFov + FieldOfViewOffset, Time.Delta * 10f );
 		FieldOfViewOffset = 0;
+	}
+
+	void ICameraSetup.PostSetup( CameraComponent cc )
+	{
+		if ( !Owner.IsValid() )
+			return;
+
+		ApplyViewModelBoneOffsets();
+	}
+
+	protected override void OnPreRender()
+	{
+		// In play mode, offsets run once from ICameraSetup.PostSetup after animation.
+		if ( Game.IsPlaying && Owner.IsValid() )
+			return;
+
+		if ( PreviewOnCamera )
+			ApplyEditorPreviewTransform();
+
+		ApplyEditorPreviewAnimation();
+		ApplyViewModelBoneOffsets();
+	}
+
+	void ApplyViewModelBoneOffsets()
+	{
+		var components = GameObject.GetComponentsInChildren<BoneOffsetComponent>( true ).ToList();
+		for ( var i = 0; i < components.Count; i++ )
+		{
+			var component = components[i];
+
+			if ( component.LastShouldApply != component.ShouldApply )
+				component.HandleApplyStateChanged();
+			else
+				component.ApplyForRoot( GameObject, prepareSkeleton: i == 0 );
+		}
+	}
+
+	void ApplyEditorPreviewTransform()
+	{
+		if ( !PreviewOnCamera )
+			return;
+
+		var camera = Scene.Camera;
+		if ( !camera.IsValid() )
+			return;
+
+		WorldPosition = camera.WorldPosition;
+		WorldRotation = camera.WorldRotation;
+	}
+
+	void ApplyEditorPreviewAnimation()
+	{
+		if ( IsThrowable )
+			ApplyThrowableAnimations();
+		else
+			ApplyAnimationParameters();
 	}
 
 	protected override void OnAwake()
@@ -120,18 +234,25 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 		EnsureArmsRig();
 		ResolveAttachmentPoints();
 
-		// Somehow?
-		if ( Owner.IsValid() )
-			Owner.OnJump += OnPlayerJumped;
+		if ( Equipment.IsValid() )
+			OnEquipmentAssigned();
+	}
 
-		// Somehow this can happen?
-		if ( !Equipment.IsValid() )
-			return;
+	void OnEquipmentAssigned()
+	{
+		EnsureArmsRig();
+		EnsureAttachmentProfile();
+
+		if ( Owner.IsValid() )
+			Owner.OnJump += OnOwnerJumped;
 
 		if ( Equipment.GetComponentInChildren<ShootableWeaponInputActionEquipmentComponent>() is { } shoot )
-		{
 			OnFireMode( shoot.CurrentFireMode );
-		}
+
+		Equipment.GetComponentInChildren<WeaponAttachmentLoadoutComponent>()?.EnsureInitialized();
+
+		if ( PlayDeployEffects )
+			PulseDraw( isFirstDraw: true );
 	}
 
 	protected override void OnDestroy()
@@ -153,7 +274,7 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 		if ( !AttachmentProfile.IsValid() )
 			AttachmentProfile = GetComponentInChildren<WeaponAttachmentProfileComponent>();
 
-		if ( Game.IsEditor && AttachmentProfile.IsValid() )
+		if ( AttachmentProfile.IsValid() )
 			AttachmentProfile.RebuildProfile();
 	}
 
@@ -174,11 +295,13 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 	void EnsureArmsRig()
 	{
 		ArmsRig = ResolveArmsRig();
-		if ( !ArmsRig.IsValid() )
-			return;
+		if ( ArmsRig.IsValid() )
+		{
+			ArmsRig.ResolveComponents();
+			ArmsRig.Loadout?.Apply();
+		}
 
-		ArmsRig.ResolveComponents();
-		ArmsRig.Loadout?.Apply();
+		EnsureAnimGraphSetup();
 	}
 
 	ViewModelArmsRigComponent ResolveArmsRig()
@@ -191,16 +314,23 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 
 	/// <summary>
 	/// Prefer skeleton bones from <see cref="SkinnedModelRenderer.CreateBoneObjects"/> when present.
+	/// Preserves a <see cref="Muzzle"/> or <see cref="EjectionPort"/> already assigned on the prefab.
 	/// </summary>
 	void ResolveAttachmentPoints()
 	{
-		var muzzleBone = FindDescendant( "tag_barrel_attach", "tag_silencer" );
-		if ( muzzleBone.IsValid() )
-			Muzzle = muzzleBone;
+		if ( !Muzzle.IsValid() )
+		{
+			var muzzleBone = FindDescendant( "Muzzle", "tag_flash", "tag_flash_end", "tag_silencer_end", "tag_barrel_attach", "tag_silencer" );
+			if ( muzzleBone.IsValid() )
+				Muzzle = muzzleBone;
+		}
 
-		var ejectionBone = FindDescendant( "slide", "j_slide" );
-		if ( ejectionBone.IsValid() )
-			EjectionPort = ejectionBone;
+		if ( !EjectionPort.IsValid() )
+		{
+			var ejectionBone = FindDescendant( "slide", "j_slide" );
+			if ( ejectionBone.IsValid() )
+				EjectionPort = ejectionBone;
+		}
 	}
 
 	GameObject FindDescendant( params string[] names )
@@ -253,7 +383,13 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 
 	void ApplyInertia()
 	{
+		if ( !Equipment.IsValid() || !Equipment.Owner.IsValid() )
+			return;
+
 		var camera = Equipment.Owner.CameraGameObject;
+		if ( !camera.IsValid() )
+			return;
+
 		var inRot = camera.WorldRotation;
 
 		// Need to fetch data from the camera for the first frame
@@ -285,6 +421,9 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 	protected void ApplyVelocity()
 	{
 		if ( !Equipment.IsValid() )
+			return;
+
+		if ( UsesCustomAnimationParameters )
 			return;
 
 		var moveVel = Owner.CharacterController.Velocity;
@@ -347,7 +486,17 @@ public partial class ViewWeaponModelComponent : WeaponModelComponent, ICameraSet
 
 	void ApplyAnimationParameters()
 	{
+		if ( UsesCustomAnimationParameters )
+		{
+			ApplyCustomAnimationParameters();
+			return;
+		}
 
+		ApplyLegacyAnimationParameters();
+	}
+
+	void ApplyLegacyAnimationParameters()
+	{
 		SetOnAnimGraphRenderers( "b_sprint", Owner.IsSprinting );
 		SetOnAnimGraphRenderers( "b_grounded", Owner.IsGrounded );
 

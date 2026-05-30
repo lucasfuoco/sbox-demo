@@ -88,7 +88,17 @@ public partial class ReloadableWeaponInputActionEquipmentComponent : WeaponInput
 
 	float GetReloadTime()
 	{
-		if ( !AmmoComponent.HasAmmo )
+		var empty = AmmoComponent.IsValid() && AmmoComponent.IsEmpty;
+
+		var viewModel = Equipment.ViewWeaponModel;
+		if ( viewModel.IsValid() )
+		{
+			var duration = viewModel.GetReloadDuration( empty );
+			if ( duration > 0f )
+				return duration;
+		}
+
+		if ( empty )
 			return EmptyReloadTime;
 
 		return ReloadTime;
@@ -113,6 +123,7 @@ public partial class ReloadableWeaponInputActionEquipmentComponent : WeaponInput
 		{
 			IsReloading = true;
 			TimeUntilReload = GetReloadTime();
+			Equipment.SetTag( "reloading", true );
 		}
 
 		if ( SingleReload )
@@ -122,7 +133,14 @@ public partial class ReloadableWeaponInputActionEquipmentComponent : WeaponInput
 			bool hasAmmo = AmmoComponent.HasAmmo;
 			WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, !hasAmmo ? "b_reloading_first_shell" : "b_reloading_shell", true );
 		}
-
+		else if ( Equipment.ViewWeaponModel.IsValid() )
+		{
+			var emptyReload = AmmoComponent.IsValid() && AmmoComponent.IsEmpty;
+			Equipment.ViewWeaponModel.BeginReloadAnimation(
+				emptyReload,
+				Equipment.ViewWeaponModel.GetMagReloadType(),
+				Equipment.ViewWeaponModel.IsFastReload() );
+		}
 
 		foreach ( var kv in GetReloadSounds() )
 		{
@@ -139,9 +157,12 @@ public partial class ReloadableWeaponInputActionEquipmentComponent : WeaponInput
 		if ( !IsProxy )
 			IsReloading = false;
 
+		Equipment.SetTag( "reloading", false );
+
 		// Tags will be better so we can just react to stimuli.
 		Equipment.Owner?.BodyRenderer?.Set( "b_reload", false );
 		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_reloading", false );
+		Equipment.ViewWeaponModel?.EndReloadAnimation();
 	}
 
 	[Rpc.Owner]
@@ -161,15 +182,19 @@ public partial class ReloadableWeaponInputActionEquipmentComponent : WeaponInput
 				{
 					WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_reloading", false );
 					IsReloading = false;
+					Equipment.SetTag( "reloading", false );
 				}
 			}
 			else
 			{
 				IsReloading = false;
+				Equipment.SetTag( "reloading", false );
 				// Refill the ammo container.
 				AmmoComponent.Ammo = AmmoComponent.MaxAmmo;
 			}
 		}
+
+		Equipment.ViewWeaponModel?.EndReloadAnimation();
 	}
 
 	[Property] public Dictionary<float, SoundEvent> TimedReloadSounds { get; set; } = new();

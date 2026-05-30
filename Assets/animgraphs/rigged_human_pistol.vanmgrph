@@ -125,80 +125,6 @@
 			{
 				key = 
 				{
-					m_id = 59291297
-				}
-				value = 
-				{
-					_class = "CSelectorAnimNode"
-					m_sName = "Is Fire Last"
-					m_vecPosition = [ -227.0, 1933.0 ]
-					m_nNodeID = 
-					{
-						m_id = 59291297
-					}
-					m_sNote = ""
-					m_children = 
-					[
-						{
-							m_nodeID = 
-							{
-								m_id = 1175492111
-							}
-							m_outputID = 
-							{
-								m_id = 4294967295
-							}
-						},
-						{
-							m_nodeID = 
-							{
-								m_id = 1334043573
-							}
-							m_outputID = 
-							{
-								m_id = 4294967295
-							}
-						},
-					]
-					m_tags = 
-					[
-						{
-							m_id = 4294967295
-						},
-						{
-							m_id = 4294967295
-						},
-					]
-					m_selectionSource = "SelectionSource_Bool"
-					m_boolParamID = 
-					{
-						m_id = 283198381
-					}
-					m_enumParamID = 
-					{
-						m_id = 4294967295
-					}
-					m_intParamID = 
-					{
-						m_id = 4294967295
-					}
-					m_intParamMinValue = 0
-					m_intParamMaxValue = 2
-					m_blendDuration = 0.2
-					m_tagBehavior = "SelectorTagBehavior_OffWhenFinished"
-					m_bResetOnChange = true
-					m_bSyncCyclesOnChange = false
-					m_blendCurve = 
-					{
-						m_vControlPoint1 = [ 0.5, 0.0 ]
-						m_vControlPoint2 = [ 0.5, 1.0 ]
-					}
-					m_intParamNames = [  ]
-				}
-			},
-			{
-				key = 
-				{
 					m_id = 64416379
 				}
 				value = 
@@ -3881,7 +3807,7 @@
 				{
 					_class = "CSequenceAnimNode"
 					m_sName = "Default Reload"
-					m_vecPosition = [ -688.0, -1216.0 ]
+					m_vecPosition = [ -640.0, -1232.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1624845195
@@ -5337,6 +5263,44 @@
 									m_flRandomTimeStart = 0.0
 									m_flRandomTimeEnd = 0.0
 								},
+								{
+									_class = "CAnimStateTransition"
+									m_conditions = 
+									[
+										{
+											_class = "CParameterAnimCondition"
+											m_comparisonOp = 0
+											m_paramID = 
+											{
+												m_id = 283198381
+											}
+											m_comparisonValue = 
+											{
+												m_nType = 1
+												m_data = true
+											}
+										},
+									]
+									m_blendDuration = 0.2
+									m_destState = 
+									{
+										m_id = 402166979
+									}
+									m_bReset = true
+									m_resetCycleOption = "Beginning"
+									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
+									m_blendCurve = 
+									{
+										m_vControlPoint1 = [ 0.5, 0.0 ]
+										m_vControlPoint2 = [ 0.5, 1.0 ]
+									}
+									m_bForceFootPlant = false
+									m_bDisabled = false
+									m_bRandomTimeBetween = false
+									m_flRandomTimeStart = 0.0
+									m_flRandomTimeEnd = 0.0
+								},
 							]
 							m_tags = [  ]
 							m_tagBehaviors = [  ]
@@ -5356,7 +5320,7 @@
 							{
 								m_id = 650141433
 							}
-							m_position = [ -80.0, -384.0 ]
+							m_position = [ -80.0, -416.0 ]
 							m_bIsStartState = true
 							m_bIsEndtState = false
 							m_bIsPassthrough = false
@@ -5424,7 +5388,7 @@
 							{
 								m_id = 1906434389
 							}
-							m_position = [ -448.0, 80.0 ]
+							m_position = [ -528.0, 80.0 ]
 							m_bIsStartState = false
 							m_bIsEndtState = false
 							m_bIsPassthrough = false
@@ -5481,7 +5445,7 @@
 							{
 								m_nodeID = 
 								{
-									m_id = 59291297
+									m_id = 1175492111
 								}
 								m_outputID = 
 								{
@@ -5492,7 +5456,7 @@
 							{
 								m_id = 2011846522
 							}
-							m_position = [ -320.0, 80.0 ]
+							m_position = [ -416.0, 80.0 ]
 							m_bIsStartState = false
 							m_bIsEndtState = false
 							m_bIsPassthrough = false
@@ -6036,7 +6000,75 @@
 							{
 								m_id = 1635328953
 							}
-							m_position = [ -192.0, 80.0 ]
+							m_position = [ -144.0, 96.0 ]
+							m_bIsStartState = false
+							m_bIsEndtState = false
+							m_bIsPassthrough = false
+							m_bIsRootMotionExclusive = false
+							m_bAlwaysEvaluate = false
+						},
+						{
+							_class = "CAnimState"
+							m_transitions = 
+							[
+								{
+									_class = "CAnimStateTransition"
+									m_conditions = 
+									[
+										{
+											_class = "CParameterAnimCondition"
+											m_comparisonOp = 0
+											m_paramID = 
+											{
+												m_id = 283198381
+											}
+											m_comparisonValue = 
+											{
+												m_nType = 1
+												m_data = false
+											}
+										},
+									]
+									m_blendDuration = 0.2
+									m_destState = 
+									{
+										m_id = 650141433
+									}
+									m_bReset = true
+									m_resetCycleOption = "Beginning"
+									m_flFixedCycleValue = 0.0
+									m_bBlendCycle = false
+									m_blendCurve = 
+									{
+										m_vControlPoint1 = [ 0.5, 0.0 ]
+										m_vControlPoint2 = [ 0.5, 1.0 ]
+									}
+									m_bForceFootPlant = false
+									m_bDisabled = false
+									m_bRandomTimeBetween = false
+									m_flRandomTimeStart = 0.0
+									m_flRandomTimeEnd = 0.0
+								},
+							]
+							m_tags = [  ]
+							m_tagBehaviors = [  ]
+							m_name = "Fire Last"
+							m_inputConnection = 
+							{
+								m_nodeID = 
+								{
+									m_id = 1334043573
+								}
+								m_outputID = 
+								{
+									m_id = 4294967295
+								}
+							}
+							m_stateID = 
+							{
+								m_id = 402166979
+							}
+							m_position = [ -288.0, 96.0 ]
 							m_bIsStartState = false
 							m_bIsEndtState = false
 							m_bIsPassthrough = false
@@ -6186,7 +6218,7 @@
 			},
 			{
 				_class = "CBoolAnimParameter"
-				m_name = "is_fire_last"
+				m_name = "fire_last"
 				m_id = 
 				{
 					m_id = 283198381

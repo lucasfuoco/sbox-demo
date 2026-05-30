@@ -45,28 +45,44 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 	int _baseMaxAmmo;
 
 	int _lastAttachmentTargetCount = -1;
+	bool _initialized;
 
 	protected override void OnStart()
 	{
-		_resolvedProfile = ResolveProfile();
+		EnsureInitialized();
+	}
+
+	/// <summary>
+	/// Initializes attachment selections once the viewmodel profile is available.
+	/// </summary>
+	public void EnsureInitialized()
+	{
 		if ( _resolvedProfile is null )
-		{
-			Log.Warning( $"WeaponAttachmentLoadout: no {nameof( WeaponAttachmentProfileComponent )} on {GameObject.Name}" );
+			_resolvedProfile = ResolveProfile();
+
+		if ( _resolvedProfile is null )
 			return;
+
+		if ( !_initialized )
+		{
+			_ammo = GetComponent<WeaponAmmoComponent>();
+			_shoot = GetComponent<ShootableWeaponInputActionEquipmentComponent>();
+			_recoil = GetComponent<ShootRecoilEquipmentComponent>();
+			_reload = GetComponent<ReloadableWeaponInputActionEquipmentComponent>();
+
+			EnsureDefaultSelections();
+			CaptureBaseline();
+			_initialized = true;
 		}
 
-		_ammo = GetComponent<WeaponAmmoComponent>();
-		_shoot = GetComponent<ShootableWeaponInputActionEquipmentComponent>();
-		_recoil = GetComponent<ShootRecoilEquipmentComponent>();
-		_reload = GetComponent<ReloadableWeaponInputActionEquipmentComponent>();
-
-		EnsureDefaultSelections();
-		CaptureBaseline();
 		Apply();
 	}
 
 	protected override void OnUpdate()
 	{
+		if ( Equipment.ViewWeaponModel.IsValid() && _resolvedProfile is null )
+			EnsureInitialized();
+
 		var targetCount = EnumerateAttachmentTargets().Count();
 		if ( targetCount > 0 && targetCount != _lastAttachmentTargetCount )
 		{
@@ -85,8 +101,7 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 		if ( !profileComponent.IsValid() )
 			return null;
 
-		if ( Game.IsEditor )
-			profileComponent.RebuildProfile();
+		profileComponent.RebuildProfile();
 
 		return profileComponent.Profile;
 	}
@@ -151,6 +166,9 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 
 	public void Apply()
 	{
+		if ( _resolvedProfile is null )
+			_resolvedProfile = ResolveProfile();
+
 		if ( _resolvedProfile is null )
 			return;
 

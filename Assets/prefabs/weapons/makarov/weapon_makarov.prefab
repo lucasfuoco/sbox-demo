@@ -175,7 +175,7 @@
               "component_type": "WeaponAmmoComponent"
             },
             "EmptyReloadSounds": {},
-            "EmptyReloadTime": 2,
+            "EmptyReloadTime": 2.26,
             "InputActions": [
               "Reload"
             ],
@@ -186,7 +186,7 @@
             "OnComponentStart": null,
             "OnComponentUpdate": null,
             "OnInputAction": null,
-            "ReloadTime": 1.5,
+            "ReloadTime": 1.66,
             "RequiresAllInputActions": false,
             "SingleReload": false,
             "TimedReloadSounds": {}

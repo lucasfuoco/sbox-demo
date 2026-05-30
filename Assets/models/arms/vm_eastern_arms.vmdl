@@ -168,10 +168,6 @@
 				]
 			},
 			{
-				_class = "BoneMarkupList"
-				bone_cull_type = "None"
-			},
-			{
 				_class = "AttachmentList"
 				children = 
 				[

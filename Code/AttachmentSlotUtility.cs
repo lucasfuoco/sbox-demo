@@ -1,3 +1,5 @@
+using Sandbox.Components;
+
 namespace Sandbox;
 
 /// <summary>
@@ -19,8 +21,16 @@ public static class AttachmentSlotUtility
 				continue;
 
 			foundAny = true;
-			var option = child.Name[prefix.Length..];
-			var isActive = option.Equals( activeOption, StringComparison.OrdinalIgnoreCase );
+			var slotOption = child.Name[prefix.Length..];
+			var optionId = child.Components.Get<WeaponAttachmentOptionComponent>()?.OptionId;
+
+			if ( string.IsNullOrWhiteSpace( optionId ) )
+				optionId = slotOption;
+
+			var isActive = optionId.Equals( activeOption, StringComparison.OrdinalIgnoreCase )
+				|| slotOption.Equals( activeOption, StringComparison.OrdinalIgnoreCase )
+				|| $"{category}_{slotOption}".Equals( activeOption, StringComparison.OrdinalIgnoreCase );
+
 			child.Enabled = isActive;
 
 			foreach ( var renderer in child.Components.GetAll<SkinnedModelRenderer>( FindMode.EverythingInSelf ) )

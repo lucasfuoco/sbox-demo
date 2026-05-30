@@ -16,15 +16,13 @@ public enum BoneOffsetMode
 
 /// <summary>
 /// Local offset for a single skeleton bone.
-/// Position uses MW/GMod bone axes: X = right, Y = forward, Z = up.
+/// Position uses bone-local axes from the target bone: X = right, Y = forward, Z = up.
+/// Values are combined with the animated bone transform ref captured before apply.
 /// </summary>
 public class BoneOffsetEntry
 {
 	[Property]
 	public GameObject TargetBone { get; set; }
-
-	[Property]
-	public string BoneName { get; set; }
 
 	[Property]
 	public Vector3 PositionOffset { get; set; }
@@ -34,7 +32,4 @@ public class BoneOffsetEntry
 
 	[Property]
 	public BoneOffsetMode Mode { get; set; } = BoneOffsetMode.Additive;
-
-	[Property]
-	public GameObject ReferenceBone { get; set; }
 }

@@ -21,7 +21,12 @@ public partial class WeaponAmmoComponent : Component, IDroppedWeaponState<Weapon
 	/// <summary>
 	/// Do we have any ammo?
 	/// </summary>
-	[Property] public bool HasAmmo => Ammo > 0;
+	public bool HasAmmo => Ammo > 0;
+
+	/// <summary>
+	/// Is the magazine empty (no rounds left for empty reload)?
+	/// </summary>
+	public bool IsEmpty => Ammo <= 0;
 
 	/// <summary>
 	/// Is this container full?

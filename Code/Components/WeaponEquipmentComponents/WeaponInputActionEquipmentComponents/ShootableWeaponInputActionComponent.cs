@@ -215,10 +215,11 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 			Equipment.Owner.BodyRenderer.Set( "b_attack", true );
 
 		var viewModel = Equipment.ViewWeaponModel;
-		if ( viewModel.IsValid())
+		if ( viewModel.IsValid() )
 		{
 			var ammo = Equipment.GetComponentInChildren<WeaponAmmoComponent>();
-			var isLast = ammo.IsValid() && ammo.Ammo <= 1;
+			var isLast = ammo.IsValid() && ammo.Ammo <= 0;
+			viewModel.PulseFire( isLast );
 			return;
 		}
 
@@ -335,15 +336,15 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		}
 
 		var viewModel = Equipment.ViewWeaponModel;
-		if ( viewModel.IsValid())
+		if ( viewModel.IsValid() )
 		{
 			var ammo = Equipment.GetComponentInChildren<WeaponAmmoComponent>();
-			var isLast = ammo.IsValid() && ammo.Ammo <= 0;
+			var isEmpty = ammo.IsValid() && ammo.Ammo <= 0;
+			viewModel.PulseFire( isEmpty );
+			return;
 		}
-		else
-		{
-			WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_attack_dry", true );
-		}
+
+		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_attack_dry", true );
 	}
 
 	protected IEnumerable<SceneTraceResult> DoTraceBullet( Vector3 start, Vector3 end, float radius )
@@ -492,6 +493,9 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 
 		// Weapon
 		if ( Equipment.HasTag( "reloading" ) || Equipment.HasTag( "no_shooting" ) )
+			return false;
+
+		if ( Equipment.ViewWeaponModel.IsValid() && !Equipment.ViewWeaponModel.IsFireAnimationReady )
 			return false;
 
 		// Delay checks

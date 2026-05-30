@@ -2,22 +2,12 @@ namespace Sandbox.Components;
 
 /// <summary>
 /// Root component for a viewmodel arms prefab. Owns the arms mesh, glove profile, and loadout.
-/// Embedded on the player pawn. Bound to the active weapon viewmodel at runtime.
+/// Bone merge is authored on the arms <see cref="SkinnedModelRenderer"/> in the prefab.
 /// </summary>
 [Title( "Arms Rig" ), Group( "Viewmodel" )]
 public sealed class ViewModelArmsRigComponent : Component, Component.ExecuteInEditor
 {
 	[Property] public SkinnedModelRenderer Arms { get; set; }
-
-	[Property, Group( "Bone Merge" )]
-	public bool UseBoneMerge { get; set; } = true;
-
-	/// <summary>
-	/// When set, arms merge to this renderer instead of the parent weapon mesh.
-	/// Useful for editor preview or rigs that need a specific merge target.
-	/// </summary>
-	[Property, Group( "Bone Merge" )]
-	public SkinnedModelRenderer BoneMergeTarget { get; set; }
 
 	[Property, Group( "Attachments" )]
 	public ViewModelArmsProfileComponent ArmsProfile { get; set; }
@@ -37,7 +27,6 @@ public sealed class ViewModelArmsRigComponent : Component, Component.ExecuteInEd
 
 		ResolveComponents();
 		EnsureProfile();
-		ApplyBoneMerge( GetParentWeaponRenderer( this ) );
 	}
 
 	public void ResolveComponents()
@@ -60,50 +49,9 @@ public sealed class ViewModelArmsRigComponent : Component, Component.ExecuteInEd
 	}
 
 	/// <summary>
-	/// Binds <see cref="Arms"/> to a weapon renderer for bone merge, or clears merge when disabled.
-	/// Uses <see cref="BoneMergeTarget"/> when set, otherwise <paramref name="weaponRenderer"/>.
-	/// </summary>
-	public void ApplyBoneMerge( SkinnedModelRenderer weaponRenderer = null )
-	{
-		if ( !Arms.IsValid() )
-			return;
-
-		if ( !UseBoneMerge )
-		{
-			Arms.BoneMergeTarget = null;
-			return;
-		}
-
-		var target = BoneMergeTarget;
-		if ( !target.IsValid() )
-			target = weaponRenderer;
-
-		if ( !target.IsValid() )
-			return;
-
-		Arms.BoneMergeTarget = target;
-
-		// Weapon anim graph drives the skeleton; merged arms only follow bones.
-		if ( target.UseAnimGraph )
-		{
-			Arms.UseAnimGraph = false;
-			Arms.AnimationGraph = null;
-		}
-	}
-
-	/// <summary>
 	/// Root for slot meshes (e.g. slot_glove_mechanix_black).
 	/// </summary>
 	public GameObject GetSlotRoot( string category ) => GameObject;
-
-	static SkinnedModelRenderer GetParentWeaponRenderer( Component rig )
-	{
-		var viewModel = rig.GetComponentInParent<WeaponModelComponents.ViewWeaponModelComponent>();
-		if ( !viewModel.IsValid() )
-			return null;
-
-		return viewModel.GameObject.Components.Get<SkinnedModelRenderer>();
-	}
 
 	static SkinnedModelRenderer FindArmsRenderer( GameObject go )
 	{

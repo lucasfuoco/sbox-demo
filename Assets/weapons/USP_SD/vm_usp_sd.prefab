@@ -61,16 +61,12 @@
         "UseAnimGraph": true
       },
       {
-        "__type": "Sandbox.Components.WeaponModelComponents.ViewWeaponModelComponent",
+        "__type": "Sandbox.Components.WeaponModelComponents.ViewWeaponModelComponents.PistolViewWeaponModelComponent",
         "__guid": "2efc72de-5521-44f2-8ed3-2cf73bda9734",
         "__enabled": true,
         "Flags": 0,
-        "Arms": {
-          "_type": "component",
-          "component_id": "b2f40a80-d282-4dbd-b3f8-d63c8bcf5c0f",
-          "go": "89ca67eb-4876-43e6-a3bf-492b88573c29",
-          "component_type": "SkinnedModelRenderer"
-        },
+        "ArmsRigSource": null,
+        "AttachmentProfile": null,
         "EjectionPort": {
           "_type": "gameobject",
           "go": "64434bf8-a501-4038-a075-f45e78829137"
@@ -119,14 +115,9 @@
             "__guid": "b2f40a80-d282-4dbd-b3f8-d63c8bcf5c0f",
             "__enabled": true,
             "Flags": 0,
-            "AnimationGraph": null,
+            "AnimationGraph": "animgraphs/rigged_human_pistol.vanmgrph",
             "BodyGroups": 21,
-            "BoneMergeTarget": {
-              "_type": "component",
-              "component_id": "ff2ca409-cf58-45a1-9903-1110a02b94de",
-              "go": "35f5497d-9721-4b4b-9fc7-b90aa2df8fa5",
-              "component_type": "SkinnedModelRenderer"
-            },
+            "BoneMergeTarget": null,
             "CreateAttachments": false,
             "CreateBoneObjects": false,
             "LodOverride": null,
