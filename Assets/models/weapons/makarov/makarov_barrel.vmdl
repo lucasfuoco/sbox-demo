@@ -62,10 +62,6 @@
 				]
 			},
 			{
-				_class = "BoneMarkupList"
-				bone_cull_type = "None"
-			},
-			{
 				_class = "AttachmentList"
 				children = 
 				[
@@ -158,6 +154,129 @@
 						relative_angles = [ 0.0, 0.0, 0.0 ]
 						weight = 1.0
 						ignore_rotation = false
+					},
+					{
+						_class = "Attachment"
+						name = "slide"
+						parent_bone = "j_slide"
+						relative_origin = [ 0.0, 0.0, 0.0 ]
+						relative_angles = [ 0.0, 0.0, 0.0 ]
+						weight = 1.0
+						ignore_rotation = false
+					},
+				]
+			},
+			{
+				_class = "Skeleton"
+				children = 
+				[
+					{
+						_class = "Bone"
+						name = "j_gun"
+						children = 
+						[
+							{
+								_class = "Bone"
+								name = "tag_pistol_offset"
+								children = 
+								[
+									{
+										_class = "Bone"
+										name = "tag_barrel_attach"
+										children = 
+										[
+											{
+												_class = "Bone"
+												name = "j_slide"
+												children = 
+												[
+													{
+														_class = "Bone"
+														name = "tag_sight_on"
+														children = 
+														[
+															{
+																_class = "Bone"
+																name = "tag_sight_on_end"
+																origin = [ 0.000002, 0.086012, -0.000001 ]
+																angles = [ -0.0, 0.0, -0.000014 ]
+																do_not_discard = true
+															},
+														]
+														origin = [ 1.114168, 0.0, 2.59842 ]
+														angles = [ -0.0, 0.0, 0.0 ]
+														do_not_discard = true
+													},
+												]
+												origin = [ 5.5, 0.0, 1.8 ]
+												angles = [ -0.0, 0.0, 0.0 ]
+												do_not_discard = true
+											},
+											{
+												_class = "Bone"
+												name = "tag_silencer"
+												children = 
+												[
+													{
+														_class = "Bone"
+														name = "tag_silencer_end"
+														origin = [ -0.000002, 0.086012, 0.0 ]
+														angles = [ -0.0, 0.0, -0.000014 ]
+														do_not_discard = true
+													},
+												]
+												origin = [ 16.905474, 0.0, 0.535432 ]
+												angles = [ -0.0, 0.0, 0.0 ]
+												do_not_discard = true
+											},
+											{
+												_class = "Bone"
+												name = "tag_flash_attachment"
+												children = 
+												[
+													{
+														_class = "Bone"
+														name = "tag_flash_attachment_end"
+														origin = [ -0.000002, 0.086012, 0.0 ]
+														angles = [ -0.0, 0.0, -0.000014 ]
+														do_not_discard = true
+													},
+												]
+												origin = [ 16.905474, 0.0, 0.535432 ]
+												angles = [ -0.0, 0.0, 0.0 ]
+												do_not_discard = true
+											},
+										]
+										origin = [ 4.523617, 0.0, 2.4685 ]
+										angles = [ -0.0, 0.0, 0.0 ]
+										do_not_discard = true
+									},
+									{
+										_class = "Bone"
+										name = "tag_barrel_hide"
+										children = 
+										[
+											{
+												_class = "Bone"
+												name = "tag_barrel_hide_end"
+												origin = [ -0.000004, 0.086012, 0.0 ]
+												angles = [ -0.0, 0.0, -0.000014 ]
+												do_not_discard = true
+											},
+										]
+										origin = [ 4.523617, 0.0, 2.4685 ]
+										angles = [ -0.0, 0.0, 0.0 ]
+										do_not_discard = true
+									},
+								]
+								origin = [ -38.043224, 0.000001, 7.893685 ]
+								angles = [ -0.0, 0.0, 0.0 ]
+								do_not_discard = true
+							},
+						]
+						origin = [ 0.0, 0.0, 0.0 ]
+						angles = [ -0.0, 89.999992, 0.000005 ]
+						do_not_discard = true
 					},
 				]
 			},

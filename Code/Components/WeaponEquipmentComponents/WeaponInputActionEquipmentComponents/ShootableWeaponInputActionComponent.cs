@@ -36,6 +36,7 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 
 	[Property, Group( "Effects" )] public GameObject MuzzleFlashPrefab { get; set; }
 	[Property, Group( "Effects" )] public GameObject EjectionPrefab { get; set; }
+	[Property, Group( "Effects" )] public float MuzzleFlashScaleMultiplier { get; set; } = 1.5f;
 
 	/// <summary>
 	/// What sound should we play when we fire?
@@ -186,13 +187,17 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		if ( !MuzzleFlashPrefab.IsValid() || !Effector.IsValid() || !Effector.Muzzle.IsValid() )
 			return;
 
-		MuzzleFlashPrefab.Clone( new CloneConfig()
+		var muzzleFlash = MuzzleFlashPrefab.Clone( new CloneConfig()
 		{
 			Parent = Effector.Muzzle,
-			Transform = new(),
 			StartEnabled = true,
 			Name = $"Muzzle flash: {Equipment.GameObject}",
 		} );
+
+		// Some prefabs carry an authored root offset. Snap to the attachment bone origin.
+		muzzleFlash.LocalPosition = Vector3.Zero;
+		muzzleFlash.LocalRotation = Rotation.Identity;
+		muzzleFlash.LocalScale *= MuzzleFlashScaleMultiplier;
 	}
 
 	public void SpawnShellEject()
@@ -200,13 +205,15 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		if ( !EjectionPrefab.IsValid() || !Effector.IsValid() || !Effector.EjectionPort.IsValid() )
 			return;
 
-		EjectionPrefab.Clone( new CloneConfig()
+		var shellEject = EjectionPrefab.Clone( new CloneConfig()
 		{
 			Parent = Effector.EjectionPort,
-			Transform = new(),
 			StartEnabled = true,
 			Name = $"Bullet ejection: {Equipment.GameObject}",
 		} );
+
+		shellEject.LocalPosition = Vector3.Zero;
+		shellEject.LocalRotation = Rotation.Identity;
 	}
 
 	void PlayThirdPersonAttack()

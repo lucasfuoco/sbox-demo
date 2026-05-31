@@ -171,8 +171,6 @@ public class ViewWeaponModelComponent : WeaponModelComponent, ICameraSetup, IGam
 	{
 		if ( !Owner.IsValid() )
 			return;
-
-		ApplyViewModelBoneOffsets();
 	}
 
 	protected override void OnPreRender()
@@ -185,21 +183,6 @@ public class ViewWeaponModelComponent : WeaponModelComponent, ICameraSetup, IGam
 			ApplyEditorPreviewTransform();
 
 		ApplyEditorPreviewAnimation();
-		ApplyViewModelBoneOffsets();
-	}
-
-	void ApplyViewModelBoneOffsets()
-	{
-		var components = GameObject.GetComponentsInChildren<BoneOffsetComponent>( true ).ToList();
-		for ( var i = 0; i < components.Count; i++ )
-		{
-			var component = components[i];
-
-			if ( component.LastShouldApply != component.ShouldApply )
-				component.HandleApplyStateChanged();
-			else
-				component.ApplyForRoot( GameObject, prepareSkeleton: i == 0 );
-		}
 	}
 
 	void ApplyEditorPreviewTransform()
@@ -232,7 +215,6 @@ public class ViewWeaponModelComponent : WeaponModelComponent, ICameraSetup, IGam
 	{
 		EnsureAttachmentProfile();
 		EnsureArmsRig();
-		ResolveAttachmentPoints();
 
 		if ( Equipment.IsValid() )
 			OnEquipmentAssigned();
@@ -310,27 +292,6 @@ public class ViewWeaponModelComponent : WeaponModelComponent, ICameraSetup, IGam
 			return ArmsRigSource;
 
 		return GetComponentInChildren<ViewModelArmsRigComponent>( true );
-	}
-
-	/// <summary>
-	/// Prefer skeleton bones from <see cref="SkinnedModelRenderer.CreateBoneObjects"/> when present.
-	/// Preserves a <see cref="Muzzle"/> or <see cref="EjectionPort"/> already assigned on the prefab.
-	/// </summary>
-	void ResolveAttachmentPoints()
-	{
-		if ( !Muzzle.IsValid() )
-		{
-			var muzzleBone = FindDescendant( "Muzzle", "tag_flash", "tag_flash_end", "tag_silencer_end", "tag_barrel_attach", "tag_silencer" );
-			if ( muzzleBone.IsValid() )
-				Muzzle = muzzleBone;
-		}
-
-		if ( !EjectionPort.IsValid() )
-		{
-			var ejectionBone = FindDescendant( "slide", "j_slide" );
-			if ( ejectionBone.IsValid() )
-				EjectionPort = ejectionBone;
-		}
 	}
 
 	GameObject FindDescendant( params string[] names )

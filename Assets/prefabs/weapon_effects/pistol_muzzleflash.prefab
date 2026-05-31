@@ -6,7 +6,7 @@
     "Name": "pistol_muzzleflash",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
-    "Scale": "1,1,1",
+    "Scale": "2,2,2",
     "Tags": "",
     "Enabled": true,
     "NetworkMode": 2,
@@ -28,9 +28,9 @@
         "OnComponentUpdate": null,
         "Time": 1,
         "TimeUntilDestroy": {
-          "Absolute": 986.63654,
-          "Relative": -129.98236,
-          "Passed": 129.98236,
+          "Absolute": 0,
+          "Relative": -1057.1205,
+          "Passed": 1057.1205,
           "Fraction": 1
         },
         "WaitForChildEffects": false

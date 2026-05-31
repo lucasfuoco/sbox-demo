@@ -87,7 +87,6 @@
             "__enabled": true,
             "Flags": 0,
             "Ammo": 12,
-            "HasAmmo": true,
             "MaxAmmo": 12,
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
@@ -145,6 +144,7 @@
               "_type": "gameobject",
               "prefab": "prefabs/weapon_effects/pistol_muzzleflash.prefab"
             },
+            "MuzzleFlashScaleMultiplier": 3,
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
             "OnComponentEnabled": null,
@@ -212,14 +212,14 @@
             "ResetTime": 0.3,
             "Scale": "2,5",
             "UseRecoilPattern": false,
-            "VerticalSpread": "0 0.05"
+            "VerticalSpread": "0 0.0500000007"
           },
           {
             "__type": "Sandbox.Components.WeaponEquipmentComponents.ViewPunchWeaponEquipmentComponent",
             "__guid": "b2d5f9a3-4c0e-5f8b-a023-7e9c1f6b3d52",
             "__enabled": true,
             "Flags": 0,
-            "AnglesOffset": "-0.5,0.1,0.5",
+            "AnglesOffset": "-0.5,0.100000001,0.5",
             "Curve": [
               {
                 "x": 0.5,
@@ -230,15 +230,15 @@
               }
             ],
             "Lifetime": 0.3,
-            "MaxAnglesOffset": "-0.5,0.1,0.5",
-            "MaxPositionOffset": "0.5,0.2,0.75",
+            "MaxAnglesOffset": "-0.5,0.100000001,0.5",
+            "MaxPositionOffset": "0.5,0.200000003,0.75",
             "OnComponentDestroy": null,
             "OnComponentDisabled": null,
             "OnComponentEnabled": null,
             "OnComponentFixedUpdate": null,
             "OnComponentStart": null,
             "OnComponentUpdate": null,
-            "PositionOffset": "0.5,0.2,0.75"
+            "PositionOffset": "0.5,0.200000003,0.75"
           },
           {
             "__type": "Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.AimableWeaponInputActionEquipmentComponents.ManualOffsetAimableWeaponInputActionEquipmentComponent",
@@ -246,7 +246,7 @@
             "__enabled": true,
             "Flags": 0,
             "AimAngleOffset": "0,0,0",
-            "AimOffset": "0.15,0,0",
+            "AimOffset": "0.150000006,0,0",
             "InputActions": [
               "Attack2"
             ],
