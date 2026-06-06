@@ -35,6 +35,14 @@
 								bone = "j_shoulder_ri"
 								weight = 1.0
 							},
+							{
+								bone = "j_shouldertwist_le_end"
+								weight = 1.0
+							},
+							{
+								bone = "j_shouldertwist_ri"
+								weight = 1.0
+							},
 						]
 						master_morph_weight = -1.0
 						morph_weights = [  ]
@@ -159,6 +167,20 @@
 							},
 							{
 								bone = "j_thumb_ri_1"
+								weight = 1.0
+							},
+						]
+						master_morph_weight = -1.0
+						morph_weights = [  ]
+					},
+					{
+						_class = "WeightList"
+						name = "pistol"
+						default_weight = 0.0
+						weights = 
+						[
+							{
+								bone = "ValveBiped_Anim_Attachment_RH"
 								weight = 1.0
 							},
 						]

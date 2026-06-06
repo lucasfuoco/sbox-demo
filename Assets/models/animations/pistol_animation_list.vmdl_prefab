@@ -31,10 +31,6 @@
 					},
 					{
 						_class = "Prefab"
-						target_file = "models/animations/pistol_animation_jog_list.vmdl_prefab"
-					},
-					{
-						_class = "Prefab"
 						target_file = "models/animations/pistol_animation_jump_list.vmdl_prefab"
 					},
 					{
@@ -55,6 +51,24 @@
 					},
 				]
 				default_root_bone_name = ""
+			},
+			{
+				_class = "PrefabList"
+				children = 
+				[
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_jog_list.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_walk_list.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/animations/pistol_animation_freefall.vmdl_prefab"
+					},
+				]
 			},
 		]
 		model_archetype = ""

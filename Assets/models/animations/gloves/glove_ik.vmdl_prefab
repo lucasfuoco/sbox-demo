@@ -1,0 +1,163 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:modeldoc30:version{8c2d7a91-9c42-4bf0-883a-5a3b1762d4f1} -->
+{
+	rootNode = 
+	{
+		_class = "RootNode"
+		children = 
+		[
+			{
+				_class = "IKData"
+				children = 
+				[
+					{
+						_class = "IKChain"
+						name = "hand_r"
+						children = 
+						[
+							{
+								_class = "IKChainJoint"
+								name = "j_shoulder_ri"
+								children = 
+								[
+									{
+										_class = "IKChainJoint"
+										name = "j_elbow_ri"
+										children = 
+										[
+											{
+												_class = "IKChainJoint"
+												name = "j_wrist_ri"
+												bone = "j_wrist_ri"
+											},
+										]
+										bone = "j_elbow_ri"
+									},
+								]
+								bone = "j_shoulder_ri"
+							},
+						]
+						m_bDoBonesOrientAlongPositiveX = true
+						"m_DefaultSolverSettings.m_nNumIterations" = 6
+						"m_DefaultSolverSettings.m_SolverType " = "IKSOLVER_Fabrik"
+						"m_DefaultTargetSettings.m_Bone" = 
+						{
+							m_Name = "tag_pistol_offset"
+						}
+						"m_DefaultTargetSettings.m_TargetSource" = "Animgraph Parameter"
+						"m_Data.m_DefaultTargetSettings.m_AnimgraphParameterNamePosition" = 
+						{
+							m_id = 4294967295
+						}
+						"m_Data.m_EndEffectorFixedOffsetAttachment" = 
+						{
+							m_Name = ""
+						}
+						"m_Data.m_bParentJointRequiresAlignment" = false
+					},
+					{
+						_class = "IKChain"
+						name = "hand_l"
+						children = 
+						[
+							{
+								_class = "IKChainJoint"
+								name = "j_shoulder_le"
+								children = 
+								[
+									{
+										_class = "IKChainJoint"
+										name = "j_elbow_le"
+										children = 
+										[
+											{
+												_class = "IKChainJoint"
+												name = "j_wrist_le"
+												bone = "j_wrist_le"
+											},
+										]
+										bone = "j_elbow_le"
+									},
+								]
+								bone = "j_shoulder_le"
+							},
+						]
+						m_bDoBonesOrientAlongPositiveX = true
+						"m_DefaultSolverSettings.m_nNumIterations" = 6
+						"m_DefaultSolverSettings.m_SolverType " = "IKSOLVER_Fabrik"
+						"m_DefaultTargetSettings.m_Bone" = 
+						{
+							m_Name = "tag_pistol_offset"
+						}
+						"m_DefaultTargetSettings.m_TargetSource" = "Animgraph Parameter"
+						"m_Data.m_DefaultTargetSettings.m_AnimgraphParameterNamePosition" = 
+						{
+							m_id = 4294967295
+						}
+						"m_Data.m_EndEffectorFixedOffsetAttachment" = 
+						{
+							m_Name = ""
+						}
+						"m_Data.m_bParentJointRequiresAlignment" = false
+					},
+					{
+						_class = "IKChain"
+						name = "index_finger_r"
+						children = 
+						[
+							{
+								_class = "IKChainJoint"
+								name = "j_index_ri_1"
+								children = 
+								[
+									{
+										_class = "IKChainJoint"
+										name = "j_index_ri_2"
+										children = 
+										[
+											{
+												_class = "IKChainJoint"
+												name = "j_index_ri_3"
+												children = 
+												[
+													{
+														_class = "IKChainJoint"
+														name = "j_index_ri_4"
+														bone = "j_index_ri_4"
+													},
+												]
+												bone = "j_index_ri_3"
+											},
+										]
+										bone = "j_index_ri_2"
+									},
+								]
+								bone = "j_index_ri_1"
+							},
+						]
+						m_bDoBonesOrientAlongPositiveX = true
+						"m_DefaultSolverSettings.m_nNumIterations" = 6
+						"m_DefaultSolverSettings.m_SolverType " = "IKSOLVER_Fabrik"
+						"m_DefaultTargetSettings.m_Bone" = 
+						{
+							m_Name = "j_metaindex_ri_1"
+						}
+						"m_DefaultTargetSettings.m_TargetSource" = "Animgraph Parameter"
+						"m_Data.m_DefaultTargetSettings.m_AnimgraphParameterNamePosition" = 
+						{
+							m_id = 4294967295
+						}
+						"m_Data.m_EndEffectorFixedOffsetAttachment" = 
+						{
+							m_Name = ""
+						}
+						"m_Data.m_bParentJointRequiresAlignment" = true
+					},
+				]
+			},
+		]
+		model_archetype = ""
+		primary_associated_entity = ""
+		anim_graph_name = ""
+		base_model_name = ""
+	}
+}

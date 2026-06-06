@@ -146,19 +146,22 @@
 				]
 			},
 			{
-				_class = "AnimationList"
-				children = 
-				[
-				]
-				default_root_bone_name = ""
-			},
-			{
 				_class = "WeightListList"
 				children = 
 				[
 					{
 						_class = "Prefab"
 						target_file = "models/animations/arms_weight_list.vmdl_prefab"
+					},
+				]
+			},
+			{
+				_class = "IKData"
+				children = 
+				[
+					{
+						_class = "Prefab"
+						target_file = "models/animations/gloves/glove_ik.vmdl_prefab"
 					},
 				]
 			},

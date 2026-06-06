@@ -90,6 +90,27 @@ public class PistolViewWeaponModelComponent : ViewWeaponModelComponent
 		WeaponMeshRenderer?.Set( param, value );
 	}
 
+	void SetAnimGraph( string param, float value )
+	{
+		if ( !UsesAnimGraph )
+			return;
+
+		WeaponMeshRenderer?.Set( param, value );
+	}
+
+	enum JogState
+	{
+		In = 0,
+		InSub = 1,
+		OffsetSub = 2,
+		Out = 3,
+		OutSub = 4
+	}
+
+	bool _wasJogging;
+	TimeSince _timeSinceJogStateChange;
+	JogState _jogState = JogState.OutSub;
+
 	void QueueFire( bool isLastShot )
 	{
 		_fireQueue.Enqueue( isLastShot );
@@ -246,9 +267,53 @@ public class PistolViewWeaponModelComponent : ViewWeaponModelComponent
 
 		SetAnimGraph( "sprint", Owner.IsSprinting );
 
-		var moveLen = Owner.CharacterController.Velocity.Length;
+		var moveVel = Owner.CharacterController.Velocity.WithZ( 0f );
+		var moveLen = moveVel.Length;
 		var isMoving = moveLen > 10f;
-		SetAnimGraph( "jog", isMoving && !Owner.IsSprinting );
+		var isJogging = isMoving && !Owner.IsSprinting;
+
+		SetAnimGraph( "jog", isJogging );
+
+		// Match QC/Lua-style layered locomotion by driving jog blend params continuously.
+		var moveAlpha = moveLen.Remap( 0f, 220f, 0f, 1f, true );
+		var sprintAlpha = moveLen.Remap( 0f, 300f, 0f, 1f, true );
+		var aimScale = aiming ? 0.35f : 1f;
+
+		var jogLoop = Math.Clamp( moveAlpha * aimScale, 0f, 1f );
+		var jogOffset = Math.Clamp( moveAlpha * (1f - sprintAlpha) * aimScale, 0f, 1f );
+
+		SetAnimGraph( "jog_loop", jogLoop );
+		SetAnimGraph( "jog_offset", jogOffset );
+
+		if ( isJogging && !_wasJogging )
+		{
+			_jogState = JogState.In;
+			_timeSinceJogStateChange = 0;
+		}
+		else if ( isJogging )
+		{
+			if ( _jogState == JogState.In && _timeSinceJogStateChange > 0.08f )
+			{
+				_jogState = JogState.InSub;
+				_timeSinceJogStateChange = 0;
+			}
+			else if ( _jogState == JogState.InSub && _timeSinceJogStateChange > 0.08f )
+			{
+				_jogState = JogState.OffsetSub;
+			}
+		}
+		else if ( !isJogging && _wasJogging )
+		{
+			_jogState = JogState.Out;
+			_timeSinceJogStateChange = 0;
+		}
+		else if ( !isJogging && _jogState == JogState.Out && _timeSinceJogStateChange > 0.08f )
+		{
+			_jogState = JogState.OutSub;
+		}
+
+		SetAnimGraph( "jog_state", (int)_jogState );
+		_wasJogging = isJogging;
 	}
 
 	void ApplyReloadParameters()
