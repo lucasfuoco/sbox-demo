@@ -9,9 +9,9 @@ Layer0
 	F_SPECULAR 1
 
 	//---- Ambient Occlusion ----
-	g_flAmbientOcclusionDirectDiffuse "0.000"
-	g_flAmbientOcclusionDirectSpecular "0.000"
-	TextureAmbientOcclusion "materials/default/default_ao.tga"
+	g_flAmbientOcclusionDirectDiffuse "0.475"
+	g_flAmbientOcclusionDirectSpecular "0.465"
+	TextureAmbientOcclusion "materials/skin/arms_skin_pbr_ao.png"
 
 	//---- Color ----
 	g_flModelTintAmount "1.000"
@@ -25,14 +25,14 @@ Layer0
 	g_bFogEnabled "1"
 
 	//---- Metalness ----
-	TextureMetalness "materials/skin/skin_col_m.tga"
+	TextureMetalness "materials/skin/arms_skin_pbr_metallic.png"
 
 	//---- Normal ----
 	TextureNormal "materials/skin/skin_col_n.tga"
 
 	//---- Roughness ----
-	g_flRoughnessScaleFactor "1.000"
-	TextureRoughness "materials/default/default_rough.tga"
+	g_flRoughnessScaleFactor "0.561"
+	TextureRoughness "materials/skin/arms_skin_pbr_roughness.png"
 
 	//---- Texture Coordinates ----
 	g_vTexCoordOffset "[0.000 0.000]"

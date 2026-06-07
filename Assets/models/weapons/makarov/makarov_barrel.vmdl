@@ -37,10 +37,6 @@
 						remaps = 
 						[
 							{
-								from = "weapon_vm_pi_mike_body.vmat"
-								to = "materials/weapons/makarov/makarov_body.vmat"
-							},
-							{
 								from = "weapon_vm_pi_mike_slide.vmat"
 								to = "materials/weapons/makarov/makarov_slide.vmat"
 							},
@@ -167,6 +163,69 @@
 				]
 			},
 			{
+				_class = "BoneMarkupList"
+				children = 
+				[
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_pistol_offset"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = true
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "j_slide"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = true
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_sight_on"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = true
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_sight_on_end"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = true
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_barrel_hide"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = true
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_barrel_hide_end"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = true
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_flash_attachment"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = true
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "tag_flash_attachment_end"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = true
+					},
+				]
+				bone_cull_type = "Aggressive"
+			},
+			{
 				_class = "Skeleton"
 				children = 
 				[
@@ -208,7 +267,7 @@
 														do_not_discard = true
 													},
 												]
-												origin = [ 5.5, 0.0, 1.8 ]
+												origin = [ 5.4, 0.0, 1.75 ]
 												angles = [ -0.0, 0.0, 0.0 ]
 												do_not_discard = true
 											},
@@ -247,7 +306,7 @@
 												do_not_discard = true
 											},
 										]
-										origin = [ 4.523617, 0.0, 2.4685 ]
+										origin = [ 3.5, 0.0, 1.4 ]
 										angles = [ -0.0, 0.0, 0.0 ]
 										do_not_discard = true
 									},

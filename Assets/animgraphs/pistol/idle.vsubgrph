@@ -60,7 +60,7 @@
 				{
 					_class = "CSingleFrameAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -16.0, -352.0 ]
+					m_vecPosition = [ -48.0, -352.0 ]
 					m_nNodeID = 
 					{
 						m_id = 429233616
@@ -372,7 +372,7 @@
 				{
 					_class = "CGroupOutputAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 608.0, -48.0 ]
+					m_vecPosition = [ 832.0, -80.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1261473197
@@ -483,7 +483,7 @@
 				{
 					_class = "CSolveIKChainAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 320.0, -48.0 ]
+					m_vecPosition = [ 544.0, -112.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1544639340

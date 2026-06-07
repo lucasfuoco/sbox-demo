@@ -19,7 +19,7 @@
 							},
 							{
 								from = "opforce_juggernaut_armor.vmat"
-								to = "materials/sleeves/ssg/mp_western_lynch_kneepad.vmat"
+								to = "opforce_juggernaut_armor.vmat"
 							},
 						]
 						use_global_default = false

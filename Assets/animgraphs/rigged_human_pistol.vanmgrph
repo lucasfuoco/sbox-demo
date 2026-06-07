@@ -2681,27 +2681,6 @@
 			{
 				key = 
 				{
-					m_id = 1073650181
-				}
-				value = 
-				{
-					_class = "CSequenceAnimNode"
-					m_sName = "Unnamed"
-					m_vecPosition = [ -723.0, 1885.0 ]
-					m_nNodeID = 
-					{
-						m_id = 1073650181
-					}
-					m_sNote = ""
-					m_tagSpans = [  ]
-					m_sequenceName = "fire_2"
-					m_playbackSpeed = 1.0
-					m_bLoop = false
-				}
-			},
-			{
-				key = 
-				{
 					m_id = 1099885958
 				}
 				value = 
@@ -2968,66 +2947,6 @@
 					m_sequenceName = "reload_empty_mmag_fast_2"
 					m_playbackSpeed = 1.0
 					m_bLoop = false
-				}
-			},
-			{
-				key = 
-				{
-					m_id = 1175492111
-				}
-				value = 
-				{
-					_class = "CChoiceAnimNode"
-					m_sName = "Random Fire"
-					m_vecPosition = [ -515.0, 1821.0 ]
-					m_nNodeID = 
-					{
-						m_id = 1175492111
-					}
-					m_sNote = ""
-					m_children = 
-					[
-						{
-							m_inputConnection = 
-							{
-								m_nodeID = 
-								{
-									m_id = 1396739367
-								}
-								m_outputID = 
-								{
-									m_id = 4294967295
-								}
-							}
-							m_name = "Fire"
-							m_weight = 0.0
-							m_blendTime = 0.2
-						},
-						{
-							m_inputConnection = 
-							{
-								m_nodeID = 
-								{
-									m_id = 1073650181
-								}
-								m_outputID = 
-								{
-									m_id = 4294967295
-								}
-							}
-							m_name = "Fire 2"
-							m_weight = 0.0
-							m_blendTime = 0.2
-						},
-					]
-					m_seed = 781996554
-					m_choiceMethod = "WeightedRandom"
-					m_choiceChangeMethod = "OnReset"
-					m_blendMethod = "SingleBlendTime"
-					m_blendTime = 0.2
-					m_bCrossFade = false
-					m_bResetChosen = true
-					m_bDontResetSameSelection = false
 				}
 			},
 			{
@@ -3445,27 +3364,6 @@
 					m_bCrossFade = false
 					m_bResetChosen = true
 					m_bDontResetSameSelection = false
-				}
-			},
-			{
-				key = 
-				{
-					m_id = 1396739367
-				}
-				value = 
-				{
-					_class = "CSequenceAnimNode"
-					m_sName = "Unnamed"
-					m_vecPosition = [ -723.0, 1773.0 ]
-					m_nNodeID = 
-					{
-						m_id = 1396739367
-					}
-					m_sNote = ""
-					m_tagSpans = [  ]
-					m_sequenceName = "fire"
-					m_playbackSpeed = 1.0
-					m_bLoop = false
 				}
 			},
 			{
@@ -4328,6 +4226,33 @@
 					m_bCrossFade = false
 					m_bResetChosen = true
 					m_bDontResetSameSelection = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1897930370
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 832.0, 2912.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1897930370
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 342336806
+					}
+					m_outputNodeID = 
+					{
+						m_id = 1940109841
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\fire.vsubgrph"
+					m_inputConnectionMap = [  ]
 				}
 			},
 			{
@@ -5350,11 +5275,11 @@
 							{
 								m_nodeID = 
 								{
-									m_id = 1175492111
+									m_id = 1897930370
 								}
 								m_outputID = 
 								{
-									m_id = 4294967295
+									m_id = 916561297
 								}
 							}
 							m_stateID = 
@@ -6539,18 +6464,18 @@
 			m_bEnabled = true
 		},
 		{
-			m_name = "models/gloves/eastern_fireteam_dmr.vmdl"
+			m_name = "models/arms/vm_western_arms.vmdl"
 			m_bEnabled = true
 		},
 		{
-			m_name = "models/arms/vm_western_arms.vmdl"
+			m_name = "models/gloves/technician.vmdl"
 			m_bEnabled = true
 		},
 	]
 	m_cameraSettings = 
 	{
 		m_flFov = 60.0
-		m_sLockBoneName = "tag_origin"
+		m_sLockBoneName = "ValveBiped_Anim_Attachment_RH"
 		m_bLockCamera = false
 		m_bViewModelCamera = false
 	}

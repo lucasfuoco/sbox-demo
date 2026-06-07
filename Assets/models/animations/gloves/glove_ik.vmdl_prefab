@@ -37,7 +37,7 @@
 							},
 						]
 						m_bDoBonesOrientAlongPositiveX = true
-						"m_DefaultSolverSettings.m_nNumIterations" = 6
+						"m_DefaultSolverSettings.m_nNumIterations" = 3
 						"m_DefaultSolverSettings.m_SolverType " = "IKSOLVER_Fabrik"
 						"m_DefaultTargetSettings.m_Bone" = 
 						{
@@ -52,7 +52,7 @@
 						{
 							m_Name = ""
 						}
-						"m_Data.m_bParentJointRequiresAlignment" = false
+						"m_Data.m_bParentJointRequiresAlignment" = true
 					},
 					{
 						_class = "IKChain"
@@ -82,7 +82,7 @@
 							},
 						]
 						m_bDoBonesOrientAlongPositiveX = true
-						"m_DefaultSolverSettings.m_nNumIterations" = 6
+						"m_DefaultSolverSettings.m_nNumIterations" = 3
 						"m_DefaultSolverSettings.m_SolverType " = "IKSOLVER_Fabrik"
 						"m_DefaultTargetSettings.m_Bone" = 
 						{
@@ -97,7 +97,7 @@
 						{
 							m_Name = ""
 						}
-						"m_Data.m_bParentJointRequiresAlignment" = false
+						"m_Data.m_bParentJointRequiresAlignment" = true
 					},
 					{
 						_class = "IKChain"
