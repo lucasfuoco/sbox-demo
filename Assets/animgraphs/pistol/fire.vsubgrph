@@ -33,7 +33,7 @@
 				{
 					_class = "CSequenceAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -304.0, 48.0 ]
+					m_vecPosition = [ -112.0, 32.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1073650181
@@ -54,7 +54,7 @@
 				{
 					_class = "CChoiceAnimNode"
 					m_sName = "Random Fire"
-					m_vecPosition = [ -16.0, -16.0 ]
+					m_vecPosition = [ 128.0, -32.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1175492111
@@ -114,7 +114,7 @@
 				{
 					_class = "CSequenceAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -288.0, -64.0 ]
+					m_vecPosition = [ -160.0, -64.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1396739367

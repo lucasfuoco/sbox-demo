@@ -103,6 +103,49 @@
 					},
 				]
 			},
+			{
+				_class = "Skeleton"
+				children = 
+				[
+					{
+						_class = "Bone"
+						name = "j_gun"
+						children = 
+						[
+							{
+								_class = "Bone"
+								name = "tag_pistol_offset"
+								children = 
+								[
+									{
+										_class = "Bone"
+										name = "tag_pistolgrip_hide"
+										children = 
+										[
+											{
+												_class = "Bone"
+												name = "tag_pistolgrip_hide_end"
+												origin = [ 0.0, 0.076909, -0.000001 ]
+												angles = [ -0.0, 0.0, -0.000014 ]
+												do_not_discard = true
+											},
+										]
+										origin = [ 0.763775, -0.000001, -8.102329 ]
+										angles = [ -0.0, 0.0, 0.0 ]
+										do_not_discard = true
+									},
+								]
+								origin = [ -38.043148, 0.000001, 7.893669 ]
+								angles = [ -0.0, 0.0, 0.0 ]
+								do_not_discard = true
+							},
+						]
+						origin = [ 0.0, 0.0, 0.0 ]
+						angles = [ -0.0, 89.999992, 0.000005 ]
+						do_not_discard = true
+					},
+				]
+			},
 		]
 		model_archetype = "animated_model"
 		primary_associated_entity = "prop_dynamic"

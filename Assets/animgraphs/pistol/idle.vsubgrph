@@ -60,7 +60,7 @@
 				{
 					_class = "CSingleFrameAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -48.0, -352.0 ]
+					m_vecPosition = [ -240.0, -352.0 ]
 					m_nNodeID = 
 					{
 						m_id = 429233616
@@ -293,6 +293,33 @@
 			{
 				key = 
 				{
+					m_id = 1043880137
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -176.0, 832.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1043880137
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 992252006
+					}
+					m_outputNodeID = 
+					{
+						m_id = 110469865
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\empty_offset.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 1095903535
 				}
 				value = 
@@ -516,7 +543,7 @@
 								m_TargetSource = "Bone"
 								m_Bone = 
 								{
-									m_Name = "tag_pistolgrip_attach"
+									m_Name = "tag_pistol_offset"
 								}
 								m_AnimgraphParameterNamePosition = 
 								{
@@ -542,33 +569,7 @@
 								m_TargetSource = "Bone"
 								m_Bone = 
 								{
-									m_Name = "tag_mag_attach"
-								}
-								m_AnimgraphParameterNamePosition = 
-								{
-									m_id = 4294967295
-								}
-								m_TargetCoordSystem = "World Space"
-							}
-							m_DebugSetting = "SOLVEIKCHAINANIMNODEDEBUGSETTING_None"
-							m_flDebugNormalizedLength = 1.0
-							m_vDebugOffset = [ 0.0, 0.0, 0.0 ]
-						},
-						{
-							_class = "CSolveIKChainAnimNodeChainData"
-							m_IkChain = "index_finger_r"
-							m_SolverSettingSource = "SOLVEIKCHAINANIMNODESETTINGSOURCE_Default"
-							m_OverrideSolverSettings = 
-							{
-								m_SolverType = "IKSOLVER_TwoBone"
-							}
-							m_TargetSettingSource = "SOLVEIKCHAINANIMNODESETTINGSOURCE_Override"
-							m_OverrideTargetSettings = 
-							{
-								m_TargetSource = "Bone"
-								m_Bone = 
-								{
-									m_Name = "j_trigger"
+									m_Name = "tag_pistol_offset"
 								}
 								m_AnimgraphParameterNamePosition = 
 								{
@@ -665,7 +666,7 @@
 				{
 					_class = "CAddAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 221.139709, -204.477676 ]
+					m_vecPosition = [ 320.0, -160.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1850318657
@@ -686,7 +687,7 @@
 					{
 						m_nodeID = 
 						{
-							m_id = 548133030
+							m_id = 2047966973
 						}
 						m_outputID = 
 						{
@@ -764,6 +765,52 @@
 						m_outputID = 
 						{
 							m_id = 1268921398
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 2047966973
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 32.0, 800.0 ]
+					m_nNodeID = 
+					{
+						m_id = 2047966973
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 548133030
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1043880137
+						}
+						m_outputID = 
+						{
+							m_id = 130417898
 						}
 					}
 					m_timingBehavior = "UseChild2"

@@ -11,43 +11,48 @@
 				[
 					{
 						_class = "Prefab"
+						name = "makarov_animation_ads_list"
 						target_file = "models/animations/pistol_animation_ads_list.vmdl_prefab"
 					},
 					{
 						_class = "Prefab"
+						name = "makarov_animation_draw_list"
 						target_file = "models/animations/pistol_animation_draw_list.vmdl_prefab"
 					},
 					{
 						_class = "Prefab"
+						name = "makarov_animation_fire_list"
 						target_file = "models/animations/pistol_animation_fire_list.vmdl_prefab"
 					},
 					{
 						_class = "Prefab"
+						name = "makarov_animation_idle_list"
 						target_file = "models/animations/pistol_animation_idle_list.vmdl_prefab"
 					},
 					{
 						_class = "Prefab"
+						name = "makarov_animation_inspect_list"
 						target_file = "models/animations/pistol_animation_inspect_list.vmdl_prefab"
 					},
 					{
 						_class = "Prefab"
+						name = "makarov_animation_jump_list"
 						target_file = "models/animations/pistol_animation_jump_list.vmdl_prefab"
 					},
 					{
 						_class = "Prefab"
+						name = "makarov_animation_melee_list"
 						target_file = "models/animations/pistol_animation_melee_list.vmdl_prefab"
 					},
 					{
 						_class = "Prefab"
+						name = "makarov_animation_reload_list"
 						target_file = "models/animations/pistol_animation_reload_list.vmdl_prefab"
 					},
 					{
 						_class = "Prefab"
+						name = "makarov_animation_sprint_list"
 						target_file = "models/animations/pistol_animation_sprint_list.vmdl_prefab"
-					},
-					{
-						_class = "Prefab"
-						target_file = "models/animations/pistol_animation_charge_list.vmdl_prefab"
 					},
 				]
 				default_root_bone_name = ""
@@ -58,15 +63,26 @@
 				[
 					{
 						_class = "Prefab"
+						name = "makarov_animation_jog_list"
 						target_file = "models/animations/pistol_animation_jog_list.vmdl_prefab"
 					},
 					{
 						_class = "Prefab"
+						name = "makarov_animation_walk_list"
 						target_file = "models/animations/pistol_animation_walk_list.vmdl_prefab"
 					},
 					{
 						_class = "Prefab"
+						name = "makarov_animation_freefall_list"
 						target_file = "models/animations/pistol_animation_freefall.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/animations/makarov_reference_list.vmdl_prefab"
+					},
+					{
+						_class = "Prefab"
+						target_file = "models/animations/makarov_animation_holster_list.vmdl_prefab"
 					},
 				]
 			},

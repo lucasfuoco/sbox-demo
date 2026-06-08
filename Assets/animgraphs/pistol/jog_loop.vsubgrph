@@ -9,59 +9,6 @@
 			{
 				key = 
 				{
-					m_id = 205293223
-				}
-				value = 
-				{
-					_class = "CBoneMaskAnimNode"
-					m_sName = "Unnamed"
-					m_vecPosition = [ 668.466675, -235.548798 ]
-					m_nNodeID = 
-					{
-						m_id = 205293223
-					}
-					m_sNote = ""
-					m_weightListName = "pistol"
-					m_inputConnection1 = 
-					{
-						m_nodeID = 
-						{
-							m_id = 947727733
-						}
-						m_outputID = 
-						{
-							m_id = 4294967295
-						}
-					}
-					m_inputConnection2 = 
-					{
-						m_nodeID = 
-						{
-							m_id = 1106799667
-						}
-						m_outputID = 
-						{
-							m_id = 4294967295
-						}
-					}
-					m_blendSpace = "BlendSpace_Parent"
-					m_bUseBlendScale = false
-					m_blendValueSource = "Parameter"
-					m_blendParameter = 
-					{
-						m_id = 4294967295
-					}
-					m_timingBehavior = "UseChild2"
-					m_flTimingBlend = 0.5
-					m_flRootMotionBlend = 0.0
-					m_footMotionTiming = "Child1"
-					m_bResetChild1 = true
-					m_bResetChild2 = true
-				}
-			},
-			{
-				key = 
-				{
 					m_id = 278771570
 				}
 				value = 
@@ -145,7 +92,7 @@
 							{
 								m_nodeID = 
 								{
-									m_id = 205293223
+									m_id = 1106799667
 								}
 								m_outputID = 
 								{

@@ -113,6 +113,7 @@
 				[
 					{
 						_class = "Prefab"
+						name = "makarov_animation_list"
 						target_file = "models/animations/pistol_animation_list.vmdl_prefab"
 					},
 				]
@@ -996,9 +997,9 @@
 					{
 						_class = "BoneMarkup"
 						target_bone = "tag_barrel_attach"
-						ignore_Translation = true
-						ignore_rotation = true
-						do_not_discard = false
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = true
 					},
 					{
 						_class = "BoneMarkup"
@@ -2421,288 +2422,22 @@
 						ignore_rotation = false
 						do_not_discard = true
 					},
-				]
-				bone_cull_type = "Aggressive"
-			},
-			{
-				_class = "Skeleton"
-				children = 
-				[
 					{
-						_class = "Bone"
-						name = "ValveBiped_Anim_Attachment_RH"
-						children = 
-						[
-							{
-								_class = "Bone"
-								name = "tag_pistol_offset"
-								children = 
-								[
-									{
-										_class = "Bone"
-										name = "j_hammer"
-										children = 
-										[
-											{
-												_class = "Bone"
-												name = "j_hammer_end"
-												origin = [ 0.0, 1.498065, -0.0 ]
-												angles = [ -0.0, 0.0, -0.000014 ]
-												do_not_discard = true
-											},
-										]
-										origin = [ -1.374009, 0.0, 1.350387 ]
-										angles = [ -0.0, 0.0, 0.0 ]
-										do_not_discard = true
-									},
-									{
-										_class = "Bone"
-										name = "j_trigger"
-										children = 
-										[
-											{
-												_class = "Bone"
-												name = "j_trigger_end"
-												origin = [ 0.0, 1.498064, -0.0 ]
-												angles = [ -0.0, 0.0, -0.000014 ]
-												do_not_discard = true
-											},
-										]
-										origin = [ 9.429093, 0.0, 0.133858 ]
-										angles = [ -0.0, 0.0, 0.0 ]
-										do_not_discard = true
-									},
-									{
-										_class = "Bone"
-										name = "tag_align_gun"
-										children = 
-										[
-											{
-												_class = "Bone"
-												name = "tag_align_gun_end"
-												origin = [ 0.0, 1.498065, 0.000001 ]
-												angles = [ -0.0, 0.0, -0.000014 ]
-												do_not_discard = true
-											},
-										]
-										origin = [ 0.031496, 0.000001, 5.519661 ]
-										angles = [ -0.0, 0.0, 0.0 ]
-										do_not_discard = true
-									},
-									{
-										_class = "Bone"
-										name = "tag_barrel_attach"
-										children = 
-										[
-											{
-												_class = "Bone"
-												name = "j_slide"
-												children = 
-												[
-													{
-														_class = "Bone"
-														name = "tag_reflex"
-														children = 
-														[
-															{
-																_class = "Bone"
-																name = "tag_reflex_end"
-																origin = [ 0.0, 1.498065, 0.000001 ]
-																angles = [ -0.0, 0.0, -0.000014 ]
-																do_not_discard = true
-															},
-														]
-														origin = [ -9.677124, 0.0, 1.771645 ]
-														angles = [ -0.0, 0.0, 0.0 ]
-														do_not_discard = true
-													},
-													{
-														_class = "Bone"
-														name = "tag_sight_on"
-														children = 
-														[
-															{
-																_class = "Bone"
-																name = "tag_sight_on_end"
-																origin = [ 0.0, 1.498065, 0.0 ]
-																angles = [ -0.0, 0.0, -0.000014 ]
-																do_not_discard = true
-															},
-														]
-														origin = [ -0.5, 0.0, 2.1 ]
-														angles = [ -0.0, 0.0, 0.0 ]
-														do_not_discard = true
-													},
-												]
-												origin = [ 4.362187, 0.0, 0.602361 ]
-												angles = [ -0.0, 0.0, 0.0 ]
-												do_not_discard = true
-											},
-											{
-												_class = "Bone"
-												name = "tag_flash"
-												children = 
-												[
-													{
-														_class = "Bone"
-														name = "tag_flash_end"
-														origin = [ 0.0, 1.498065, -0.0 ]
-														angles = [ -0.0, 0.0, -0.000014 ]
-														do_not_discard = true
-													},
-												]
-												origin = [ 16.905445, 0.0, 0.535432 ]
-												angles = [ -0.0, 0.0, 0.0 ]
-												do_not_discard = true
-											},
-										]
-										origin = [ 4.5236, 0.0, 2.46849 ]
-										angles = [ -0.0, 0.0, 0.0 ]
-										do_not_discard = true
-									},
-									{
-										_class = "Bone"
-										name = "tag_brass"
-										children = 
-										[
-											{
-												_class = "Bone"
-												name = "tag_brass_end"
-												origin = [ -0.000062, 1.498064, 0.0 ]
-												angles = [ 0.0, -0.000003, 0.0 ]
-												do_not_discard = true
-											},
-										]
-										origin = [ 5.952731, -1.645661, 4.311007 ]
-										angles = [ 0.002377, -89.999992, 0.000009 ]
-										do_not_discard = true
-									},
-									{
-										_class = "Bone"
-										name = "tag_laser_show"
-										children = 
-										[
-											{
-												_class = "Bone"
-												name = "tag_laser_attach"
-												children = 
-												[
-													{
-														_class = "Bone"
-														name = "tag_laser_attach_end"
-														origin = [ 0.0, 1.498064, -0.000001 ]
-														angles = [ -0.0, 0.0, -0.000014 ]
-														do_not_discard = true
-													},
-												]
-												origin = [ 0.94488, -0.0, -2.610227 ]
-												angles = [ -0.0, 0.0, 0.0 ]
-												do_not_discard = true
-											},
-										]
-										origin = [ 16.653471, 0.0, 0.165354 ]
-										angles = [ -0.0, 0.0, 0.0 ]
-										do_not_discard = true
-									},
-									{
-										_class = "Bone"
-										name = "tag_mag_attach"
-										children = 
-										[
-											{
-												_class = "Bone"
-												name = "j_mag1"
-												children = 
-												[
-													{
-														_class = "Bone"
-														name = "j_bullet2"
-														children = 
-														[
-															{
-																_class = "Bone"
-																name = "j_bullet2_end"
-																origin = [ 0.0, 1.498064, 0.0 ]
-																angles = [ -0.0, 0.0, -0.000014 ]
-																do_not_discard = true
-															},
-														]
-														origin = [ 0.712597, -0.251967, 4.314953 ]
-														angles = [ -0.0, 0.0, 0.0 ]
-														do_not_discard = true
-													},
-												]
-												origin = [ -1.07086, 0.000002, 10.582653 ]
-												angles = [ -0.0, 0.0, 0.0 ]
-												do_not_discard = true
-											},
-											{
-												_class = "Bone"
-												name = "j_mag2"
-												children = 
-												[
-													{
-														_class = "Bone"
-														name = "j_mag2_end"
-														origin = [ 0.0, 1.49803, -0.000046 ]
-														angles = [ 0.0, 0.0, -0.000012 ]
-														do_not_discard = true
-													},
-												]
-												origin = [ -50.610634, 29.355247, -224.573532 ]
-												angles = [ -0.001262, 0.028003, 5.205518 ]
-												do_not_discard = true
-											},
-										]
-										origin = [ 4.177148, -0.000002, -14.307029 ]
-										angles = [ -0.0, 0.0, 0.0 ]
-										do_not_discard = true
-									},
-									{
-										_class = "Bone"
-										name = "tag_pistolgrip_attach"
-										children = 
-										[
-											{
-												_class = "Bone"
-												name = "tag_pistolgrip_attach_end"
-												origin = [ 0.0, 1.498063, -0.000003 ]
-												angles = [ -0.0, 0.0, -0.000014 ]
-												do_not_discard = true
-											},
-										]
-										origin = [ 0.763774, -0.000001, -8.102329 ]
-										angles = [ -0.0, 0.0, 0.0 ]
-										do_not_discard = true
-									},
-									{
-										_class = "Bone"
-										name = "tag_stock_attach"
-										children = 
-										[
-											{
-												_class = "Bone"
-												name = "tag_stock_attach_end"
-												origin = [ 0.0, 1.498063, -0.000002 ]
-												angles = [ -0.0, 0.0, -0.000014 ]
-												do_not_discard = true
-											},
-										]
-										origin = [ -3.051167, -0.000001, -9.429094 ]
-										angles = [ -0.0, 0.0, 0.0 ]
-										do_not_discard = true
-									},
-								]
-								origin = [ 0.0, 0.0, 0.0 ]
-								angles = [ -0.0, 0.0, 0.0 ]
-								do_not_discard = true
-							},
-						]
-						origin = [ 0.0, 0.0, 0.0 ]
-						angles = [ -0.0, 89.999992, 0.000005 ]
+						_class = "BoneMarkup"
+						target_bone = "j_bullet2"
+						ignore_Translation = false
+						ignore_rotation = false
+						do_not_discard = true
+					},
+					{
+						_class = "BoneMarkup"
+						target_bone = "j_bullet2_end"
+						ignore_Translation = false
+						ignore_rotation = false
 						do_not_discard = true
 					},
 				]
+				bone_cull_type = "None"
 			},
 		]
 		model_archetype = "animated_model"

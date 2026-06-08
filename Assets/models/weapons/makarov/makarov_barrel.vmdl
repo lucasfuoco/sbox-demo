@@ -226,118 +226,34 @@
 				bone_cull_type = "Aggressive"
 			},
 			{
-				_class = "Skeleton"
+				_class = "AnimationList"
 				children = 
 				[
 					{
-						_class = "Bone"
-						name = "j_gun"
-						children = 
-						[
-							{
-								_class = "Bone"
-								name = "tag_pistol_offset"
-								children = 
-								[
-									{
-										_class = "Bone"
-										name = "tag_barrel_attach"
-										children = 
-										[
-											{
-												_class = "Bone"
-												name = "j_slide"
-												children = 
-												[
-													{
-														_class = "Bone"
-														name = "tag_sight_on"
-														children = 
-														[
-															{
-																_class = "Bone"
-																name = "tag_sight_on_end"
-																origin = [ 0.000002, 0.086012, -0.000001 ]
-																angles = [ -0.0, 0.0, -0.000014 ]
-																do_not_discard = true
-															},
-														]
-														origin = [ 1.114168, 0.0, 2.59842 ]
-														angles = [ -0.0, 0.0, 0.0 ]
-														do_not_discard = true
-													},
-												]
-												origin = [ 5.4, 0.0, 1.75 ]
-												angles = [ -0.0, 0.0, 0.0 ]
-												do_not_discard = true
-											},
-											{
-												_class = "Bone"
-												name = "tag_silencer"
-												children = 
-												[
-													{
-														_class = "Bone"
-														name = "tag_silencer_end"
-														origin = [ -0.000002, 0.086012, 0.0 ]
-														angles = [ -0.0, 0.0, -0.000014 ]
-														do_not_discard = true
-													},
-												]
-												origin = [ 16.905474, 0.0, 0.535432 ]
-												angles = [ -0.0, 0.0, 0.0 ]
-												do_not_discard = true
-											},
-											{
-												_class = "Bone"
-												name = "tag_flash_attachment"
-												children = 
-												[
-													{
-														_class = "Bone"
-														name = "tag_flash_attachment_end"
-														origin = [ -0.000002, 0.086012, 0.0 ]
-														angles = [ -0.0, 0.0, -0.000014 ]
-														do_not_discard = true
-													},
-												]
-												origin = [ 16.905474, 0.0, 0.535432 ]
-												angles = [ -0.0, 0.0, 0.0 ]
-												do_not_discard = true
-											},
-										]
-										origin = [ 3.5, 0.0, 1.4 ]
-										angles = [ -0.0, 0.0, 0.0 ]
-										do_not_discard = true
-									},
-									{
-										_class = "Bone"
-										name = "tag_barrel_hide"
-										children = 
-										[
-											{
-												_class = "Bone"
-												name = "tag_barrel_hide_end"
-												origin = [ -0.000004, 0.086012, 0.0 ]
-												angles = [ -0.0, 0.0, -0.000014 ]
-												do_not_discard = true
-											},
-										]
-										origin = [ 4.523617, 0.0, 2.4685 ]
-										angles = [ -0.0, 0.0, 0.0 ]
-										do_not_discard = true
-									},
-								]
-								origin = [ -38.043224, 0.000001, 7.893685 ]
-								angles = [ -0.0, 0.0, 0.0 ]
-								do_not_discard = true
-							},
-						]
-						origin = [ 0.0, 0.0, 0.0 ]
-						angles = [ -0.0, 89.999992, 0.000005 ]
-						do_not_discard = true
+						_class = "AnimFile"
+						name = "barrel_reference"
+						activity_name = ""
+						activity_weight = 1
+						weight_list_name = ""
+						fade_in_time = 0.2
+						fade_out_time = 0.2
+						looping = false
+						delta = false
+						worldSpace = false
+						hidden = false
+						anim_markup_ordered = false
+						disable_compression = false
+						disable_interpolation = false
+						enable_scale = false
+						source_filename = "models/animations/pistol/barrel_reference.fbx"
+						start_frame = -1
+						end_frame = -1
+						framerate = -1.0
+						take = 0
+						reverse = false
 					},
 				]
+				default_root_bone_name = ""
 			},
 		]
 		model_archetype = "animated_model"

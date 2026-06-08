@@ -16,24 +16,16 @@
 						[
 							{
 								_class = "IKChainJoint"
-								name = "j_shoulder_ri"
+								name = "j_elbow_ri"
 								children = 
 								[
 									{
 										_class = "IKChainJoint"
-										name = "j_elbow_ri"
-										children = 
-										[
-											{
-												_class = "IKChainJoint"
-												name = "j_wrist_ri"
-												bone = "j_wrist_ri"
-											},
-										]
-										bone = "j_elbow_ri"
+										name = "j_wrist_ri"
+										bone = "j_wrist_ri"
 									},
 								]
-								bone = "j_shoulder_ri"
+								bone = "j_elbow_ri"
 							},
 						]
 						m_bDoBonesOrientAlongPositiveX = true
@@ -61,24 +53,16 @@
 						[
 							{
 								_class = "IKChainJoint"
-								name = "j_shoulder_le"
+								name = "j_elbow_le"
 								children = 
 								[
 									{
 										_class = "IKChainJoint"
-										name = "j_elbow_le"
-										children = 
-										[
-											{
-												_class = "IKChainJoint"
-												name = "j_wrist_le"
-												bone = "j_wrist_le"
-											},
-										]
-										bone = "j_elbow_le"
+										name = "j_wrist_le"
+										bone = "j_wrist_le"
 									},
 								]
-								bone = "j_shoulder_le"
+								bone = "j_elbow_le"
 							},
 						]
 						m_bDoBonesOrientAlongPositiveX = true
@@ -87,59 +71,6 @@
 						"m_DefaultTargetSettings.m_Bone" = 
 						{
 							m_Name = "tag_pistol_offset"
-						}
-						"m_DefaultTargetSettings.m_TargetSource" = "Animgraph Parameter"
-						"m_Data.m_DefaultTargetSettings.m_AnimgraphParameterNamePosition" = 
-						{
-							m_id = 4294967295
-						}
-						"m_Data.m_EndEffectorFixedOffsetAttachment" = 
-						{
-							m_Name = ""
-						}
-						"m_Data.m_bParentJointRequiresAlignment" = true
-					},
-					{
-						_class = "IKChain"
-						name = "index_finger_r"
-						children = 
-						[
-							{
-								_class = "IKChainJoint"
-								name = "j_index_ri_1"
-								children = 
-								[
-									{
-										_class = "IKChainJoint"
-										name = "j_index_ri_2"
-										children = 
-										[
-											{
-												_class = "IKChainJoint"
-												name = "j_index_ri_3"
-												children = 
-												[
-													{
-														_class = "IKChainJoint"
-														name = "j_index_ri_4"
-														bone = "j_index_ri_4"
-													},
-												]
-												bone = "j_index_ri_3"
-											},
-										]
-										bone = "j_index_ri_2"
-									},
-								]
-								bone = "j_index_ri_1"
-							},
-						]
-						m_bDoBonesOrientAlongPositiveX = true
-						"m_DefaultSolverSettings.m_nNumIterations" = 6
-						"m_DefaultSolverSettings.m_SolverType " = "IKSOLVER_Fabrik"
-						"m_DefaultTargetSettings.m_Bone" = 
-						{
-							m_Name = "j_metaindex_ri_1"
 						}
 						"m_DefaultTargetSettings.m_TargetSource" = "Animgraph Parameter"
 						"m_Data.m_DefaultTargetSettings.m_AnimgraphParameterNamePosition" = 
