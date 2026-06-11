@@ -9,6 +9,26 @@
 			{
 				key = 
 				{
+					m_id = 5611608
+				}
+				value = 
+				{
+					_class = "CSingleFrameAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -144.0, -160.0 ]
+					m_nNodeID = 
+					{
+						m_id = 5611608
+					}
+					m_sNote = ""
+					m_sequenceName = "jumpdelta"
+					m_nFrameIndex = 0
+					m_tagSpans = [  ]
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 89506599
 				}
 				value = 
@@ -27,33 +47,13 @@
 			{
 				key = 
 				{
-					m_id = 279698408
-				}
-				value = 
-				{
-					_class = "CCommentAnimNode"
-					m_sName = "Jump"
-					m_vecPosition = [ -213.0, -126.5 ]
-					m_nNodeID = 
-					{
-						m_id = 279698408
-					}
-					m_sNote = ""
-					m_commentText = ""
-					m_size = [ 1312.0, 320.0 ]
-					m_color = [ 49, 108, 146, 255 ]
-				}
-			},
-			{
-				key = 
-				{
 					m_id = 407677987
 				}
 				value = 
 				{
 					_class = "CGroupOutputAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 464.0, -16.0 ]
+					m_vecPosition = [ 848.0, -32.0 ]
 					m_nNodeID = 
 					{
 						m_id = 407677987
@@ -85,21 +85,55 @@
 			{
 				key = 
 				{
-					m_id = 816595020
+					m_id = 497326268
 				}
 				value = 
 				{
-					_class = "CSingleFrameAnimNode"
+					_class = "CSubGraphAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -171.0, -65.5 ]
+					m_vecPosition = [ -176.0, -96.0 ]
 					m_nNodeID = 
 					{
-						m_id = 816595020
+						m_id = 497326268
 					}
 					m_sNote = ""
-					m_sequenceName = "jump"
-					m_nFrameIndex = 0
-					m_tagSpans = [  ]
+					m_inputNodeID = 
+					{
+						m_id = 18126214
+					}
+					m_outputNodeID = 
+					{
+						m_id = 913475025
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\additive_animations.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 765567999
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -144.0, 320.0 ]
+					m_nNodeID = 
+					{
+						m_id = 765567999
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 18126214
+					}
+					m_outputNodeID = 
+					{
+						m_id = 913475025
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\additive_animations.vsubgrph"
+					m_inputConnectionMap = [  ]
 				}
 			},
 			{
@@ -111,7 +145,7 @@
 				{
 					_class = "CSingleFrameAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -171.0, 126.5 ]
+					m_vecPosition = [ -112.0, 144.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1401373318
@@ -120,6 +154,72 @@
 					m_sequenceName = "jump_land"
 					m_nFrameIndex = 0
 					m_tagSpans = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1434448505
+				}
+				value = 
+				{
+					_class = "CSingleFrameAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -144.0, -256.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1434448505
+					}
+					m_sNote = ""
+					m_sequenceName = "jump"
+					m_nFrameIndex = 0
+					m_tagSpans = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1568083002
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 304.0, 128.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1568083002
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1401373318
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1849868273
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
 				}
 			},
 			{
@@ -146,6 +246,52 @@
 			{
 				key = 
 				{
+					m_id = 1849868273
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 96.0, 240.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1849868273
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 2093747914
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 765567999
+						}
+						m_outputID = 
+						{
+							m_id = 1885456376
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 1929455603
 				}
 				value = 
@@ -167,13 +313,59 @@
 			{
 				key = 
 				{
+					m_id = 1983716503
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 256.0, -208.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1983716503
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1434448505
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 2082550436
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 2034679892
 				}
 				value = 
 				{
 					_class = "CSelectorAnimNode"
 					m_sName = "Jump State"
-					m_vecPosition = [ 213.0, -49.5 ]
+					m_vecPosition = [ 592.0, -48.0 ]
 					m_nNodeID = 
 					{
 						m_id = 2034679892
@@ -184,7 +376,7 @@
 						{
 							m_nodeID = 
 							{
-								m_id = 816595020
+								m_id = 1983716503
 							}
 							m_outputID = 
 							{
@@ -214,7 +406,7 @@
 						{
 							m_nodeID = 
 							{
-								m_id = 1401373318
+								m_id = 1568083002
 							}
 							m_outputID = 
 							{
@@ -262,6 +454,72 @@
 						m_vControlPoint2 = [ 0.5, 1.0 ]
 					}
 					m_intParamNames = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 2082550436
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 48.0, -144.0 ]
+					m_nNodeID = 
+					{
+						m_id = 2082550436
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 5611608
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 497326268
+						}
+						m_outputID = 
+						{
+							m_id = 1885456376
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 2093747914
+				}
+				value = 
+				{
+					_class = "CSingleFrameAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -128.0, 240.0 ]
+					m_nNodeID = 
+					{
+						m_id = 2093747914
+					}
+					m_sNote = ""
+					m_sequenceName = "landdelta"
+					m_nFrameIndex = 0
+					m_tagSpans = [  ]
 				}
 			},
 		]

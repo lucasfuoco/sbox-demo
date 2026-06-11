@@ -61,7 +61,7 @@
         "UseAnimGraph": true
       },
       {
-        "__type": "Sandbox.Components.WeaponModelComponents.ViewWeaponModelComponent",
+        "__type": "Sandbox.Components.WeaponModelComponents.ViewModelWeaponComponent",
         "__guid": "b4067666-521b-45f9-a11e-1f280e56e2c4",
         "__enabled": true,
         "Flags": 0,

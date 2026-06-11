@@ -30,13 +30,59 @@
 			{
 				key = 
 				{
+					m_id = 972025586
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 528.0, 80.0 ]
+					m_nNodeID = 
+					{
+						m_id = 972025586
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1501092823
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1926264116
+						}
+						m_outputID = 
+						{
+							m_id = 1885456376
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 1501092823
 				}
 				value = 
 				{
 					_class = "CSelectorAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 344.0, 0.0 ]
+					m_vecPosition = [ 144.0, 0.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1501092823
@@ -141,7 +187,7 @@
 				{
 					_class = "CGroupOutputAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 544.0, 0.0 ]
+					m_vecPosition = [ 848.0, -16.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1911233279
@@ -159,7 +205,7 @@
 							{
 								m_nodeID = 
 								{
-									m_id = 1501092823
+									m_id = 972025586
 								}
 								m_outputID = 
 								{
@@ -168,6 +214,33 @@
 							}
 						},
 					]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1926264116
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 207.049561, 148.589844 ]
+					m_nNodeID = 
+					{
+						m_id = 1926264116
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 18126214
+					}
+					m_outputNodeID = 
+					{
+						m_id = 913475025
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\additive_animations.vsubgrph"
+					m_inputConnectionMap = [  ]
 				}
 			},
 			{

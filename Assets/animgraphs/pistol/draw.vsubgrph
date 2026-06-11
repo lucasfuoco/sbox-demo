@@ -57,7 +57,7 @@
 				{
 					_class = "CSelectorAnimNode"
 					m_sName = "Is First"
-					m_vecPosition = [ 264.0, -22.5 ]
+					m_vecPosition = [ 160.0, -32.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1024959671
@@ -146,6 +146,52 @@
 			{
 				key = 
 				{
+					m_id = 1151857746
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 352.0, 64.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1151857746
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1024959671
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 2045753001
+						}
+						m_outputID = 
+						{
+							m_id = 1885456376
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 1212154662
 				}
 				value = 
@@ -170,7 +216,7 @@
 				{
 					_class = "CGroupOutputAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 464.0, 0.0 ]
+					m_vecPosition = [ 768.0, 32.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1734431936
@@ -188,7 +234,7 @@
 							{
 								m_nodeID = 
 								{
-									m_id = 1024959671
+									m_id = 1151857746
 								}
 								m_outputID = 
 								{
@@ -271,6 +317,33 @@
 						m_vControlPoint2 = [ 0.5, 1.0 ]
 					}
 					m_intParamNames = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 2045753001
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 64.0, 176.0 ]
+					m_nNodeID = 
+					{
+						m_id = 2045753001
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 18126214
+					}
+					m_outputNodeID = 
+					{
+						m_id = 913475025
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\additive_animations.vsubgrph"
+					m_inputConnectionMap = [  ]
 				}
 			},
 		]

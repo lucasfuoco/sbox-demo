@@ -16,7 +16,7 @@
     "OwnerTransfer": 1,
     "Components": [
       {
-        "__type": "Sandbox.Components.WeaponModelComponents.ViewWeaponModelComponent",
+        "__type": "Sandbox.Components.WeaponModelComponents.ViewModelWeaponComponent",
         "__guid": "724674a2-febc-4533-8db6-d2abdc4fe0c3",
         "__enabled": true,
         "Flags": 0,

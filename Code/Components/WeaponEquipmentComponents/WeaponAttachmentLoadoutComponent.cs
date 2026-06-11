@@ -10,7 +10,7 @@ namespace Sandbox.Components.WeaponEquipmentComponents;
 
 /// <summary>
 /// Applies weapon attachment selections to gameplay stats and weapon mesh slot visibility.
-/// Profile is resolved from <see cref="ViewWeaponModelComponent.AttachmentProfile"/>.
+/// Profile is resolved from <see cref="ViewModelWeaponComponent.AttachmentProfile"/>.
 /// Slot meshes: slot_{category}_{option} (e.g. slot_barrel_barsil) on view, world, and holstered mount models.
 /// </summary>
 [Title( "Attachment Loadout" ), Group( "Weapon Components" )]
@@ -323,7 +323,7 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 		{
 			if ( ( slot.Category.Equals( "arms", StringComparison.OrdinalIgnoreCase )
 					|| slot.Category.Equals( "glove", StringComparison.OrdinalIgnoreCase ) )
-				&& model is not ViewWeaponModelComponent )
+				&& model is not ViewModelWeaponComponent )
 				continue;
 
 			var root = model.GetSlotRoot( slot.Category );

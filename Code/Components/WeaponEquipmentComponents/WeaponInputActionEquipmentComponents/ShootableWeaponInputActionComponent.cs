@@ -139,6 +139,10 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 	{
 		get
 		{
+			// For local first-person effects, always prefer the viewmodel anchor.
+			if ( Equipment.Owner?.IsViewer ?? false )
+				return Equipment.ViewWeaponModel.IsValid() ? Equipment.ViewWeaponModel : Equipment.WorldWeaponModel;
+
 			if ( IsProxy || !Equipment.ViewWeaponModel.IsValid() )
 				return Equipment.WorldWeaponModel;
 
@@ -187,17 +191,20 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		if ( !MuzzleFlashPrefab.IsValid() || !Effector.IsValid() || !Effector.Muzzle.IsValid() )
 			return;
 
+		var referenceMuzzle = Effector.Muzzle;
 		var muzzleFlash = MuzzleFlashPrefab.Clone( new CloneConfig()
 		{
-			Parent = Effector.Muzzle,
+			Parent = referenceMuzzle,
+			Transform = new(),
 			StartEnabled = true,
 			Name = $"Muzzle flash: {Equipment.GameObject}",
 		} );
 
-		// Some prefabs carry an authored root offset. Snap to the attachment bone origin.
-		muzzleFlash.LocalPosition = Vector3.Zero;
 		muzzleFlash.LocalRotation = Rotation.Identity;
 		muzzleFlash.LocalScale *= MuzzleFlashScaleMultiplier;
+
+		// Spawn exactly at the muzzle bone origin.
+		muzzleFlash.LocalPosition = Vector3.Zero;
 	}
 
 	public void SpawnShellEject()
@@ -221,16 +228,16 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		if ( Equipment.Owner.IsValid() && Equipment.Owner.BodyRenderer.IsValid() )
 			Equipment.Owner.BodyRenderer.Set( "b_attack", true );
 
+		// Keep compatibility with graphs still listening for the legacy pulse.
+		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_attack", true );
+
 		var viewModel = Equipment.ViewWeaponModel;
 		if ( viewModel.IsValid() )
 		{
 			var ammo = Equipment.GetComponentInChildren<WeaponAmmoComponent>();
 			var isLast = ammo.IsValid() && ammo.Ammo <= 0;
 			viewModel.PulseFire( isLast );
-			return;
 		}
-
-		WeaponModelComponent.SetOnEquipmentAnimGraphRenderers( Equipment, "b_attack", true );
 	}
 
 	private void CreateImpactEffects( GameObject hitObject, Surface surface, Vector3 pos, Vector3 normal )

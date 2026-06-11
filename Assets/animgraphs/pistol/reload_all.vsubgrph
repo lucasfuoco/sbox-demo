@@ -733,26 +733,6 @@
 			{
 				key = 
 				{
-					m_id = 487482381
-				}
-				value = 
-				{
-					_class = "CCommentAnimNode"
-					m_sName = "Mmag Reload"
-					m_vecPosition = [ -720.0, -800.0 ]
-					m_nNodeID = 
-					{
-						m_id = 487482381
-					}
-					m_sNote = ""
-					m_commentText = ""
-					m_size = [ 1312.0, 816.0 ]
-					m_color = [ 49, 139, 146, 255 ]
-				}
-			},
-			{
-				key = 
-				{
 					m_id = 495798025
 				}
 				value = 
@@ -943,6 +923,52 @@
 			{
 				key = 
 				{
+					m_id = 595698887
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 1168.0, 80.0 ]
+					m_nNodeID = 
+					{
+						m_id = 595698887
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 246420904
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1085270192
+						}
+						m_outputID = 
+						{
+							m_id = 1885456376
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 652024350
 				}
 				value = 
@@ -1038,26 +1064,6 @@
 			{
 				key = 
 				{
-					m_id = 741724126
-				}
-				value = 
-				{
-					_class = "CCommentAnimNode"
-					m_sName = "Reload"
-					m_vecPosition = [ -752.0, -1808.0 ]
-					m_nNodeID = 
-					{
-						m_id = 741724126
-					}
-					m_sNote = ""
-					m_commentText = ""
-					m_size = [ 1888.0, 3712.0 ]
-					m_color = [ 1, 74, 80, 255 ]
-				}
-			},
-			{
-				key = 
-				{
 					m_id = 751713084
 				}
 				value = 
@@ -1139,26 +1145,6 @@
 			{
 				key = 
 				{
-					m_id = 790339727
-				}
-				value = 
-				{
-					_class = "CCommentAnimNode"
-					m_sName = "Xmag Reload"
-					m_vecPosition = [ -720.0, 80.0 ]
-					m_nNodeID = 
-					{
-						m_id = 790339727
-					}
-					m_sNote = ""
-					m_commentText = ""
-					m_size = [ 1312.0, 816.0 ]
-					m_color = [ 49, 139, 146, 255 ]
-				}
-			},
-			{
-				key = 
-				{
 					m_id = 868242476
 				}
 				value = 
@@ -1214,26 +1200,6 @@
 					m_bCrossFade = false
 					m_bResetChosen = true
 					m_bDontResetSameSelection = false
-				}
-			},
-			{
-				key = 
-				{
-					m_id = 877398693
-				}
-				value = 
-				{
-					_class = "CCommentAnimNode"
-					m_sName = "Xmaglg Reload"
-					m_vecPosition = [ -720.0, 960.0 ]
-					m_nNodeID = 
-					{
-						m_id = 877398693
-					}
-					m_sNote = ""
-					m_commentText = ""
-					m_size = [ 1312.0, 912.0 ]
-					m_color = [ 49, 139, 146, 255 ]
 				}
 			},
 			{
@@ -1583,6 +1549,33 @@
 					m_bCrossFade = false
 					m_bResetChosen = true
 					m_bDontResetSameSelection = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1085270192
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 800.0, 176.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1085270192
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 18126214
+					}
+					m_outputNodeID = 
+					{
+						m_id = 913475025
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\additive_animations.vsubgrph"
+					m_inputConnectionMap = [  ]
 				}
 			},
 			{
@@ -2203,7 +2196,7 @@
 				{
 					_class = "CGroupOutputAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 952.0, 0.0 ]
+					m_vecPosition = [ 1456.0, -32.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1648603545
@@ -2221,7 +2214,7 @@
 							{
 								m_nodeID = 
 								{
-									m_id = 246420904
+									m_id = 595698887
 								}
 								m_outputID = 
 								{

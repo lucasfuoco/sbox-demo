@@ -91,6 +91,9 @@
 
         set
         {
+            if ( float.IsNaN( value ) || float.IsInfinity( value ) )
+                value = Min;
+
             if ( _value == value )
                 return;
 
@@ -139,8 +142,16 @@
     /// </summary>
     public virtual float ScreenPosToValue( Vector2 pos )
     {
+        var boxWidth = TrackPanel.IsValid() ? MathF.Abs( TrackPanel.Box.Right - TrackPanel.Box.Left ) : 0f;
+        if ( !TrackPanel.IsValid() || boxWidth <= 0.001f )
+            return Value;
+
         var normalized = MathX.LerpInverse(pos.x, TrackPanel.Box.Left, TrackPanel.Box.Right, true);
         var scaled = MathX.LerpTo( Min, Max, normalized, true );
+
+        if ( float.IsNaN( scaled ) || float.IsInfinity( scaled ) )
+            return Value;
+
         return Step > 0 ? scaled.SnapToGrid( Step ) : scaled;
     }
 
@@ -176,5 +187,18 @@
         e.StopPropagation();
     }
 
-    float SliderPosition => MathX.LerpInverse(Value, Min, Max, true) * 100.0f;
+    float SliderPosition
+    {
+        get
+        {
+            if ( Max.AlmostEqual( Min ) )
+                return 0f;
+
+            var normalized = MathX.LerpInverse( Value, Min, Max, true );
+            if ( float.IsNaN( normalized ) || float.IsInfinity( normalized ) )
+                return 0f;
+
+            return MathX.Clamp( normalized * 100.0f, 0f, 100f );
+        }
+    }
 }

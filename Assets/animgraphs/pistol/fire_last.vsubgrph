@@ -9,13 +9,59 @@
 			{
 				key = 
 				{
+					m_id = 207054544
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 192.0, 96.0 ]
+					m_nNodeID = 
+					{
+						m_id = 207054544
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1334043573
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1215348851
+						}
+						m_outputID = 
+						{
+							m_id = 1885456376
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 1008856073
 				}
 				value = 
 				{
 					_class = "CSequenceAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -110.5, 48.0 ]
+					m_vecPosition = [ -240.0, 64.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1008856073
@@ -36,7 +82,7 @@
 				{
 					_class = "CGroupOutputAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 310.5, 0.0 ]
+					m_vecPosition = [ 688.0, 0.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1085315563
@@ -54,7 +100,7 @@
 							{
 								m_nodeID = 
 								{
-									m_id = 1334043573
+									m_id = 207054544
 								}
 								m_outputID = 
 								{
@@ -63,6 +109,33 @@
 							}
 						},
 					]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1215348851
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -48.0, 192.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1215348851
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 18126214
+					}
+					m_outputNodeID = 
+					{
+						m_id = 913475025
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\additive_animations.vsubgrph"
+					m_inputConnectionMap = [  ]
 				}
 			},
 			{
@@ -92,7 +165,7 @@
 				{
 					_class = "CChoiceAnimNode"
 					m_sName = "Random Fire Last"
-					m_vecPosition = [ 110.5, -3.0 ]
+					m_vecPosition = [ 32.0, -16.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1334043573
@@ -152,7 +225,7 @@
 				{
 					_class = "CSequenceAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -110.5, -48.0 ]
+					m_vecPosition = [ -224.0, -64.0 ]
 					m_nNodeID = 
 					{
 						m_id = 2024201765

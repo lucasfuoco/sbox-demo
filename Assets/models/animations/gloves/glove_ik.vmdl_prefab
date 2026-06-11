@@ -29,20 +29,20 @@
 							},
 						]
 						m_bDoBonesOrientAlongPositiveX = true
-						"m_DefaultSolverSettings.m_nNumIterations" = 3
-						"m_DefaultSolverSettings.m_SolverType " = "IKSOLVER_Fabrik"
+						"m_DefaultSolverSettings.m_nNumIterations" = 2
+						"m_DefaultSolverSettings.m_SolverType " = "IKSOLVER_TwoBone"
 						"m_DefaultTargetSettings.m_Bone" = 
 						{
 							m_Name = "tag_pistol_offset"
 						}
-						"m_DefaultTargetSettings.m_TargetSource" = "Animgraph Parameter"
+						"m_DefaultTargetSettings.m_TargetSource" = "Bone"
 						"m_Data.m_DefaultTargetSettings.m_AnimgraphParameterNamePosition" = 
 						{
 							m_id = 4294967295
 						}
 						"m_Data.m_EndEffectorFixedOffsetAttachment" = 
 						{
-							m_Name = ""
+							m_Name = "wrist_right"
 						}
 						"m_Data.m_bParentJointRequiresAlignment" = true
 					},
@@ -66,20 +66,20 @@
 							},
 						]
 						m_bDoBonesOrientAlongPositiveX = true
-						"m_DefaultSolverSettings.m_nNumIterations" = 3
-						"m_DefaultSolverSettings.m_SolverType " = "IKSOLVER_Fabrik"
+						"m_DefaultSolverSettings.m_nNumIterations" = 2
+						"m_DefaultSolverSettings.m_SolverType " = "IKSOLVER_TwoBone"
 						"m_DefaultTargetSettings.m_Bone" = 
 						{
 							m_Name = "tag_pistol_offset"
 						}
-						"m_DefaultTargetSettings.m_TargetSource" = "Animgraph Parameter"
+						"m_DefaultTargetSettings.m_TargetSource" = "Bone"
 						"m_Data.m_DefaultTargetSettings.m_AnimgraphParameterNamePosition" = 
 						{
 							m_id = 4294967295
 						}
 						"m_Data.m_EndEffectorFixedOffsetAttachment" = 
 						{
-							m_Name = ""
+							m_Name = "wrist_left"
 						}
 						"m_Data.m_bParentJointRequiresAlignment" = true
 					},

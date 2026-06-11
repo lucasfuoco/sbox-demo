@@ -14,7 +14,7 @@ namespace Sandbox.Components.WeaponModelComponents;
 /// A weapon's viewmodel. It's responsibility is to listen to events from a weapon.
 /// It should only exist on the client for the currently possessed pawn.
 /// </summary>
-public class ViewWeaponModelComponent : WeaponModelComponent, ICameraSetup, IGameEventHandler<PlayerUseEvent>, Component.ExecuteInEditor
+public class ViewModelWeaponComponent : WeaponModelComponent, ICameraSetup, IGameEventHandler<PlayerUseEvent>, Component.ExecuteInEditor
 {
 	/// <summary>
 	/// A reference to the <see cref="Equipment"/> we want to listen to.

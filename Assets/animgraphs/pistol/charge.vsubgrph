@@ -15,7 +15,7 @@
 				{
 					_class = "CSequenceAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -137.5, 40.0 ]
+					m_vecPosition = [ -128.0, 64.0 ]
 					m_nNodeID = 
 					{
 						m_id = 80439353
@@ -51,6 +51,33 @@
 			{
 				key = 
 				{
+					m_id = 584448624
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 144.624008, 211.892929 ]
+					m_nNodeID = 
+					{
+						m_id = 584448624
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 18126214
+					}
+					m_outputNodeID = 
+					{
+						m_id = 913475025
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\additive_animations.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 1028726978
 				}
 				value = 
@@ -69,13 +96,59 @@
 			{
 				key = 
 				{
+					m_id = 1148153849
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 368.0, 64.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1148153849
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1902790333
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 584448624
+						}
+						m_outputID = 
+						{
+							m_id = 1885456376
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 1612346276
 				}
 				value = 
 				{
 					_class = "CGroupOutputAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 337.5, 0.0 ]
+					m_vecPosition = [ 560.0, -16.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1612346276
@@ -93,7 +166,7 @@
 							{
 								m_nodeID = 
 								{
-									m_id = 1902790333
+									m_id = 1148153849
 								}
 								m_outputID = 
 								{
@@ -113,7 +186,7 @@
 				{
 					_class = "CChoiceAnimNode"
 					m_sName = "Random Charge"
-					m_vecPosition = [ 137.5, -5.0 ]
+					m_vecPosition = [ 80.0, -32.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1902790333

@@ -9,13 +9,34 @@
 			{
 				key = 
 				{
+					m_id = 84630974
+				}
+				value = 
+				{
+					_class = "CSequenceAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -192.0, -736.0 ]
+					m_nNodeID = 
+					{
+						m_id = 84630974
+					}
+					m_sNote = ""
+					m_tagSpans = [  ]
+					m_sequenceName = "jog_in"
+					m_playbackSpeed = 1.0
+					m_bLoop = false
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 345065859
 				}
 				value = 
 				{
 					_class = "CGroupOutputAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 640.0, -640.0 ]
+					m_vecPosition = [ 1056.0, -624.0 ]
 					m_nNodeID = 
 					{
 						m_id = 345065859
@@ -47,48 +68,68 @@
 			{
 				key = 
 				{
-					m_id = 403077563
+					m_id = 412135036
 				}
 				value = 
 				{
-					_class = "CSubGraphAnimNode"
+					_class = "CAddAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -32.0, -672.0 ]
+					m_vecPosition = [ 0.0, -288.0 ]
 					m_nNodeID = 
 					{
-						m_id = 403077563
+						m_id = 412135036
 					}
 					m_sNote = ""
-					m_inputNodeID = 
+					m_baseInput = 
 					{
-						m_id = 581909871
+						m_nodeID = 
+						{
+							m_id = 678367575
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
 					}
-					m_outputNodeID = 
+					m_additiveInput = 
 					{
-						m_id = 1936831664
+						m_nodeID = 
+						{
+							m_id = 1110688252
+						}
+						m_outputID = 
+						{
+							m_id = 1885456376
+						}
 					}
-					m_subGraphFilename = "animgraphs\\pistol\\jog_in.vsubgrph"
-					m_inputConnectionMap = [  ]
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
 				}
 			},
 			{
 				key = 
 				{
-					m_id = 527789811
+					m_id = 678367575
 				}
 				value = 
 				{
-					_class = "CSingleFrameAnimNode"
+					_class = "CSequenceAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -368.0, 592.0 ]
+					m_vecPosition = [ -240.0, -304.0 ]
 					m_nNodeID = 
 					{
-						m_id = 527789811
+						m_id = 678367575
 					}
 					m_sNote = ""
-					m_sequenceName = "jog_out"
-					m_nFrameIndex = 0
 					m_tagSpans = [  ]
+					m_sequenceName = "jog_to_walk"
+					m_playbackSpeed = 1.0
+					m_bLoop = false
 				}
 			},
 			{
@@ -111,17 +152,7 @@
 						{
 							m_nodeID = 
 							{
-								m_id = 403077563
-							}
-							m_outputID = 
-							{
-								m_id = 1999626486
-							}
-						},
-						{
-							m_nodeID = 
-							{
-								m_id = 1299767659
+								m_id = 2026772747
 							}
 							m_outputID = 
 							{
@@ -131,27 +162,7 @@
 						{
 							m_nodeID = 
 							{
-								m_id = 1462891238
-							}
-							m_outputID = 
-							{
-								m_id = 4294967295
-							}
-						},
-						{
-							m_nodeID = 
-							{
-								m_id = 527789811
-							}
-							m_outputID = 
-							{
-								m_id = 4294967295
-							}
-						},
-						{
-							m_nodeID = 
-							{
-								m_id = 1837380138
+								m_id = 1166654728
 							}
 							m_outputID = 
 							{
@@ -161,15 +172,6 @@
 					]
 					m_tags = 
 					[
-						{
-							m_id = 4294967295
-						},
-						{
-							m_id = 4294967295
-						},
-						{
-							m_id = 4294967295
-						},
 						{
 							m_id = 4294967295
 						},
@@ -225,13 +227,86 @@
 			{
 				key = 
 				{
+					m_id = 1110688252
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -240.0, -192.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1110688252
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 18126214
+					}
+					m_outputNodeID = 
+					{
+						m_id = 913475025
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\additive_animations.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1166654728
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 192.0, -336.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1166654728
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1536166222
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 412135036
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 1299767659
 				}
 				value = 
 				{
 					_class = "CSingleFrameAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -368.0, 400.0 ]
+					m_vecPosition = [ -208.0, -576.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1299767659
@@ -251,7 +326,7 @@
 				{
 					_class = "CSequenceAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -384.0, 512.0 ]
+					m_vecPosition = [ -240.0, -480.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1462891238
@@ -266,13 +341,34 @@
 			{
 				key = 
 				{
+					m_id = 1536166222
+				}
+				value = 
+				{
+					_class = "CSequenceAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -224.0, -384.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1536166222
+					}
+					m_sNote = ""
+					m_tagSpans = [  ]
+					m_sequenceName = "jog_out"
+					m_playbackSpeed = 1.0
+					m_bLoop = false
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 1837380138
 				}
 				value = 
 				{
 					_class = "CSequenceAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -368.0, 672.0 ]
+					m_vecPosition = [ 160.0, -32.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1837380138
@@ -282,6 +378,72 @@
 					m_sequenceName = "jog_out_to_sub"
 					m_playbackSpeed = 1.0
 					m_bLoop = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 2026772747
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 48.0, -688.0 ]
+					m_nNodeID = 
+					{
+						m_id = 2026772747
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 84630974
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 2126359820
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 2126359820
+				}
+				value = 
+				{
+					_class = "CSingleFrameAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -176.0, -672.0 ]
+					m_nNodeID = 
+					{
+						m_id = 2126359820
+					}
+					m_sNote = ""
+					m_sequenceName = "walk_to_jog"
+					m_nFrameIndex = 0
+					m_tagSpans = [  ]
 				}
 			},
 		]

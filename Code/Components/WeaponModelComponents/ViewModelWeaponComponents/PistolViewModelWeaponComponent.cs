@@ -2,11 +2,14 @@ using Sandbox.Components;
 using Sandbox.Components.WeaponEquipmentComponents;
 using Sandbox.GameResources;
 
-namespace Sandbox.Components.WeaponModelComponents.ViewWeaponModelComponents;
+namespace Sandbox.Components.WeaponModelComponents.ViewModelWeaponComponents;
 
-public class PistolViewWeaponModelComponent : ViewWeaponModelComponent
+public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 {
-	public const string AnimGraphPath = "animgraphs/rigged_human_pistol.vanmgrph";
+	const string DefaultAnimGraphPath = "animgraphs/rigged_human_pistol.vanmgrph";
+
+	[Property, Group( "Configuration" )]
+	public AnimationGraph AnimGraphReference { get; set; }
 
 	const float FireStateBlendDuration = 0.2f;
 	const float DefaultFireAnimDuration = 0.35f;
@@ -101,15 +104,42 @@ public class PistolViewWeaponModelComponent : ViewWeaponModelComponent
 	enum JogState
 	{
 		In = 0,
-		InSub = 1,
-		OffsetSub = 2,
-		Out = 3,
-		OutSub = 4
+		Out = 1
+	}
+
+	enum SprintState
+	{
+		Idle = 0,
+		In = 1,
+		InToSub = 2,
+		OffsetToSub = 3,
+		Out = 4,
+		OutToSub = 5,
+		SuperIn = 6,
+		SuperOut = 7
+	}
+
+	enum AdsState
+	{
+		In = 0,
+		Out = 1
 	}
 
 	bool _wasJogging;
+	bool _wasSprinting;
 	TimeSince _timeSinceJogStateChange;
-	JogState _jogState = JogState.OutSub;
+	TimeSince _timeSinceSprintStateChange;
+	JogState _jogState = JogState.Out;
+	SprintState _sprintState = SprintState.Out;
+	float _aimOffsetLerp;
+	float _locomotionDeltaLerp;
+	float _reloadDeltaLerp = 1f;
+
+	static float CosineInterp01( float t )
+	{
+		t = Math.Clamp( t, 0f, 1f );
+		return (1f - MathF.Cos( t * MathF.PI )) * 0.5f;
+	}
 
 	void QueueFire( bool isLastShot )
 	{
@@ -137,8 +167,15 @@ public class PistolViewWeaponModelComponent : ViewWeaponModelComponent
 				break;
 
 			case 2:
-				SetAnimGraph( "fire", false );
-				_firePhase = 0;
+				if ( _timeUntilFireAnimComplete > 0f )
+				{
+					SetAnimGraph( "fire", true );
+				}
+				else
+				{
+					SetAnimGraph( "fire", false );
+					_firePhase = 0;
+				}
 				break;
 		}
 
@@ -175,7 +212,11 @@ public class PistolViewWeaponModelComponent : ViewWeaponModelComponent
 		weaponRenderer.BoneMergeTarget = null;
 
 		if ( !weaponRenderer.AnimationGraph.IsValid() )
-			weaponRenderer.AnimationGraph = ResourceLibrary.Get<AnimationGraph>( AnimGraphPath );
+		{
+			weaponRenderer.AnimationGraph = AnimGraphReference.IsValid()
+				? AnimGraphReference
+				: ResourceLibrary.Get<AnimationGraph>( DefaultAnimGraphPath );
+		}
 
 		if ( !weaponRenderer.AnimationGraph.IsValid() )
 			return;
@@ -262,58 +303,121 @@ public class PistolViewWeaponModelComponent : ViewWeaponModelComponent
 		if ( !Owner.IsValid() || !Owner.CharacterController.IsValid() )
 			return;
 
-		var aiming = Equipment.HasTag( "aiming" );
-		SetAnimGraph( "ads", aiming );
-
-		SetAnimGraph( "sprint", Owner.IsSprinting );
+		// Use raw RMB for local viewmodel aiming so jog state doesn't latch from stale tags.
+		var aiming = Owner.IsLocallyControlled ? Input.Down( "attack2" ) : Equipment.HasTag( "aiming" );
 
 		var moveVel = Owner.CharacterController.Velocity.WithZ( 0f );
-		var moveLen = moveVel.Length;
-		var isMoving = moveLen > 10f;
-		var isJogging = isMoving && !Owner.IsSprinting;
+		var moveLen = MathF.Max( moveVel.Length, 0.01f );
+		var isGrounded = Owner.IsGrounded;
+		var isSprinting = Owner.IsSprinting && isGrounded;
 
-		SetAnimGraph( "jog", isJogging );
+		var walkSpeed = Math.Max( Owner.Global?.WalkSpeed ?? 220f, 1f );
+		var slowWalkSpeed = Math.Max( Owner.Global?.SlowWalkSpeed ?? 100f, 1f );
+		var sprintingSpeed = Math.Max( Owner.Global?.SprintingSpeed ?? 300f, walkSpeed + 1f );
 
-		// Match QC/Lua-style layered locomotion by driving jog blend params continuously.
-		var moveAlpha = moveLen.Remap( 0f, 220f, 0f, 1f, true );
-		var sprintAlpha = moveLen.Remap( 0f, 300f, 0f, 1f, true );
-		var aimScale = aiming ? 0.35f : 1f;
+		var lerpSpeed = _reloading ? -1f : 1f;
+		_reloadDeltaLerp = Math.Clamp( _reloadDeltaLerp + lerpSpeed * Time.Delta, 0f, 1f );
 
-		var jogLoop = Math.Clamp( moveAlpha * aimScale, 0f, 1f );
-		var jogOffset = Math.Clamp( moveAlpha * (1f - sprintAlpha) * aimScale, 0f, 1f );
+		if ( !isGrounded )
+		{
+			_locomotionDeltaLerp = _locomotionDeltaLerp.LerpTo( 0f, Time.Delta * 6f );
+		}
+		else
+		{
+			var moveNorm = moveLen / walkSpeed;
+			_locomotionDeltaLerp = _locomotionDeltaLerp.LerpTo( moveNorm, Time.Delta * 4f );
+		}
+
+		var slowWalkPoint = Math.Clamp( slowWalkSpeed / walkSpeed, 0.01f, 1f );
+		var slowWalkDelta = 1f - (MathF.Abs( slowWalkPoint - _locomotionDeltaLerp ) / slowWalkPoint);
+		slowWalkDelta = Math.Clamp( slowWalkDelta, 0f, 1f );
+
+		var jogDelta = _locomotionDeltaLerp - slowWalkDelta;
+		var isJogging = jogDelta > 0.5f && !isSprinting;
+		var sprintAiming = isSprinting && aiming;
+
+		var jogAiming = isJogging && aiming;
+		SetAnimGraph( "jog", jogAiming );
+		SetAnimGraph( "sprint", sprintAiming );
+		// ADS transition clips are disabled; aim is driven by aim_offset only.
+		SetAnimGraph( "ads", false );
+		SetAnimGraph( "ads_state", (int)AdsState.Out );
+
+		_aimOffsetLerp = _aimOffsetLerp.LerpTo( aiming ? 1f : 0f, Time.Delta * 30f );
+		// Lua: Lerp( m_AimDeltaLerp, 1, 0.03 * ... ) so hip-fire keeps locomotion strong.
+		var aimTarget = 0.03f;
+		var aimDelta = 1f + (aimTarget - 1f) * _aimOffsetLerp;
+
+		var sprintPoint = sprintingSpeed / walkSpeed;
+		var sprintDenom = Math.Max( sprintPoint - 1f, 0.001f );
+		var sprintDelta = (_locomotionDeltaLerp - 1f) / sprintDenom;
+
+		var jogLoop = Math.Clamp( MathF.Min( jogDelta * aimDelta, aimDelta ), 0f, 1f );
+		var walkLoop = Math.Clamp( MathF.Min( slowWalkDelta * aimDelta, aimDelta ), 0f, 1f );
+
+		var z = MathF.Min( Owner.CharacterController.Velocity.z, 0f );
+		var freefallDelta = MathF.Min( z + 500f, 0f ) / -1100f;
+		var freefallAimScale = 1f + (0.1f - 1f) * _aimOffsetLerp;
+		var freefallLoop = Math.Clamp( freefallDelta * freefallAimScale, 0f, 1f );
+
+		var sprintLoop = Math.Clamp( MathF.Min( sprintDelta, aimDelta ) * aimDelta * _reloadDeltaLerp, 0f, 1f );
+		var sprintOffset = Math.Clamp( sprintDelta, 0f, 1f );
+
+		var offsetDelta = CosineInterp01( _locomotionDeltaLerp * Math.Clamp( 1f - sprintDelta, 0f, 1f ) );
+		var jogOffset = Math.Clamp( offsetDelta * (1f - Math.Clamp( _aimOffsetLerp * 2f, 0f, 1f )), 0f, 1f );
 
 		SetAnimGraph( "jog_loop", jogLoop );
 		SetAnimGraph( "jog_offset", jogOffset );
+		SetAnimGraph( "walk_loop", walkLoop );
+		SetAnimGraph( "sprint_loop", sprintLoop );
+		SetAnimGraph( "sprint_offset", sprintOffset );
+		SetAnimGraph( "freefall_loop", freefallLoop );
+		SetAnimGraph( "aim_offset", _aimOffsetLerp );
+		SetAnimGraph( "empty_offset", IsMagEmpty() ? 1f : 0f );
 
-		if ( isJogging && !_wasJogging )
+		if ( jogAiming )
 		{
-			_jogState = JogState.In;
-			_timeSinceJogStateChange = 0;
-		}
-		else if ( isJogging )
-		{
-			if ( _jogState == JogState.In && _timeSinceJogStateChange > 0.08f )
+			// In = start animation, Out = end animation.
+			var desiredJogState = JogState.In;
+			if ( _jogState != desiredJogState )
 			{
-				_jogState = JogState.InSub;
+				_jogState = desiredJogState;
 				_timeSinceJogStateChange = 0;
 			}
-			else if ( _jogState == JogState.InSub && _timeSinceJogStateChange > 0.08f )
+		}
+		else
+		{
+			// Not aiming jog path -> end animation.
+			if ( _jogState != JogState.Out )
 			{
-				_jogState = JogState.OffsetSub;
+				_jogState = JogState.Out;
+				_timeSinceJogStateChange = 0;
 			}
-		}
-		else if ( !isJogging && _wasJogging )
-		{
-			_jogState = JogState.Out;
-			_timeSinceJogStateChange = 0;
-		}
-		else if ( !isJogging && _jogState == JogState.Out && _timeSinceJogStateChange > 0.08f )
-		{
-			_jogState = JogState.OutSub;
 		}
 
 		SetAnimGraph( "jog_state", (int)_jogState );
 		_wasJogging = isJogging;
+
+		if ( sprintAiming )
+		{
+			// In = start animation, Out = end animation.
+			if ( _sprintState != SprintState.In )
+			{
+				_sprintState = SprintState.In;
+				_timeSinceSprintStateChange = 0;
+			}
+		}
+		else
+		{
+			if ( _sprintState != SprintState.Out )
+			{
+				_sprintState = SprintState.Out;
+				_timeSinceSprintStateChange = 0;
+			}
+		}
+
+		SetAnimGraph( "sprint_state", (int)_sprintState );
+		_wasSprinting = isSprinting;
 	}
 
 	void ApplyReloadParameters()
@@ -350,7 +454,7 @@ public class PistolViewWeaponModelComponent : ViewWeaponModelComponent
 
 	public override void PulseFire( bool isLastShot )
 	{
-		QueueFire( IsMagEmpty() );
+		QueueFire( isLastShot );
 	}
 
 	bool IsMagEmpty()

@@ -1,0 +1,1536 @@
+<!-- kv3 encoding:text:version{e21c7f3c-8a33-41c5-9977-a76d3a32aa0d} format:animgraph2:version{0f7898b8-5471-45c4-9867-cd9c46bcfdb5} -->
+{
+	_class = "CAnimationSubGraph"
+	m_nodeManager = 
+	{
+		_class = "CAnimNodeManager"
+		m_nodes = 
+		[
+			{
+				key = 
+				{
+					m_id = 47593676
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -128.0, 1360.0 ]
+					m_nNodeID = 
+					{
+						m_id = 47593676
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 1755741691
+					}
+					m_outputNodeID = 
+					{
+						m_id = 1169107082
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\sprint_loop.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 137055279
+				}
+				value = 
+				{
+					_class = "CSelectorAnimNode"
+					m_sName = "Sprint State"
+					m_vecPosition = [ 784.0, 912.0 ]
+					m_nNodeID = 
+					{
+						m_id = 137055279
+					}
+					m_sNote = ""
+					m_children = 
+					[
+						{
+							m_nodeID = 
+							{
+								m_id = 1048341178
+							}
+							m_outputID = 
+							{
+								m_id = 4294967295
+							}
+						},
+						{
+							m_nodeID = 
+							{
+								m_id = 624370491
+							}
+							m_outputID = 
+							{
+								m_id = 4294967295
+							}
+						},
+						{
+							m_nodeID = 
+							{
+								m_id = 1663926626
+							}
+							m_outputID = 
+							{
+								m_id = 4294967295
+							}
+						},
+						{
+							m_nodeID = 
+							{
+								m_id = 815170668
+							}
+							m_outputID = 
+							{
+								m_id = 4294967295
+							}
+						},
+						{
+							m_nodeID = 
+							{
+								m_id = 1016185523
+							}
+							m_outputID = 
+							{
+								m_id = 4294967295
+							}
+						},
+						{
+							m_nodeID = 
+							{
+								m_id = 505944364
+							}
+							m_outputID = 
+							{
+								m_id = 4294967295
+							}
+						},
+						{
+							m_nodeID = 
+							{
+								m_id = 918139527
+							}
+							m_outputID = 
+							{
+								m_id = 4294967295
+							}
+						},
+						{
+							m_nodeID = 
+							{
+								m_id = 1800524568
+							}
+							m_outputID = 
+							{
+								m_id = 4294967295
+							}
+						},
+					]
+					m_tags = 
+					[
+						{
+							m_id = 4294967295
+						},
+						{
+							m_id = 4294967295
+						},
+						{
+							m_id = 4294967295
+						},
+						{
+							m_id = 4294967295
+						},
+						{
+							m_id = 4294967295
+						},
+						{
+							m_id = 4294967295
+						},
+						{
+							m_id = 4294967295
+						},
+						{
+							m_id = 4294967295
+						},
+					]
+					m_selectionSource = "SelectionSource_Enum"
+					m_boolParamID = 
+					{
+						m_id = 4294967295
+					}
+					m_enumParamID = 
+					{
+						m_id = 376798836
+					}
+					m_intParamID = 
+					{
+						m_id = 4294967295
+					}
+					m_intParamMinValue = 0
+					m_intParamMaxValue = 2
+					m_blendDuration = 0.2
+					m_tagBehavior = "SelectorTagBehavior_OffWhenFinished"
+					m_bResetOnChange = true
+					m_bSyncCyclesOnChange = false
+					m_blendCurve = 
+					{
+						m_vControlPoint1 = [ 0.5, 0.0 ]
+						m_vControlPoint2 = [ 0.5, 1.0 ]
+					}
+					m_intParamNames = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 282676297
+				}
+				value = 
+				{
+					_class = "CGroupOutputAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 1168.0, 912.0 ]
+					m_nNodeID = 
+					{
+						m_id = 282676297
+					}
+					m_sNote = ""
+					m_proxyItems = 
+					[
+						{
+							m_name = ""
+							m_outputID = 
+							{
+								m_id = 1067400242
+							}
+							m_inputConnection = 
+							{
+								m_nodeID = 
+								{
+									m_id = 137055279
+								}
+								m_outputID = 
+								{
+									m_id = 4294967295
+								}
+							}
+						},
+					]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 427411610
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 112.0, 1584.0 ]
+					m_nNodeID = 
+					{
+						m_id = 427411610
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 905465533
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1263466300
+						}
+						m_outputID = 
+						{
+							m_id = 1268921398
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 460366850
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 96.0, 1696.0 ]
+					m_nNodeID = 
+					{
+						m_id = 460366850
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 427411610
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1090090489
+						}
+						m_outputID = 
+						{
+							m_id = 130417898
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 505944364
+				}
+				value = 
+				{
+					_class = "CSingleFrameAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 768.0, 208.0 ]
+					m_nNodeID = 
+					{
+						m_id = 505944364
+					}
+					m_sNote = ""
+					m_sequenceName = "sprint_out_to_sub"
+					m_nFrameIndex = 0
+					m_tagSpans = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 624370491
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 400.0, -192.0 ]
+					m_nNodeID = 
+					{
+						m_id = 624370491
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1317131247
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 2047966973
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 678530889
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 48.0, -64.0 ]
+					m_nNodeID = 
+					{
+						m_id = 678530889
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 2144343294
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1651942883
+						}
+						m_outputID = 
+						{
+							m_id = 408954287
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 684013109
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -128.0, 1120.0 ]
+					m_nNodeID = 
+					{
+						m_id = 684013109
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 1705999983
+					}
+					m_outputNodeID = 
+					{
+						m_id = 1606020920
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\jog_offset.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 783633437
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -192.0, 304.0 ]
+					m_nNodeID = 
+					{
+						m_id = 783633437
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 1755741691
+					}
+					m_outputNodeID = 
+					{
+						m_id = 1169107082
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\sprint_loop.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 798552965
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 32.0, 416.0 ]
+					m_nNodeID = 
+					{
+						m_id = 798552965
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1589724958
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 801282211
+						}
+						m_outputID = 
+						{
+							m_id = 349881935
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 801282211
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -176.0, 416.0 ]
+					m_nNodeID = 
+					{
+						m_id = 801282211
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 1662387578
+					}
+					m_outputNodeID = 
+					{
+						m_id = 1033106997
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\sprint_offset.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 815170668
+				}
+				value = 
+				{
+					_class = "CSingleFrameAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 792.0, 40.0 ]
+					m_nNodeID = 
+					{
+						m_id = 815170668
+					}
+					m_sNote = ""
+					m_sequenceName = "sprint_offset_to_sub"
+					m_nFrameIndex = 0
+					m_tagSpans = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 905465533
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 96.0, 1472.0 ]
+					m_nNodeID = 
+					{
+						m_id = 905465533
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1666709093
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1472863331
+						}
+						m_outputID = 
+						{
+							m_id = 349881935
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 918139527
+				}
+				value = 
+				{
+					_class = "CSingleFrameAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 704.0, 288.0 ]
+					m_nNodeID = 
+					{
+						m_id = 918139527
+					}
+					m_sNote = ""
+					m_sequenceName = "super_sprint_in"
+					m_nFrameIndex = 0
+					m_tagSpans = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1007429888
+				}
+				value = 
+				{
+					_class = "CSingleFrameAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -128.0, 832.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1007429888
+					}
+					m_sNote = ""
+					m_sequenceName = "sprint_out"
+					m_nFrameIndex = 0
+					m_tagSpans = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1016185523
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 414.412415, 998.384949 ]
+					m_nNodeID = 
+					{
+						m_id = 1016185523
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1007429888
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 460366850
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1043880137
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -160.0, 672.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1043880137
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 992252006
+					}
+					m_outputNodeID = 
+					{
+						m_id = 110469865
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\empty_offset.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1048341178
+				}
+				value = 
+				{
+					_class = "CSingleFrameAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -256.0, -368.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1048341178
+					}
+					m_sNote = ""
+					m_sequenceName = "sprint_idle_to_sub"
+					m_nFrameIndex = 0
+					m_tagSpans = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1063928086
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -112.0, 1248.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1063928086
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 896709128
+					}
+					m_outputNodeID = 
+					{
+						m_id = 4281853
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\walk_loop.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1090090489
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -96.0, 1728.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1090090489
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 992252006
+					}
+					m_outputNodeID = 
+					{
+						m_id = 110469865
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\empty_offset.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1095903535
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 32.0, 48.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1095903535
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 678530889
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1862421949
+						}
+						m_outputID = 
+						{
+							m_id = 41121601
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1165447168
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 112.0, 992.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1165447168
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1564056416
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1816606861
+						}
+						m_outputID = 
+						{
+							m_id = 408954287
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1226878221
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -176.0, 192.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1226878221
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 896709128
+					}
+					m_outputNodeID = 
+					{
+						m_id = 4281853
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\walk_loop.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1263466300
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -112.0, 1600.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1263466300
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 449148222
+					}
+					m_outputNodeID = 
+					{
+						m_id = 909518781
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\freefall_loop.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1302815267
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 32.0, 176.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1302815267
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1095903535
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1226878221
+						}
+						m_outputID = 
+						{
+							m_id = 1834820784
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1317131247
+				}
+				value = 
+				{
+					_class = "CSingleFrameAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -208.0, -240.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1317131247
+					}
+					m_sNote = ""
+					m_sequenceName = "sprint_in"
+					m_nFrameIndex = 0
+					m_tagSpans = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1394493816
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -176.0, 544.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1394493816
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 449148222
+					}
+					m_outputNodeID = 
+					{
+						m_id = 909518781
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\freefall_loop.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1472863331
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -112.0, 1472.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1472863331
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 1662387578
+					}
+					m_outputNodeID = 
+					{
+						m_id = 1033106997
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\sprint_offset.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1564056416
+				}
+				value = 
+				{
+					_class = "CSingleFrameAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -128.0, 912.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1564056416
+					}
+					m_sNote = ""
+					m_sequenceName = "sprint_to_walk"
+					m_nFrameIndex = 0
+					m_tagSpans = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1589724958
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 32.0, 288.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1589724958
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1302815267
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 783633437
+						}
+						m_outputID = 
+						{
+							m_id = 1296092367
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1651942883
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -192.0, -48.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1651942883
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 278771570
+					}
+					m_outputNodeID = 
+					{
+						m_id = 979754885
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\jog_loop.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1660770185
+				}
+				value = 
+				{
+					_class = "CGroupInputAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -496.0, 832.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1660770185
+					}
+					m_sNote = ""
+					m_proxyItems = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1663926626
+				}
+				value = 
+				{
+					_class = "CSingleFrameAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 792.0, -40.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1663926626
+					}
+					m_sNote = ""
+					m_sequenceName = "sprint_in_to_sub"
+					m_nFrameIndex = 0
+					m_tagSpans = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1666709093
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 96.0, 1344.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1666709093
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1869690522
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 47593676
+						}
+						m_outputID = 
+						{
+							m_id = 1296092367
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1715758884
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 96.0, 1104.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1715758884
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1165447168
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 684013109
+						}
+						m_outputID = 
+						{
+							m_id = 41121601
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1800524568
+				}
+				value = 
+				{
+					_class = "CSingleFrameAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 704.0, 400.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1800524568
+					}
+					m_sNote = ""
+					m_sequenceName = "super_sprint_out"
+					m_nFrameIndex = 0
+					m_tagSpans = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1816606861
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -128.0, 1008.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1816606861
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 278771570
+					}
+					m_outputNodeID = 
+					{
+						m_id = 979754885
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\jog_loop.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1862421949
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -192.0, 64.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1862421949
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 1705999983
+					}
+					m_outputNodeID = 
+					{
+						m_id = 1606020920
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\jog_offset.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1869690522
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 96.0, 1232.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1869690522
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1715758884
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1063928086
+						}
+						m_outputID = 
+						{
+							m_id = 1834820784
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 2026302851
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 48.0, 528.0 ]
+					m_nNodeID = 
+					{
+						m_id = 2026302851
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 798552965
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1394493816
+						}
+						m_outputID = 
+						{
+							m_id = 1268921398
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 2047966973
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 32.0, 640.0 ]
+					m_nNodeID = 
+					{
+						m_id = 2047966973
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 2026302851
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1043880137
+						}
+						m_outputID = 
+						{
+							m_id = 130417898
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 2144343294
+				}
+				value = 
+				{
+					_class = "CSequenceAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ -208.0, -144.0 ]
+					m_nNodeID = 
+					{
+						m_id = 2144343294
+					}
+					m_sNote = ""
+					m_tagSpans = [  ]
+					m_sequenceName = "walk_to_sprint"
+					m_playbackSpeed = 1.0
+					m_bLoop = false
+				}
+			},
+		]
+	}
+	m_localParameters = [  ]
+	m_localTags = [  ]
+}

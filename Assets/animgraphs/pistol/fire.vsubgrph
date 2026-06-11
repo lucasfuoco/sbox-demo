@@ -108,6 +108,33 @@
 			{
 				key = 
 				{
+					m_id = 1282073851
+				}
+				value = 
+				{
+					_class = "CSubGraphAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 120.352356, 181.631149 ]
+					m_nNodeID = 
+					{
+						m_id = 1282073851
+					}
+					m_sNote = ""
+					m_inputNodeID = 
+					{
+						m_id = 18126214
+					}
+					m_outputNodeID = 
+					{
+						m_id = 913475025
+					}
+					m_subGraphFilename = "animgraphs\\pistol\\additive_animations.vsubgrph"
+					m_inputConnectionMap = [  ]
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 1396739367
 				}
 				value = 
@@ -135,7 +162,7 @@
 				{
 					_class = "CGroupOutputAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 480.0, -16.0 ]
+					m_vecPosition = [ 784.0, 0.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1940109841
@@ -153,7 +180,7 @@
 							{
 								m_nodeID = 
 								{
-									m_id = 1175492111
+									m_id = 1957462308
 								}
 								m_outputID = 
 								{
@@ -162,6 +189,52 @@
 							}
 						},
 					]
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 1957462308
+				}
+				value = 
+				{
+					_class = "CAddAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 416.0, 96.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1957462308
+					}
+					m_sNote = ""
+					m_baseInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1175492111
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_additiveInput = 
+					{
+						m_nodeID = 
+						{
+							m_id = 1282073851
+						}
+						m_outputID = 
+						{
+							m_id = 1885456376
+						}
+					}
+					m_timingBehavior = "UseChild2"
+					m_flTimingBlend = 0.5
+					m_footMotionTiming = "Child1"
+					m_bResetBase = true
+					m_bResetAdditive = true
+					m_bApplyChannelsSeparately = true
+					m_bModelSpace = false
 				}
 			},
 		]

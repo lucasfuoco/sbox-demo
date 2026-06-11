@@ -126,12 +126,12 @@ public partial class EquipmentComponent : Component, Component.INetworkListener,
 		}
 	}
 
-	private ViewWeaponModelComponent viewWeaponModel;
+	private ViewModelWeaponComponent viewWeaponModel;
 
 	/// <summary>
-	/// A reference to the equipment's <see cref="ViewWeaponModelComponent"/> if it has one.
+	/// A reference to the equipment's <see cref="ViewModelWeaponComponent"/> if it has one.
 	/// </summary>
-	public ViewWeaponModelComponent ViewWeaponModel
+	public ViewModelWeaponComponent ViewWeaponModel
 	{
 		get => viewWeaponModel;
 		set
@@ -284,8 +284,8 @@ public partial class EquipmentComponent : Component, Component.INetworkListener,
 
 			viewWeaponModelGameObject.Flags |= GameObjectFlags.Absolute;
 
-			var viewWeaponModelComponent = viewWeaponModelGameObject.GetComponent<ViewWeaponModelComponent>()
-				?? viewWeaponModelGameObject.GetComponentInChildren<ViewWeaponModelComponent>();
+			var viewWeaponModelComponent = viewWeaponModelGameObject.GetComponent<ViewModelWeaponComponent>()
+				?? viewWeaponModelGameObject.GetComponentInChildren<ViewModelWeaponComponent>();
 			if ( !viewWeaponModelComponent.IsValid() )
 				return;
 

@@ -93,7 +93,7 @@
     string WorldToMap( Vector3 worldPosition )
     {
         var position = Renderer.FromWorldRadar( worldPosition, ViewPos, FixedMode ? 0 : ViewYaw, Zoom );
-        return $"left: {Length.Fraction( position.x )}; top: {Length.Fraction( position.y )};";
+        return $"left: {Length.Fraction( SafeUnit( position.x ) )}; top: {Length.Fraction( SafeUnit( position.y ) )};";
     }
 
     string LabelStyles( IMinimapLabelValid label )
@@ -114,7 +114,7 @@
             yaw = -volume.Angles.yaw;
         }
 
-        return $"left: {Length.Fraction(min.x)}; top: {Length.Fraction(min.y)}; width:{Length.Fraction(remappedSize.x)}; height:{Length.Fraction(remappedSize.y)};transform: rotateZ({yaw}deg);";
+        return $"left: {Length.Fraction( SafeUnit( min.x ) )}; top: {Length.Fraction( SafeUnit( min.y ) )}; width:{Length.Fraction( SafeUnit( remappedSize.x ) )}; height:{Length.Fraction( SafeUnit( remappedSize.y ) )};transform: rotateZ({SafeDegrees( yaw )}deg);";
     }
 
     string GetBoxStyles(IMinimapVolumeValid volume)
@@ -134,19 +134,43 @@
 
     string RotationToMap( float yaw )
     {
-        return $"transform: translateX(-50%) translateY(-50%) rotate({-(yaw - (FixedMode ? 0 : ViewYaw))}deg);";
+        return $"transform: translateX(-50%) translateY(-50%) rotate({SafeDegrees( -(yaw - (FixedMode ? 0 : ViewYaw)) )}deg);";
     }
 
     string MapTransform()
     {
         var position = -Renderer.FromWorld(ViewPos) * Zoom;
-        return $"position: absolute; left: {Length.Fraction( position.x )}; top: {Length.Fraction( position.y )}; width: {Zoom * 100}%; height: {Zoom * 100}%";
+        return $"position: absolute; left: {Length.Fraction( SafeUnit( position.x ) )}; top: {Length.Fraction( SafeUnit( position.y ) )}; width: {SafePercent( Zoom * 100f )}%; height: {SafePercent( Zoom * 100f )}%";
     }
 
     string MapRot()
     {
         if ( FixedMode ) return "transform: none;";
-        return $"transform-origin: center center; transform: rotate({(FixedMode ? 0 : ViewYaw)}deg); ";
+        return $"transform-origin: center center; transform: rotate({SafeDegrees( FixedMode ? 0 : ViewYaw )}deg); ";
+    }
+
+    static float SafeUnit( float value )
+    {
+        if ( float.IsNaN( value ) || float.IsInfinity( value ) )
+            return 0f;
+
+        return value;
+    }
+
+    static float SafePercent( float value )
+    {
+        if ( float.IsNaN( value ) || float.IsInfinity( value ) )
+            return 0f;
+
+        return value;
+    }
+
+    static float SafeDegrees( float value )
+    {
+        if ( float.IsNaN( value ) || float.IsInfinity( value ) )
+            return 0f;
+
+        return value;
     }
 
     protected override int BuildHash()

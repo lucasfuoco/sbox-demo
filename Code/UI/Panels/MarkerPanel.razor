@@ -161,8 +161,10 @@
         if ( ClampToScreen )
             toScreen = new( toScreen.x.Clamp( ScreenSafezone.x, ScreenSafezone.y ),  toScreen.y.Clamp( ScreenSafezone.x, ScreenSafezone.y ) );
 
-        Style.Left = Length.Fraction( toScreen.x );
-        Style.Top = Length.Fraction( toScreen.y );
+        var safeX = float.IsNaN( toScreen.x ) || float.IsInfinity( toScreen.x ) ? 0.5f : toScreen.x;
+        var safeY = float.IsNaN( toScreen.y ) || float.IsInfinity( toScreen.y ) ? 0.5f : toScreen.y;
+        Style.Left = Length.Fraction( safeX );
+        Style.Top = Length.Fraction( safeY );
         Style.Opacity = CalculateOpacity();
 
         if ( wasOffScreen != IsOffScreen )

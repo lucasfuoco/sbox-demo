@@ -5,7 +5,7 @@ namespace Sandbox.Components;
 
 /// <summary>
 /// Builds a weapon attachment profile from assigned <see cref="WeaponAttachmentSlotComponent"/> references.
-/// Assign on <see cref="WeaponModelComponents.ViewWeaponModelComponent"/>; pair with <see cref="WeaponAttachmentLoadoutComponent"/> on equipment.
+/// Assign on <see cref="WeaponModelComponents.ViewModelWeaponComponent"/>; pair with <see cref="WeaponAttachmentLoadoutComponent"/> on equipment.
 /// </summary>
 [Title( "Attachment Profile" ), Group( "Weapon Components" )]
 public class WeaponAttachmentProfileComponent : Component, Component.ExecuteInEditor
