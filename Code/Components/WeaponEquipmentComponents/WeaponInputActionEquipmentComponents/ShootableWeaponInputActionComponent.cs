@@ -214,13 +214,23 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 
 		var shellEject = EjectionPrefab.Clone( new CloneConfig()
 		{
-			Parent = Effector.EjectionPort,
+			Transform = Effector.EjectionPort.WorldTransform.WithScale( 1f ),
 			StartEnabled = true,
 			Name = $"Bullet ejection: {Equipment.GameObject}",
 		} );
 
-		shellEject.LocalPosition = Vector3.Zero;
-		shellEject.LocalRotation = Rotation.Identity;
+		shellEject.WorldRotation *= Rotation.From( new Angles( 90f, 0f, 0f ) );
+
+		var ejectTransform = Effector.EjectionPort.WorldTransform;
+		var ejectDirection = (ejectTransform.Rotation.Forward * 250f) +
+			((ejectTransform.Rotation.Right + Vector3.Random * -0.35f) * 250f);
+
+		var rb = shellEject.GetComponentInChildren<Rigidbody>();
+		if ( rb.IsValid() )
+		{
+			rb.Velocity = ejectDirection;
+			rb.AngularVelocity = ejectTransform.Rotation.Right * 50f;
+		}
 	}
 
 	void PlayThirdPersonAttack()

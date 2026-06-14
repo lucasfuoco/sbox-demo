@@ -82,7 +82,7 @@
 				{
 					_class = "CGroupOutputAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 688.0, 0.0 ]
+					m_vecPosition = [ 784.0, 32.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1085315563
@@ -100,7 +100,7 @@
 							{
 								m_nodeID = 
 								{
-									m_id = 207054544
+									m_id = 1472369219
 								}
 								m_outputID = 
 								{
@@ -219,6 +219,49 @@
 			{
 				key = 
 				{
+					m_id = 1472369219
+				}
+				value = 
+				{
+					_class = "CTwoBoneIKAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 560.0, 144.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1472369219
+					}
+					m_sNote = ""
+					m_inputConnection = 
+					{
+						m_nodeID = 
+						{
+							m_id = 2059499939
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_ikChainName = "hand_l"
+					m_endEffectorType = "IkEndEffector_Attachment"
+					m_endEffectorAttachmentName = "wrist_offset_left"
+					m_targetType = "IkTarget_Attachment"
+					m_attachmentName = "pistol_offset"
+					m_targetBoneName = ""
+					m_targetParam = 
+					{
+						m_id = 4294967295
+					}
+					m_bMatchTargetOrientation = false
+					m_rotationParam = 
+					{
+						m_id = 4294967295
+					}
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 2024201765
 				}
 				value = 
@@ -235,6 +278,49 @@
 					m_sequenceName = "fire_last"
 					m_playbackSpeed = 1.0
 					m_bLoop = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 2059499939
+				}
+				value = 
+				{
+					_class = "CTwoBoneIKAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 384.0, 144.0 ]
+					m_nNodeID = 
+					{
+						m_id = 2059499939
+					}
+					m_sNote = ""
+					m_inputConnection = 
+					{
+						m_nodeID = 
+						{
+							m_id = 207054544
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_ikChainName = "hand_r"
+					m_endEffectorType = "IkEndEffector_Attachment"
+					m_endEffectorAttachmentName = "wrist_offset_right"
+					m_targetType = "IkTarget_Attachment"
+					m_attachmentName = "pistol_offset"
+					m_targetBoneName = ""
+					m_targetParam = 
+					{
+						m_id = 4294967295
+					}
+					m_bMatchTargetOrientation = false
+					m_rotationParam = 
+					{
+						m_id = 4294967295
+					}
 				}
 			},
 		]

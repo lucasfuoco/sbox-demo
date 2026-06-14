@@ -54,7 +54,7 @@
 							{
 								m_nodeID = 
 								{
-									m_id = 968982102
+									m_id = 1472369219
 								}
 								m_outputID = 
 								{
@@ -341,6 +341,49 @@
 			{
 				key = 
 				{
+					m_id = 1472369219
+				}
+				value = 
+				{
+					_class = "CTwoBoneIKAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 800.0, -544.0 ]
+					m_nNodeID = 
+					{
+						m_id = 1472369219
+					}
+					m_sNote = ""
+					m_inputConnection = 
+					{
+						m_nodeID = 
+						{
+							m_id = 2059499939
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_ikChainName = "hand_l"
+					m_endEffectorType = "IkEndEffector_Attachment"
+					m_endEffectorAttachmentName = "wrist_offset_left"
+					m_targetType = "IkTarget_Attachment"
+					m_attachmentName = "pistol_offset"
+					m_targetBoneName = ""
+					m_targetParam = 
+					{
+						m_id = 4294967295
+					}
+					m_bMatchTargetOrientation = false
+					m_rotationParam = 
+					{
+						m_id = 4294967295
+					}
+				}
+			},
+			{
+				key = 
+				{
 					m_id = 1536166222
 				}
 				value = 
@@ -424,6 +467,49 @@
 					m_bResetAdditive = true
 					m_bApplyChannelsSeparately = true
 					m_bModelSpace = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 2059499939
+				}
+				value = 
+				{
+					_class = "CTwoBoneIKAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 624.0, -544.0 ]
+					m_nNodeID = 
+					{
+						m_id = 2059499939
+					}
+					m_sNote = ""
+					m_inputConnection = 
+					{
+						m_nodeID = 
+						{
+							m_id = 968982102
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_ikChainName = "hand_r"
+					m_endEffectorType = "IkEndEffector_Attachment"
+					m_endEffectorAttachmentName = "wrist_offset_right"
+					m_targetType = "IkTarget_Attachment"
+					m_attachmentName = "pistol_offset"
+					m_targetBoneName = ""
+					m_targetParam = 
+					{
+						m_id = 4294967295
+					}
+					m_bMatchTargetOrientation = false
+					m_rotationParam = 
+					{
+						m_id = 4294967295
+					}
 				}
 			},
 			{

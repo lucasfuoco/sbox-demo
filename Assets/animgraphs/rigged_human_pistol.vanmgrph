@@ -150,7 +150,7 @@
 				{
 					_class = "CRootAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 1696.0, 2928.0 ]
+					m_vecPosition = [ 1792.0, 2992.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1482973531
@@ -1952,15 +1952,15 @@
 			m_bEnabled = true
 		},
 		{
-			m_name = "models/weapons/makarov/makarov_bullets_10.vmdl"
-			m_bEnabled = true
-		},
-		{
 			m_name = "models/arms/vm_western_arms.vmdl"
 			m_bEnabled = true
 		},
 		{
 			m_name = "models/gloves/technician.vmdl"
+			m_bEnabled = true
+		},
+		{
+			m_name = "models/weapons/makarov/makarov_bullets_10.vmdl"
 			m_bEnabled = true
 		},
 	]

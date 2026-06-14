@@ -9,16 +9,16 @@
 			{
 				key = 
 				{
-					m_id = 217005344
+					m_id = 222187209
 				}
 				value = 
 				{
 					_class = "CSequenceAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ -192.0, 112.0 ]
+					m_vecPosition = [ -144.0, 48.0 ]
 					m_nNodeID = 
 					{
-						m_id = 217005344
+						m_id = 222187209
 					}
 					m_sNote = ""
 					m_tagSpans = [  ]
@@ -36,7 +36,7 @@
 				{
 					_class = "CBlendAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 64.0, 32.0 ]
+					m_vecPosition = [ 256.0, 0.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1016802359
@@ -64,7 +64,7 @@
 							{
 								m_nodeID = 
 								{
-									m_id = 217005344
+									m_id = 222187209
 								}
 								m_outputID = 
 								{
@@ -82,13 +82,13 @@
 					}
 					m_blendKeyType = "BlendKey_UserValue"
 					m_bLockBlendOnReset = false
-					m_bSyncCycles = true
+					m_bSyncCycles = false
 					m_bLoop = true
 					m_bLockWhenWaning = true
 					m_damping = 
 					{
 						_class = "CAnimInputDamping"
-						m_speedFunction = "NoDamping"
+						m_speedFunction = "BouncySpring"
 						m_fSpeedScale = 1.0
 						m_fMinSpeed = 10.0
 						m_fMaxTension = 1000.0
@@ -127,7 +127,7 @@
 				{
 					_class = "CGroupOutputAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 400.0, -16.0 ]
+					m_vecPosition = [ 576.0, -16.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1169107082

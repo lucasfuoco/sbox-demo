@@ -100,7 +100,12 @@
             "__guid": "142444b3-b295-42d6-96f0-d818ed3f8815",
             "__enabled": true,
             "Flags": 0,
-            "AmmoComponent": null,
+            "AmmoComponent": {
+              "_type": "component",
+              "component_id": "c4320fa1-cc7f-40b9-b8ee-f94fbfac4e49",
+              "go": "faeb1538-b19e-45dd-88d8-3f6c15122bc8",
+              "component_type": "WeaponAmmoComponent"
+            },
             "BaseDamage": 25,
             "BaseDamageFalloff": [
               {
@@ -129,7 +134,7 @@
             "DryShootDelay": 0.15,
             "EjectionPrefab": {
               "_type": "gameobject",
-              "prefab": "prefabs/weapon_effects/9mm_casing.prefab"
+              "prefab": "weapons/common/effects/eject_9mm.prefab"
             },
             "FireModeSwitchDelay": 0.3,
             "FireRate": 335,
@@ -211,7 +216,7 @@
             },
             "ResetTime": 0.3,
             "Scale": "2,5",
-            "UseRecoilPattern": false,
+            "UseRecoilPattern": true,
             "VerticalSpread": "0 0.0500000007"
           },
           {

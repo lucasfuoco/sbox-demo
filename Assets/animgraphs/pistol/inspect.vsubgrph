@@ -187,7 +187,7 @@
 				{
 					_class = "CGroupOutputAnimNode"
 					m_sName = "Unnamed"
-					m_vecPosition = [ 848.0, -16.0 ]
+					m_vecPosition = [ 1120.0, 64.0 ]
 					m_nNodeID = 
 					{
 						m_id = 1911233279
@@ -205,7 +205,7 @@
 							{
 								m_nodeID = 
 								{
-									m_id = 972025586
+									m_id = 2059499939
 								}
 								m_outputID = 
 								{
@@ -262,6 +262,49 @@
 					m_sequenceName = "inspect"
 					m_playbackSpeed = 1.0
 					m_bLoop = false
+				}
+			},
+			{
+				key = 
+				{
+					m_id = 2059499939
+				}
+				value = 
+				{
+					_class = "CTwoBoneIKAnimNode"
+					m_sName = "Unnamed"
+					m_vecPosition = [ 704.0, 144.0 ]
+					m_nNodeID = 
+					{
+						m_id = 2059499939
+					}
+					m_sNote = ""
+					m_inputConnection = 
+					{
+						m_nodeID = 
+						{
+							m_id = 972025586
+						}
+						m_outputID = 
+						{
+							m_id = 4294967295
+						}
+					}
+					m_ikChainName = "hand_r"
+					m_endEffectorType = "IkEndEffector_Attachment"
+					m_endEffectorAttachmentName = "wrist_offset_right"
+					m_targetType = "IkTarget_Attachment"
+					m_attachmentName = "pistol_offset"
+					m_targetBoneName = ""
+					m_targetParam = 
+					{
+						m_id = 4294967295
+					}
+					m_bMatchTargetOrientation = false
+					m_rotationParam = 
+					{
+						m_id = 4294967295
+					}
 				}
 			},
 			{

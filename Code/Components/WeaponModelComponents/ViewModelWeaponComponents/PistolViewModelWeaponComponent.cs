@@ -14,6 +14,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 	const float FireStateBlendDuration = 0.2f;
 	const float DefaultFireAnimDuration = 0.35f;
 	const float DefaultFireLastAnimDuration = 0.42f;
+	const float AdsTransitionDuration = 0.2f;
 
 	public enum ReloadType
 	{
@@ -58,6 +59,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 	bool _meleeFatal;
 	bool _reloading;
 	int _reloadStartPhase;
+	WeaponAmmoComponent _cachedAmmoComponent;
 
 	protected override void UpdateFireAnimationReady( ref bool ready )
 	{
@@ -127,10 +129,13 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 
 	bool _wasJogging;
 	bool _wasSprinting;
+	bool _wasAiming;
 	TimeSince _timeSinceJogStateChange;
 	TimeSince _timeSinceSprintStateChange;
 	JogState _jogState = JogState.Out;
 	SprintState _sprintState = SprintState.Out;
+	AdsState _adsState = AdsState.Out;
+	float _adsTransitionRemaining;
 	float _aimOffsetLerp;
 	float _locomotionDeltaLerp;
 	float _reloadDeltaLerp = 1f;
@@ -152,6 +157,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 		{
 			case 0:
 				SetAnimGraph( "fire", false );
+				SetAnimGraph( "b_attack", false );
 				if ( _fireQueue.Count > 0 )
 					_firePhase = 1;
 				break;
@@ -162,6 +168,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 				SetAnimGraph( "fire_last", false );
 				SetAnimGraph( "fire_last", isLastShot );
 				SetAnimGraph( "fire", true );
+				SetAnimGraph( "b_attack", true );
 				_timeUntilFireAnimComplete = GetFireAnimationDuration( isLastShot );
 				_firePhase = 2;
 				break;
@@ -170,10 +177,12 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 				if ( _timeUntilFireAnimComplete > 0f )
 				{
 					SetAnimGraph( "fire", true );
+					SetAnimGraph( "b_attack", true );
 				}
 				else
 				{
 					SetAnimGraph( "fire", false );
+					SetAnimGraph( "b_attack", false );
 					_firePhase = 0;
 				}
 				break;
@@ -337,12 +346,30 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 		var sprintAiming = isSprinting && aiming;
 
 		var jogAiming = isJogging && aiming;
+		var aimStarted = aiming && !_wasAiming;
+		var aimEnded = !aiming && _wasAiming;
+		if ( aimStarted )
+		{
+			_adsState = AdsState.In;
+			_adsTransitionRemaining = AdsTransitionDuration;
+		}
+		else if ( aimEnded )
+		{
+			_adsState = AdsState.Out;
+			_adsTransitionRemaining = AdsTransitionDuration;
+		}
+
+		if ( _adsTransitionRemaining > 0f )
+			_adsTransitionRemaining = Math.Max( _adsTransitionRemaining - Time.Delta, 0f );
+
+		var adsActive = _adsTransitionRemaining > 0f;
 		SetAnimGraph( "jog", jogAiming );
 		SetAnimGraph( "sprint", sprintAiming );
-		// ADS transition clips are disabled; aim is driven by aim_offset only.
-		SetAnimGraph( "ads", false );
-		SetAnimGraph( "ads_state", (int)AdsState.Out );
+		// ADS only plays transition clips; after they finish, aim uses aim_offset.
+		SetAnimGraph( "ads", adsActive );
+		SetAnimGraph( "ads_state", (int)_adsState );
 
+		// GMod-style: ADS transition clip handles in/out, while aim_offset stays smoothly lerped.
 		_aimOffsetLerp = _aimOffsetLerp.LerpTo( aiming ? 1f : 0f, Time.Delta * 30f );
 		// Lua: Lerp( m_AimDeltaLerp, 1, 0.03 * ... ) so hip-fire keeps locomotion strong.
 		var aimTarget = 0.03f;
@@ -418,6 +445,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 
 		SetAnimGraph( "sprint_state", (int)_sprintState );
 		_wasSprinting = isSprinting;
+		_wasAiming = aiming;
 	}
 
 	void ApplyReloadParameters()
@@ -459,8 +487,10 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 
 	bool IsMagEmpty()
 	{
-		var ammo = Equipment?.GetComponentInChildren<WeaponAmmoComponent>();
-		return ammo.IsValid() && ammo.IsEmpty;
+		if ( !_cachedAmmoComponent.IsValid() )
+			_cachedAmmoComponent = Equipment?.GetComponentInChildren<WeaponAmmoComponent>();
+
+		return _cachedAmmoComponent.IsValid() && _cachedAmmoComponent.IsEmpty;
 	}
 
 	public override void PulseDraw( bool isFirstDraw = false )
