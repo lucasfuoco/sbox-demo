@@ -33,7 +33,6 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 	ShootRecoilEquipmentComponent _recoil;
 	ReloadableWeaponInputActionEquipmentComponent _reload;
 
-	SoundEvent _baseShootSound;
 	float _baseFireRate;
 	FireMode _baseFireMode;
 	List<FireMode> _baseSupportedFireModes;
@@ -203,7 +202,6 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 	{
 		if ( _shoot.IsValid() )
 		{
-			_baseShootSound = _shoot.ShootSound;
 			_baseFireRate = _shoot.FireRate;
 			_baseFireMode = _shoot.CurrentFireMode;
 			_baseSupportedFireModes = new List<FireMode>( _shoot.SupportedFireModes );
@@ -232,11 +230,6 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 	{
 		if ( _shoot.IsValid() )
 		{
-			var standardSound = _resolvedProfile.StandardShootSound.IsValid()
-				? _resolvedProfile.StandardShootSound
-				: _baseShootSound;
-
-			_shoot.ShootSound = standardSound;
 			_shoot.FireRate = _baseFireRate;
 			_shoot.CurrentFireMode = _baseFireMode;
 			_shoot.SupportedFireModes = new List<FireMode>( _baseSupportedFireModes );
@@ -276,9 +269,6 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 				_shoot.SupportedFireModes = new List<FireMode> { FireMode.Automatic };
 				_shoot.CurrentFireMode = FireMode.Automatic;
 			}
-
-			if ( mods.SuppressesSound && _resolvedProfile.SuppressedShootSound.IsValid() )
-				_shoot.ShootSound = _resolvedProfile.SuppressedShootSound;
 		}
 
 		if ( _recoil.IsValid() )

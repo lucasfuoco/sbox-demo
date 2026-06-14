@@ -21,7 +21,7 @@
     "_type": "gameobject",
     "prefab": "prefabs/weapons/makarov/vm_makarov.prefab"
   },
-  "WorldModel": "models/weapons/makarov/makarov.vmdl",
+  "WorldModel": "models/weapons/makarov/wm_makarov.vmdl",
   "ArmorReduction": 0.775,
   "HelmetReduction": 0.4,
   "WorldModelBodyGroups": 0,

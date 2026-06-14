@@ -1,7 +1,7 @@
+using Sandbox.Attributes;
 using Sandbox.Components;
 using Sandbox.Components.WeaponModelComponents;
 using Sandbox.GameEvents;
-using Sandbox.Attributes;
 
 namespace Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 
@@ -42,6 +42,10 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 	/// What sound should we play when we fire?
 	/// </summary>
 	[Property, Group( "Effects" )] public SoundEvent ShootSound { get; set; }
+	/// <summary>
+	/// Optional mechanical click/bolt sound synced with the fire animation trigger.
+	/// </summary>
+	[Property, Group( "Effects" )] public SoundEvent FireMechanicsSound { get; set; }
 
 	/// <summary>
 	/// What sound should we play when we dry fire?
@@ -170,20 +174,22 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		SpawnMuzzleFlash();
 		SpawnShellEject();
 		PlayShootSound();
+		PlayFireMechanicsSound();
 		PlayThirdPersonAttack();
 	}
 
 	void PlayShootSound()
 	{
-		if ( ShootSound is not null )
+		if ( ShootSound is null )
 		{
-			if ( Sound.Play( ShootSound, Equipment.WorldPosition ) is { } snd )
-			{
-				snd.SpacialBlend = (Equipment.Owner?.IsViewer ?? false) ? 0 : snd.SpacialBlend;
-				Log.Trace( $"Shootable: ShootSound {ShootSound.ResourceName}" );
-			}
+			return;
 		}
 
+		if ( Sound.Play( ShootSound, Equipment.WorldPosition ) is { } snd )
+		{
+			snd.SpacialBlend = (Equipment.Owner?.IsViewer ?? false) ? 0 : snd.SpacialBlend;
+			Log.Trace( $"Shootable: ShootSound {ShootSound.ResourceName}" );
+		}
 	}
 
 	public void SpawnMuzzleFlash()
@@ -247,6 +253,18 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 			var ammo = Equipment.GetComponentInChildren<WeaponAmmoComponent>();
 			var isLast = ammo.IsValid() && ammo.Ammo <= 0;
 			viewModel.PulseFire( isLast );
+		}
+	}
+
+	void PlayFireMechanicsSound()
+	{
+		if ( FireMechanicsSound is null )
+			return;
+
+		if ( Sound.Play( FireMechanicsSound , Equipment.WorldPosition ) is { } snd )
+		{
+			snd.SpacialBlend = (Equipment.Owner?.IsViewer ?? false) ? 0 : snd.SpacialBlend;
+			Log.Trace( $"Shootable: FireMechanicsSound  {FireMechanicsSound.ResourceName}" );
 		}
 	}
 

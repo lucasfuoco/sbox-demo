@@ -151,6 +151,46 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 		_fireQueue.Enqueue( isLastShot );
 	}
 
+	void ClearPendingActionPulses()
+	{
+		_drawPulse = false;
+		_inspectPulse = false;
+		_meleePulse = false;
+		_chargePulse = false;
+		_jumpPulse = false;
+		_jumpLandPulse = false;
+		_meleeHit = false;
+		_meleeFatal = false;
+	}
+
+	void ResetAllAnimationToggles()
+	{
+		ClearPendingActionPulses();
+
+		_fireQueue.Clear();
+		_firePhase = 0;
+		_timeUntilFireAnimComplete = 0f;
+
+		_reloading = false;
+		_reloadStartPhase = 0;
+
+		if ( !UsesAnimGraph )
+			return;
+
+		SetAnimGraph( "fire", false );
+		SetAnimGraph( "fire_last", false );
+		SetAnimGraph( "b_attack", false );
+		SetAnimGraph( "draw", false );
+		SetAnimGraph( "inspect", false );
+		SetAnimGraph( "melee", false );
+		SetAnimGraph( "charge", false );
+		SetAnimGraph( "jump", false );
+		SetAnimGraph( "is_jump_land", false );
+		SetAnimGraph( "reload", false );
+		SetAnimGraph( "is_reload_empty", false );
+		SetAnimGraph( "is_reload_fast", false );
+	}
+
 	void ApplyFirePulse()
 	{
 		switch ( _firePhase )
@@ -482,6 +522,10 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 
 	public override void PulseFire( bool isLastShot )
 	{
+		// Ensure prior animation toggles are cleared before a new fire animation starts.
+		if ( _firePhase == 0 && _fireQueue.Count == 0 )
+			ResetAllAnimationToggles();
+
 		QueueFire( isLastShot );
 	}
 
@@ -495,6 +539,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 
 	public override void PulseDraw( bool isFirstDraw = false )
 	{
+		ResetAllAnimationToggles();
 		_drawPulse = true;
 		_drawFirst = isFirstDraw;
 		_drawFirstType = (int)GetDrawFirstType();
@@ -502,6 +547,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 
 	public override void BeginReloadAnimation( bool empty, int reloadType, bool fastReload )
 	{
+		ResetAllAnimationToggles();
 		_reloading = true;
 		_reloadEmpty = empty;
 		_reloadType = reloadType;
@@ -526,12 +572,14 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 
 	public void PulseInspect( InspectType inspectType = InspectType.Default )
 	{
+		ResetAllAnimationToggles();
 		_inspectPulse = true;
 		_inspectType = (int)inspectType;
 	}
 
 	public void PulseMelee( bool hit, bool fatal = false )
 	{
+		ResetAllAnimationToggles();
 		_meleePulse = true;
 		_meleeHit = hit;
 		_meleeFatal = fatal;
@@ -539,11 +587,13 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 
 	public void PulseCharge()
 	{
+		ResetAllAnimationToggles();
 		_chargePulse = true;
 	}
 
 	public void PulseJump( bool isLand = false )
 	{
+		ResetAllAnimationToggles();
 		if ( isLand )
 			_jumpLandPulse = true;
 		else

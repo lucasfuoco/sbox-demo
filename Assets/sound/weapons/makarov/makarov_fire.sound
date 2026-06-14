@@ -7,7 +7,10 @@
   "Sounds": [
     "sound/weapons/makarov/makarov_fire.vsnd"
   ],
+  "OcclusionEnabled": true,
   "Occlusion": true,
+  "ReverbEnabled": true,
+  "Reflections": true,
   "AirAbsorption": true,
   "Transmission": true,
   "OcclusionRadius": 64,
@@ -44,8 +47,8 @@
     }
   ],
   "DefaultMixer": {
-    "Name": "unknown",
-    "Id": "00000000-0000-0000-0000-000000000000"
+    "Name": "game",
+    "Id": "c4350297-fde3-42f6-9090-b86b6ad39cb0"
   },
   "__references": [],
   "__version": 1

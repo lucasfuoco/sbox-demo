@@ -5,14 +5,19 @@
   "Decibels": 70,
   "SelectionMode": "Random",
   "Sounds": [
-    "sound/weapons/makarov/makarov_fire_mechanics_last_01.vsnd"
+    "sound/weapons/makarov/makarov_fire_mechanics_last_01.vsnd",
+    "sound/weapons/makarov/makarov_fire_mechanics_last_02.vsnd",
+    "sound/weapons/makarov/makarov_fire_mechanics_last_03.vsnd"
   ],
+  "OcclusionEnabled": true,
   "Occlusion": true,
+  "ReverbEnabled": true,
+  "Reflections": true,
   "AirAbsorption": true,
   "Transmission": true,
   "OcclusionRadius": 64,
   "DistanceAttenuation": true,
-  "Distance": 1057,
+  "Distance": 1762,
   "Falloff": [
     {
       "x": 0,
@@ -44,8 +49,8 @@
     }
   ],
   "DefaultMixer": {
-    "Name": "unknown",
-    "Id": "00000000-0000-0000-0000-000000000000"
+    "Name": "game",
+    "Id": "c4350297-fde3-42f6-9090-b86b6ad39cb0"
   },
   "__references": [],
   "__version": 1

@@ -136,6 +136,7 @@
               "_type": "gameobject",
               "prefab": "weapons/common/effects/eject_9mm.prefab"
             },
+            "FireMechanicsSound": "sound/weapons/makarov/makarov_fire_mechanics_last.sound",
             "FireModeSwitchDelay": 0.3,
             "FireRate": 335,
             "InAirSpreadMultiplier": 2,
