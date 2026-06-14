@@ -7,7 +7,10 @@
   "Sounds": [
     "sound/weapons/makarov/makarov_disconnector.vsnd"
   ],
+  "OcclusionEnabled": true,
   "Occlusion": true,
+  "ReverbEnabled": true,
+  "Reflections": true,
   "AirAbsorption": true,
   "Transmission": true,
   "OcclusionRadius": 64,
@@ -44,8 +47,8 @@
     }
   ],
   "DefaultMixer": {
-    "Name": "unknown",
-    "Id": "00000000-0000-0000-0000-000000000000"
+    "Name": "game",
+    "Id": "90451b35-d375-453c-8c5e-a9b95312a71d"
   },
   "__references": [],
   "__version": 1

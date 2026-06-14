@@ -13,7 +13,7 @@ public abstract class WeaponModelComponent : Component
 	/// <summary>
 	/// Weapon mesh on this root. Viewmodels also have a bone-merged arms child on <see cref="ModelRenderer"/>.
 	/// </summary>
-	protected SkinnedModelRenderer WeaponMeshRenderer =>
+	public SkinnedModelRenderer WeaponMeshRenderer =>
 		ModelRenderer.IsValid() ? ModelRenderer
 		: GameObject.IsValid() ? GameObject.Components.Get<SkinnedModelRenderer>() : null;
 

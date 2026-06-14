@@ -68,7 +68,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 
 	protected override bool UsesCustomAnimationParameters => UsesAnimGraph;
 
-	bool UsesAnimGraph
+	public bool UsesAnimGraph
 	{
 		get
 		{
@@ -79,7 +79,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 		}
 	}
 
-	void SetAnimGraph( string param, bool value )
+	public void SetAnimGraph( string param, bool value )
 	{
 		if ( !UsesAnimGraph )
 			return;
@@ -140,18 +140,17 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 	float _locomotionDeltaLerp;
 	float _reloadDeltaLerp = 1f;
 
-	static float CosineInterp01( float t )
+	private static float CosineInterp01( float t )
 	{
 		t = Math.Clamp( t, 0f, 1f );
 		return (1f - MathF.Cos( t * MathF.PI )) * 0.5f;
 	}
-
-	void QueueFire( bool isLastShot )
+	private void QueueFire( bool isLastShot )
 	{
 		_fireQueue.Enqueue( isLastShot );
 	}
 
-	void ClearPendingActionPulses()
+	private void ClearPendingActionPulses()
 	{
 		_drawPulse = false;
 		_inspectPulse = false;
@@ -163,7 +162,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 		_meleeFatal = false;
 	}
 
-	void ResetAllAnimationToggles()
+	private void ResetAllAnimationToggles()
 	{
 		ClearPendingActionPulses();
 
@@ -191,7 +190,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 		SetAnimGraph( "is_reload_fast", false );
 	}
 
-	void ApplyFirePulse()
+	private void ApplyFirePulse()
 	{
 		switch ( _firePhase )
 		{
@@ -232,13 +231,13 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 			SetAnimGraph( "fire_last", false );
 	}
 
-	void TriggerBool( string param )
+	private void TriggerBool( string param )
 	{
 		SetAnimGraph( param, false );
 		SetAnimGraph( param, true );
 	}
 
-	void ApplyBoolPulse( string param, bool pulse )
+	private void ApplyBoolPulse( string param, bool pulse )
 	{
 		if ( pulse )
 			TriggerBool( param );
@@ -246,7 +245,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 			SetAnimGraph( param, false );
 	}
 
-	static float GetFireAnimationDuration( bool isLastShot )
+	private static float GetFireAnimationDuration( bool isLastShot )
 	{
 		var sequenceDuration = isLastShot ? DefaultFireLastAnimDuration : DefaultFireAnimDuration;
 		return sequenceDuration + FireStateBlendDuration;
@@ -291,7 +290,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 		ApplyReloadParameters();
 	}
 
-	void ApplyActionParameters()
+	private void ApplyActionParameters()
 	{
 		ApplyFirePulse();
 
@@ -347,7 +346,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 		_jumpLandPulse = false;
 	}
 
-	void ApplyMovementParameters()
+	private void ApplyMovementParameters()
 	{
 		if ( !Owner.IsValid() || !Owner.CharacterController.IsValid() )
 			return;
@@ -488,7 +487,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 		_wasAiming = aiming;
 	}
 
-	void ApplyReloadParameters()
+	private void ApplyReloadParameters()
 	{
 		if ( !_reloading )
 		{
@@ -529,7 +528,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 		QueueFire( isLastShot );
 	}
 
-	bool IsMagEmpty()
+	private bool IsMagEmpty()
 	{
 		if ( !_cachedAmmoComponent.IsValid() )
 			_cachedAmmoComponent = Equipment?.GetComponentInChildren<WeaponAmmoComponent>();
@@ -639,7 +638,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 		return (int)InspectType.Default;
 	}
 
-	DrawFirstType GetDrawFirstType()
+	private DrawFirstType GetDrawFirstType()
 	{
 		var loadout = Equipment?.GetComponentInChildren<WeaponAttachmentLoadoutComponent>();
 		if ( !loadout.IsValid() )
@@ -671,7 +670,7 @@ public class PistolViewModelWeaponComponent : ViewModelWeaponComponent
 		return GetReloadDuration( empty, GetMagReloadType(), IsFastReload() );
 	}
 
-	static float GetReloadDuration( bool empty, int reloadType, bool fastReload )
+	private static float GetReloadDuration( bool empty, int reloadType, bool fastReload )
 	{
 		if ( fastReload )
 		{

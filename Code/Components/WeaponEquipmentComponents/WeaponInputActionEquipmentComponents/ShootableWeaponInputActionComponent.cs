@@ -2,6 +2,7 @@ using Sandbox.Attributes;
 using Sandbox.Components;
 using Sandbox.Components.WeaponModelComponents;
 using Sandbox.GameEvents;
+using static Sandbox.SceneModel;
 
 namespace Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 
@@ -118,6 +119,7 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 	[Sync] public TimeSince TimeSinceFireModeSwitch { get; set; }
 	[Sync] public TimeSince TimeSinceBurstFinished { get; set; }
 	[Sync] public bool IsBurstFiring { get; set; }
+	SkinnedModelRenderer _genericEventRenderer;
 
 	bool UsesAmmo => AmmoComponent.IsValid();
 
@@ -157,8 +159,56 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		}
 	}
 
+	protected override void OnStart()
+	{
+		base.OnStart();
+		TryBindGenericEventCallback();
+	}
+
+	protected override void OnUpdate()
+	{
+		if ( !_genericEventRenderer.IsValid() )
+			TryBindGenericEventCallback();
+	}
+
+	protected override void OnDestroy()
+	{
+		UnbindGenericEventCallback();
+		base.OnDestroy();
+	}
+
+	void TryBindGenericEventCallback()
+	{
+		if ( _genericEventRenderer.IsValid() )
+			return;
+
+		var effector = Effector;
+		if ( !effector.IsValid() || !effector.ModelRenderer.IsValid() )
+			return;
+
+		_genericEventRenderer = effector.ModelRenderer;
+		_genericEventRenderer.OnGenericEvent += OnGenericEvent;
+	}
+
+	void UnbindGenericEventCallback()
+	{
+		if ( !_genericEventRenderer.IsValid() )
+			return;
+
+		_genericEventRenderer.OnGenericEvent -= OnGenericEvent;
+		_genericEventRenderer = null;
+	}
+
+	private void OnGenericEvent( GenericEvent ev )
+	{
+		Log.Trace( $"Shootable: OnGenericEvent {ev.Type}" );
+	}
+
 	protected override void OnEnabled()
 	{
+		base.OnEnabled();
+		TryBindGenericEventCallback();
+
 		if ( !AmmoComponent.IsValid() )
 			AmmoComponent = GetComponent<WeaponAmmoComponent>();
 
@@ -173,12 +223,6 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 	{
 		if ( !Effector.ModelRenderer.IsValid() )
 			return;
-
-		SpawnMuzzleFlash();
-		SpawnShellEject();
-		PlayShootSound();
-		PlayFireMechanicsSound();
-		PlayThirdPersonAttack();
 	}
 
 	void PlayShootSound()
@@ -252,7 +296,7 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		}
 	}
 
-	void PlayThirdPersonAttack()
+	void PlayThirdPersonAttack( bool isLastShotFired )
 	{
 		if ( Equipment.Owner.IsValid() && Equipment.Owner.BodyRenderer.IsValid() )
 			Equipment.Owner.BodyRenderer.Set( "b_attack", true );
@@ -263,9 +307,7 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		var viewModel = Equipment.ViewWeaponModel;
 		if ( viewModel.IsValid() )
 		{
-			var ammo = Equipment.GetComponentInChildren<WeaponAmmoComponent>();
-			var isLast = ammo.IsValid() && ammo.Ammo <= 0;
-			viewModel.PulseFire( isLast );
+			viewModel.PulseFire( isLastShotFired );
 		}
 	}
 
@@ -307,6 +349,9 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		if ( UsesAmmo && !AmmoComponent.HasAmmo )
 			return;
 
+		// Last fire anim should only happen when this shot consumes the final live round.
+		var isLastShotFired = UsesAmmo && AmmoComponent.Ammo == 1;
+
 		TimeSinceShoot = 0;
 
 		if ( UsesAmmo )
@@ -315,7 +360,10 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		if ( CurrentFireMode == FireMode.Burst )
 			IsBurstFiring = true;
 
-		DoShootEffects();
+		SpawnMuzzleFlash();
+		PlayShootSound();
+		SpawnShellEject();
+		PlayThirdPersonAttack( isLastShotFired );
 
 		Player.GameObject.Dispatch( new WeaponShotEvent() );
 
@@ -393,9 +441,8 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		var viewModel = Equipment.ViewWeaponModel;
 		if ( viewModel.IsValid() )
 		{
-			var ammo = Equipment.GetComponentInChildren<WeaponAmmoComponent>();
-			var isEmpty = ammo.IsValid() && ammo.Ammo <= 0;
-			viewModel.PulseFire( isEmpty );
+			// Empty trigger pulls should only play dry fire audio.
+			// Do not drive fire/fire_last viewmodel animations when out of ammo.
 			return;
 		}
 
