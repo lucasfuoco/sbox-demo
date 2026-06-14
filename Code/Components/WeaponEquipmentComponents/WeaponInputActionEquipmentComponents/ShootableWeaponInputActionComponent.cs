@@ -17,6 +17,8 @@ public enum FireMode
 public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputActionEquipmentComponent,
 	IGameEventHandler<EquipmentHolsteredEvent>
 {
+	const string DefaultEjectionSmokePrefabPath = "prefabs/weapon_effects/9mm_casing.prefab";
+
 	[Property, Group( "Bullet" ), EquipmentResourceProperty] public float BaseDamage { get; set; } = 25.0f;
 	/// <summary>Seconds between shots if under 60 (e.g. 0.2), otherwise rounds per minute (e.g. 450).</summary>
 	[Property, Group( "Bullet" ), EquipmentResourceProperty] public float FireRate { get; set; } = 0.2f;
@@ -36,6 +38,7 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 
 	[Property, Group( "Effects" )] public GameObject MuzzleFlashPrefab { get; set; }
 	[Property, Group( "Effects" )] public GameObject EjectionPrefab { get; set; }
+	[Property, Group( "Effects" )] public GameObject EjectionSmokePrefab { get; set; }
 	[Property, Group( "Effects" )] public float MuzzleFlashScaleMultiplier { get; set; } = 1.5f;
 
 	/// <summary>
@@ -236,6 +239,16 @@ public partial class ShootableWeaponInputActionEquipmentComponent : WeaponInputA
 		{
 			rb.Velocity = ejectDirection;
 			rb.AngularVelocity = ejectTransform.Rotation.Right * 50f;
+		}
+
+		if ( EjectionSmokePrefab.IsValid() )
+		{
+			var smoke = EjectionSmokePrefab.Clone( new CloneConfig()
+			{
+				Transform = Effector.EjectionPort.WorldTransform.WithScale( 1f ),
+				StartEnabled = true,
+				Name = $"Bullet ejection smoke: {Equipment.GameObject}",
+			} );
 		}
 	}
 
