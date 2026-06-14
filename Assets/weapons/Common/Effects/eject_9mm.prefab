@@ -91,7 +91,7 @@
         "RigidbodyFlags": 0,
         "SleepThreshold": 2,
         "StartAsleep": false
-      }
+      },
     ],
     "Children": [
       {
