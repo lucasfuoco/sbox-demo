@@ -1,5 +1,7 @@
 using Sandbox.Attributes;
 using Sandbox.Components.PawnComponents;
+using Sandbox.Components.WeaponAttachmentOptionComponents;
+using Sandbox.Components.WeaponAttachmentSlotComponents;
 using Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents;
 using Sandbox.Components.WeaponEquipmentComponents.WeaponInputActionEquipmentComponents.AimableWeaponInputActionEquipmentComponents;
 using Sandbox.Components.WeaponModelComponents;
@@ -44,7 +46,20 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 	int _baseMaxAmmo;
 
 	int _lastAttachmentTargetCount = -1;
+	int _lastViewAmmoForBulletVisuals = int.MinValue;
+	string _lastBulletSelectionForVisuals;
+	int _lastTrackedBulletAmmoTotal = int.MinValue;
+	readonly Dictionary<int, int> _trackedBulletsByMag = new();
 	bool _initialized;
+
+	sealed class BulletVisualOption
+	{
+		public GameObject GameObject { get; init; }
+		public string OptionId { get; init; }
+		public int MagIndex { get; init; }
+		public int Count { get; init; }
+		public SkinnedModelRenderer ReferencedRenderer { get; init; }
+	}
 
 	protected override void OnStart()
 	{
@@ -92,6 +107,8 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 		{
 			_lastAttachmentTargetCount = -1;
 		}
+
+		UpdateViewModelBulletVisualsIfNeeded();
 	}
 
 	WeaponAttachmentProfile ResolveProfile()
@@ -174,6 +191,7 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 		RestoreBaseline();
 		ApplyAggregatedModifiers( BuildAggregatedModifiers() );
 		ApplyMeshVisibility();
+		UpdateViewModelBulletVisuals();
 	}
 
 	AggregatedAttachmentModifiers BuildAggregatedModifiers()
@@ -302,6 +320,212 @@ public partial class WeaponAttachmentLoadoutComponent : WeaponEquipmentComponent
 
 		foreach ( var model in EnumerateAttachmentTargets() )
 			ApplyMeshVisibilityToModel( model );
+	}
+
+	void UpdateViewModelBulletVisualsIfNeeded()
+	{
+		var ammoComponent = ResolveAmmoForBulletVisuals();
+		if ( !ammoComponent.IsValid() || !Equipment.ViewWeaponModel.IsValid() )
+			return;
+
+		var ammo = ammoComponent.Ammo;
+		var selectedBulletOption = GetSelection( "bullet" );
+
+		if ( ammo == _lastViewAmmoForBulletVisuals
+			&& string.Equals( selectedBulletOption, _lastBulletSelectionForVisuals, StringComparison.OrdinalIgnoreCase ) )
+			return;
+
+		UpdateViewModelBulletVisuals();
+	}
+
+	void UpdateViewModelBulletVisuals()
+	{
+		var ammoComponent = ResolveAmmoForBulletVisuals();
+		if ( !ammoComponent.IsValid() || !Equipment.ViewWeaponModel.IsValid() )
+			return;
+
+		var viewModelRoot = Equipment.ViewWeaponModel.GetSlotRoot( "bullet" );
+		if ( !viewModelRoot.IsValid() )
+			return;
+
+		var bulletOptionComponents = ResolveBulletOptionComponents( viewModelRoot );
+		var bulletOptions = bulletOptionComponents
+			.Select( option => new BulletVisualOption
+			{
+				GameObject = option.GameObject,
+				OptionId = option.OptionId,
+				MagIndex = Math.Max( option.MagIndex, 0 ),
+				Count = option.BulletCount > 0
+					? option.BulletCount
+					: ParseBulletCountFromOption( option.OptionId ),
+				ReferencedRenderer = option.BulletRenderer
+			} )
+			.Where( x => x.Count > 0 && x.ReferencedRenderer.IsValid() )
+			.ToList();
+
+		if ( bulletOptions.Count == 0 )
+			return;
+
+		var selectedBulletOption = GetSelection( "bullet" );
+		var magCapacities = ResolveMagCapacities( bulletOptions, selectedBulletOption );
+		SyncTrackedBulletsByMag( ammoComponent.Ammo, magCapacities );
+
+		foreach ( var magGroup in bulletOptions.GroupBy( x => x.MagIndex ) )
+		{
+			var magIndex = magGroup.Key;
+			var desiredVisibleCount = _trackedBulletsByMag.TryGetValue( magIndex, out var trackedCount ) ? trackedCount : 0;
+
+			var active = magGroup
+				.Where( x => x.Count <= desiredVisibleCount )
+				.OrderByDescending( x => x.Count )
+				.FirstOrDefault();
+
+			// If this mag has bullets left but no option matched (e.g. non-local count ranges),
+			// keep visibility within this mag-index group instead of showing empty.
+			if ( active is null && desiredVisibleCount > 0 )
+			{
+				active = magGroup
+					.OrderByDescending( x => x.Count )
+					.FirstOrDefault();
+			}
+
+			foreach ( var entry in magGroup )
+			{
+				var enabled = active is not null && ReferenceEquals( entry.GameObject, active.GameObject );
+				SetBulletVisualEnabled( entry, enabled );
+			}
+		}
+
+		_lastViewAmmoForBulletVisuals = ammoComponent.Ammo;
+		_lastBulletSelectionForVisuals = selectedBulletOption;
+	}
+
+	List<BulletAttachmentOptionComponent> ResolveBulletOptionComponents( GameObject viewModelRoot )
+	{
+		var bulletOptions = new List<BulletAttachmentOptionComponent>();
+		var seenOptionObjects = new HashSet<GameObject>();
+
+		void TryAddOption( BulletAttachmentOptionComponent option )
+		{
+			if ( !option.IsValid() )
+				return;
+
+			if ( !option.GameObject.IsValid() )
+				return;
+
+			if ( !seenOptionObjects.Add( option.GameObject ) )
+				return;
+
+			bulletOptions.Add( option );
+		}
+
+		var profileComponent = ResolveProfileComponent();
+		if ( profileComponent.IsValid() )
+		{
+			foreach ( var slot in profileComponent.GetAssignedSlots() )
+			{
+				foreach ( var option in slot.GetOptionComponents().OfType<BulletAttachmentOptionComponent>() )
+					TryAddOption( option );
+			}
+		}
+
+		foreach ( var slot in viewModelRoot.Components.GetAll<WeaponAttachmentSlotComponent>( FindMode.EverythingInSelfAndDescendants ) )
+		{
+			foreach ( var option in slot.GetOptionComponents().OfType<BulletAttachmentOptionComponent>() )
+				TryAddOption( option );
+		}
+
+		return bulletOptions;
+	}
+
+	static void SetBulletVisualEnabled( BulletVisualOption entry, bool enabled )
+	{
+		if ( entry is null || !entry.GameObject.IsValid() || !entry.ReferencedRenderer.IsValid() )
+			return;
+
+		entry.GameObject.Enabled = enabled;
+		entry.ReferencedRenderer.Enabled = enabled;
+		entry.ReferencedRenderer.RenderType = enabled
+			? ModelRenderer.ShadowRenderType.On
+			: ModelRenderer.ShadowRenderType.Off;
+	}
+
+	static Dictionary<int, int> ResolveMagCapacities( IEnumerable<BulletVisualOption> bulletOptions, string selectedBulletOption )
+	{
+		var capacities = new Dictionary<int, int>();
+
+		foreach ( var group in bulletOptions.GroupBy( x => x.MagIndex ) )
+		{
+			var selectedConfiguredCount = group
+				.Where( x =>
+					x.OptionId.Equals( selectedBulletOption, StringComparison.OrdinalIgnoreCase )
+					|| x.GameObject.Name.Equals( selectedBulletOption, StringComparison.OrdinalIgnoreCase ) )
+				.Select( x => x.Count )
+				.DefaultIfEmpty( ParseBulletCountFromOption( selectedBulletOption ) )
+				.FirstOrDefault();
+
+			var maxConfigured = group.Max( x => x.Count );
+			var capacity = selectedConfiguredCount > 0 ? selectedConfiguredCount : maxConfigured;
+			capacities[group.Key] = Math.Max( capacity, 0 );
+		}
+
+		return capacities;
+	}
+
+	void SyncTrackedBulletsByMag( int totalAmmo, Dictionary<int, int> magCapacities )
+	{
+		totalAmmo = Math.Max( totalAmmo, 0 );
+		var sortedMagIndices = magCapacities.Keys.OrderBy( i => i ).ToList();
+		if ( sortedMagIndices.Count == 0 )
+			return;
+
+		// Initialize tracked mags at full capacity.
+		if ( _lastTrackedBulletAmmoTotal == int.MinValue )
+		{
+			_trackedBulletsByMag.Clear();
+			foreach ( var magIndex in sortedMagIndices )
+				_trackedBulletsByMag[magIndex] = Math.Max( magCapacities[magIndex], 0 );
+		}
+
+		// Clamp existing tracked counts to currently selected capacities.
+		foreach ( var magIndex in sortedMagIndices )
+		{
+			_trackedBulletsByMag.TryGetValue( magIndex, out var current);
+			_trackedBulletsByMag[magIndex] = Math.Clamp( current, 0, magCapacities[magIndex] );
+		}
+
+		// Ammo sync value represents active mag rounds. Keep other mags tracked independently.
+		var activeMagIndex = sortedMagIndices[0];
+		_trackedBulletsByMag[activeMagIndex] = Math.Clamp( totalAmmo, 0, magCapacities[activeMagIndex] );
+
+		_lastTrackedBulletAmmoTotal = totalAmmo;
+	}
+
+	WeaponAmmoComponent ResolveAmmoForBulletVisuals()
+	{
+		if ( _ammo.IsValid() )
+			return _ammo;
+
+		_ammo = GetComponent<WeaponAmmoComponent>();
+		if ( _ammo.IsValid() )
+			return _ammo;
+
+		return Equipment?.GetComponentInChildren<WeaponAmmoComponent>( true );
+	}
+
+	static int ParseBulletCountFromOption( params string[] values )
+	{
+		foreach ( var value in values )
+		{
+			if ( string.IsNullOrWhiteSpace( value ) )
+				continue;
+
+			var digits = new string( value.Where( char.IsDigit ).ToArray() );
+			if ( int.TryParse( digits, out var count ) && count > 0 )
+				return count;
+		}
+
+		return 0;
 	}
 
 	void ApplyMeshVisibilityToModel( WeaponModelComponent model )

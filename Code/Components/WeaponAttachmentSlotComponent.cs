@@ -6,7 +6,7 @@ namespace Sandbox.Components;
 /// An attachment category (mag, barrel, muzzle, …). Add option children with <see cref="WeaponAttachmentOptionComponent"/>.
 /// </summary>
 [Title( "Attachment Slot" ), Group( "Weapon Components" )]
-public sealed class WeaponAttachmentSlotComponent : Component, Component.ExecuteInEditor
+public class WeaponAttachmentSlotComponent : Component, Component.ExecuteInEditor
 {
 	[Property, Title( "Slot" )]
 	public WeaponAttachmentSlotCategory Category { get; set; }

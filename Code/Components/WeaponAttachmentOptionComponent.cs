@@ -7,7 +7,7 @@ namespace Sandbox.Components;
 /// <see cref="OptionId"/> must match a viewmodel child: slot_{category}_{optionId}.
 /// </summary>
 [Title( "Attachment Option" ), Group( "Weapon Components" )]
-public sealed class WeaponAttachmentOptionComponent : Component, Component.ExecuteInEditor
+public class WeaponAttachmentOptionComponent : Component, Component.ExecuteInEditor
 {
 	[Property] public string OptionId { get; set; }
 
