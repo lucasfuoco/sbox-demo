@@ -4,20 +4,20 @@ public sealed class WorldNoise
 {
 	public FastNoiseLite HeightNoise { get; }
 
-	public WorldNoise( int seed, float frequency, int octaves, float lacunarity )
+	public WorldNoise( int seed, float heightFrequency, int heightOctaves, float lacunarity )
 	{
 		HeightNoise = new FastNoiseLite();
-
 		HeightNoise.SetSeed( seed );
 		HeightNoise.SetNoiseType( FastNoiseLite.NoiseType.OpenSimplex2 );
-		HeightNoise.SetFrequency( frequency );
+		HeightNoise.SetFrequency( heightFrequency );
 		HeightNoise.SetFractalType( FastNoiseLite.FractalType.FBm );
-		HeightNoise.SetFractalOctaves( octaves );
+		HeightNoise.SetFractalOctaves( heightOctaves );
 		HeightNoise.SetFractalLacunarity( lacunarity );
 	}
 
-	public float GetHeight( float x, float y, float amplitude )
+	public float GetHeight( float x, float y, float amplitude, float falloff = 1f )
 	{
-		return HeightNoise.GetNoise( x, y ) * amplitude;
+		var detail = (HeightNoise.GetNoise( x, y ) + 1f) * 0.5f;
+		return detail * amplitude * falloff;
 	}
 }

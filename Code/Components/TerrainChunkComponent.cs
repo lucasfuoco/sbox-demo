@@ -12,26 +12,35 @@ public sealed class TerrainChunkComponent : Component
 
 	public ChunkCoord Coord;
 
+	public int CurrentResolution { get; private set; }
+
 	static Material _terrainMaterial;
 
-	public void Build()
+	public void Build( int resolution )
 	{
 		if ( !ChunkStreamer.IsValid() || !WorldManager.IsValid() )
 			return;
 
-		GenerateTerrain();
+		CurrentResolution = Math.Max( resolution, 4 );
+		GenerateTerrain( CurrentResolution );
 	}
 
-    private void GenerateTerrain()
+	public void Build()
+	{
+		if ( !ChunkStreamer.IsValid() )
+			return;
+
+		Build( ChunkStreamer.Resolution );
+	}
+
+    private void GenerateTerrain( int resolution )
     {
         var vertices = new List<Vertex>();
 		var indices = new List<int>();
 
-		int resolution = ChunkStreamer.Resolution;
 		int width = resolution + 1;
 		float step = ChunkStreamer.ChunkSize / (float)resolution;
 		float bottomHeight = WorldManager.TerrainBottomHeight;
-		float slopeStep = MathF.Max( step, 16f );
 		var chunkOrigin = GameObject.WorldPosition;
 		var heights = new float[width, width];
 		var colors = new Color32[width, width];
@@ -43,7 +52,15 @@ public sealed class TerrainChunkComponent : Component
 				float worldX = chunkOrigin.x + x * step;
 				float worldY = chunkOrigin.y + y * step;
 				heights[x, y] = GetHeight( worldX, worldY );
-				colors[x, y] = TerrainBiome.GetColor( WorldManager, worldX, worldY, slopeStep ).ToColor32();
+			}
+		}
+
+		for ( int y = 0; y <= resolution; y++ )
+		{
+			for ( int x = 0; x <= resolution; x++ )
+			{
+				var slope = SampleSlope( heights, x, y, resolution, step );
+				colors[x, y] = TerrainBiome.GetColorFromHeight( WorldManager, heights[x, y], slope ).ToColor32();
 			}
 		}
 
@@ -224,11 +241,23 @@ public sealed class TerrainChunkComponent : Component
 
 	static Vector3 SampleNormal( float[,] heights, int x, int y, int resolution, float step )
 	{
-		float left = heights[Math.Max( x - 1, 0 ), y];
-		float right = heights[Math.Min( x + 1, resolution ), y];
-		float down = heights[x, Math.Max( y - 1, 0 )];
-		float up = heights[x, Math.Min( y + 1, resolution )];
+		var left = heights[Math.Max( x - 1, 0 ), y];
+		var right = heights[Math.Min( x + 1, resolution ), y];
+		var down = heights[x, Math.Max( y - 1, 0 )];
+		var up = heights[x, Math.Min( y + 1, resolution )];
 
 		return new Vector3( left - right, down - up, 2f * step ).Normal;
+	}
+
+	static float SampleSlope( float[,] heights, int x, int y, int resolution, float step )
+	{
+		var left = heights[Math.Max( x - 1, 0 ), y];
+		var right = heights[Math.Min( x + 1, resolution ), y];
+		var down = heights[x, Math.Max( y - 1, 0 )];
+		var up = heights[x, Math.Min( y + 1, resolution )];
+
+		var dx = (right - left) / (2f * step);
+		var dy = (up - down) / (2f * step);
+		return MathF.Sqrt( dx * dx + dy * dy );
 	}
 }

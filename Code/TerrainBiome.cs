@@ -4,26 +4,38 @@ namespace Sandbox;
 
 public static class TerrainBiome
 {
-	public static Color GetColor(
+	public static Color GetColorFromHeight(
 		WorldManagerSingletonComponent worldManager,
-		float worldX,
-		float worldY,
-		float slopeStep )
+		float height,
+		float slope )
 	{
-		var height = worldManager.GetHeight( worldX, worldY );
-		var waterLevel = worldManager.WaterLevel;
+		var sample = GetBiomeSampleFromHeight( worldManager, height );
 
-		if ( height <= waterLevel )
+		if ( InRange( sample, worldManager.WaterMinThreshold, worldManager.WaterMaxThreshold ) )
 			return worldManager.WaterColor;
 
-		var slope = SampleSlope( worldManager, worldX, worldY, slopeStep );
-		if ( slope >= worldManager.SharpSlopeThreshold || height >= waterLevel + worldManager.MountainHeightAboveWater )
+		if ( slope >= worldManager.SharpSlopeThreshold )
 			return worldManager.MountainColor;
 
-		if ( height <= waterLevel + worldManager.SandHeightAboveWater )
+		if ( InRange( sample, worldManager.SandMinThreshold, worldManager.SandMaxThreshold ) )
 			return worldManager.SandColor;
 
+		if ( InRange( sample, worldManager.GrassMinThreshold, worldManager.GrassMaxThreshold ) )
+			return worldManager.GrassColor;
+
+		if ( InRange( sample, worldManager.MountainMinThreshold, worldManager.MountainMaxThreshold ) )
+			return worldManager.MountainColor;
+
 		return worldManager.GrassColor;
+	}
+
+	public static float GetBiomeSampleFromHeight( WorldManagerSingletonComponent worldManager, float height )
+	{
+		if ( worldManager.HeightNoiseAmplitude <= 0.0001f )
+			return -1f;
+
+		var normalized = (height - worldManager.WaterLevel) / worldManager.HeightNoiseAmplitude;
+		return MathX.Clamp( normalized * 2f - 1f, -1f, 1f );
 	}
 
 	public static Color32 GetSideColor( Color32 topColor )
@@ -32,15 +44,10 @@ public static class TerrainBiome
 		return (color * 0.65f).WithAlpha( 1f ).ToColor32();
 	}
 
-	static float SampleSlope( WorldManagerSingletonComponent worldManager, float worldX, float worldY, float step )
+	static bool InRange( float sample, float min, float max )
 	{
-		var left = worldManager.GetHeight( worldX - step, worldY );
-		var right = worldManager.GetHeight( worldX + step, worldY );
-		var down = worldManager.GetHeight( worldX, worldY - step );
-		var up = worldManager.GetHeight( worldX, worldY + step );
-
-		var dx = (right - left) / (2f * step);
-		var dy = (up - down) / (2f * step);
-		return MathF.Sqrt( dx * dx + dy * dy );
+		var low = MathF.Min( min, max );
+		var high = MathF.Max( min, max );
+		return sample >= low && sample <= high;
 	}
 }

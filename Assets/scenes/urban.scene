@@ -60,26 +60,42 @@
           "__guid": "9b4f3e2d-5c6d-7890-b123-456789abcdef",
           "__enabled": true,
           "Flags": 0,
-          "HeightNoiseAmplitude": 100,
-          "HeightNoiseFrequency": 0.001,
-          "HeightNoiseLacunarity": 1,
-          "HeightNoiseOctaves": 3,
+          "EditorRebuildDelay": 0.5,
+          "FalloffCenter": "0.5,0.5",
+          "FalloffInnerMargin": 0.2,
+          "FalloffMax": 1,
+          "FalloffMin": 0,
+          "FalloffOuterMargin": 0,
+          "FalloffPower": 1,
+          "GrassColor": "0.3,0.65,0.28,1",
+          "GrassMaxThreshold": 0.35,
+          "GrassMinThreshold": -0.6,
+          "HeightNoiseAmplitude": 5000,
+          "HeightNoiseFrequency": 0.0001,
+          "HeightNoiseLacunarity": 1.6,
+          "HeightNoiseOctaves": 10,
+          "MountainColor": "0.55,0.55,0.58,1",
+          "MountainMaxThreshold": 1,
+          "MountainMinThreshold": 0.35,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "TerrainBottomHeight": -300,
-          "WaterLevel": 0,
-          "WaterColor": "0.18,0.45,0.82,1",
           "SandColor": "0.91,0.84,0.67,1",
-          "GrassColor": "0.3,0.65,0.28,1",
-          "MountainColor": "0.55,0.55,0.58,1",
-          "SandHeightAboveWater": 40,
+          "SandMaxThreshold": -0.6,
+          "SandMinThreshold": -0.9,
           "SharpSlopeThreshold": 0.35,
-          "MountainHeightAboveWater": 250,
-          "WorldSeed": 1000
+          "TerrainBottomHeight": -300,
+          "UseRadialFalloff": false,
+          "UseWorldBounds": true,
+          "WaterColor": "0.18,0.45,0.82,1",
+          "WaterLevel": 0,
+          "WaterMaxThreshold": -0.9,
+          "WaterMinThreshold": -1,
+          "WorldSeed": 3000,
+          "WorldSize": "500000,500000"
         },
         {
           "__type": "Sandbox.Components.ChunkStreamerComponent",
@@ -88,14 +104,22 @@
           "Flags": 0,
           "Camera": null,
           "ChunkSize": 2048,
+          "ChunksPerFrame": 1,
+          "HeightLodScale": 1,
+          "Lod0Distance": 1,
+          "Lod1Distance": 2,
+          "Lod2Distance": 5,
+          "MinLodResolution": 6,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
-          "Resolution": 64,
-          "ViewDistance": 2,
+          "Resolution": 124,
+          "UseHeightBasedLod": true,
+          "UseLod": true,
+          "ViewDistance": 8,
           "WorldManager": {
             "_type": "component",
             "component_id": "9b4f3e2d-5c6d-7890-b123-456789abcdef",
@@ -104,26 +128,7 @@
           }
         }
       ],
-      "Children": [
-        {
-          "__guid": "f9300fe1-14a1-4ccc-93b3-aafa87fee34d",
-          "__version": 2,
-          "Flags": 0,
-          "Name": "Terrain",
-          "Position": "0,0,0",
-          "Rotation": "0,0,0,1",
-          "Scale": "1,1,1",
-          "Tags": "",
-          "Enabled": true,
-          "NetworkMode": 2,
-          "NetworkFlags": 0,
-          "NetworkOrphaned": 0,
-          "NetworkTransmit": true,
-          "OwnerTransfer": 1,
-          "Components": [],
-          "Children": []
-        }
-      ]
+      "Children": []
     },
     {
       "__guid": "d6148302-21b0-45a4-a4b4-00828a0e8ff6",
@@ -224,14 +229,14 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.Clutter.ClutterGridSystem": {
-        "Storage": {
-          "$blob": "191155ae-bbaa-4fce-b114-eedf355b343b"
-        }
-      },
       "Sandbox.SelectionSetsSystem": {
         "Data": {
           "SelectionSets": []
+        }
+      },
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "191155ae-bbaa-4fce-b114-eedf355b343b"
         }
       }
     }
