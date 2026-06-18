@@ -42,10 +42,8 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 	[Property, Group( "Falloff" ), Title( "Falloff Center" ), Change( nameof( OnFalloffSettingsChanged ) )]
 	public Vector2 FalloffCenter { get; set; } = new( 0.5f, 0.5f );
 
-	[Property, Group( "Height Noise" ), Title( "Frequency" ), Description( "Noise frequency × 10⁻⁴. 1 = 0.0001, 0.8 = 0.00008." ), Range( 0.01f, 10f ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
-	public float HeightNoiseFrequency { get; set; } = 0.8f;
-
-	const float HeightNoiseFrequencyUnit = 0.0001f;
+	[Property, Group( "Height Noise" ), Title( "Frequency" ), Description( "Noise frequency" ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
+	public float HeightNoiseFrequency { get; set; } = 0.0001f;
 
 	[Property, Group( "Height Noise" ), Title( "Octaves" ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
 	public int HeightNoiseOctaves { get; set; } = 2;
@@ -114,7 +112,6 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 	protected override void OnAwake()
 	{
 		base.OnAwake();
-		NormalizeHeightNoiseFrequency();
 		EnsureNoise();
 	}
 
@@ -126,7 +123,7 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 
 	protected override void OnValidate()
 	{
-		NormalizeHeightNoiseFrequency();
+	
 	}
 
 	void OnWorldSeedChanged( int oldValue, int newValue ) => ScheduleTerrainRebuild( refreshNoise: true );
@@ -143,15 +140,6 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 
 	void OnEditorRebuildDelayChanged() => ScheduleTerrainRebuild();
 
-	void NormalizeHeightNoiseFrequency()
-	{
-		// Older scenes stored raw frequency (e.g. 0.0001). The editor rounds that to 0 in the UI.
-		if ( HeightNoiseFrequency > 0f && HeightNoiseFrequency < 0.01f )
-			HeightNoiseFrequency = MathF.Round( HeightNoiseFrequency / HeightNoiseFrequencyUnit, 4 );
-	}
-
-	float GetHeightNoiseFrequencyValue() => HeightNoiseFrequency * HeightNoiseFrequencyUnit;
-
 	void EnsureNoise()
 	{
 		if ( Noise is not null )
@@ -159,18 +147,16 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 
 		Noise = new WorldNoise(
 			WorldSeed,
-			GetHeightNoiseFrequencyValue(),
+			HeightNoiseFrequency,
 			HeightNoiseOctaves,
 			HeightNoiseLacunarity );
 	}
 
 	public void RefreshNoiseImmediate()
 	{
-		NormalizeHeightNoiseFrequency();
-
 		Noise = new WorldNoise(
 			WorldSeed,
-			GetHeightNoiseFrequencyValue(),
+			HeightNoiseFrequency,
 			HeightNoiseOctaves,
 			HeightNoiseLacunarity );
 		NoiseSettingsVersion++;
