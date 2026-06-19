@@ -185,9 +185,23 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 	{
 		var size = PanelSize.Clamp( 128f, 1024f );
 		var margin = PanelMargin.Clamp( 0f, 128f );
-		var left = Screen.Size.x - margin - size;
-		var top = Screen.Size.y - margin - size;
+		var viewport = GetViewportRect();
+		var left = viewport.Width - margin - size;
+		var top = viewport.Height - margin - size;
 		return new Rect( left, top, size, size );
+	}
+
+	Rect GetViewportRect()
+	{
+		// Gizmo screen draws use viewport-local pixels (0..Camera.Size), not full window coords.
+		var cameraSize = Gizmo.Camera.Size;
+		if ( cameraSize.x > 1f && cameraSize.y > 1f )
+			return new Rect( 0f, 0f, cameraSize.x, cameraSize.y );
+
+		if ( Scene.Camera.IsValid() && Scene.Camera.ScreenRect.Width > 1f && Scene.Camera.ScreenRect.Height > 1f )
+			return Scene.Camera.ScreenRect;
+
+		return new Rect( 0f, 0f, Screen.Size.x, Screen.Size.y );
 	}
 
 	void ResolveWorldManager()
