@@ -7,7 +7,7 @@ namespace Sandbox.Components.SingletonComponents;
 /// </summary>
 [Title( "World Manager" ), Category( "Game Loop" )]
 public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldManagerSingletonComponent>,
-	IGameEventHandler<BetweenRoundCleanupEvent>
+	IGameEventHandler<BetweenRoundCleanupEvent>, Component.ExecuteInEditor
 {
 	[Property, Group( "World" ), Title( "World Seed" ), Change( nameof( OnWorldSeedChanged ) )]
 	public int WorldSeed { get; set; } = 12345;
@@ -42,8 +42,15 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 	[Property, Group( "Falloff" ), Title( "Falloff Center" ), Change( nameof( OnFalloffSettingsChanged ) )]
 	public Vector2 FalloffCenter { get; set; } = new( 0.5f, 0.5f );
 
-	[Property, Group( "Height Noise" ), Title( "Frequency" ), Description( "Noise frequency" ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
+	[Property, Group( "Height Noise" ), Title( "Frequency" ), Description( "Noise frequency (e.g. 0.0001)." ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
 	public float HeightNoiseFrequency { get; set; } = 0.0001f;
+
+	[Hide, Property] public int HeightNoiseFrequencyMicro { get; set; } = 100;
+
+	const float DefaultHeightNoiseFrequency = 0.0001f;
+	const int DefaultHeightNoiseFrequencyMicro = 100;
+	const int FrequencyMicroScale = 1_000_000;
+	const float MinHeightNoiseFrequency = 0.0000001f;
 
 	[Property, Group( "Height Noise" ), Title( "Octaves" ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
 	public int HeightNoiseOctaves { get; set; } = 2;
@@ -112,7 +119,8 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 	protected override void OnAwake()
 	{
 		base.OnAwake();
-		EnsureNoise();
+		RefreshNoiseImmediate();
+		ScheduleTerrainRebuild( refreshNoise: true, delay: 0f );
 	}
 
 	protected override void OnStart()
@@ -123,7 +131,7 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 
 	protected override void OnValidate()
 	{
-	
+		SyncFrequencyFromStorage();
 	}
 
 	void OnWorldSeedChanged( int oldValue, int newValue ) => ScheduleTerrainRebuild( refreshNoise: true );
@@ -132,7 +140,12 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 
 	void OnFalloffSettingsChanged() => ScheduleTerrainRebuild();
 
-	void OnHeightNoiseSettingsChanged() => ScheduleTerrainRebuild( refreshNoise: true );
+	void OnHeightNoiseSettingsChanged()
+	{
+		SyncFrequencyFromEditor();
+		RefreshNoiseImmediate();
+		ScheduleTerrainRebuild( refreshNoise: true );
+	}
 
 	void OnTerrainMeshSettingsChanged() => ScheduleTerrainRebuild();
 
@@ -140,20 +153,33 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 
 	void OnEditorRebuildDelayChanged() => ScheduleTerrainRebuild();
 
-	void EnsureNoise()
+	void SyncFrequencyFromStorage()
 	{
-		if ( Noise is not null )
-			return;
+		if ( HeightNoiseFrequencyMicro <= 0 )
+			HeightNoiseFrequencyMicro = FloatToMicro( HeightNoiseFrequency );
 
-		Noise = new WorldNoise(
-			WorldSeed,
-			HeightNoiseFrequency,
-			HeightNoiseOctaves,
-			HeightNoiseLacunarity );
+		if ( HeightNoiseFrequencyMicro <= 0 )
+			HeightNoiseFrequencyMicro = DefaultHeightNoiseFrequencyMicro;
+
+		HeightNoiseFrequencyMicro = Math.Max( HeightNoiseFrequencyMicro, 1 );
+		HeightNoiseFrequency = MicroToFloat( HeightNoiseFrequencyMicro );
 	}
+
+	void SyncFrequencyFromEditor()
+	{
+		var frequency = HeightNoiseFrequency <= 0f ? DefaultHeightNoiseFrequency : HeightNoiseFrequency;
+		HeightNoiseFrequencyMicro = Math.Max( FloatToMicro( frequency ), 1 );
+		HeightNoiseFrequency = MicroToFloat( HeightNoiseFrequencyMicro );
+	}
+
+	static int FloatToMicro( float value ) => (int)MathF.Round( Math.Max( value, MinHeightNoiseFrequency ) * FrequencyMicroScale );
+
+	static float MicroToFloat( int micro ) => Math.Max( micro, 1 ) / (float)FrequencyMicroScale;
 
 	public void RefreshNoiseImmediate()
 	{
+		SyncFrequencyFromStorage();
+
 		Noise = new WorldNoise(
 			WorldSeed,
 			HeightNoiseFrequency,
@@ -162,14 +188,16 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 		NoiseSettingsVersion++;
 	}
 
-	public void ScheduleTerrainRebuild( bool refreshNoise = false )
+	public void ScheduleTerrainRebuild( bool refreshNoise = false, float? delay = null )
 	{
+		var rebuildDelay = delay ?? EditorRebuildDelay;
+
 		foreach ( var streamer in Scene.GetAllComponents<ChunkStreamerComponent>() )
 		{
 			if ( !streamer.IsValid() )
 				continue;
 
-			streamer.ScheduleTerrainRebuild( refreshNoise, EditorRebuildDelay );
+			streamer.ScheduleTerrainRebuild( refreshNoise, rebuildDelay );
 		}
 	}
 

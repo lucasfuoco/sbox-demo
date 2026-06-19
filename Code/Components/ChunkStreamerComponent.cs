@@ -61,6 +61,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 	bool _refreshNoisePending;
 	int _lastSeed = int.MinValue;
 	int _lastNoiseSettingsVersion = -1;
+	bool _needsInitialTerrainRebuild = true;
 	int _lastChunkSize;
 	int _lastViewDistance;
 	int _lastResolution;
@@ -83,7 +84,6 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 	protected override void OnAwake()
 	{
 		GetTerrainFolder();
-		SyncTrackedSettings();
 		_settingsInitialized = true;
 	}
 
@@ -119,10 +119,19 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 
     protected override void OnUpdate()
     {
-		ProcessPendingTerrainRebuild();
+		if ( _needsInitialTerrainRebuild )
+		{
+			_needsInitialTerrainRebuild = false;
 
-		if ( ApplySettingChanges() )
-			return;
+			var worldManager = GetWorldManager();
+			if ( worldManager.IsValid() )
+				worldManager.RefreshNoiseImmediate();
+
+			ProcessPendingTerrainRebuild( force: true );
+		}
+
+		ProcessPendingTerrainRebuild();
+		ApplySettingChanges();
 
 		UpdateStreamedChunks();
 		ProcessPendingChunks();

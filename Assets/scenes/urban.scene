@@ -1,4 +1,4 @@
-{
+﻿{
   "__guid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
   "GameObjects": [
     {
@@ -71,7 +71,7 @@
           "GrassMaxThreshold": 0.35,
           "GrassMinThreshold": -0.8,
           "HeightNoiseAmplitude": 5000,
-          "HeightNoiseFrequency": 0.0001,
+          "HeightNoiseFrequencyMicro": 100,
           "HeightNoiseLacunarity": 1.7,
           "HeightNoiseOctaves": 10,
           "MountainColor": "0.55,0.55,0.58,1",
@@ -120,6 +120,28 @@
           "UseHeightBasedLod": true,
           "UseLod": true,
           "ViewDistance": 8,
+          "WorldManager": {
+            "_type": "component",
+            "component_id": "9b4f3e2d-5c6d-7890-b123-456789abcdef",
+            "go": "8a3f2e1d-4b5c-6789-a012-3456789abcde",
+            "component_type": "WorldManagerSingletonComponent"
+          }
+        },
+        {
+          "__type": "Sandbox.Components.WorldMapPreviewComponent",
+          "__guid": "f039261f-f160-4037-a85f-ff4fcb2f9d2c",
+          "__enabled": false,
+          "Flags": 0,
+          "MapResolution": 512,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "PanelMargin": 16,
+          "PanelSize": 360,
+          "ShowCameraMarker": true,
           "WorldManager": {
             "_type": "component",
             "component_id": "9b4f3e2d-5c6d-7890-b123-456789abcdef",

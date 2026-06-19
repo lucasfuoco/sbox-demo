@@ -1,0 +1,46 @@
+{
+  "RootObject": {
+    "__guid": "f1a2b3c4-d5e6-7890-abcd-ef1234567891",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "world_map_preview",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.Components.WorldMapPreviewComponent",
+        "__guid": "b3c4d5e6-f7a8-9012-cdef-123456789013",
+        "__enabled": true,
+        "Flags": 0,
+        "MapResolution": 512,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "PanelMargin": 16,
+        "PanelSize": 360,
+        "ShowCameraMarker": true,
+        "WorldManager": null
+      }
+    ],
+    "Children": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": false,
+  "MenuPath": null,
+  "MenuDescription": null,
+  "MenuIcon": null,
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}
