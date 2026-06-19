@@ -108,6 +108,8 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 
 	public int NoiseSettingsVersion { get; private set; }
 
+	public int TerrainSettingsVersion { get; private set; }
+
 	public IEnumerable<DroppedEquipmentComponent> DroppedEquipment =>
 		Scene.GetAllComponents<DroppedEquipmentComponent>();
 
@@ -134,11 +136,23 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 		SyncFrequencyFromStorage();
 	}
 
-	void OnWorldSeedChanged( int oldValue, int newValue ) => ScheduleTerrainRebuild( refreshNoise: true );
+	void OnWorldSeedChanged( int oldValue, int newValue )
+	{
+		BumpTerrainSettings();
+		ScheduleTerrainRebuild( refreshNoise: true );
+	}
 
-	void OnWorldBoundsChanged() => ScheduleTerrainRebuild();
+	void OnWorldBoundsChanged()
+	{
+		BumpTerrainSettings();
+		ScheduleTerrainRebuild();
+	}
 
-	void OnFalloffSettingsChanged() => ScheduleTerrainRebuild();
+	void OnFalloffSettingsChanged()
+	{
+		BumpTerrainSettings();
+		ScheduleTerrainRebuild();
+	}
 
 	void OnHeightNoiseSettingsChanged()
 	{
@@ -147,11 +161,21 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 		ScheduleTerrainRebuild( refreshNoise: true );
 	}
 
-	void OnTerrainMeshSettingsChanged() => ScheduleTerrainRebuild();
+	void OnTerrainMeshSettingsChanged()
+	{
+		BumpTerrainSettings();
+		ScheduleTerrainRebuild();
+	}
 
-	void OnBiomeSettingsChanged() => ScheduleTerrainRebuild();
+	void OnBiomeSettingsChanged()
+	{
+		BumpTerrainSettings();
+		ScheduleTerrainRebuild();
+	}
 
 	void OnEditorRebuildDelayChanged() => ScheduleTerrainRebuild();
+
+	void BumpTerrainSettings() => TerrainSettingsVersion++;
 
 	void SyncFrequencyFromStorage()
 	{
@@ -186,6 +210,7 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 			HeightNoiseOctaves,
 			HeightNoiseLacunarity );
 		NoiseSettingsVersion++;
+		TerrainSettingsVersion++;
 	}
 
 	public void ScheduleTerrainRebuild( bool refreshNoise = false, float? delay = null )

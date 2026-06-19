@@ -8,8 +8,11 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 	[Property, Group( "Map" ), Title( "World Manager" )]
 	public WorldManagerSingletonComponent WorldManager { get; set; }
 
-	[Property, Group( "Map" ), Title( "Resolution" ), Range( 128, 2048 )]
-	public int MapResolution { get; set; } = 512;
+	[Property, Group( "Map" ), Title( "Resolution" ), Description( "Preview texture size. Lower is faster." ), Range( 128, 1024 )]
+	public int MapResolution { get; set; } = 256;
+
+	[Property, Group( "Map" ), Title( "Rows Per Frame" ), Description( "How many map rows to generate per editor frame while rebuilding." ), Range( 4, 128 )]
+	public int RowsPerFrame { get; set; } = 24;
 
 	[Property, Group( "Map" ), Title( "Panel Size" ), Range( 128, 1024 )]
 	public float PanelSize { get; set; } = 360f;
@@ -22,9 +25,19 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 
 	Texture MapTexture { get; set; }
 
-	int _settingsHash = -1;
+	int _terrainSettingsVersion = -1;
+	int _mapResolution = -1;
 	TimeUntil _rebuildDelay;
 	Vector2 _cameraUv = new( -1f, -1f );
+
+	bool _rebuildActive;
+	int _rebuildSize;
+	int _rebuildRow;
+	float _rebuildStepX;
+	float _rebuildStepY;
+	Vector2 _rebuildWorldMin;
+	byte[] _rebuildData;
+	float[,] _rebuildHeights;
 
 	protected override void OnAwake()
 	{
@@ -42,15 +55,13 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 		if ( !WorldManager.IsValid() )
 			return;
 
-		var settingsHash = ComputeSettingsHash();
-		if ( settingsHash != _settingsHash )
-		{
-			_settingsHash = settingsHash;
+		if ( NeedsRebuild() )
 			ScheduleRebuild( WorldManager.EditorRebuildDelay );
-		}
 
-		if ( _rebuildDelay )
-			RebuildMap();
+		if ( _rebuildActive )
+			ContinueRebuild();
+		else if ( _rebuildDelay )
+			BeginRebuild();
 
 		UpdateCameraMarker();
 	}
@@ -98,6 +109,78 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 		}
 	}
 
+	bool NeedsRebuild()
+	{
+		return WorldManager.TerrainSettingsVersion != _terrainSettingsVersion
+			|| MapResolution != _mapResolution;
+	}
+
+	void BeginRebuild()
+	{
+		_rebuildDelay = 0f;
+
+		if ( !WorldManager.IsValid() )
+			return;
+
+		_terrainSettingsVersion = WorldManager.TerrainSettingsVersion;
+		_mapResolution = MapResolution;
+
+		_rebuildSize = Math.Clamp( MapResolution, 128, 1024 );
+		_rebuildRow = 0;
+		_rebuildWorldMin = WorldManager.WorldMin;
+		var worldSize = WorldManager.WorldSize;
+		_rebuildStepX = worldSize.x / Math.Max( _rebuildSize - 1, 1 );
+		_rebuildStepY = worldSize.y / Math.Max( _rebuildSize - 1, 1 );
+		_rebuildData = new byte[_rebuildSize * _rebuildSize * 4];
+		_rebuildHeights = new float[_rebuildSize, _rebuildSize];
+		_rebuildActive = true;
+
+		ContinueRebuild();
+	}
+
+	void ContinueRebuild()
+	{
+		if ( !WorldManager.IsValid() || !_rebuildActive )
+			return;
+
+		var rowsPerFrame = Math.Clamp( RowsPerFrame, 4, 128 );
+		var endRow = Math.Min( _rebuildRow + rowsPerFrame, _rebuildSize );
+
+		for ( int y = _rebuildRow; y < endRow; y++ )
+		{
+			for ( int x = 0; x < _rebuildSize; x++ )
+			{
+				var worldX = _rebuildWorldMin.x + x * _rebuildStepX;
+				var worldY = _rebuildWorldMin.y + y * _rebuildStepY;
+				_rebuildHeights[x, y] = WorldManager.GetHeight( worldX, worldY );
+			}
+		}
+
+		_rebuildRow = endRow;
+
+		if ( _rebuildRow < _rebuildSize )
+			return;
+
+		for ( int y = 0; y < _rebuildSize; y++ )
+		{
+			for ( int x = 0; x < _rebuildSize; x++ )
+			{
+				var slope = SampleSlope( _rebuildHeights, x, y, _rebuildSize, _rebuildStepX, _rebuildStepY );
+				var color = TerrainBiome.GetColorFromHeight( WorldManager, _rebuildHeights[x, y], slope );
+				SetPixel( _rebuildData, x, y, _rebuildSize, color );
+			}
+		}
+
+		MapTexture = Texture.Create( _rebuildSize, _rebuildSize )
+			.WithStaticUsage()
+			.WithData( _rebuildData )
+			.Finish();
+
+		_rebuildActive = false;
+		_rebuildData = null;
+		_rebuildHeights = null;
+	}
+
 	Rect GetPanelRect()
 	{
 		var size = PanelSize.Clamp( 128f, 1024f );
@@ -117,93 +200,8 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 
 	void ScheduleRebuild( float delay )
 	{
+		_rebuildActive = false;
 		_rebuildDelay = Math.Max( delay, 0.05f );
-	}
-
-	int ComputeSettingsHash()
-	{
-		var worldManager = WorldManager;
-		if ( !worldManager.IsValid() )
-			return 0;
-
-		var noiseHash = HashCode.Combine(
-			worldManager.NoiseSettingsVersion,
-			MapResolution,
-			worldManager.WorldSeed,
-			worldManager.WorldSize,
-			worldManager.GameObject.WorldPosition );
-
-		var terrainHash = HashCode.Combine(
-			worldManager.WaterLevel,
-			worldManager.HeightNoiseAmplitude,
-			worldManager.UseWorldBounds,
-			worldManager.UseRadialFalloff,
-			worldManager.FalloffMin,
-			worldManager.FalloffMax,
-			worldManager.FalloffInnerMargin,
-			worldManager.FalloffOuterMargin );
-
-		var falloffHash = HashCode.Combine(
-			worldManager.FalloffPower,
-			worldManager.FalloffCenter,
-			worldManager.WaterMinThreshold,
-			worldManager.WaterMaxThreshold,
-			worldManager.SandMinThreshold,
-			worldManager.SandMaxThreshold,
-			worldManager.GrassMinThreshold,
-			worldManager.GrassMaxThreshold );
-
-		var biomeHash = HashCode.Combine(
-			worldManager.MountainMinThreshold,
-			worldManager.MountainMaxThreshold,
-			worldManager.SharpSlopeThreshold,
-			worldManager.WaterColor,
-			worldManager.SandColor,
-			worldManager.GrassColor,
-			worldManager.MountainColor );
-
-		var panelHash = HashCode.Combine( PanelSize, PanelMargin, ShowCameraMarker );
-
-		return HashCode.Combine( noiseHash, terrainHash, falloffHash, biomeHash, panelHash );
-	}
-
-	void RebuildMap()
-	{
-		if ( !WorldManager.IsValid() )
-			return;
-
-		var size = Math.Clamp( MapResolution, 128, 2048 );
-		var data = new byte[size * size * 4];
-		var worldMin = WorldManager.WorldMin;
-		var worldSize = WorldManager.WorldSize;
-		var stepX = worldSize.x / Math.Max( size - 1, 1 );
-		var stepY = worldSize.y / Math.Max( size - 1, 1 );
-		var heights = new float[size, size];
-
-		for ( int y = 0; y < size; y++ )
-		{
-			for ( int x = 0; x < size; x++ )
-			{
-				var worldX = worldMin.x + x * stepX;
-				var worldY = worldMin.y + y * stepY;
-				heights[x, y] = WorldManager.GetHeight( worldX, worldY );
-			}
-		}
-
-		for ( int y = 0; y < size; y++ )
-		{
-			for ( int x = 0; x < size; x++ )
-			{
-				var slope = SampleSlope( heights, x, y, size, stepX, stepY );
-				var color = TerrainBiome.GetColorFromHeight( WorldManager, heights[x, y], slope );
-				SetPixel( data, x, y, size, color );
-			}
-		}
-
-		MapTexture = Texture.Create( size, size )
-			.WithStaticUsage()
-			.WithData( data )
-			.Finish();
 	}
 
 	void UpdateCameraMarker()
