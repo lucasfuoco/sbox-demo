@@ -305,6 +305,19 @@
                 "SkipPlayerCount": 10
               },
               {
+                "__type": "Sandbox.Components.WaitForMapToLoadComponent",
+                "__guid": "a3f8c2e1-9b4d-4a7f-8e6c-1d2f3a4b5c6d",
+                "__enabled": true,
+                "Flags": 0,
+                "ChunkStreamer": null,
+                "OnComponentDestroy": null,
+                "OnComponentDisabled": null,
+                "OnComponentEnabled": null,
+                "OnComponentFixedUpdate": null,
+                "OnComponentStart": null,
+                "OnComponentUpdate": null
+              },
+              {
                 "__type": "Sandbox.Components.ShowStatusTextComponent",
                 "__guid": "610397a3-3f84-491a-a55e-9fa9949cb67a",
                 "__enabled": true,

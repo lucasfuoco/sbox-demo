@@ -21,6 +21,9 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 	[Property, Group( "World" ), Title( "Editor Rebuild Delay" ), Range( 0.1f, 3f ), Change( nameof( OnEditorRebuildDelayChanged ) )]
 	public float EditorRebuildDelay { get; set; } = 0.5f;
 
+	[Property, Group( "Falloff" ), Title( "Use Falloff" ), Description( "Fade terrain height toward the world edges. Requires Use World Bounds." ), Change( nameof( OnFalloffSettingsChanged ) )]
+	public bool UseFalloff { get; set; } = true;
+
 	[Property, Group( "Falloff" ), Title( "Falloff Min" ), Range( 0f, 1f ), Change( nameof( OnFalloffSettingsChanged ) )]
 	public float FalloffMin { get; set; } = 0f;
 
@@ -42,12 +45,18 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 	[Property, Group( "Falloff" ), Title( "Falloff Center" ), Change( nameof( OnFalloffSettingsChanged ) )]
 	public Vector2 FalloffCenter { get; set; } = new( 0.5f, 0.5f );
 
-	[Property, Group( "Height Noise" ), Title( "Frequency" ), Description( "Noise frequency (e.g. 0.0001)." ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
-	public float HeightNoiseFrequency { get; set; } = 0.0001f;
+	[Property, Group( "Height Noise" ), Title( "Frequency" ), Description( "Lower = larger landforms. First-octave feature width is roughly 1 / frequency in world units." ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
+	public float HeightNoiseFrequency { get; set; } = 0.003f;
+
+	[Property, Group( "Height Noise" ), Title( "Feature Width (~units)" ), ReadOnly]
+	public float HeightNoiseFeatureWidth => HeightNoiseFrequency > 0.0000001f ? 1f / HeightNoiseFrequency : 0f;
+
+	[Property, Group( "Height Noise" ), Title( "Features Across World" ), ReadOnly]
+	public float HeightNoiseFeaturesAcrossWorld => HeightNoiseFrequency * MathF.Max( WorldSize.x, WorldSize.y );
 
 	[Hide, Property] public int HeightNoiseFrequencyMicro { get; set; } = 100;
 
-	const float DefaultHeightNoiseFrequency = 0.0001f;
+	const float DefaultHeightNoiseFrequency = 0.003f;
 	const int DefaultHeightNoiseFrequencyMicro = 100;
 	const int FrequencyMicroScale = 1_000_000;
 	const float MinHeightNoiseFrequency = 0.0000001f;
@@ -57,6 +66,12 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 
 	[Property, Group( "Height Noise" ), Title( "Lacunarity" ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
 	public float HeightNoiseLacunarity { get; set; } = 2f;
+
+	[Property, Group( "Height Noise" ), Title( "Gain" ), Description( "Amplitude multiplier for each octave. Lower = smoother, higher = rougher detail." ), Range( 0f, 2f ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
+	public float HeightNoiseGain { get; set; } = 0.5f;
+
+	[Property, Group( "Height Noise" ), Title( "Weighted Strength" ), Description( "How much each octave's amplitude is weighted by the previous octave. 0 = off." ), Range( 0f, 1f ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
+	public float HeightNoiseWeightedStrength { get; set; } = 0f;
 
 	[Property, Group( "Height Noise" ), Title( "Amplitude" ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
 	public float HeightNoiseAmplitude { get; set; } = 500f;
@@ -208,7 +223,9 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 			WorldSeed,
 			HeightNoiseFrequency,
 			HeightNoiseOctaves,
-			HeightNoiseLacunarity );
+			HeightNoiseLacunarity,
+			HeightNoiseGain,
+			HeightNoiseWeightedStrength );
 		NoiseSettingsVersion++;
 		TerrainSettingsVersion++;
 	}
@@ -265,7 +282,8 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 			if ( !TryGetWorldUv( worldX, worldY, out var worldU, out var worldV ) )
 				return WaterLevel;
 
-			falloff = GetLandFalloff( worldU, worldV );
+			if ( UseFalloff )
+				falloff = GetLandFalloff( worldU, worldV );
 		}
 
 		return WaterLevel + Noise.GetHeight( worldX, worldY, HeightNoiseAmplitude, falloff );

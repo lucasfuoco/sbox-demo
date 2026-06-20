@@ -4,7 +4,7 @@ public sealed class WorldNoise
 {
 	public FastNoiseLite HeightNoise { get; }
 
-	public WorldNoise( int seed, float heightFrequency, int heightOctaves, float lacunarity )
+	public WorldNoise( int seed, float heightFrequency, int heightOctaves, float lacunarity, float gain, float weightedStrength )
 	{
 		HeightNoise = new FastNoiseLite();
 		HeightNoise.SetSeed( seed );
@@ -13,6 +13,8 @@ public sealed class WorldNoise
 		HeightNoise.SetFractalType( FastNoiseLite.FractalType.FBm );
 		HeightNoise.SetFractalOctaves( heightOctaves );
 		HeightNoise.SetFractalLacunarity( lacunarity );
+		HeightNoise.SetFractalGain( gain );
+		HeightNoise.SetFractalWeightedStrength( weightedStrength );
 	}
 
 	public float GetHeight( float x, float y, float amplitude, float falloff = 1f )

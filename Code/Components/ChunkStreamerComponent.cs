@@ -12,14 +12,21 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
     [Property, Group( "Chunk Streamer" ), Title( "World Manager" )]
     public WorldManagerSingletonComponent WorldManager { get; set; }
 
-    [Property, Group( "Chunk Streamer" ), Title( "Camera" )]
+    [Property, Group( "Chunk Streamer" ), Title( "Camera" ), Description( "Optional play-mode camera. In the editor, the scene viewport is used when this is empty." )]
     public CameraComponent Camera { get; set; }
 
 	[Property, Group( "Chunk Streamer" ), Title( "Chunk Size" ), Change( nameof( OnLayoutChanged ) )]
     public int ChunkSize { get; set; } = 2048;
 
-    [Property, Group( "Chunk Streamer" ), Title( "View Distance" ), Change( nameof( OnLayoutChanged ) )]
+	int SafeChunkSize => Math.Max( ChunkSize, 1 );
+
+	public int EffectiveChunkSize => SafeChunkSize;
+
+    [Property, Group( "Chunk Streamer" ), Title( "View Distance" ), Description( "Chunk radius around the camera. Total loaded chunks is roughly (2 x distance + 1)^2. Values above 8 can be heavy." ), Range( 1, 12 ), Change( nameof( OnLayoutChanged ) )]
 	public int ViewDistance { get; set; } = 4;
+
+	[Property, Group( "Chunk Streamer" ), Title( "Max Loaded Chunks" ), Description( "Safety cap for simultaneously loaded chunks." ), Range( 16, 512 ), Change( nameof( OnLayoutChanged ) )]
+	public int MaxLoadedChunks { get; set; } = 256;
 
 	[Property, Group( "Chunk Streamer" ), Title( "Resolution" ), Change( nameof( OnMeshSettingsChanged ) )]
 	public int Resolution { get; set; } = 124;
@@ -45,14 +52,21 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 	[Property, Group( "LOD" ), Title( "Height LOD Scale" ), Description( "How strongly altitude above terrain affects LOD. 1 = one chunk size of height counts as one LOD distance step." ), Range( 0f, 4f ), Change( nameof( OnLodSettingsChanged ) )]
 	public float HeightLodScale { get; set; } = 1f;
 
-	[Property, Group( "Chunk Streamer" ), Title( "Chunks Per Frame" ), Change( nameof( OnLayoutChanged ) )]
+	[Property, Group( "Chunk Streamer" ), Title( "Chunks Per Frame" ), Description( "How many chunks are created per update. Keeps large view distances from spiking in one frame." ), Range( 1, 8 ), Change( nameof( OnLayoutChanged ) )]
 	public int ChunksPerFrame { get; set; } = 1;
+
+	[Property, Group( "Chunk Streamer" ), Title( "Unloads Per Frame" ), Description( "How many chunks are destroyed per update when shrinking view distance." ), Range( 1, 32 ), Change( nameof( OnLayoutChanged ) )]
+	public int UnloadsPerFrame { get; set; } = 8;
+
+	[Property, Group( "Chunk Streamer" ), Title( "Lod Rebuilds Per Frame" ), Description( "How many chunk meshes can rebuild for LOD changes per update." ), Range( 1, 32 ), Change( nameof( OnLodSettingsChanged ) )]
+	public int LodRebuildsPerFrame { get; set; } = 4;
 
 	const string TerrainFolderName = "Terrain";
 
 	Dictionary<ChunkCoord, GameObject> LoadedChunks = new();
 	Dictionary<ChunkCoord, int> _chunkResolutions = new();
 	HashSet<ChunkCoord> _pendingChunks = new();
+	HashSet<ChunkCoord> _pendingLodRebuilds = new();
 	ChunkCoord _lastLodCenter = new( int.MinValue, int.MinValue );
 	Vector3 _lastLodStreamPosition = new( float.MaxValue, float.MaxValue, float.MaxValue );
 	GameObject _terrainFolder;
@@ -73,6 +87,9 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 	bool _lastUseHeightBasedLod;
 	float _lastHeightLodScale;
 	int _lastChunksPerFrame;
+	int _lastMaxLoadedChunks;
+	int _lastUnloadsPerFrame;
+	int _lastLodRebuildsPerFrame;
 	int[] _lodResolutions;
 	int _cachedLodResolution;
 	int _cachedMinLodResolution;
@@ -80,6 +97,10 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 	Vector2 _lastWorldSize;
 	Vector3 _lastWorldOrigin;
 	bool _settingsInitialized;
+
+	Vector3 _cachedEditorViewportPosition;
+	Rotation _cachedEditorViewportRotation;
+	bool _hasCachedEditorViewport;
 
 	protected override void OnAwake()
 	{
@@ -96,15 +117,10 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 	{
 		NormalizeLodDistances();
 
-		if ( !Game.IsEditor )
+		if ( !Game.IsEditor || Game.IsPlaying || Scene is null || !GameObject.IsValid() )
 			return;
 
-		GetTerrainFolder();
-
-		if ( _settingsInitialized )
-			ScheduleTerrainRebuild();
-		else
-			EnsureTerrain();
+		ScheduleTerrainRebuild();
 	}
 
 	void NormalizeLodDistances()
@@ -119,14 +135,54 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 
     protected override void OnUpdate()
     {
+		if ( Scene is null || !GameObject.IsValid() )
+			return;
+
+		if ( IsEditMode )
+			return;
+
+		try
+		{
+			RunUpdate();
+		}
+		catch ( Exception exception )
+		{
+			Log.Error( $"Chunk Streamer update failed: {exception.Message}\n{exception.StackTrace}" );
+		}
+    }
+
+	protected override void DrawGizmos()
+	{
+		if ( !IsEditMode || Scene is null || !GameObject.IsValid() )
+			return;
+
+		if ( !TryGetEditorCameraTransform( out var viewportTransform ) )
+			return;
+
+		_cachedEditorViewportPosition = viewportTransform.Position;
+		_cachedEditorViewportRotation = viewportTransform.Rotation;
+		_hasCachedEditorViewport = true;
+
+		try
+		{
+			RunUpdate();
+		}
+		catch ( Exception exception )
+		{
+			Log.Error( $"Chunk Streamer edit-mode update failed: {exception.Message}\n{exception.StackTrace}" );
+		}
+	}
+
+	void RunUpdate()
+	{
+		var worldManager = GetWorldManager();
+		if ( !worldManager.IsValid() || !worldManager.GameObject.IsValid() )
+			return;
+
 		if ( _needsInitialTerrainRebuild )
 		{
 			_needsInitialTerrainRebuild = false;
-
-			var worldManager = GetWorldManager();
-			if ( worldManager.IsValid() )
-				worldManager.RefreshNoiseImmediate();
-
+			worldManager.RefreshNoiseImmediate();
 			ProcessPendingTerrainRebuild( force: true );
 		}
 
@@ -135,8 +191,9 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 
 		UpdateStreamedChunks();
 		ProcessPendingChunks();
+		ProcessPendingLodRebuilds();
 		UpdateChunkLods();
-    }
+	}
 
 	void OnLayoutChanged()
 	{
@@ -201,6 +258,9 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 
 	public void EnsureTerrain()
 	{
+		if ( Scene is null || !GameObject.IsValid() )
+			return;
+
 		SyncTrackedSettings();
 		UpdateStreamedChunks();
 		UpdateChunkLods( force: true );
@@ -210,11 +270,17 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 	bool ApplySettingChanges( bool force = false )
 	{
 		var worldManager = GetWorldManager();
-		if ( !worldManager.IsValid() )
+		if ( !worldManager.IsValid() || !worldManager.GameObject.IsValid() )
 			return false;
 
-		var layoutChanged = ChunkSize != _lastChunkSize || ViewDistance != _lastViewDistance
-			|| ChunksPerFrame != _lastChunksPerFrame;
+		var worldMin = worldManager.WorldMin;
+
+		var chunkGridChanged = ChunkSize != _lastChunkSize;
+		var viewRangeChanged = ViewDistance != _lastViewDistance
+			|| ChunksPerFrame != _lastChunksPerFrame
+			|| MaxLoadedChunks != _lastMaxLoadedChunks
+			|| UnloadsPerFrame != _lastUnloadsPerFrame;
+		var layoutChanged = chunkGridChanged || viewRangeChanged;
 		var meshChanged = Resolution != _lastResolution;
 		var lodChanged = UseLod != _lastUseLod
 			|| Lod0Distance != _lastLod0Distance
@@ -222,25 +288,25 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 			|| Lod2Distance != _lastLod2Distance
 			|| MinLodResolution != _lastMinLodResolution
 			|| UseHeightBasedLod != _lastUseHeightBasedLod
-			|| HeightLodScale != _lastHeightLodScale;
+			|| HeightLodScale != _lastHeightLodScale
+			|| LodRebuildsPerFrame != _lastLodRebuildsPerFrame;
 		var noiseChanged = worldManager.WorldSeed != _lastSeed
 			|| worldManager.NoiseSettingsVersion != _lastNoiseSettingsVersion;
 		var boundsChanged = worldManager.UseWorldBounds != _lastUseWorldBounds
 			|| worldManager.WorldSize != _lastWorldSize
-			|| worldManager.WorldMin != new Vector2( _lastWorldOrigin.x, _lastWorldOrigin.y );
+			|| worldMin != new Vector2( _lastWorldOrigin.x, _lastWorldOrigin.y );
 
 		if ( !force && !layoutChanged && !meshChanged && !lodChanged && !noiseChanged && !boundsChanged )
 			return false;
 
-		if ( layoutChanged || boundsChanged )
+		if ( chunkGridChanged || boundsChanged )
 			ClearAllChunks();
 
 		SyncTrackedSettings();
 		UpdateStreamedChunks();
-		UpdateChunkLods( force: true );
 
-		if ( meshChanged || lodChanged || noiseChanged || layoutChanged || boundsChanged )
-			RebuildLoadedChunks();
+		if ( meshChanged || lodChanged || noiseChanged || chunkGridChanged || boundsChanged )
+			QueueLodRebuilds( force: true );
 
 		return true;
 	}
@@ -248,7 +314,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 	void SyncTrackedSettings()
 	{
 		var worldManager = GetWorldManager();
-		if ( worldManager.IsValid() )
+		if ( worldManager.IsValid() && worldManager.GameObject.IsValid() )
 		{
 			_lastSeed = worldManager.WorldSeed;
 			_lastNoiseSettingsVersion = worldManager.NoiseSettingsVersion;
@@ -268,6 +334,9 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		_lastUseHeightBasedLod = UseHeightBasedLod;
 		_lastHeightLodScale = HeightLodScale;
 		_lastChunksPerFrame = ChunksPerFrame;
+		_lastMaxLoadedChunks = MaxLoadedChunks;
+		_lastUnloadsPerFrame = UnloadsPerFrame;
+		_lastLodRebuildsPerFrame = LodRebuildsPerFrame;
 	}
 
 	void ClearAllChunks()
@@ -278,6 +347,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		LoadedChunks.Clear();
 		_chunkResolutions.Clear();
 		_pendingChunks.Clear();
+		_pendingLodRebuilds.Clear();
 		_lastLodCenter = new ChunkCoord( int.MinValue, int.MinValue );
 		_lastLodStreamPosition = new Vector3( float.MaxValue, float.MaxValue, float.MaxValue );
 
@@ -288,7 +358,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
     void CreateChunk( ChunkCoord coord )
     {
         var worldManager = GetWorldManager();
-        if ( !worldManager.IsValid() )
+        if ( !worldManager.IsValid() || !worldManager.GameObject.IsValid() || Scene is null )
             return;
 
 		var terrainFolder = GetTerrainFolder();
@@ -303,10 +373,13 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		var chunkResolution = GetResolutionForLodLevel( lodLevel );
 
         var go = Scene.CreateObject();
+		if ( !go.IsValid() )
+			return;
+
         go.Name = $"Chunk ({coord.X}, {coord.Y}) L{lodLevel} r{chunkResolution}";
         go.Flags |= GameObjectFlags.NotSaved;
         go.Parent = terrainFolder;
-        go.WorldPosition = new Vector3( coord.X * ChunkSize, coord.Y * ChunkSize, 0 );
+        go.WorldPosition = new Vector3( coord.X * SafeChunkSize, coord.Y * SafeChunkSize, 0 );
 
         var terrain = go.Components.Create<TerrainChunkComponent>();
         terrain.ChunkStreamer = this;
@@ -327,11 +400,11 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 			return horizontal;
 
 		var worldManager = GetWorldManager();
-		if ( !worldManager.IsValid() )
+		if ( !worldManager.IsValid() || !worldManager.GameObject.IsValid() )
 			return horizontal;
 
-		var chunkCenterX = coord.X * ChunkSize + ChunkSize * 0.5f;
-		var chunkCenterY = coord.Y * ChunkSize + ChunkSize * 0.5f;
+		var chunkCenterX = coord.X * SafeChunkSize + SafeChunkSize * 0.5f;
+		var chunkCenterY = coord.Y * SafeChunkSize + SafeChunkSize * 0.5f;
 		var terrainHeight = worldManager.GetHeight( chunkCenterX, chunkCenterY );
 
 		var offset = new Vector3(
@@ -339,7 +412,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 			streamPosition.y - chunkCenterY,
 			streamPosition.z - terrainHeight );
 
-		var distanceInChunks = offset.Length / ChunkSize * HeightLodScale;
+		var distanceInChunks = offset.Length / SafeChunkSize * HeightLodScale;
 
 		return MathF.Max( horizontal, distanceInChunks );
 	}
@@ -435,7 +508,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 	void UpdateStreamedChunks()
 	{
 		var worldManager = GetWorldManager();
-		if ( !worldManager.IsValid() )
+		if ( !worldManager.IsValid() || !worldManager.GameObject.IsValid() )
 			return;
 
 		GetTerrainFolder();
@@ -444,11 +517,33 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 			return;
 
 		var center = WorldToChunk( streamPosition );
+		var maxLoaded = Math.Max( MaxLoadedChunks, 16 );
+		var unloadBudget = Math.Max( UnloadsPerFrame, 1 );
+		var unloaded = 0;
+
+		foreach ( var entry in LoadedChunks.ToArray() )
+		{
+			var coord = entry.Key;
+			var outsideView = Math.Abs( coord.X - center.X ) > ViewDistance || Math.Abs( coord.Y - center.Y ) > ViewDistance;
+			var outsideWorld = !worldManager.ChunkIntersectsWorld( coord, ChunkSize );
+
+			if ( !outsideView && !outsideWorld )
+				continue;
+
+			if ( unloaded >= unloadBudget )
+				continue;
+
+			DestroyChunk( coord, entry.Value );
+			unloaded++;
+		}
 
 		for ( int x = -ViewDistance; x <= ViewDistance; x++ )
 		{
 			for ( int y = -ViewDistance; y <= ViewDistance; y++ )
 			{
+				if ( LoadedChunks.Count + _pendingChunks.Count >= maxLoaded )
+					return;
+
 				var coord = new ChunkCoord( center.X + x, center.Y + y );
 				if ( !worldManager.ChunkIntersectsWorld( coord, ChunkSize ) )
 					continue;
@@ -457,27 +552,15 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 					_pendingChunks.Add( coord );
 			}
 		}
+	}
 
-		foreach ( var entry in LoadedChunks.ToArray() )
-		{
-			var coord = entry.Key;
-			if ( Math.Abs( coord.X - center.X ) > ViewDistance || Math.Abs( coord.Y - center.Y ) > ViewDistance )
-			{
-				entry.Value?.Destroy();
-				LoadedChunks.Remove( coord );
-				_chunkResolutions.Remove( coord );
-				_pendingChunks.Remove( coord );
-				continue;
-			}
-
-			if ( !worldManager.ChunkIntersectsWorld( coord, ChunkSize ) )
-			{
-				entry.Value?.Destroy();
-				LoadedChunks.Remove( coord );
-				_chunkResolutions.Remove( coord );
-				_pendingChunks.Remove( coord );
-			}
-		}
+	void DestroyChunk( ChunkCoord coord, GameObject chunkObject )
+	{
+		chunkObject?.Destroy();
+		LoadedChunks.Remove( coord );
+		_chunkResolutions.Remove( coord );
+		_pendingChunks.Remove( coord );
+		_pendingLodRebuilds.Remove( coord );
 	}
 
 	void ProcessPendingChunks()
@@ -485,12 +568,13 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		if ( _pendingChunks.Count == 0 )
 			return;
 
+		var maxLoaded = Math.Max( MaxLoadedChunks, 16 );
 		var budget = Math.Max( ChunksPerFrame, 1 );
 		var created = 0;
 
 		foreach ( var coord in _pendingChunks.ToArray() )
 		{
-			if ( created >= budget )
+			if ( created >= budget || LoadedChunks.Count >= maxLoaded )
 				break;
 
 			if ( LoadedChunks.ContainsKey( coord ) )
@@ -505,6 +589,65 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		}
 	}
 
+	void QueueLodRebuilds( bool force = false )
+	{
+		if ( !TryGetStreamPosition( out var streamPosition ) )
+			return;
+
+		var center = WorldToChunk( streamPosition );
+
+		foreach ( var entry in LoadedChunks )
+		{
+			var targetResolution = GetChunkResolution( entry.Key, center, streamPosition );
+			if ( !_chunkResolutions.TryGetValue( entry.Key, out var currentResolution ) || currentResolution != targetResolution )
+				_pendingLodRebuilds.Add( entry.Key );
+		}
+
+		if ( force )
+			return;
+
+		_lastLodCenter = center;
+		_lastLodStreamPosition = streamPosition;
+	}
+
+	void ProcessPendingLodRebuilds()
+	{
+		if ( _pendingLodRebuilds.Count == 0 )
+			return;
+
+		if ( !TryGetStreamPosition( out var streamPosition ) )
+			return;
+
+		var center = WorldToChunk( streamPosition );
+		var budget = Math.Max( LodRebuildsPerFrame, 1 );
+		var rebuilt = 0;
+
+		foreach ( var coord in _pendingLodRebuilds.ToArray() )
+		{
+			if ( rebuilt >= budget )
+				break;
+
+			if ( !LoadedChunks.TryGetValue( coord, out var chunkObject ) || !chunkObject.IsValid() )
+			{
+				_pendingLodRebuilds.Remove( coord );
+				continue;
+			}
+
+			var lodLevel = GetChunkLodLevel( coord, center, streamPosition );
+			var targetResolution = GetResolutionForLodLevel( lodLevel );
+
+			if ( _chunkResolutions.TryGetValue( coord, out var currentResolution ) && currentResolution == targetResolution )
+			{
+				_pendingLodRebuilds.Remove( coord );
+				continue;
+			}
+
+			UpdateChunkLod( chunkObject, coord, lodLevel, targetResolution );
+			_pendingLodRebuilds.Remove( coord );
+			rebuilt++;
+		}
+	}
+
 	void UpdateChunkLods( bool force = false )
 	{
 		if ( !UseLod && !force )
@@ -515,7 +658,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 
 		var center = WorldToChunk( streamPosition );
 		var movedChunk = center != _lastLodCenter;
-		var movedWorld = (streamPosition - _lastLodStreamPosition).Length > ChunkSize * 0.25f;
+		var movedWorld = (streamPosition - _lastLodStreamPosition).Length > SafeChunkSize * 0.25f;
 		var needsUpdate = force || movedChunk || movedWorld || AnyChunkNeedsLodUpdate( center, streamPosition );
 
 		if ( !needsUpdate )
@@ -523,40 +666,134 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 
 		_lastLodCenter = center;
 		_lastLodStreamPosition = streamPosition;
-
-		foreach ( var entry in LoadedChunks.ToArray() )
-		{
-			var coord = entry.Key;
-			var lodLevel = GetChunkLodLevel( coord, center, streamPosition );
-			var targetResolution = GetResolutionForLodLevel( lodLevel );
-
-			if ( _chunkResolutions.TryGetValue( coord, out var currentResolution ) && currentResolution == targetResolution )
-				continue;
-
-			UpdateChunkLod( entry.Value, coord, lodLevel, targetResolution );
-		}
+		QueueLodRebuilds();
 	}
 
 	void RebuildLoadedChunks()
 	{
+		QueueLodRebuilds( force: true );
+	}
+
+	public bool TryGetStreamWorldPosition( out Vector3 position ) => TryGetStreamPosition( out position );
+
+	public bool TryGetStreamChunkCenter( out ChunkCoord center )
+	{
+		center = default;
+
 		if ( !TryGetStreamPosition( out var streamPosition ) )
-			return;
+			return false;
+
+		center = WorldToChunk( streamPosition );
+		return true;
+	}
+
+	public void CopyLoadedChunkCoords( List<ChunkCoord> coords )
+	{
+		coords.Clear();
+
+		foreach ( var coord in LoadedChunks.Keys )
+			coords.Add( coord );
+	}
+
+	public void CopyPendingChunkCoords( List<ChunkCoord> coords )
+	{
+		coords.Clear();
+
+		foreach ( var coord in _pendingChunks )
+			coords.Add( coord );
+	}
+
+	public int LoadedChunkCount => LoadedChunks.Count;
+
+	public int PendingChunkCount => _pendingChunks.Count;
+
+	public bool IsViewLoaded()
+	{
+		var worldManager = GetWorldManager();
+		if ( !worldManager.IsValid() || !worldManager.GameObject.IsValid() )
+			return true;
+
+		if ( !TryGetStreamPosition( out var streamPosition ) )
+			return false;
+
+		if ( _pendingChunks.Count > 0 )
+			return false;
 
 		var center = WorldToChunk( streamPosition );
+		var chunkSize = SafeChunkSize;
 
-		foreach ( var entry in LoadedChunks.ToArray() )
+		for ( var x = -ViewDistance; x <= ViewDistance; x++ )
 		{
-			if ( !entry.Value.IsValid() )
-				continue;
+			for ( var y = -ViewDistance; y <= ViewDistance; y++ )
+			{
+				var coord = new ChunkCoord( center.X + x, center.Y + y );
+				if ( !worldManager.ChunkIntersectsWorld( coord, chunkSize ) )
+					continue;
 
-			var terrain = entry.Value.GetComponent<TerrainChunkComponent>();
-			if ( !terrain.IsValid() )
-				continue;
-
-			var lodLevel = GetChunkLodLevel( terrain.Coord, center, streamPosition );
-			var resolution = GetResolutionForLodLevel( lodLevel );
-			UpdateChunkLod( entry.Value, terrain.Coord, lodLevel, resolution );
+				if ( !LoadedChunks.ContainsKey( coord ) )
+					return false;
+			}
 		}
+
+		return true;
+	}
+
+	public bool TryGetStreamViewForward( out Vector2 forward )
+	{
+		forward = default;
+
+		if ( !TryGetStreamViewRotation( out var rotation ) )
+			return false;
+
+		forward = new Vector2( rotation.Forward.x, rotation.Forward.y );
+		if ( forward.LengthSquared <= 0.0001f )
+			return false;
+
+		forward = forward.Normal;
+		return true;
+	}
+
+	bool IsEditMode => Game.IsEditor && !Game.IsPlaying;
+
+	bool TryGetStreamViewRotation( out Rotation rotation )
+	{
+		rotation = Rotation.Identity;
+
+		if ( IsEditMode )
+			return TryGetEditModeViewportRotation( out rotation );
+
+		if ( Camera.IsValid() )
+		{
+			rotation = Camera.WorldRotation;
+			return true;
+		}
+
+		if ( TryGetActiveCamera( out var activeCamera ) )
+		{
+			rotation = activeCamera.WorldRotation;
+			return true;
+		}
+
+		return false;
+	}
+
+	bool TryGetEditModeViewportRotation( out Rotation rotation )
+	{
+		rotation = Rotation.Identity;
+
+		if ( TryGetEditorCameraTransform( out var transform ) )
+		{
+			rotation = transform.Rotation;
+			return true;
+		}
+
+		if ( _hasCachedEditorViewport )
+		{
+			rotation = _cachedEditorViewportRotation;
+			return true;
+		}
+
+		return false;
 	}
 
 	WorldManagerSingletonComponent GetWorldManager()
@@ -564,13 +801,20 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		if ( WorldManager.IsValid() )
 			return WorldManager;
 
-		return WorldManagerSingletonComponent.Instance;
+		var instance = WorldManagerSingletonComponent.Instance;
+		if ( instance.IsValid() )
+			return instance;
+
+		return null;
 	}
 
 	GameObject GetTerrainFolder()
 	{
 		if ( _terrainFolder.IsValid() )
 			return _terrainFolder;
+
+		if ( Scene is null || !GameObject.IsValid() )
+			return null;
 
 		foreach ( var child in GameObject.Children )
 		{
@@ -583,6 +827,12 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		}
 
 		_terrainFolder = Scene.CreateObject();
+		if ( !_terrainFolder.IsValid() )
+		{
+			_terrainFolder = null;
+			return null;
+		}
+
 		_terrainFolder.Name = TerrainFolderName;
 		_terrainFolder.Flags |= GameObjectFlags.NotSaved;
 		_terrainFolder.Parent = GameObject;
@@ -592,33 +842,166 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 
 	bool TryGetStreamPosition( out Vector3 position )
 	{
+		position = WorldPosition;
+
+		if ( IsEditMode )
+		{
+			if ( _hasCachedEditorViewport )
+			{
+				position = _cachedEditorViewportPosition;
+				return true;
+			}
+
+			if ( TryGetEditorCameraTransform( out var transform ) )
+			{
+				position = transform.Position;
+				return true;
+			}
+
+			return true;
+		}
+
 		if ( Camera.IsValid() )
 		{
 			position = Camera.WorldPosition;
 			return true;
 		}
 
-		if ( Scene.Camera.IsValid() )
+		if ( TryGetActiveCamera( out var activeCamera ) )
 		{
-			position = Scene.Camera.WorldPosition;
+			position = activeCamera.WorldPosition;
 			return true;
 		}
 
-		if ( Game.IsEditor )
+		if ( TryGetPlayModeStreamPosition( out position ) )
+			return true;
+
+		return true;
+	}
+
+	bool TryGetActiveCamera( out CameraComponent camera )
+	{
+		camera = null;
+
+		var scenes = new List<Scene>();
+		if ( Game.ActiveScene.IsValid() )
+			scenes.Add( Game.ActiveScene );
+		if ( Scene is not null && Scene != Game.ActiveScene )
+			scenes.Add( Scene );
+
+		foreach ( var scene in scenes )
 		{
-			position = Gizmo.CameraTransform.Position;
+			if ( TryGetSceneCamera( scene, out camera ) )
+				return true;
+		}
+
+		return false;
+	}
+
+	static bool TryGetSceneCamera( Scene scene, out CameraComponent camera )
+	{
+		camera = null;
+		if ( scene is null )
+			return false;
+
+		try
+		{
+			var sceneCamera = scene.Camera;
+			if ( sceneCamera.IsValid() )
+			{
+				camera = sceneCamera;
+				return true;
+			}
+		}
+		catch ( Exception exception )
+		{
+			Log.Warning( $"Scene camera lookup failed: {exception.Message}" );
+		}
+
+		foreach ( var candidate in scene.GetAllComponents<CameraComponent>() )
+		{
+			if ( !candidate.IsValid() || !candidate.Enabled )
+				continue;
+
+			camera = candidate;
 			return true;
 		}
 
+		return false;
+	}
+
+	bool TryGetPlayModeStreamPosition( out Vector3 position )
+	{
 		position = WorldPosition;
+
+		if ( ClientComponent.Local.IsValid() && ClientComponent.Local.PlayerPawn.IsValid() )
+		{
+			position = ClientComponent.Local.PlayerPawn.WorldPosition;
+			return true;
+		}
+
+		if ( Scene is null )
+			return false;
+
+		foreach ( var controller in Scene.GetAllComponents<PlayerController>() )
+		{
+			if ( !controller.IsValid() || !controller.GameObject.IsValid() )
+				continue;
+
+			position = controller.GameObject.WorldPosition;
+			return true;
+		}
+
+		return false;
+	}
+
+	static bool TryGetEditorCameraTransform( out Transform transform )
+	{
+		transform = default;
+
+		if ( !Game.IsEditor || Game.IsPlaying )
+			return false;
+
+		try
+		{
+			transform = Gizmo.CameraTransform;
+			return true;
+		}
+		catch ( Exception exception )
+		{
+			Log.Warning( $"Editor viewport transform unavailable: {exception.Message}" );
+			return false;
+		}
+	}
+
+	public static bool TryGetEditorViewportPosition( out Vector3 position )
+	{
+		position = default;
+
+		if ( !TryGetEditorCameraTransform( out var transform ) )
+			return false;
+
+		position = transform.Position;
+		return true;
+	}
+
+	public static bool TryGetEditorViewportRotation( out Rotation rotation )
+	{
+		rotation = Rotation.Identity;
+
+		if ( !TryGetEditorCameraTransform( out var transform ) )
+			return false;
+
+		rotation = transform.Rotation;
 		return true;
 	}
 
 	ChunkCoord WorldToChunk( Vector3 worldPos )
 	{
+		var chunkSize = SafeChunkSize;
 		return new ChunkCoord(
-			(int)MathF.Floor( worldPos.x / ChunkSize ),
-			(int)MathF.Floor( worldPos.y / ChunkSize )
+			(int)MathF.Floor( worldPos.x / chunkSize ),
+			(int)MathF.Floor( worldPos.y / chunkSize )
 		);
 	}
 }

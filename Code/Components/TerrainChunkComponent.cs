@@ -14,6 +14,14 @@ public sealed class TerrainChunkComponent : Component
 
 	public int CurrentResolution { get; private set; }
 
+	[Property, Group( "Terrain" ), Title( "Enable Collision" )]
+	public bool EnableCollision { get; set; } = true;
+
+	[Property, Group( "Terrain" ), Title( "Collision Resolution" ), Description( "Collision mesh detail. Lower is faster and more stable on large chunks." ), Range( 4, 128 )]
+	public int CollisionResolution { get; set; } = 32;
+
+	const int MaxCollisionTriangles = 12_000;
+
 	static Material _terrainMaterial;
 
 	public void Build( int resolution )
@@ -35,11 +43,23 @@ public sealed class TerrainChunkComponent : Component
 
     private void GenerateTerrain( int resolution )
     {
+		try
+		{
+			GenerateTerrainInternal( resolution );
+		}
+		catch ( Exception exception )
+		{
+			Log.Error( $"Terrain build failed for {GameObject.Name}: {exception.Message}" );
+		}
+    }
+
+	void GenerateTerrainInternal( int resolution )
+    {
         var vertices = new List<Vertex>();
 		var indices = new List<int>();
 
 		int width = resolution + 1;
-		float step = ChunkStreamer.ChunkSize / (float)resolution;
+		float step = ChunkStreamer.EffectiveChunkSize / (float)resolution;
 		float bottomHeight = WorldManager.TerrainBottomHeight;
 		var chunkOrigin = GameObject.WorldPosition;
 		var heights = new float[width, width];
@@ -197,14 +217,165 @@ public sealed class TerrainChunkComponent : Component
 		mesh.CreateVertexBuffer<Vertex>( vertices.Count, Vertex.Layout, vertices.ToArray() );
 		mesh.CreateIndexBuffer( indices.Count, indices.ToArray() );
 		mesh.Material = GetTerrainMaterial();
+		mesh.Bounds = CalculateMeshBounds( vertices );
 
-		var model = new ModelBuilder()
-			.AddMesh( mesh )
-			.Create();
+		var modelBuilder = new ModelBuilder().AddMesh( mesh );
+		var collisionEnabled = EnableCollision && TryAddCollisionMesh(
+			modelBuilder,
+			chunkOrigin,
+			resolution );
+
+		var model = TryCreateModel( modelBuilder, mesh );
 
 		var renderer = GameObject.GetOrAddComponent<ModelRenderer>();
 		renderer.Model = model;
 		renderer.MaterialOverride = GetTerrainMaterial();
+
+		if ( collisionEnabled )
+			TryApplyTerrainCollision( model );
+		else
+			RemoveTerrainCollision();
+	}
+
+	bool TryAddCollisionMesh(
+		ModelBuilder modelBuilder,
+		Vector3 chunkOrigin,
+		int resolution )
+	{
+		try
+		{
+			var collisionResolution = GetCollisionResolution( resolution );
+			if ( !TryBuildCollisionMesh(
+				chunkOrigin,
+				collisionResolution,
+				out var collisionVertices,
+				out var collisionIndices ) )
+			{
+				return false;
+			}
+
+			modelBuilder.AddCollisionMesh( collisionVertices, collisionIndices );
+			return true;
+		}
+		catch ( Exception exception )
+		{
+			Log.Warning( $"Terrain collision mesh skipped for {GameObject.Name}: {exception.Message}" );
+			return false;
+		}
+	}
+
+	static Model TryCreateModel( ModelBuilder modelBuilder, Mesh mesh )
+	{
+		try
+		{
+			return modelBuilder.Create();
+		}
+		catch ( Exception exception )
+		{
+			Log.Warning( $"Terrain model build failed, retrying without collision: {exception.Message}" );
+			return new ModelBuilder().AddMesh( mesh ).Create();
+		}
+	}
+
+	int GetCollisionResolution( int visualResolution )
+	{
+		var target = Math.Clamp( CollisionResolution, 4, visualResolution );
+		var triangleBudget = MaxCollisionTriangles;
+		while ( target > 4 && target * target * 2 > triangleBudget )
+			target >>= 1;
+
+		return target;
+	}
+
+	bool TryBuildCollisionMesh(
+		Vector3 chunkOrigin,
+		int collisionResolution,
+		out List<Vector3> collisionVertices,
+		out List<int> collisionIndices )
+	{
+		collisionVertices = new List<Vector3>();
+		collisionIndices = new List<int>();
+
+		if ( collisionResolution <= 0 )
+			return false;
+
+		var collisionStep = ChunkStreamer.EffectiveChunkSize / (float)collisionResolution;
+		var width = collisionResolution + 1;
+
+		for ( var y = 0; y <= collisionResolution; y++ )
+		{
+			for ( var x = 0; x <= collisionResolution; x++ )
+			{
+				var localX = x * collisionStep;
+				var localY = y * collisionStep;
+				var worldX = chunkOrigin.x + localX;
+				var worldY = chunkOrigin.y + localY;
+				var height = GetHeight( worldX, worldY );
+				collisionVertices.Add( new Vector3( localX, localY, height ) );
+			}
+		}
+
+		for ( var y = 0; y < collisionResolution; y++ )
+		{
+			for ( var x = 0; x < collisionResolution; x++ )
+			{
+				var i = y * width + x;
+
+				collisionIndices.Add( i );
+				collisionIndices.Add( i + 1 );
+				collisionIndices.Add( i + width );
+
+				collisionIndices.Add( i + 1 );
+				collisionIndices.Add( i + width + 1 );
+				collisionIndices.Add( i + width );
+			}
+		}
+
+		return collisionVertices.Count > 0 && collisionIndices.Count > 0;
+	}
+
+	void TryApplyTerrainCollision( Model model )
+	{
+		try
+		{
+			GameObject.Tags.Set( "world", true );
+
+			var collider = GameObject.GetOrAddComponent<ModelCollider>();
+			collider.Static = true;
+			collider.Model = model;
+		}
+		catch ( Exception exception )
+		{
+			Log.Warning( $"Terrain collision failed for {GameObject.Name}: {exception.Message}" );
+			RemoveTerrainCollision();
+		}
+	}
+
+	void RemoveTerrainCollision()
+	{
+		var collider = GameObject.GetComponent<ModelCollider>();
+		if ( !collider.IsValid() )
+			return;
+
+		collider.Destroy();
+	}
+
+	static BBox CalculateMeshBounds( List<Vertex> vertices )
+	{
+		if ( vertices.Count == 0 )
+			return new BBox( Vector3.Zero, Vector3.Zero );
+
+		var min = vertices[0].Position;
+		var max = vertices[0].Position;
+
+		for ( var i = 1; i < vertices.Count; i++ )
+		{
+			var position = vertices[i].Position;
+			min = min.ComponentMin( position );
+			max = max.ComponentMax( position );
+		}
+
+		return new BBox( min, max );
 	}
 
 	static Material GetTerrainMaterial()
