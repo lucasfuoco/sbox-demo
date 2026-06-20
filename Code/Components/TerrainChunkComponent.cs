@@ -79,8 +79,11 @@ public sealed class TerrainChunkComponent : Component
 		{
 			for ( int x = 0; x <= resolution; x++ )
 			{
+				float worldX = chunkOrigin.x + x * step;
+				float worldY = chunkOrigin.y + y * step;
 				var slope = SampleSlope( heights, x, y, resolution, step );
-				colors[x, y] = TerrainBiome.GetColorFromHeight( WorldManager, heights[x, y], slope ).ToColor32();
+				var isWater = WorldManager.IsWaterAt( worldX, worldY );
+				colors[x, y] = TerrainBiome.GetColorFromHeight( WorldManager, heights[x, y], slope, isWater ).ToColor32();
 			}
 		}
 

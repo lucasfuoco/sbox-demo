@@ -7,8 +7,12 @@ public static class TerrainBiome
 	public static Color GetColorFromHeight(
 		WorldManagerSingletonComponent worldManager,
 		float height,
-		float slope )
+		float slope,
+		bool isWater = false )
 	{
+		if ( isWater )
+			return worldManager.WaterColor;
+
 		var sample = GetBiomeSampleFromHeight( worldManager, height );
 
 		if ( InRange( sample, worldManager.WaterMinThreshold, worldManager.WaterMaxThreshold ) )
@@ -41,8 +45,12 @@ public static class TerrainBiome
 	public static Color GetSoftPreviewColorFromHeight(
 		WorldManagerSingletonComponent worldManager,
 		float height,
-		float slope )
+		float slope,
+		bool isWater = false )
 	{
+		if ( isWater )
+			return worldManager.WaterColor;
+
 		var sample = GetBiomeSampleFromHeight( worldManager, height );
 		const float soft = 0.12f;
 

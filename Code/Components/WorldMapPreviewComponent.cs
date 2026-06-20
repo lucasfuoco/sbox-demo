@@ -62,8 +62,8 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 	[Property, Group( "Map" ), Title( "Show View Distance" ), Description( "Draw the chunk streamer's view-distance bounds around the viewer." )]
 	public bool ShowViewDistance { get; set; } = true;
 
-	[Property, Group( "Map" ), Title( "Show Stream Overlay Legend" )]
-	public bool ShowStreamLegend { get; set; } = true;
+	[Property, Group( "Map" ), Title( "Show Map Overlay Legend" )]
+	public bool ShowMapLegend { get; set; } = true;
 
 	[Property, Group( "Map" ), Title( "Display Cells" ), Description( "Screen cells used while the map is building. The finished map uses one texture draw." ), Range( 32, 256 )]
 	public int DisplayCells { get; set; } = 96;
@@ -205,10 +205,10 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 				}
 			}
 
-			DrawStreamOverlay( rect );
+			DrawMapOverlay( rect );
 
-			if ( ShowStreamLegend )
-				DrawStreamLegend( rect );
+			if ( ShowMapLegend )
+				DrawMapLegend( rect );
 
 			if ( ShowCameraMarker && _cameraOnMap )
 				DrawCameraMarker( rect );
@@ -316,10 +316,12 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 		{
 			for ( int x = 0; x < _rebuildSize; x++ )
 			{
+				var worldX = _rebuildWorldMin.x + x * _rebuildStepX;
+				var worldY = _rebuildWorldMin.y + y * _rebuildStepY;
 				var slope = ShouldUseSlopeColoring()
 					? SampleSlope( _rebuildHeights, x, y, _rebuildSize, _rebuildStepX, _rebuildStepY )
 					: 0f;
-				var color = GetPreviewColor( _rebuildHeights[x, y], slope );
+				var color = GetPreviewColor( _rebuildHeights[x, y], slope, worldX, worldY );
 				SetPixel( _rebuildData, x, y, _rebuildSize, color );
 			}
 		}
@@ -655,15 +657,17 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 			|| MathF.Min( _rebuildStepX, _rebuildStepY ) > 250f;
 	}
 
-	Color GetPreviewColor( float height, float slope )
+	Color GetPreviewColor( float height, float slope, float worldX, float worldY )
 	{
 		if ( DisplayMode == WorldMapPreviewDisplayMode.Height )
 			return GetHeightPreviewColor( height );
 
-		if ( UseSoftBiomePreview() )
-			return TerrainBiome.GetSoftPreviewColorFromHeight( WorldManager, height, slope );
+		var isWater = WorldManager.IsWaterAt( worldX, worldY );
 
-		return TerrainBiome.GetColorFromHeight( WorldManager, height, slope );
+		if ( UseSoftBiomePreview() )
+			return TerrainBiome.GetSoftPreviewColorFromHeight( WorldManager, height, slope, isWater );
+
+		return TerrainBiome.GetColorFromHeight( WorldManager, height, slope, isWater );
 	}
 
 	Color GetHeightPreviewColor( float height )
@@ -714,7 +718,7 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 			&& _cameraMapUv.y <= 1f;
 	}
 
-	void DrawStreamOverlay( Rect rect )
+	void DrawMapOverlay( Rect rect )
 	{
 		if ( !TryGetMapWorldBounds( out var worldMin, out var worldSize ) )
 			return;
@@ -940,7 +944,7 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 			panelRect.Top + mapUv.y * panelRect.Height );
 	}
 
-	void DrawStreamLegend( Rect rect )
+	void DrawMapLegend( Rect rect )
 	{
 		ResolveChunkStreamer();
 

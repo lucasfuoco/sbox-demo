@@ -75,6 +75,8 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 	bool _refreshNoisePending;
 	int _lastSeed = int.MinValue;
 	int _lastNoiseSettingsVersion = -1;
+	int _lastTerrainSettingsVersion = -1;
+	bool _fullReloadPending;
 	bool _needsInitialTerrainRebuild = true;
 	int _lastChunkSize;
 	int _lastViewDistance;
@@ -209,10 +211,13 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		ScheduleTerrainRebuild();
 	}
 
-	public void ScheduleTerrainRebuild( bool refreshNoise = false, float delay = 0.5f )
+	public void ScheduleTerrainRebuild( bool refreshNoise = false, float delay = 0.5f, bool fullReload = false )
 	{
 		if ( refreshNoise )
 			_refreshNoisePending = true;
+
+		if ( fullReload )
+			_fullReloadPending = true;
 
 		if ( !Game.IsEditor )
 		{
@@ -239,6 +244,13 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		{
 			worldManager.RefreshNoiseImmediate();
 			_refreshNoisePending = false;
+		}
+
+		if ( _fullReloadPending )
+		{
+			_fullReloadPending = false;
+			RequestLayoutRebuild();
+			return;
 		}
 
 		ApplySettingChanges( force: true );
@@ -292,11 +304,12 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 			|| LodRebuildsPerFrame != _lastLodRebuildsPerFrame;
 		var noiseChanged = worldManager.WorldSeed != _lastSeed
 			|| worldManager.NoiseSettingsVersion != _lastNoiseSettingsVersion;
+		var terrainSettingsChanged = worldManager.TerrainSettingsVersion != _lastTerrainSettingsVersion;
 		var boundsChanged = worldManager.UseWorldBounds != _lastUseWorldBounds
 			|| worldManager.WorldSize != _lastWorldSize
 			|| worldMin != new Vector2( _lastWorldOrigin.x, _lastWorldOrigin.y );
 
-		if ( !force && !layoutChanged && !meshChanged && !lodChanged && !noiseChanged && !boundsChanged )
+		if ( !force && !layoutChanged && !meshChanged && !lodChanged && !noiseChanged && !terrainSettingsChanged && !boundsChanged )
 			return false;
 
 		if ( chunkGridChanged || boundsChanged )
@@ -305,7 +318,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		SyncTrackedSettings();
 		UpdateStreamedChunks();
 
-		if ( meshChanged || lodChanged || noiseChanged || chunkGridChanged || boundsChanged )
+		if ( meshChanged || lodChanged || noiseChanged || terrainSettingsChanged || chunkGridChanged || boundsChanged )
 			QueueLodRebuilds( force: true );
 
 		return true;
@@ -318,6 +331,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		{
 			_lastSeed = worldManager.WorldSeed;
 			_lastNoiseSettingsVersion = worldManager.NoiseSettingsVersion;
+			_lastTerrainSettingsVersion = worldManager.TerrainSettingsVersion;
 			_lastUseWorldBounds = worldManager.UseWorldBounds;
 			_lastWorldSize = worldManager.WorldSize;
 			_lastWorldOrigin = worldManager.GameObject.WorldPosition;

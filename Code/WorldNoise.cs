@@ -4,7 +4,13 @@ public sealed class WorldNoise
 {
 	public FastNoiseLite HeightNoise { get; }
 
-	public WorldNoise( int seed, float heightFrequency, int heightOctaves, float lacunarity, float gain, float weightedStrength )
+	public WorldNoise(
+		int seed,
+		float heightFrequency,
+		int heightOctaves,
+		float lacunarity,
+		float gain,
+		float weightedStrength )
 	{
 		HeightNoise = new FastNoiseLite();
 		HeightNoise.SetSeed( seed );
