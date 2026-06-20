@@ -70,7 +70,7 @@
           "GrassColor": "0.3,0.65,0.28,1",
           "GrassMaxThreshold": 0.7,
           "GrassMinThreshold": 0.05,
-          "HeightNoiseAmplitude": 70000,
+          "HeightNoiseAmplitude": 30000,
           "HeightNoiseFeaturesAcrossWorld": 2,
           "HeightNoiseFeatureWidth": 500000,
           "HeightNoiseFrequency": 2E-06,
@@ -100,7 +100,7 @@
           "WaterLevel": -0.08,
           "WaterMaxThreshold": -0.08,
           "WaterMinThreshold": -1,
-          "WorldSeed": 3002,
+          "WorldSeed": 12358,
           "WorldSize": "1000000,1000000"
         },
         {
@@ -418,7 +418,6 @@
               "__guid": "bdbe53dd-ba6f-46d6-ac6b-76b788d8d2d1",
               "__enabled": true,
               "Flags": 0,
-              "ChunkStreamer": null,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -592,7 +591,7 @@
         "45d2f9c1-e34d-4756-807d-b5197dfc0e92": "95ac1abf-f61b-407b-934d-8ceef9ef999c",
         "90ce4b2e-e92a-4dc3-a6e7-a6e854ae664a": "0cba5b10-6a13-40e9-ade2-c0b237b33712",
         "328cbb32-2ab1-44c8-973c-c6415ad5de9c": "fe68377a-67e9-4617-8445-236a2055623f",
-        "d67e0007-970d-477b-938f-3a580b489a5f": "33e987be-384f-40ab-8105-5fe1074ae256"
+        "a3f8c2e1-9b4d-4a7f-8e6c-1d2f3a4b5c6d": "4591f373-6f19-4235-892d-0096299ddc49"
       }
     },
     {

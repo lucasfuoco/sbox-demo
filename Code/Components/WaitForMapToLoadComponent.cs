@@ -12,9 +12,6 @@ public sealed class WaitForMapToLoadComponent : Component,
 {
 	[RequireComponent] public StateComponent State { get; private set; }
 
-	[Property, Title( "Chunk Streamer" ), Description( "Optional chunk streamer to wait on. When empty, all enabled streamers in the scene must finish loading." )]
-	public ChunkStreamerComponent ChunkStreamer { get; set; }
-
 	[Late]
 	void IGameEventHandler<UpdateStateEvent>.OnGameEvent( UpdateStateEvent eventArgs )
 	{
@@ -33,13 +30,14 @@ public sealed class WaitForMapToLoadComponent : Component,
 		if ( Scene is null )
 			return true;
 
-		if ( ChunkStreamer.IsValid() )
-			return ChunkStreamer.IsViewLoaded();
+		var hasStreamer = false;
 
 		foreach ( var streamer in Scene.GetAllComponents<ChunkStreamerComponent>() )
 		{
 			if ( !streamer.IsValid() || !streamer.Enabled )
 				continue;
+
+			hasStreamer = true;
 
 			if ( !streamer.IsViewLoaded() )
 				return false;
