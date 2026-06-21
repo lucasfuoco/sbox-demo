@@ -121,6 +121,18 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 	[Property, Group( "Biomes" ), Title( "Mountain Max Threshold" ), Range( -1f, 1f ), Change( nameof( OnBiomeSettingsChanged ) )]
 	public float MountainMaxThreshold { get; set; } = 1f;
 
+	[Property, Group( "Hydrology" ), Title( "Enable Hydrology" ), Description( "Build a coarse ocean water grid for terrain tinting." ), Change( nameof( OnHydrologySettingsChanged ) )]
+	public bool EnableHydrology { get; set; } = true;
+
+	[Property, Group( "Hydrology" ), Title( "Cell Size" ), Description( "World units per hydrology grid cell." ), Range( 32, 512 ), Change( nameof( OnHydrologySettingsChanged ) )]
+	public float HydrologyCellSize { get; set; } = 128f;
+
+	[Property, Group( "Hydrology" ), Title( "Ocean Falloff Threshold" ), Description( "Land falloff at or below this is treated as ocean." ), Range( 0f, 1f ), Change( nameof( OnHydrologySettingsChanged ) )]
+	public float OceanFalloffThreshold { get; set; } = 0.05f;
+
+	[Property, Group( "Hydrology" ), Title( "Ocean Height Padding" ), Description( "Raw heights within this distance of water level count as ocean." ), Range( 0f, 128f ), Change( nameof( OnHydrologySettingsChanged ) )]
+	public float OceanHeightPadding { get; set; } = 2f;
+
 	public int NoiseSettingsVersion { get; private set; }
 
 	public int TerrainSettingsVersion { get; private set; }
@@ -132,6 +144,10 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 		Scene.GetAllComponents<WorldPingComponent>();
 
 	public WorldNoise Noise { get; private set; }
+
+	public WorldHydrology Hydrology { get; private set; }
+
+	bool _hydrologyDirty = true;
 
 	protected override void OnAwake()
 	{
@@ -188,6 +204,12 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 		ScheduleTerrainRebuild();
 	}
 
+	void OnHydrologySettingsChanged()
+	{
+		RefreshNoiseImmediate();
+		ScheduleTerrainRebuild( refreshNoise: true );
+	}
+
 	void OnEditorRebuildDelayChanged() => ScheduleTerrainRebuild();
 
 	void BumpTerrainSettings() => TerrainSettingsVersion++;
@@ -227,8 +249,29 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 			HeightNoiseGain,
 			HeightNoiseWeightedStrength );
 		NoiseSettingsVersion++;
+
+		Hydrology = null;
+		_hydrologyDirty = true;
 		TerrainSettingsVersion++;
 	}
+
+	void EnsureHydrology()
+	{
+		if ( !_hydrologyDirty && Hydrology is not null )
+			return;
+
+		if ( !EnableHydrology || !UseWorldBounds || Noise is null )
+		{
+			Hydrology = null;
+			_hydrologyDirty = false;
+			return;
+		}
+
+		Hydrology = WorldHydrology.Build( this );
+		_hydrologyDirty = false;
+	}
+
+	public void EnsureHydrologyBuilt() => EnsureHydrology();
 
 	public void ScheduleTerrainRebuild( bool refreshNoise = false, float? delay = null )
 	{
@@ -239,7 +282,7 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 			if ( !streamer.IsValid() )
 				continue;
 
-			streamer.ScheduleTerrainRebuild( refreshNoise, rebuildDelay );
+			streamer.ScheduleTerrainRebuild( refreshNoise, rebuildDelay, fullReload: true );
 		}
 	}
 
@@ -270,7 +313,9 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 		}
 	}
 
-	public float GetHeight( float worldX, float worldY )
+	public float GetHeight( float worldX, float worldY ) => GetRawNoiseHeight( worldX, worldY );
+
+	public float GetRawNoiseHeight( float worldX, float worldY )
 	{
 		if ( Noise is null )
 			return WaterLevel;
@@ -289,14 +334,40 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 		return WaterLevel + Noise.GetHeight( worldX, worldY, HeightNoiseAmplitude, falloff );
 	}
 
+	public float GetBiomeSampleFromHeight( float height )
+	{
+		if ( HeightNoiseAmplitude <= 0.0001f )
+			return -1f;
+
+		var normalized = (height - WaterLevel) / HeightNoiseAmplitude;
+		return MathX.Clamp( normalized * 2f - 1f, -1f, 1f );
+	}
+
+	public bool IsWaterAt( float worldX, float worldY )
+	{
+		EnsureHydrology();
+
+		if ( Hydrology is not null && Hydrology.IsBuilt )
+			return Hydrology.IsWater( worldX, worldY );
+
+		return GetRawNoiseHeight( worldX, worldY ) <= WaterLevel + OceanHeightPadding;
+	}
+
+	public bool IsWaterCell( int gridX, int gridY ) => Hydrology?.IsWaterCell( gridX, gridY ) ?? false;
+
+	public WaterCellFlags GetWaterFlagsAt( float worldX, float worldY )
+	{
+		EnsureHydrology();
+		return Hydrology?.GetWaterFlags( worldX, worldY ) ?? WaterCellFlags.None;
+	}
+
 	public float GetBiomeSample( float worldX, float worldY )
 	{
 		if ( HeightNoiseAmplitude <= 0.0001f )
 			return -1f;
 
 		var height = GetHeight( worldX, worldY );
-		var normalized = (height - WaterLevel) / HeightNoiseAmplitude;
-		return MathX.Clamp( normalized * 2f - 1f, -1f, 1f );
+		return GetBiomeSampleFromHeight( height );
 	}
 
 	public Vector2 WorldMin => new( GameObject.WorldPosition.x, GameObject.WorldPosition.y );
@@ -321,14 +392,14 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 			&& chunkMinY < worldMax.y;
 	}
 
-	bool TryGetWorldUv( float worldX, float worldY, out float u, out float v )
+	public bool TryGetWorldUv( float worldX, float worldY, out float u, out float v )
 	{
 		u = (worldX - WorldMin.x) / WorldSize.x;
 		v = (worldY - WorldMin.y) / WorldSize.y;
 		return u >= 0f && u <= 1f && v >= 0f && v <= 1f;
 	}
 
-	float GetLandFalloff( float u, float v )
+	public float GetLandFalloff( float u, float v )
 	{
 		var distToLand = UseRadialFalloff
 			? GetRadialFalloffDistance( u, v )

@@ -61,6 +61,7 @@
           "__enabled": true,
           "Flags": 0,
           "EditorRebuildDelay": 0.5,
+          "EnableHydrology": true,
           "FalloffCenter": "0.5,0.5",
           "FalloffInnerMargin": 0.114426225,
           "FalloffMax": 1,
@@ -69,19 +70,22 @@
           "FalloffPower": 1,
           "GrassColor": "0.3,0.65,0.28,1",
           "GrassMaxThreshold": 0.7,
-          "GrassMinThreshold": 0.05,
-          "HeightNoiseAmplitude": 30000,
+          "GrassMinThreshold": 0.15,
+          "HeightNoiseAmplitude": 45000,
           "HeightNoiseFeaturesAcrossWorld": 2,
           "HeightNoiseFeatureWidth": 500000,
           "HeightNoiseFrequency": 2E-06,
           "HeightNoiseFrequencyMicro": 2,
           "HeightNoiseGain": 0.55,
-          "HeightNoiseLacunarity": 1.7,
+          "HeightNoiseLacunarity": 1.8,
           "HeightNoiseOctaves": 15,
           "HeightNoiseWeightedStrength": 0,
+          "HydrologyCellSize": 509.08502,
           "MountainColor": "0.55,0.55,0.58,1",
           "MountainMaxThreshold": 1,
           "MountainMinThreshold": 0.7,
+          "OceanFalloffThreshold": 0,
+          "OceanHeightPadding": 0.25910932,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
@@ -89,8 +93,8 @@
           "OnComponentStart": null,
           "OnComponentUpdate": null,
           "SandColor": "0.91,0.84,0.67,1",
-          "SandMaxThreshold": 0.05,
-          "SandMinThreshold": -0.08,
+          "SandMaxThreshold": 0.1,
+          "SandMinThreshold": -0.09,
           "SharpSlopeThreshold": 0.9,
           "TerrainBottomHeight": -300,
           "UseFalloff": true,
@@ -171,7 +175,7 @@
           "ShowCameraMarker": true,
           "ShowLoadedChunks": true,
           "ShowPendingChunks": true,
-          "ShowStreamLegend": true,
+          "ShowMapLegend": true,
           "ShowViewDirection": true,
           "ShowViewDistance": true,
           "ViewDirectionArrowChunks": 1.5,
@@ -270,7 +274,11 @@
           {
             "Id": {
               "Type": "GameObject",
+<<<<<<< HEAD
               "IdValue": "467f91fa-5df0-4172-8708-9b219b07870f"
+=======
+              "IdValue": "85909c01-8e65-47f9-a8c3-bdd058460662"
+>>>>>>> 68be94feb7a08e6e993921164e8530512b52812e
             },
             "Parent": {
               "Type": "GameObject",
@@ -283,7 +291,11 @@
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
+<<<<<<< HEAD
               "__guid": "467f91fa-5df0-4172-8708-9b219b07870f",
+=======
+              "__guid": "85909c01-8e65-47f9-a8c3-bdd058460662",
+>>>>>>> 68be94feb7a08e6e993921164e8530512b52812e
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -305,7 +317,11 @@
           {
             "Id": {
               "Type": "GameObject",
+<<<<<<< HEAD
               "IdValue": "e1faef39-aa92-48e2-be59-8d7b4150e249"
+=======
+              "IdValue": "e12d34d8-6950-4b89-8141-0610216c5d11"
+>>>>>>> 68be94feb7a08e6e993921164e8530512b52812e
             },
             "Parent": {
               "Type": "GameObject",
@@ -313,12 +329,20 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
+<<<<<<< HEAD
               "IdValue": "467f91fa-5df0-4172-8708-9b219b07870f"
+=======
+              "IdValue": "85909c01-8e65-47f9-a8c3-bdd058460662"
+>>>>>>> 68be94feb7a08e6e993921164e8530512b52812e
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
+<<<<<<< HEAD
               "__guid": "e1faef39-aa92-48e2-be59-8d7b4150e249",
+=======
+              "__guid": "e12d34d8-6950-4b89-8141-0610216c5d11",
+>>>>>>> 68be94feb7a08e6e993921164e8530512b52812e
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -340,7 +364,11 @@
           {
             "Id": {
               "Type": "GameObject",
+<<<<<<< HEAD
               "IdValue": "b4ac2d82-f1c8-4750-b3f9-29c9d146a211"
+=======
+              "IdValue": "17cebc2c-71b1-4fe2-a99c-30fc713d7b5d"
+>>>>>>> 68be94feb7a08e6e993921164e8530512b52812e
             },
             "Parent": {
               "Type": "GameObject",
@@ -348,12 +376,20 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
+<<<<<<< HEAD
               "IdValue": "e1faef39-aa92-48e2-be59-8d7b4150e249"
+=======
+              "IdValue": "e12d34d8-6950-4b89-8141-0610216c5d11"
+>>>>>>> 68be94feb7a08e6e993921164e8530512b52812e
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
+<<<<<<< HEAD
               "__guid": "b4ac2d82-f1c8-4750-b3f9-29c9d146a211",
+=======
+              "__guid": "17cebc2c-71b1-4fe2-a99c-30fc713d7b5d",
+>>>>>>> 68be94feb7a08e6e993921164e8530512b52812e
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -375,7 +411,11 @@
           {
             "Id": {
               "Type": "GameObject",
+<<<<<<< HEAD
               "IdValue": "32feb227-fd0b-4c6e-bd97-423d79e8e3cb"
+=======
+              "IdValue": "9ad9dfa1-598f-4d31-a9a5-aa4c0f2ae7a0"
+>>>>>>> 68be94feb7a08e6e993921164e8530512b52812e
             },
             "Parent": {
               "Type": "GameObject",
@@ -383,12 +423,20 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
+<<<<<<< HEAD
               "IdValue": "b4ac2d82-f1c8-4750-b3f9-29c9d146a211"
+=======
+              "IdValue": "17cebc2c-71b1-4fe2-a99c-30fc713d7b5d"
+>>>>>>> 68be94feb7a08e6e993921164e8530512b52812e
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
+<<<<<<< HEAD
               "__guid": "32feb227-fd0b-4c6e-bd97-423d79e8e3cb",
+=======
+              "__guid": "9ad9dfa1-598f-4d31-a9a5-aa4c0f2ae7a0",
+>>>>>>> 68be94feb7a08e6e993921164e8530512b52812e
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -412,13 +460,21 @@
           {
             "Id": {
               "Type": "GameObject",
+<<<<<<< HEAD
               "IdValue": "b59e4069-1016-4e08-b767-c89d577c655d"
+=======
+              "IdValue": "75736754-820c-4e6a-bbf9-1e29f8628cf0"
+>>>>>>> 68be94feb7a08e6e993921164e8530512b52812e
             }
           },
           {
             "Id": {
               "Type": "GameObject",
+<<<<<<< HEAD
               "IdValue": "7ce86cf4-ea9a-4ad4-bd86-60807563a98f"
+=======
+              "IdValue": "b9759097-e8a4-480f-9770-86d3af211f68"
+>>>>>>> 68be94feb7a08e6e993921164e8530512b52812e
             }
           }
         ],
@@ -454,8 +510,13 @@
         "f5bdcac0-db38-487e-ace4-74308a41ebea": "8322f753-7c48-4e32-93ac-0ac73a01835e",
         "362b2250-3f3d-4558-8a94-64b31582aadc": "da0ca1af-782f-4396-b8f6-47cd8f225b39",
         "652502f1-acab-432b-8cea-478792944a6a": "53e6730f-1178-4c84-a6a5-3d239b499440",
+<<<<<<< HEAD
         "7ce86cf4-ea9a-4ad4-bd86-60807563a98f": "b726c5c6-eefc-403e-a1ff-d30584d3cb63",
         "b59e4069-1016-4e08-b767-c89d577c655d": "f8a72414-4807-474e-b039-c3d544e55ab4",
+=======
+        "b9759097-e8a4-480f-9770-86d3af211f68": "620a6c63-49b1-405c-a18a-2108e34174a5",
+        "75736754-820c-4e6a-bbf9-1e29f8628cf0": "aff27847-7cc2-41b2-bf24-d18eff922ab1",
+>>>>>>> 68be94feb7a08e6e993921164e8530512b52812e
         "3951a691-bb25-49f8-9a58-e276f08222cf": "57b49b61-70a7-475a-af79-a002023744c1",
         "b4ca6d36-f647-49b3-9151-8ef4c63aeddd": "edb40f8e-ef26-46b7-b746-d760671f306c",
         "b068270c-bfc9-4fab-924e-602c905a2a34": "b0ba42c7-3247-487b-941a-1d8d9b8df06b",
@@ -772,7 +833,11 @@
       },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
+<<<<<<< HEAD
           "$blob": "62b6dacf-f9eb-4d63-aca5-e7a1b2a08ffc"
+=======
+          "$blob": "1c35d0f4-5a7f-450f-877d-099ecd14e500"
+>>>>>>> 68be94feb7a08e6e993921164e8530512b52812e
         }
       }
     }
