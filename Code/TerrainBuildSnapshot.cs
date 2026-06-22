@@ -37,6 +37,9 @@ public readonly struct TerrainBuildSnapshot
 	public float MountainMaxThreshold { get; init; }
 	public Vector3 ChunkOrigin { get; init; }
 	public int ChunkSize { get; init; }
+	public float TextureTileSize { get; init; }
+	public float MacroVariation { get; init; }
+	public float MacroVariationScale { get; init; }
 
 	public static TerrainBuildSnapshot FromWorldManager(
 		WorldManagerSingletonComponent worldManager,
@@ -80,7 +83,10 @@ public readonly struct TerrainBuildSnapshot
 			MountainMinThreshold = worldManager.MountainMinThreshold,
 			MountainMaxThreshold = worldManager.MountainMaxThreshold,
 			ChunkOrigin = chunkOrigin,
-			ChunkSize = Math.Max( chunkSize, 1 )
+			ChunkSize = Math.Max( chunkSize, 1 ),
+			TextureTileSize = MathF.Max( worldManager.TerrainTextureTileSize, 1f ),
+			MacroVariation = worldManager.TerrainMacroVariation,
+			MacroVariationScale = MathF.Max( worldManager.TerrainMacroVariationScale, 1f )
 		};
 	}
 
@@ -100,42 +106,39 @@ public readonly struct TerrainBuildSnapshot
 		return WaterLevel + Noise.GetHeight( worldX, worldY, HeightNoiseAmplitude, falloff );
 	}
 
-	public Color32 SampleColor( float height, float slope )
+	public (Color32 Blend, Color32 Tint) SampleBlendPaint( float worldX, float worldY, float height, float slope )
 	{
 		if ( HeightNoiseAmplitude <= 0.0001f )
-			return GrassColor.ToColor32();
+			return (new Color( 1f, 0f, 0f, 1f ).ToColor32(), Color.White.ToColor32());
 
 		var normalized = (height - WaterLevel) / HeightNoiseAmplitude;
 		var sample = MathX.Clamp( normalized * 2f - 1f, -1f, 1f );
 
-		if ( InBiomeRange( sample, WaterMinThreshold, WaterMaxThreshold ) )
-			return WaterColor.ToColor32();
+		var paint = TerrainBiome.GetBlendPaint(
+			sample,
+			slope,
+			SharpSlopeThreshold,
+			WaterMinThreshold,
+			WaterMaxThreshold,
+			SandMinThreshold,
+			SandMaxThreshold,
+			GrassMinThreshold,
+			GrassMaxThreshold,
+			MountainMinThreshold,
+			MountainMaxThreshold,
+			WaterColor );
 
-		if ( slope >= SharpSlopeThreshold )
-			return MountainColor.ToColor32();
+		if ( MacroVariation <= 0.0001f )
+			return paint;
 
-		if ( InBiomeRange( sample, SandMinThreshold, SandMaxThreshold ) )
-			return SandColor.ToColor32();
-
-		if ( InBiomeRange( sample, GrassMinThreshold, GrassMaxThreshold ) )
-			return GrassColor.ToColor32();
-
-		if ( InBiomeRange( sample, MountainMinThreshold, MountainMaxThreshold ) )
-			return MountainColor.ToColor32();
-
-		return GrassColor.ToColor32();
+		return (
+			paint.Blend,
+			TerrainBiome.ApplyMacroTint( paint.Tint, worldX, worldY, MacroVariationScale, MacroVariation ) );
 	}
 
-	public Color32 SampleSideColor()
+	public (Color32 Blend, Color32 Tint) SampleSideBlendPaint()
 	{
-		return TerrainBiome.GetSideColor( MountainColor.ToColor32() );
-	}
-
-	static bool InBiomeRange( float sample, float min, float max )
-	{
-		var low = MathF.Min( min, max );
-		var high = MathF.Max( min, max );
-		return sample >= low && sample <= high;
+		return TerrainBiome.GetSideBlendPaint();
 	}
 
 	bool TryGetWorldUv( float worldX, float worldY, out float u, out float v )

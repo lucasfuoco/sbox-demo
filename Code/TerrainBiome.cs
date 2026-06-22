@@ -88,6 +88,98 @@ public static class TerrainBiome
 		return (color * 0.65f).WithAlpha( 1f ).ToColor32();
 	}
 
+	public static (Color32 Blend, Color32 Tint) GetBlendPaint(
+		float sample,
+		float slope,
+		float sharpSlopeThreshold,
+		float waterMin,
+		float waterMax,
+		float sandMin,
+		float sandMax,
+		float grassMin,
+		float grassMax,
+		float mountainMin,
+		float mountainMax,
+		Color waterColor,
+		float soft = 0.12f )
+	{
+		var waterWeight = WeightInRange( sample, waterMin, waterMax, soft );
+		var sandWeight = WeightInRange( sample, sandMin, sandMax, soft );
+		var grassWeight = WeightInRange( sample, grassMin, grassMax, soft );
+		var rockWeight = WeightInRange( sample, mountainMin, mountainMax, soft );
+
+		if ( slope >= sharpSlopeThreshold )
+		{
+			var slopeBlend = MathX.Clamp( (slope - sharpSlopeThreshold) / sharpSlopeThreshold, 0f, 1f );
+			rockWeight = MathF.Max( rockWeight, slopeBlend );
+			grassWeight *= 1f - slopeBlend;
+			sandWeight *= 1f - slopeBlend * 0.5f;
+		}
+		else if ( slope >= sharpSlopeThreshold * 0.5f )
+		{
+			var slopeBlend = MathX.Clamp(
+				(slope - sharpSlopeThreshold * 0.5f) / (sharpSlopeThreshold * 0.5f),
+				0f,
+				1f ) * 0.5f;
+			rockWeight = MathF.Max( rockWeight, slopeBlend );
+			grassWeight *= 1f - slopeBlend;
+		}
+
+		var landTotal = grassWeight + sandWeight + rockWeight;
+		if ( landTotal <= 0.0001f )
+		{
+			grassWeight = 1f;
+			landTotal = 1f;
+		}
+
+		grassWeight /= landTotal;
+		sandWeight /= landTotal;
+		rockWeight /= landTotal;
+
+		var blend = new Color(
+			MathX.Clamp( grassWeight, 0f, 1f ),
+			MathX.Clamp( sandWeight, 0f, 1f ),
+			MathX.Clamp( rockWeight, 0f, 1f ),
+			1f );
+
+		var tint = Color.White;
+		if ( waterWeight > 0.01f )
+			tint = Color.Lerp( Color.White, waterColor, MathX.Clamp( waterWeight, 0f, 1f ) );
+
+		return (blend.ToColor32(), tint.ToColor32());
+	}
+
+	public static (Color32 Blend, Color32 Tint) GetSideBlendPaint()
+	{
+		return (
+			new Color( 0.05f, 0.05f, 0.9f, 1f ).ToColor32(),
+			new Color( 0.65f, 0.65f, 0.65f, 1f ).ToColor32() );
+	}
+
+	public static Color32 ApplyMacroTint( Color32 tint, float worldX, float worldY, float variationScale, float strength )
+	{
+		var color = tint.ToColor();
+		var macro = GetMacroTintFactor( worldX, worldY, variationScale, strength );
+		return (color * macro).WithAlpha( color.a ).ToColor32();
+	}
+
+	static Color GetMacroTintFactor( float worldX, float worldY, float variationScale, float strength )
+	{
+		var scale = 1f / MathF.Max( variationScale, 1f );
+		var patch = Hash01( worldX * scale, worldY * scale );
+		var detail = Hash01( worldX * scale * 2.17f + 17.3f, worldY * scale * 1.91f - 9.7f );
+		var combined = patch * 0.65f + detail * 0.35f;
+		var offset = (combined - 0.5f) * 2f * strength;
+		var factor = 1f + offset;
+		return new Color( factor, factor, factor );
+	}
+
+	static float Hash01( float x, float y )
+	{
+		var value = MathF.Sin( x * 12.9898f + y * 78.233f ) * 43758.5453f;
+		return value - MathF.Floor( value );
+	}
+
 	static Color BlendWeightedColors( params (Color color, float weight)[] layers )
 	{
 		var red = 0f;

@@ -2,7 +2,7 @@ namespace Sandbox;
 
 public sealed class TerrainChunkMeshData
 {
-	public Vertex[] Vertices { get; init; }
+	public TerrainVertex[] Vertices { get; init; }
 	public int[] Indices { get; init; }
 	public Vector3[] CollisionVertices { get; init; }
 	public int[] CollisionIndices { get; init; }
@@ -26,7 +26,7 @@ public static class TerrainChunkMeshBuilder
 		var bottomHeight = snapshot.TerrainBottomHeight;
 		var chunkOrigin = snapshot.ChunkOrigin;
 		var heights = new float[width, width];
-		var colors = new Color32[width, width];
+		var blendPaints = new (Color32 Blend, Color32 Tint)[width, width];
 
 		for ( var y = 0; y < width; y++ )
 		{
@@ -43,12 +43,15 @@ public static class TerrainChunkMeshBuilder
 			for ( var x = 0; x < width; x++ )
 			{
 				var slope = SampleSlope( heights, x, y, resolution, step );
-				colors[x, y] = snapshot.SampleColor( heights[x, y], slope );
+				var worldX = chunkOrigin.x + x * step;
+				var worldY = chunkOrigin.y + y * step;
+				blendPaints[x, y] = snapshot.SampleBlendPaint( worldX, worldY, heights[x, y], slope );
 			}
 		}
 
-		var bottomColor = snapshot.SampleSideColor();
-		var vertices = new List<Vertex>( width * width * 2 );
+		var sidePaint = snapshot.SampleSideBlendPaint();
+		var uvScale = 1f / snapshot.TextureTileSize;
+		var vertices = new List<TerrainVertex>( width * width * 2 );
 		var indices = new List<int>();
 
 		for ( var y = 0; y <= resolution; y++ )
@@ -57,14 +60,13 @@ public static class TerrainChunkMeshBuilder
 			{
 				var normal = SampleNormal( heights, x, y, resolution, step );
 				vertices.Add( MakeVertex(
+					chunkOrigin,
 					x * step,
 					y * step,
 					heights[x, y],
 					normal,
-					colors[x, y],
-					x,
-					y,
-					resolution ) );
+					blendPaints[x, y],
+					uvScale ) );
 			}
 		}
 
@@ -75,14 +77,13 @@ public static class TerrainChunkMeshBuilder
 			for ( var x = 0; x <= resolution; x++ )
 			{
 				vertices.Add( MakeVertex(
+					chunkOrigin,
 					x * step,
 					y * step,
 					bottomHeight,
 					Vector3.Down,
-					bottomColor,
-					x,
-					y,
-					resolution ) );
+					sidePaint,
+					uvScale ) );
 			}
 		}
 
@@ -277,7 +278,7 @@ public static class TerrainChunkMeshBuilder
 		return target;
 	}
 
-	static BBox CalculateMeshBounds( List<Vertex> vertices )
+	static BBox CalculateMeshBounds( List<TerrainVertex> vertices )
 	{
 		if ( vertices.Count == 0 )
 			return new BBox( Vector3.Zero, Vector3.Zero );
@@ -295,28 +296,29 @@ public static class TerrainChunkMeshBuilder
 		return new BBox( min, max );
 	}
 
-	static Vertex MakeVertex(
+	static TerrainVertex MakeVertex(
+		Vector3 chunkOrigin,
 		float x,
 		float y,
 		float z,
 		Vector3 normal,
-		Color32 color,
-		int gridX,
-		int gridY,
-		int resolution )
+		(Color32 Blend, Color32 Tint) paint,
+		float uvScale )
 	{
 		var tangent = Vector3.Cross( Vector3.Up, normal ).Normal;
 		if ( tangent.LengthSquared < 0.001f )
 			tangent = Vector3.Cross( Vector3.Forward, normal ).Normal;
 
-		return new Vertex(
+		var worldX = chunkOrigin.x + x;
+		var worldY = chunkOrigin.y + y;
+
+		return new TerrainVertex(
 			new Vector3( x, y, z ),
 			normal,
-			tangent,
-			new Vector2( gridX / (float)resolution, gridY / (float)resolution ) )
-		{
-			Color = color
-		};
+			new Vector4( tangent, 1f ),
+			new Vector2( worldX * uvScale, worldY * uvScale ),
+			paint.Blend,
+			paint.Tint );
 	}
 
 	static Vector3 SampleNormal( float[,] heights, int x, int y, int resolution, float step )

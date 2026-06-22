@@ -1,4 +1,48 @@
+// THIS FILE IS AUTO-GENERATED
+
 Layer0
 {
-	shader "shaders/vertex_color.shader"
+	shader "shaders/terrain_blend.shader"
+
+	//---- Anti-Tile ----
+	g_flAntiTileFrequency "2.000"
+	g_flAntiTileStrengthGrass "1.000"
+	g_flAntiTileStrengthRock "1.000"
+	g_flAntiTileStrengthSand "1.000"
+	g_flUvWarpStrengthGrass "0.000"
+	g_flUvWarpStrengthRock "0.000"
+	g_flUvWarpStrengthSand "0.000"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Grass ----
+	g_flNormalStrengthGrass "3.828"
+	g_flRotationGrass "0.000"
+	g_vOffsetGrass "[0.000 0.000]"
+	g_vScaleGrass "[0.260 0.278]"
+	TextureDisplacementGrass "materials/terrain/brown_mud_leaves_01_disp_4k.png"
+	TextureGrass "materials/terrain/brown_mud_leaves_01_diff_4k.jpg"
+	TextureRoughnessGrass "materials/default/default_rough.tga"
+
+	//---- Material ----
+	g_flRoughnessScale "1.000"
+
+	//---- Rock ----
+	g_flNormalStrengthRock "2.500"
+	g_flRotationRock "103.000"
+	g_vOffsetRock "[0.790 0.230]"
+	g_vScaleRock "[0.260 0.171]"
+	TextureDisplacementRock "materials/terrain/gray_rocks_disp_4k.png"
+	TextureRock "materials/terrain/gray_rocks_diff_4k.jpg"
+	TextureRoughnessRock "materials/default/default_rough.tga"
+
+	//---- Sand ----
+	g_flNormalStrengthSand "1.000"
+	g_flRotationSand "47.000"
+	g_vOffsetSand "[0.310 0.670]"
+	g_vScaleSand "[0.385 0.314]"
+	TextureDisplacementSand "materials/terrain/sand_01_disp_4k.png"
+	TextureRoughnessSand "materials/terrain/sand_01_rough_4k.jpg"
+	TextureSand "materials/terrain/sand_01_diff_4k.jpg"
 }

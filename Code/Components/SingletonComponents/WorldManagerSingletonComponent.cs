@@ -79,6 +79,15 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 	[Property, Group( "Terrain" ), Title( "Bottom Height" ), Change( nameof( OnTerrainMeshSettingsChanged ) )]
 	public float TerrainBottomHeight { get; set; } = -200f;
 
+	[Property, Group( "Terrain" ), Title( "Texture Tile Size" ), Description( "World units covered by one texture repeat. Larger = fewer visible tiles." ), Range( 64f, 2048f ), Change( nameof( OnTerrainMeshSettingsChanged ) )]
+	public float TerrainTextureTileSize { get; set; } = 384f;
+
+	[Property, Group( "Terrain" ), Title( "Macro Variation" ), Description( "Low-frequency brightness variation to break up repeating texture patches." ), Range( 0f, 0.35f ), Change( nameof( OnTerrainMeshSettingsChanged ) )]
+	public float TerrainMacroVariation { get; set; } = 0.12f;
+
+	[Property, Group( "Terrain" ), Title( "Macro Variation Scale" ), Description( "World units across one macro variation patch." ), Range( 128f, 4096f ), Change( nameof( OnTerrainMeshSettingsChanged ) )]
+	public float TerrainMacroVariationScale { get; set; } = 768f;
+
 	[Property, Group( "Biomes" ), Title( "Water Level" ), Change( nameof( OnBiomeSettingsChanged ) )]
 	public float WaterLevel { get; set; } = 0f;
 

@@ -67,7 +67,7 @@ public sealed class TerrainChunkComponent : Component
 	public void ApplyMeshData( TerrainChunkMeshData meshData )
 	{
 		var mesh = new Mesh();
-		mesh.CreateVertexBuffer<Vertex>( meshData.Vertices.Length, Vertex.Layout, meshData.Vertices );
+		mesh.CreateVertexBuffer( meshData.Vertices.Length, meshData.Vertices );
 		mesh.CreateIndexBuffer( meshData.Indices.Length, meshData.Indices );
 		mesh.Material = GetTerrainMaterial();
 		mesh.Bounds = meshData.Bounds;
