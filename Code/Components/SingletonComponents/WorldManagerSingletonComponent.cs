@@ -88,6 +88,9 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 	[Property, Group( "Terrain" ), Title( "Macro Variation Scale" ), Description( "World units across one macro variation patch." ), Range( 128f, 4096f ), Change( nameof( OnTerrainMeshSettingsChanged ) )]
 	public float TerrainMacroVariationScale { get; set; } = 768f;
 
+	[Property, Group( "Terrain" ), Title( "Biome Blend Width" ), Description( "How wide height transitions are between grass, sand, and rock. Rebuild terrain after changing." ), Range( 0.02f, 0.5f ), Change( nameof( OnTerrainMeshSettingsChanged ) )]
+	public float TerrainBiomeBlendWidth { get; set; } = 0.12f;
+
 	[Property, Group( "Biomes" ), Title( "Water Level" ), Change( nameof( OnBiomeSettingsChanged ) )]
 	public float WaterLevel { get; set; } = 0f;
 

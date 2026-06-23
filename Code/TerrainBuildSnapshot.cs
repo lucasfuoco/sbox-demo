@@ -40,6 +40,7 @@ public readonly struct TerrainBuildSnapshot
 	public float TextureTileSize { get; init; }
 	public float MacroVariation { get; init; }
 	public float MacroVariationScale { get; init; }
+	public float BiomeBlendWidth { get; init; }
 
 	public static TerrainBuildSnapshot FromWorldManager(
 		WorldManagerSingletonComponent worldManager,
@@ -86,7 +87,8 @@ public readonly struct TerrainBuildSnapshot
 			ChunkSize = Math.Max( chunkSize, 1 ),
 			TextureTileSize = MathF.Max( worldManager.TerrainTextureTileSize, 1f ),
 			MacroVariation = worldManager.TerrainMacroVariation,
-			MacroVariationScale = MathF.Max( worldManager.TerrainMacroVariationScale, 1f )
+			MacroVariationScale = MathF.Max( worldManager.TerrainMacroVariationScale, 1f ),
+			BiomeBlendWidth = worldManager.TerrainBiomeBlendWidth
 		};
 	}
 
@@ -126,7 +128,8 @@ public readonly struct TerrainBuildSnapshot
 			GrassMaxThreshold,
 			MountainMinThreshold,
 			MountainMaxThreshold,
-			WaterColor );
+			WaterColor,
+			BiomeBlendWidth );
 
 		if ( MacroVariation <= 0.0001f )
 			return paint;

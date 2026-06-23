@@ -5,7 +5,8 @@ Layer0
 	shader "shaders/terrain_blend.shader"
 
 	//---- Anti-Tile ----
-	g_flAntiTileFrequency "2.000"
+	g_flAntiTileFrequency "0.454"
+	g_flAntiTileSoftness "0.288"
 	g_flAntiTileStrengthGrass "1.000"
 	g_flAntiTileStrengthRock "1.000"
 	g_flAntiTileStrengthSand "1.000"
@@ -13,36 +14,58 @@ Layer0
 	g_flUvWarpStrengthRock "0.000"
 	g_flUvWarpStrengthSand "0.000"
 
+	//---- Color Noise ----
+	g_flColorNoiseSeed "3656.592"
+	g_flColorNoiseStrength "1.000"
+	g_flColorNoiseTextureBlend "0.650"
+	g_flHueNoiseScale "0.100"
+	g_flHueNoiseStrength "0.051"
+	g_flSaturationNoiseScale "0.021"
+	g_flSaturationNoiseStrength "0.167"
+	g_vColorNoiseTextureOffset "[0.000 0.000]"
+	g_vColorNoiseTextureScale "[0.0021 0.0021]"
+	TextureHueSatNoise "materials/terrain/terrain_hue_sat_noise.png"
+
 	//---- Fog ----
 	g_bFogEnabled "1"
 
 	//---- Grass ----
+	g_flMetalnessGrass "0.000"
 	g_flNormalStrengthGrass "3.828"
 	g_flRotationGrass "0.000"
 	g_vOffsetGrass "[0.000 0.000]"
-	g_vScaleGrass "[0.260 0.278]"
-	TextureDisplacementGrass "materials/terrain/brown_mud_leaves_01_disp_4k.png"
+	g_vScaleGrass "[0.100 0.100]"
 	TextureGrass "materials/terrain/brown_mud_leaves_01_diff_4k.jpg"
+	TextureNormalGrass "materials/terrain/brown_mud_leaves_01_normal_4k.png"
 	TextureRoughnessGrass "materials/default/default_rough.tga"
 
 	//---- Material ----
+	g_flMetalnessScale "0.000"
 	g_flRoughnessScale "1.000"
 
 	//---- Rock ----
+	g_flMetalnessRock "0.000"
 	g_flNormalStrengthRock "2.500"
 	g_flRotationRock "103.000"
 	g_vOffsetRock "[0.790 0.230]"
-	g_vScaleRock "[0.260 0.171]"
-	TextureDisplacementRock "materials/terrain/gray_rocks_disp_4k.png"
-	TextureRock "materials/terrain/gray_rocks_diff_4k.jpg"
-	TextureRoughnessRock "materials/default/default_rough.tga"
+	g_vScaleRock "[0.100 0.100]"
+	TextureNormalRock "materials/terrain/rocks_ground_05_normal_4k.png"
+	TextureRock "materials/terrain/rocks_ground_05_diff_4k.jpg"
+	TextureRoughnessRock "materials/terrain/rocks_ground_05_rough_4k.jpg"
 
 	//---- Sand ----
-	g_flNormalStrengthSand "1.000"
+	g_flMetalnessSand "0.000"
+	g_flNormalStrengthSand "1.994"
 	g_flRotationSand "47.000"
-	g_vOffsetSand "[0.310 0.670]"
+	g_vOffsetSand "[-1000.000 -1000.000]"
 	g_vScaleSand "[0.385 0.314]"
-	TextureDisplacementSand "materials/terrain/sand_01_disp_4k.png"
+	TextureNormalSand "materials/terrain/sand_01_normal_4k.png"
 	TextureRoughnessSand "materials/terrain/sand_01_rough_4k.jpg"
 	TextureSand "materials/terrain/sand_01_diff_4k.jpg"
+
+	//---- Texture Blend ----
+	g_flGrassTextureWeight "1.000"
+	g_flRockTextureWeight "1.000"
+	g_flSandTextureWeight "1.000"
+	g_flTextureBlendSoftness "0.883"
 }
