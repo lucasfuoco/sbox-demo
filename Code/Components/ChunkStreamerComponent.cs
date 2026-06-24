@@ -106,7 +106,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 	int _cachedMinLodResolution;
 	bool _lastUseWorldBounds;
 	Vector2 _lastWorldSize;
-	Vector3 _lastWorldOrigin;
+	Vector2 _lastWorldMin;
 	bool _settingsInitialized;
 
 	public int TerrainBuildGeneration => _terrainBuildGeneration;
@@ -119,6 +119,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 	{
 		GetTerrainFolder();
 		_settingsInitialized = true;
+		SyncTrackedSettings();
 	}
 
 	protected override void OnStart()
@@ -195,7 +196,6 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		if ( _needsInitialTerrainRebuild )
 		{
 			_needsInitialTerrainRebuild = false;
-			worldManager.RefreshNoiseImmediate();
 			ProcessPendingTerrainRebuild( force: true );
 		}
 
@@ -319,7 +319,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		var terrainSettingsChanged = worldManager.TerrainSettingsVersion != _lastTerrainSettingsVersion;
 		var boundsChanged = worldManager.UseWorldBounds != _lastUseWorldBounds
 			|| worldManager.WorldSize != _lastWorldSize
-			|| worldMin != new Vector2( _lastWorldOrigin.x, _lastWorldOrigin.y );
+			|| worldMin != _lastWorldMin;
 
 		if ( !force && !layoutChanged && !meshChanged && !lodChanged && !noiseChanged && !terrainSettingsChanged && !boundsChanged )
 			return false;
@@ -349,7 +349,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 			_lastTerrainSettingsVersion = worldManager.TerrainSettingsVersion;
 			_lastUseWorldBounds = worldManager.UseWorldBounds;
 			_lastWorldSize = worldManager.WorldSize;
-			_lastWorldOrigin = worldManager.GameObject.WorldPosition;
+			_lastWorldMin = worldManager.WorldMin;
 		}
 
 		_lastChunkSize = ChunkSize;
@@ -491,7 +491,10 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 			if ( !chunkObject.IsValid() || !terrain.IsValid() || buildGeneration != _terrainBuildGeneration )
 			{
 				if ( isNewChunk )
+				{
 					CancelBuildingChunk( coord );
+					_pendingChunks.Add( coord );
+				}
 
 				return;
 			}
@@ -715,7 +718,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		{
 			for ( int y = -ViewDistance; y <= ViewDistance; y++ )
 			{
-				if ( GetActiveChunkCount() >= maxLoaded )
+				if ( GetLoadedChunkCount() >= maxLoaded )
 					return;
 
 				var coord = new ChunkCoord( center.X + x, center.Y + y );
@@ -735,7 +738,9 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		return outsideView || outsideWorld;
 	}
 
-	int GetActiveChunkCount() => LoadedChunks.Count + _pendingChunks.Count + _buildingChunks.Count;
+	int GetLoadedChunkCount() => LoadedChunks.Count + _buildingChunks.Count;
+
+	int GetActiveChunkCount() => GetLoadedChunkCount() + _pendingChunks.Count;
 
 	void DestroyChunk( ChunkCoord coord, GameObject chunkObject )
 	{
@@ -758,7 +763,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 
 		foreach ( var coord in _pendingChunks.ToArray() )
 		{
-			if ( started >= startBudget || GetActiveChunkCount() >= maxLoaded )
+			if ( started >= startBudget || GetLoadedChunkCount() >= maxLoaded )
 				break;
 
 			if ( _activeWorkerBuilds >= concurrentBudget )
@@ -1036,9 +1041,21 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		return _terrainFolder;
 	}
 
+	Vector3 GetDefaultStreamPosition()
+	{
+		var position = WorldPosition;
+		var worldManager = GetWorldManager();
+
+		if ( !worldManager.IsValid() || !worldManager.GameObject.IsValid() )
+			return position;
+
+		var center = worldManager.WorldCenter;
+		return new Vector3( center.x, center.y, position.z );
+	}
+
 	bool TryGetStreamPosition( out Vector3 position )
 	{
-		position = WorldPosition;
+		position = GetDefaultStreamPosition();
 
 		if ( IsEditMode )
 		{

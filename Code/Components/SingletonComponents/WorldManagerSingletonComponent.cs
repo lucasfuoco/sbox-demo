@@ -18,9 +18,6 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 	[Property, Group( "World" ), Title( "World Size" ), Change( nameof( OnWorldBoundsChanged ) )]
 	public Vector2 WorldSize { get; set; } = new( 24576f, 24576f );
 
-	[Property, Group( "World" ), Title( "Center World On Origin" ), Description( "When enabled, offsets this object so world (0, 0) is the map center instead of a corner." ), Change( nameof( OnCenterWorldOnOriginChanged ) )]
-	public bool CenterWorldOnOrigin { get; set; }
-
 	[Property, Group( "World" ), Title( "World Center" ), ReadOnly]
 	public Vector2 WorldCenter => WorldMin + WorldSize * 0.5f;
 
@@ -170,22 +167,18 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 	protected override void OnAwake()
 	{
 		base.OnAwake();
-		ApplyWorldOrigin();
 		RefreshNoiseImmediate();
 		ScheduleTerrainRebuild( refreshNoise: true, delay: 0f );
 	}
 
 	protected override void OnStart()
 	{
-		ApplyWorldOrigin();
-		RefreshNoiseImmediate();
 		RebuildTerrainChunks();
 	}
 
 	protected override void OnValidate()
 	{
 		SyncFrequencyFromStorage();
-		ApplyWorldOrigin();
 	}
 
 	void OnWorldSeedChanged( int oldValue, int newValue )
@@ -196,31 +189,8 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 
 	void OnWorldBoundsChanged()
 	{
-		ApplyWorldOrigin();
 		BumpTerrainSettings();
 		ScheduleTerrainRebuild();
-	}
-
-	void OnCenterWorldOnOriginChanged()
-	{
-		ApplyWorldOrigin();
-		BumpTerrainSettings();
-		ScheduleTerrainRebuild();
-	}
-
-	void ApplyWorldOrigin()
-	{
-		if ( !CenterWorldOnOrigin || !GameObject.IsValid() )
-			return;
-
-		var position = GameObject.WorldPosition;
-		var targetX = -WorldSize.x * 0.5f;
-		var targetY = -WorldSize.y * 0.5f;
-
-		if ( MathF.Abs( position.x - targetX ) <= 0.01f && MathF.Abs( position.y - targetY ) <= 0.01f )
-			return;
-
-		GameObject.WorldPosition = new Vector3( targetX, targetY, position.z );
 	}
 
 	void OnFalloffSettingsChanged()
@@ -414,7 +384,7 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 		return GetBiomeSampleFromHeight( height );
 	}
 
-	public Vector2 WorldMin => new( GameObject.WorldPosition.x, GameObject.WorldPosition.y );
+	public Vector2 WorldMin => new( -WorldSize.x * 0.5f, -WorldSize.y * 0.5f );
 
 	public Vector2 WorldMax => WorldMin + WorldSize;
 
