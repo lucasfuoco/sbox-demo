@@ -1,6 +1,6 @@
 HEADER
 {
-	Description = "Terrain multiblend with noise-based squiggly anti-tiling";
+	Description = "Terrain multiblend with per-tile random rotation";
 	Version = 1;
 	DevShader = true;
 }
@@ -61,7 +61,6 @@ COMMON
 			return value / 0.875;
 		}
 
-		// Four-octave FBm, similar to FastNoiseLite defaults.
 		float TerrainFbmNoiseLite( float2 p, float seed )
 		{
 			float value = 0.0;
@@ -99,24 +98,96 @@ COMMON
 			return float2( hue, sat );
 		}
 
-		float SquigglyAntiTileBlend( float2 worldUv, float layerSeed, float frequency, float softness )
+		float2 OffsetSquigglyTile(
+			float2 tileUv,
+			float layerSeed,
+			float squiggleStrength,
+			float squiggleScale )
 		{
-			float2 p = worldUv * frequency + float2( layerSeed * 1.13, layerSeed * 0.71 );
+			if ( squiggleStrength <= 0.001 )
+				return tileUv;
+
+			float2 p = tileUv * squiggleScale + float2( layerSeed * 1.13, layerSeed * 0.71 );
 
 			float2 warp;
 			warp.x = TerrainValueNoise( p * 0.65 + 3.7, layerSeed ) * 2.0 - 1.0;
 			warp.y = TerrainValueNoise( p * 0.65 + 9.1, layerSeed + 41.0 ) * 2.0 - 1.0;
-			p += warp * 0.55;
+			p = tileUv + warp * squiggleStrength * 0.45;
 
-			float noise = TerrainFbmNoise( p, layerSeed );
-			float edge = lerp( 0.06, 0.42, softness );
-			return smoothstep( 0.5 - edge, 0.5 + edge, noise );
+			warp.x = TerrainFbmNoise( p * squiggleScale, layerSeed + 17.0 ) * 2.0 - 1.0;
+			warp.y = TerrainFbmNoise( p * squiggleScale + 13.7, layerSeed + 29.0 ) * 2.0 - 1.0;
+			return p + warp * squiggleStrength * 0.35;
 		}
 
-		float2 LayerBaseUv( float2 worldUv, float2 scale, float rotation, float2 layerOffset, float extraRotation )
+		float2 RotateUvInCell(
+			float2 uv,
+			float cellSize,
+			float2 cellId,
+			float layerSeed,
+			float baseRotationDeg )
 		{
-			float2 uv = worldUv * scale + layerOffset;
-			return RotateTerrainUv( uv, rotation + extraRotation );
+			float2 cellCenter = ( cellId + 0.5 ) * cellSize;
+			float randomDeg = HashTerrain1( cellId, layerSeed + 911.0 ) * 360.0;
+			float totalRad = radians( baseRotationDeg + randomDeg );
+			float s = sin( totalRad );
+			float c = cos( totalRad );
+
+			float2 local = uv - cellCenter;
+			float2 rotated = float2( local.x * c - local.y * s, local.x * s + local.y * c );
+			return rotated + cellCenter;
+		}
+
+		struct RotatedUvPair
+		{
+			float2 primary;
+			float2 secondary;
+			float primaryWeight;
+		};
+
+		RotatedUvPair GetSquigglyRotatedUvs(
+			float2 uv,
+			float layerSeed,
+			float baseRotationDeg,
+			float tilesPerCell,
+			float squiggleStrength,
+			float squiggleScale,
+			float edgeBlend )
+		{
+			RotatedUvPair result;
+			float cellSize = max( tilesPerCell, 1.0 );
+			float2 tileUv = uv / cellSize;
+			float2 lookupUv = OffsetSquigglyTile( tileUv, layerSeed + 311.0, squiggleStrength, squiggleScale );
+			float2 cellId = floor( lookupUv );
+			float2 fracTile = lookupUv - cellId;
+
+			result.primary = RotateUvInCell( uv, cellSize, cellId, layerSeed, baseRotationDeg );
+			result.secondary = result.primary;
+			result.primaryWeight = 1.0;
+
+			if ( edgeBlend <= 0.001 )
+				return result;
+
+			float edgeNoise = TerrainValueNoise( lookupUv * 4.3 + layerSeed * 0.19, layerSeed + 211.0 );
+			float squigglyBlend = edgeBlend * lerp( 0.55, 1.05, edgeNoise );
+
+			float distX = min( fracTile.x, 1.0 - fracTile.x );
+			float distY = min( fracTile.y, 1.0 - fracTile.y );
+			float2 neighbor = float2( 0.0, 0.0 );
+			float edgeDist = distY;
+			if ( distX < distY )
+			{
+				edgeDist = distX;
+				neighbor.x = ( fracTile.x < 0.5 ) ? -1.0 : 1.0;
+			}
+			else
+				neighbor.y = ( fracTile.y < 0.5 ) ? -1.0 : 1.0;
+
+			if ( edgeDist >= squigglyBlend )
+				return result;
+
+			result.secondary = RotateUvInCell( uv, cellSize, cellId + neighbor, layerSeed, baseRotationDeg );
+			result.primaryWeight = smoothstep( 0.0, squigglyBlend, edgeDist );
+			return result;
 		}
 
 		float2 WarpLayerUv( float2 uv, float layerSeed, float strength )
@@ -127,42 +198,34 @@ COMMON
 			return uv + float2( wx, wy ) * strength * 0.14;
 		}
 
-		float2 LayerAntiTileUvA(
+		RotatedUvPair LayerAntiTileUvPair(
 			float2 worldUv,
 			float2 scale,
 			float rotation,
 			float2 layerOffset,
 			float layerSeed,
-			float warpStrength )
+			float warpStrength,
+			float rotationTileSize,
+			bool randomizeRotation,
+			float squiggleStrength,
+			float squiggleScale,
+			float edgeBlend )
 		{
-			float2 uv = LayerBaseUv( worldUv, scale, rotation, layerOffset, 0.0 );
-			return WarpLayerUv( uv, layerSeed, warpStrength );
-		}
+			float2 uv = worldUv * scale + layerOffset;
+			RotatedUvPair pair;
 
-		float2 LayerAntiTileUvB(
-			float2 worldUv,
-			float2 scale,
-			float rotation,
-			float2 layerOffset,
-			float layerSeed,
-			float variantRotation,
-			float2 variantOffset,
-			float variantScale,
-			float warpStrength )
-		{
-			float2 uv = LayerBaseUv( worldUv, scale * variantScale, rotation, layerOffset + variantOffset, variantRotation );
-			return WarpLayerUv( uv, layerSeed + 19.0, warpStrength );
-		}
+			if ( randomizeRotation )
+				pair = GetSquigglyRotatedUvs( uv, layerSeed, rotation, rotationTileSize, squiggleStrength, squiggleScale, edgeBlend );
+			else
+			{
+				pair.primary = RotateTerrainUv( uv, rotation );
+				pair.secondary = pair.primary;
+				pair.primaryWeight = 1.0;
+			}
 
-		float AntiTileBlendFactor(
-			float2 worldUv,
-			float layerSeed,
-			float frequency,
-			float strength,
-			float softness )
-		{
-			float blend = SquigglyAntiTileBlend( worldUv, layerSeed, frequency, softness );
-			return lerp( 0.0, blend, strength );
+			pair.primary = WarpLayerUv( pair.primary, layerSeed, warpStrength );
+			pair.secondary = WarpLayerUv( pair.secondary, layerSeed, warpStrength );
+			return pair;
 		}
 
 		float3 ApplyTextureBlendWeights(
@@ -226,14 +289,16 @@ VS
 	float g_flGrassTextureWeight < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Texture Blend,10/20" ); >;
 	float g_flSandTextureWeight < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Texture Blend,10/30" ); >;
 	float g_flRockTextureWeight < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Texture Blend,10/40" ); >;
-	float g_flAntiTileStrengthGrass < Default( 1.0 ); Range( 0.0, 1.0 ); UiGroup( "Anti-Tile,10/10" ); >;
-	float g_flAntiTileStrengthSand < Default( 1.0 ); Range( 0.0, 1.0 ); UiGroup( "Anti-Tile,10/20" ); >;
-	float g_flAntiTileStrengthRock < Default( 1.0 ); Range( 0.0, 1.0 ); UiGroup( "Anti-Tile,10/30" ); >;
-	float g_flAntiTileFrequency < Default( 0.4 ); Range( 0.05, 2.0 ); UiGroup( "Anti-Tile,10/40" ); >;
-	float g_flAntiTileSoftness < Default( 0.65 ); Range( 0.0, 1.0 ); UiGroup( "Anti-Tile,10/45" ); >;
-	float g_flUvWarpStrengthGrass < Default( 0.6 ); Range( 0.0, 2.0 ); UiGroup( "Anti-Tile,10/50" ); >;
-	float g_flUvWarpStrengthSand < Default( 0.55 ); Range( 0.0, 2.0 ); UiGroup( "Anti-Tile,10/60" ); >;
-	float g_flUvWarpStrengthRock < Default( 0.65 ); Range( 0.0, 2.0 ); UiGroup( "Anti-Tile,10/70" ); >;
+	float g_flRotationTileSize < Default( 1.0 ); Range( 1.0, 8.0 ); UiGroup( "Rotation,10/10" ); >;
+	float g_flRotationSquiggleStrength < Default( 0.6 ); Range( 0.0, 1.5 ); UiGroup( "Rotation,10/15" ); >;
+	float g_flRotationSquiggleScale < Default( 2.0 ); Range( 0.5, 8.0 ); UiGroup( "Rotation,10/16" ); >;
+	float g_flRotationEdgeBlend < Default( 0.25 ); Range( 0.0, 0.5 ); UiGroup( "Rotation,10/17" ); >;
+	bool g_bRandomRotationGrass < Default1( 1 ); UiGroup( "Grass,10/45" ); >;
+	bool g_bRandomRotationSand < Default1( 1 ); UiGroup( "Sand,10/45" ); >;
+	bool g_bRandomRotationRock < Default1( 1 ); UiGroup( "Rock,10/45" ); >;
+	float g_flUvWarpStrengthGrass < Default( 0.0 ); Range( 0.0, 2.0 ); UiGroup( "Rotation,10/20" ); >;
+	float g_flUvWarpStrengthSand < Default( 0.0 ); Range( 0.0, 2.0 ); UiGroup( "Rotation,10/30" ); >;
+	float g_flUvWarpStrengthRock < Default( 0.0 ); Range( 0.0, 2.0 ); UiGroup( "Rotation,10/40" ); >;
 
 	float g_flDisplacementScaleGrass < Default( 4.0 ); Range( 0.0, 32.0 ); UiGroup( "Grass,10/60" ); >;
 	float g_flDisplacementScaleSand < Default( 3.0 ); Range( 0.0, 32.0 ); UiGroup( "Sand,10/60" ); >;
@@ -251,26 +316,26 @@ VS
 		float rotation,
 		float2 layerOffset,
 		float layerSeed,
-		float variantRotation,
-		float2 variantOffset,
-		float variantScale,
 		float warpStrength,
-		float antiTileStrength )
+		bool randomizeRotation )
 	{
-		float2 uvA = LayerAntiTileUvA( worldUv, scale, rotation, layerOffset, layerSeed, warpStrength );
-		float2 uvB = LayerAntiTileUvB( worldUv, scale, rotation, layerOffset, layerSeed, variantRotation, variantOffset, variantScale, warpStrength );
-		float blend = AntiTileBlendFactor( worldUv, layerSeed, g_flAntiTileFrequency, antiTileStrength, g_flAntiTileSoftness );
+		RotatedUvPair uvs = LayerAntiTileUvPair(
+			worldUv, scale, rotation, layerOffset, layerSeed, warpStrength,
+			g_flRotationTileSize, randomizeRotation,
+			g_flRotationSquiggleStrength, g_flRotationSquiggleScale, g_flRotationEdgeBlend );
+		float sampleA = SampleDisplacement( uvs.primary, map );
+		if ( uvs.primaryWeight >= 0.999 )
+			return sampleA;
 
-		float sampleA = SampleDisplacement( uvA, map );
-		float sampleB = SampleDisplacement( uvB, map );
-		return lerp( sampleA, sampleB, blend );
+		float sampleB = SampleDisplacement( uvs.secondary, map );
+		return lerp( sampleB, sampleA, uvs.primaryWeight );
 	}
 
 	float BlendDisplacement( float2 worldUv, float3 weights )
 	{
-		float grass = ( SampleLayerDisplacement( g_tDispGrass, worldUv, g_vScaleGrass, g_flRotationGrass, g_vOffsetGrass, 17.3, 137.5, float2( 2.17, -1.83 ), 1.09, g_flUvWarpStrengthGrass, g_flAntiTileStrengthGrass ) - 0.5 ) * 2.0 * g_flDisplacementScaleGrass;
-		float sand = ( SampleLayerDisplacement( g_tDispSand, worldUv, g_vScaleSand, g_flRotationSand, g_vOffsetSand, 41.9, 211.0, float2( -1.41, 3.26 ), 1.07, g_flUvWarpStrengthSand, g_flAntiTileStrengthSand ) - 0.5 ) * 2.0 * g_flDisplacementScaleSand;
-		float rock = ( SampleLayerDisplacement( g_tDispRock, worldUv, g_vScaleRock, g_flRotationRock, g_vOffsetRock, 93.7, 283.0, float2( 3.08, 0.92 ), 1.11, g_flUvWarpStrengthRock, g_flAntiTileStrengthRock ) - 0.5 ) * 2.0 * g_flDisplacementScaleRock;
+		float grass = ( SampleLayerDisplacement( g_tDispGrass, worldUv, g_vScaleGrass, g_flRotationGrass, g_vOffsetGrass, 17.3, g_flUvWarpStrengthGrass, g_bRandomRotationGrass ) - 0.5 ) * 2.0 * g_flDisplacementScaleGrass;
+		float sand = ( SampleLayerDisplacement( g_tDispSand, worldUv, g_vScaleSand, g_flRotationSand, g_vOffsetSand, 41.9, g_flUvWarpStrengthSand, g_bRandomRotationSand ) - 0.5 ) * 2.0 * g_flDisplacementScaleSand;
+		float rock = ( SampleLayerDisplacement( g_tDispRock, worldUv, g_vScaleRock, g_flRotationRock, g_vOffsetRock, 93.7, g_flUvWarpStrengthRock, g_bRandomRotationRock ) - 0.5 ) * 2.0 * g_flDisplacementScaleRock;
 
 		return grass * weights.r + sand * weights.g + rock * weights.b;
 	}
@@ -308,34 +373,28 @@ PS
 	CreateInputTexture2D( TextureGrass, Srgb, 8, "", "_color", "Grass,10/10", Default3( 0.2, 0.45, 0.1 ) );
 	CreateInputTexture2D( TextureNormalGrass, Linear, 8, "NormalizeNormals", "_normal", "Grass,10/15", Default3( 0.5, 0.5, 1.0 ) );
 	CreateInputTexture2D( TextureRoughnessGrass, Linear, 8, "", "_rough", "Grass,10/20", Default( 0.85 ) );
-	CreateInputTexture2D( TextureDisplacementGrass, Linear, 8, "", "_disp", "Grass,10/50", Default( 0.5 ) );
 
 	CreateInputTexture2D( TextureSand, Srgb, 8, "", "_color", "Sand,10/10", Default3( 0.78, 0.72, 0.45 ) );
 	CreateInputTexture2D( TextureNormalSand, Linear, 8, "NormalizeNormals", "_normal", "Sand,10/15", Default3( 0.5, 0.5, 1.0 ) );
 	CreateInputTexture2D( TextureRoughnessSand, Linear, 8, "", "_rough", "Sand,10/20", Default( 0.75 ) );
-	CreateInputTexture2D( TextureDisplacementSand, Linear, 8, "", "_disp", "Sand,10/50", Default( 0.5 ) );
 
 	CreateInputTexture2D( TextureRock, Srgb, 8, "", "_color", "Rock,10/10", Default3( 0.45, 0.42, 0.38 ) );
 	CreateInputTexture2D( TextureNormalRock, Linear, 8, "NormalizeNormals", "_normal", "Rock,10/15", Default3( 0.5, 0.5, 1.0 ) );
 	CreateInputTexture2D( TextureRoughnessRock, Linear, 8, "", "_rough", "Rock,10/20", Default( 0.9 ) );
-	CreateInputTexture2D( TextureDisplacementRock, Linear, 8, "", "_disp", "Rock,10/50", Default( 0.5 ) );
 
 	CreateInputTexture2D( TextureHueSatNoise, Linear, 8, "", "_color", "Color Noise,10/10", Default3( 0.5, 0.5, 0.5 ) );
 
 	Texture2D g_tGrass < Channel( RGB, Box( TextureGrass ), Srgb ); OutputFormat( BC7 ); SrgbRead( true ); >;
 	Texture2D g_tNormalGrass < Channel( RGB, Box( TextureNormalGrass ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 	Texture2D g_tRoughGrass < Channel( R, Box( TextureRoughnessGrass ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
-	Texture2D g_tDispGrass < Channel( R, Box( TextureDisplacementGrass ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 
 	Texture2D g_tSand < Channel( RGB, Box( TextureSand ), Srgb ); OutputFormat( BC7 ); SrgbRead( true ); >;
 	Texture2D g_tNormalSand < Channel( RGB, Box( TextureNormalSand ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 	Texture2D g_tRoughSand < Channel( R, Box( TextureRoughnessSand ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
-	Texture2D g_tDispSand < Channel( R, Box( TextureDisplacementSand ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 
 	Texture2D g_tRock < Channel( RGB, Box( TextureRock ), Srgb ); OutputFormat( BC7 ); SrgbRead( true ); >;
 	Texture2D g_tNormalRock < Channel( RGB, Box( TextureNormalRock ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 	Texture2D g_tRoughRock < Channel( R, Box( TextureRoughnessRock ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
-	Texture2D g_tDispRock < Channel( R, Box( TextureDisplacementRock ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 	Texture2D g_tHueSatNoise < Channel( RG, Box( TextureHueSatNoise ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 
 	float g_flRoughnessScale < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Material,10/10" ); >;
@@ -358,18 +417,21 @@ PS
 	float2 g_vOffsetRock < Default2( 0.79, 0.23 ); UiGroup( "Rock,10/50" ); >;
 	float g_flNormalStrengthRock < Default( 2.5 ); Range( 0.0, 8.0 ); UiGroup( "Rock,10/55" ); >;
 	float g_flMetalnessRock < Default( 0.0 ); Range( 0.0, 1.0 ); UiGroup( "Rock,10/56" ); >;
+
 	float g_flTextureBlendSoftness < Default( 0.35 ); Range( 0.0, 1.0 ); UiGroup( "Texture Blend,10/10" ); >;
 	float g_flGrassTextureWeight < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Texture Blend,10/20" ); >;
 	float g_flSandTextureWeight < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Texture Blend,10/30" ); >;
 	float g_flRockTextureWeight < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Texture Blend,10/40" ); >;
-	float g_flAntiTileStrengthGrass < Default( 1.0 ); Range( 0.0, 1.0 ); UiGroup( "Anti-Tile,10/10" ); >;
-	float g_flAntiTileStrengthSand < Default( 1.0 ); Range( 0.0, 1.0 ); UiGroup( "Anti-Tile,10/20" ); >;
-	float g_flAntiTileStrengthRock < Default( 1.0 ); Range( 0.0, 1.0 ); UiGroup( "Anti-Tile,10/30" ); >;
-	float g_flAntiTileFrequency < Default( 0.4 ); Range( 0.05, 2.0 ); UiGroup( "Anti-Tile,10/40" ); >;
-	float g_flAntiTileSoftness < Default( 0.65 ); Range( 0.0, 1.0 ); UiGroup( "Anti-Tile,10/45" ); >;
-	float g_flUvWarpStrengthGrass < Default( 0.6 ); Range( 0.0, 2.0 ); UiGroup( "Anti-Tile,10/50" ); >;
-	float g_flUvWarpStrengthSand < Default( 0.55 ); Range( 0.0, 2.0 ); UiGroup( "Anti-Tile,10/60" ); >;
-	float g_flUvWarpStrengthRock < Default( 0.65 ); Range( 0.0, 2.0 ); UiGroup( "Anti-Tile,10/70" ); >;
+	float g_flRotationTileSize < Default( 1.0 ); Range( 1.0, 8.0 ); UiGroup( "Rotation,10/10" ); >;
+	float g_flRotationSquiggleStrength < Default( 0.6 ); Range( 0.0, 1.5 ); UiGroup( "Rotation,10/15" ); >;
+	float g_flRotationSquiggleScale < Default( 2.0 ); Range( 0.5, 8.0 ); UiGroup( "Rotation,10/16" ); >;
+	float g_flRotationEdgeBlend < Default( 0.25 ); Range( 0.0, 0.5 ); UiGroup( "Rotation,10/17" ); >;
+	bool g_bRandomRotationGrass < Default1( 1 ); UiGroup( "Grass,10/45" ); >;
+	bool g_bRandomRotationSand < Default1( 1 ); UiGroup( "Sand,10/45" ); >;
+	bool g_bRandomRotationRock < Default1( 1 ); UiGroup( "Rock,10/45" ); >;
+	float g_flUvWarpStrengthGrass < Default( 0.0 ); Range( 0.0, 2.0 ); UiGroup( "Rotation,10/20" ); >;
+	float g_flUvWarpStrengthSand < Default( 0.0 ); Range( 0.0, 2.0 ); UiGroup( "Rotation,10/30" ); >;
+	float g_flUvWarpStrengthRock < Default( 0.0 ); Range( 0.0, 2.0 ); UiGroup( "Rotation,10/40" ); >;
 
 	float g_flColorNoiseStrength < Default( 1.0 ); Range( 0.0, 1.0 ); UiGroup( "Color Noise,10/10" ); >;
 	float g_flHueNoiseStrength < Default( 0.045 ); Range( 0.0, 0.25 ); UiGroup( "Color Noise,10/20" ); >;
@@ -380,11 +442,6 @@ PS
 	float g_flColorNoiseTextureBlend < Default( 0.65 ); Range( 0.0, 1.0 ); UiGroup( "Color Noise,10/70" ); >;
 	float2 g_vColorNoiseTextureScale < Default2( 0.0015, 0.0015 ); Range2( 0.0001, 0.0001, 0.05, 0.05 ); UiGroup( "Color Noise,10/80" ); >;
 	float2 g_vColorNoiseTextureOffset < Default2( 0.0, 0.0 ); UiGroup( "Color Noise,10/90" ); >;
-
-	float SampleDisplacement( float2 uv, Texture2D map )
-	{
-		return map.SampleLevel( g_sAniso, uv, 0 ).r;
-	}
 
 	float3 SampleNormalTs( Texture2D normalMap, float2 uv, float strength )
 	{
@@ -414,7 +471,26 @@ PS
 		return layer;
 	}
 
-	LayerSample SampleLayerAntiTile(
+	LayerSample SampleLayerBlended(
+		Texture2D colorMap,
+		Texture2D roughMap,
+		Texture2D normalMap,
+		RotatedUvPair uvs,
+		float normalStrength )
+	{
+		LayerSample sampleA = SampleLayer( colorMap, roughMap, normalMap, uvs.primary, normalStrength );
+		if ( uvs.primaryWeight >= 0.999 )
+			return sampleA;
+
+		LayerSample sampleB = SampleLayer( colorMap, roughMap, normalMap, uvs.secondary, normalStrength );
+		LayerSample result;
+		result.albedo = lerp( sampleB.albedo, sampleA.albedo, uvs.primaryWeight );
+		result.roughness = lerp( sampleB.roughness, sampleA.roughness, uvs.primaryWeight );
+		result.normalTs = normalize( lerp( sampleB.normalTs, sampleA.normalTs, uvs.primaryWeight ) );
+		return result;
+	}
+
+	LayerSample SampleBiomeLayer(
 		Texture2D colorMap,
 		Texture2D roughMap,
 		Texture2D normalMap,
@@ -423,25 +499,15 @@ PS
 		float rotation,
 		float2 layerOffset,
 		float layerSeed,
-		float variantRotation,
-		float2 variantOffset,
-		float variantScale,
 		float warpStrength,
-		float antiTileStrength,
-		float normalStrength )
+		float normalStrength,
+		bool randomizeRotation )
 	{
-		float2 uvA = LayerAntiTileUvA( worldUv, scale, rotation, layerOffset, layerSeed, warpStrength );
-		float2 uvB = LayerAntiTileUvB( worldUv, scale, rotation, layerOffset, layerSeed, variantRotation, variantOffset, variantScale, warpStrength );
-		float blend = AntiTileBlendFactor( worldUv, layerSeed, g_flAntiTileFrequency, antiTileStrength, g_flAntiTileSoftness );
-
-		LayerSample sampleA = SampleLayer( colorMap, roughMap, normalMap, uvA, normalStrength );
-		LayerSample sampleB = SampleLayer( colorMap, roughMap, normalMap, uvB, normalStrength );
-
-		LayerSample result;
-		result.albedo = lerp( sampleA.albedo, sampleB.albedo, blend );
-		result.roughness = lerp( sampleA.roughness, sampleB.roughness, blend );
-		result.normalTs = normalize( lerp( sampleA.normalTs, sampleB.normalTs, blend ) );
-		return result;
+		RotatedUvPair uvs = LayerAntiTileUvPair(
+			worldUv, scale, rotation, layerOffset, layerSeed, warpStrength,
+			g_flRotationTileSize, randomizeRotation,
+			g_flRotationSquiggleStrength, g_flRotationSquiggleScale, g_flRotationEdgeBlend );
+		return SampleLayerBlended( colorMap, roughMap, normalMap, uvs, normalStrength );
 	}
 
 	float2 SampleHueSatNoiseTexture( float2 worldUv )
@@ -474,23 +540,20 @@ PS
 	{
 		float2 worldUv = i.vTextureCoords.xy;
 
-		LayerSample grass = SampleLayerAntiTile(
+		LayerSample grass = SampleBiomeLayer(
 			g_tGrass, g_tRoughGrass, g_tNormalGrass,
 			worldUv, g_vScaleGrass, g_flRotationGrass, g_vOffsetGrass,
-			17.3, 137.5, float2( 2.17, -1.83 ), 1.09, g_flUvWarpStrengthGrass, g_flAntiTileStrengthGrass,
-			g_flNormalStrengthGrass );
+			17.3, g_flUvWarpStrengthGrass, g_flNormalStrengthGrass, g_bRandomRotationGrass );
 
-		LayerSample sand = SampleLayerAntiTile(
+		LayerSample sand = SampleBiomeLayer(
 			g_tSand, g_tRoughSand, g_tNormalSand,
 			worldUv, g_vScaleSand, g_flRotationSand, g_vOffsetSand,
-			41.9, 211.0, float2( -1.41, 3.26 ), 1.07, g_flUvWarpStrengthSand, g_flAntiTileStrengthSand,
-			g_flNormalStrengthSand );
+			41.9, g_flUvWarpStrengthSand, g_flNormalStrengthSand, g_bRandomRotationSand );
 
-		LayerSample rock = SampleLayerAntiTile(
+		LayerSample rock = SampleBiomeLayer(
 			g_tRock, g_tRoughRock, g_tNormalRock,
 			worldUv, g_vScaleRock, g_flRotationRock, g_vOffsetRock,
-			93.7, 283.0, float2( 3.08, 0.92 ), 1.11, g_flUvWarpStrengthRock, g_flAntiTileStrengthRock,
-			g_flNormalStrengthRock );
+			93.7, g_flUvWarpStrengthRock, g_flNormalStrengthRock, g_bRandomRotationRock );
 
 		float3 weights = ApplyTextureBlendWeights(
 			saturate( i.vBlendValues.rgb ),
