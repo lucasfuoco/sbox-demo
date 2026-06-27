@@ -1,0 +1,19 @@
+// THIS FILE IS AUTO-GENERATED
+
+Layer0
+{
+	shader "shaders/sky_cycle.shader"
+
+	//---- Blend ----
+	g_flBlendDay "0.000"
+	g_flBlendNight "0.000"
+	g_flBlendSunrise "0.000"
+	g_flBlendSunset "0.000"
+	g_vWeatherTint "[1.000 1.000 1.000]"
+
+	//---- Skies ----
+	SkyDay "materials/skybox/qwantani_late_afternoon_puresky_4k.exr"
+	SkyNight "materials/skybox/qwantani_night_puresky_4k.exr"
+	SkySunrise "materials/skybox/qwantani_dusk_2_puresky_4k.exr"
+	SkySunset "materials/skybox/syferfontein_0d_clear_puresky_4k.exr"
+}
