@@ -4,7 +4,7 @@ namespace Sandbox.Components;
 
 /// <summary>
 /// Client-side atmosphere rendering driven by <see cref="WorldManagerComponent"/>.
-/// Rotates the scene's <see cref="DirectionalLight"/> sun and tints the skybox backdrop.
+/// Rotates scene directional lights and drives the procedural sky material.
 /// </summary>
 [Title( "World Environment Renderer" ), Category( "World Simulation" )]
 public sealed class WorldEnvironmentRendererComponent : Component, Component.ExecuteInEditor
@@ -12,8 +12,11 @@ public sealed class WorldEnvironmentRendererComponent : Component, Component.Exe
 	[Property, Group( "Setup" )]
 	public WorldManagerComponent World { get; set; }
 
-	[Property, Group( "Setup" ), Title( "Scene Sun" ), Description( "The scene's DirectionalLight. Auto-finds the Sun object if unset." )]
+	[Property, Group( "Setup" ), Title( "Scene Sun" ), Description( "The scene's sun DirectionalLight. Auto-finds the Sun object if unset." )]
 	public DirectionalLight Sun { get; set; }
+
+	[Property, Group( "Setup" ), Title( "Scene Moon" ), Description( "The scene's moon DirectionalLight. Auto-finds the Moon object if unset." )]
+	public DirectionalLight Moon { get; set; }
 
 	[Property, Group( "Setup" )]
 	public SkyBox2D Sky { get; set; }
@@ -59,10 +62,11 @@ public sealed class WorldEnvironmentRendererComponent : Component, Component.Exe
 
 	protected override void OnUpdate()
 	{
+		ApplyAtmosphere();
+
 		if ( IsEditMode )
 			return;
 
-		ApplyAtmosphere();
 		UpdatePrecipitation();
 	}
 
@@ -80,7 +84,8 @@ public sealed class WorldEnvironmentRendererComponent : Component, Component.Exe
 		World ??= Components.Get<WorldManagerComponent>();
 		World ??= Scene.GetAllComponents<WorldManagerComponent>().FirstOrDefault();
 
-		Sun ??= ResolveSceneSun();
+		Sun ??= ResolveDirectionalLight( "Sun" );
+		Moon ??= ResolveDirectionalLight( "Moon" );
 		Sky ??= Scene.GetAllComponents<SkyBox2D>().FirstOrDefault();
 		GradientFog ??= GameObject.GetOrAddComponent<GradientFog>();
 	}
@@ -93,31 +98,29 @@ public sealed class WorldEnvironmentRendererComponent : Component, Component.Exe
 			return;
 
 		UpdateSun();
+		UpdateMoon();
 		UpdateSky();
 		UpdateFog();
 	}
 
-	DirectionalLight ResolveSceneSun()
+	DirectionalLight ResolveDirectionalLight( string objectName )
 	{
-		if ( Sun.IsValid() )
+		if ( objectName.Equals( "Sun", StringComparison.OrdinalIgnoreCase ) && Sun.IsValid() )
 			return Sun;
+
+		if ( objectName.Equals( "Moon", StringComparison.OrdinalIgnoreCase ) && Moon.IsValid() )
+			return Moon;
 
 		foreach ( var light in Scene.GetAllComponents<DirectionalLight>() )
 		{
 			if ( !light.IsValid() )
 				continue;
 
-			if ( light.GameObject.Name.Equals( "Sun", StringComparison.OrdinalIgnoreCase ) )
+			if ( light.GameObject.Name.Equals( objectName, StringComparison.OrdinalIgnoreCase ) )
 				return light;
 		}
 
-		foreach ( var light in Scene.GetAllComponents<DirectionalLight>() )
-		{
-			if ( light.IsValid() && light.GameObject.Tags.Has( "light_directional" ) )
-				return light;
-		}
-
-		return Scene.GetAllComponents<DirectionalLight>().FirstOrDefault();
+		return null;
 	}
 
 	void EnsureSkyMaterial()
@@ -143,7 +146,7 @@ public sealed class WorldEnvironmentRendererComponent : Component, Component.Exe
 	{
 		if ( !Sun.IsValid() )
 		{
-			Sun = ResolveSceneSun();
+			Sun = ResolveDirectionalLight( "Sun" );
 			if ( !Sun.IsValid() )
 				return;
 		}
@@ -152,15 +155,38 @@ public sealed class WorldEnvironmentRendererComponent : Component, Component.Exe
 		var clouds = World.CloudAmount;
 		var rain = World.RainAmount;
 		var temperature = World.Temperature;
-		var daylight = WorldAtmospherePalette.GetDaylight( time );
+		var intensity = WorldAtmospherePalette.GetSunLightIntensity( time );
 
 		Sun.GameObject.WorldRotation = WorldAtmospherePalette.GetSunRotation( time );
 		Sun.LightColor = WorldAtmospherePalette.GetSunLightColor( time, clouds, rain, temperature );
 		Sun.SkyColor = WorldAtmospherePalette.GetSkyAmbientColor( time, clouds, rain );
 		Sun.FogMode = Light.FogInfluence.Enabled;
 		Sun.FogStrength = WorldAtmospherePalette.GetFogStrength( World.FogAmount, clouds, rain );
-		Sun.Enabled = daylight > 0.02f;
-		Sun.Shadows = daylight > 0.2f && rain < 0.85f && clouds < 0.95f;
+		Sun.Enabled = intensity > 0.02f;
+		Sun.Shadows = intensity > 0.2f && rain < 0.85f && clouds < 0.95f;
+	}
+
+	void UpdateMoon()
+	{
+		if ( !Moon.IsValid() )
+		{
+			Moon = ResolveDirectionalLight( "Moon" );
+			if ( !Moon.IsValid() )
+				return;
+		}
+
+		var time = World.TimeOfDay;
+		var clouds = World.CloudAmount;
+		var rain = World.RainAmount;
+		var intensity = WorldAtmospherePalette.GetMoonLightIntensity( time );
+
+		Moon.GameObject.WorldRotation = WorldAtmospherePalette.GetMoonRotation( time );
+		Moon.LightColor = WorldAtmospherePalette.GetMoonLightColor( clouds, rain ).WithAlpha( intensity );
+		Moon.SkyColor = WorldAtmospherePalette.GetSkyAmbientColor( time, clouds, rain );
+		Moon.FogMode = Light.FogInfluence.Enabled;
+		Moon.FogStrength = WorldAtmospherePalette.GetFogStrength( World.FogAmount, clouds, rain ) * 0.35f;
+		Moon.Enabled = intensity > 0.03f;
+		Moon.Shadows = false;
 	}
 
 	void UpdateFog()
@@ -200,20 +226,48 @@ public sealed class WorldEnvironmentRendererComponent : Component, Component.Exe
 		if ( !_skyMaterial.IsValid() )
 			return;
 
-		var blend = SkyCycleBlend.FromTimeOfDay( World.TimeOfDay );
-		_skyMaterial.Set( "g_flBlendDay", blend.Day );
-		_skyMaterial.Set( "g_flBlendSunrise", blend.Sunrise );
-		_skyMaterial.Set( "g_flBlendSunset", blend.Sunset );
-		_skyMaterial.Set( "g_flBlendNight", blend.Night );
-		_skyMaterial.Set( "g_vWeatherTint", GetSkyWeatherTint( World.CloudAmount, World.RainAmount, World.SnowAmount ) );
-		Sky.Tint = Color.White;
-	}
+		var time = World.TimeOfDay;
+		var clouds = World.CloudAmount;
+		var rain = World.RainAmount;
+		var snow = World.SnowAmount;
+		var blend = SkyCycleBlend.FromTimeOfDay( time );
 
-	static Vector3 GetSkyWeatherTint( float cloudAmount, float rainAmount, float snowAmount )
-	{
-		var brightness = 1f - cloudAmount * 0.35f - rainAmount * 0.2f + snowAmount * 0.05f;
-		brightness = MathX.Clamp( brightness, 0.45f, 1.1f );
-		return new Vector3( brightness, brightness, brightness );
+		_skyMaterial.Set( "g_flDayAmount", blend.Day );
+		_skyMaterial.Set( "g_flNightAmount", blend.Night );
+		_skyMaterial.Set( "g_flSunriseAmount", blend.Sunrise );
+		_skyMaterial.Set( "g_flSunsetAmount", blend.Sunset );
+		_skyMaterial.Set( "g_flStarIntensity", blend.StarIntensity );
+		_skyMaterial.Set( "g_flMilkyWayIntensity", blend.MilkyWayIntensity );
+		_skyMaterial.Set( "g_flCloudCoverage", clouds );
+		_skyMaterial.Set( "g_flWeatherDarkness", WorldAtmospherePalette.GetWeatherDarkness( clouds, rain, snow ) );
+
+		var dayGradient = WorldAtmospherePalette.GetDaySkyGradient( clouds, rain );
+		var sunriseGradient = WorldAtmospherePalette.GetSunriseSkyGradient( clouds, rain );
+		var sunsetGradient = WorldAtmospherePalette.GetSunsetSkyGradient( clouds, rain );
+		var nightGradient = WorldAtmospherePalette.GetNightSkyGradient( clouds, rain );
+
+		_skyMaterial.Set( "g_vDayHorizonColor", WorldAtmospherePalette.ToVector3( dayGradient.Horizon ) );
+		_skyMaterial.Set( "g_vDayZenithColor", WorldAtmospherePalette.ToVector3( dayGradient.Zenith ) );
+		_skyMaterial.Set( "g_vSunriseHorizonColor", WorldAtmospherePalette.ToVector3( sunriseGradient.Horizon ) );
+		_skyMaterial.Set( "g_vSunriseZenithColor", WorldAtmospherePalette.ToVector3( sunriseGradient.Zenith ) );
+		_skyMaterial.Set( "g_vSunsetHorizonColor", WorldAtmospherePalette.ToVector3( sunsetGradient.Horizon ) );
+		_skyMaterial.Set( "g_vSunsetZenithColor", WorldAtmospherePalette.ToVector3( sunsetGradient.Zenith ) );
+		_skyMaterial.Set( "g_vNightHorizonColor", WorldAtmospherePalette.ToVector3( nightGradient.Horizon ) );
+		_skyMaterial.Set( "g_vNightZenithColor", WorldAtmospherePalette.ToVector3( nightGradient.Zenith ) );
+
+		var sunDirection = WorldAtmospherePalette.GetSunSkyDirection( time );
+		var moonDirection = WorldAtmospherePalette.GetMoonSkyDirection( time );
+		var sunGlow = WorldAtmospherePalette.GetSunGlowColor( time, clouds );
+		var moonGlow = WorldAtmospherePalette.GetMoonDiscColor( time, clouds );
+
+		_skyMaterial.Set( "g_vSunDirection", sunDirection );
+		_skyMaterial.Set( "g_vMoonDirection", moonDirection );
+		_skyMaterial.Set( "g_vSunGlowColor", WorldAtmospherePalette.ToVector3( sunGlow ) );
+		_skyMaterial.Set( "g_vMoonGlowColor", WorldAtmospherePalette.ToVector3( moonGlow ) );
+		_skyMaterial.Set( "g_flSunGlowStrength", WorldAtmospherePalette.GetSunGlowStrength( time ) * blend.Day );
+		_skyMaterial.Set( "g_flMoonGlowStrength", 0.18f * blend.Night );
+
+		Sky.Tint = Color.White;
 	}
 
 	void UpdatePrecipitation()

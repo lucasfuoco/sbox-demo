@@ -59,9 +59,13 @@ public sealed class WeatherManagerComponent : Component
 	public Vector3 WindDirection => _displayWindDirection;
 	public float Temperature => _displayTemperature;
 
+	bool IsWeatherAuthority =>
+		Networking.IsHost
+		|| !Networking.IsActive;
+
 	protected override void OnStart()
 	{
-		if ( Networking.IsHost )
+		if ( IsWeatherAuthority )
 			ApplyProfileImmediate( WeatherProfile.GetPreset( StartingWeather ) );
 		else
 			CopySyncedToDisplay();
@@ -69,7 +73,7 @@ public sealed class WeatherManagerComponent : Component
 
 	protected override void OnFixedUpdate()
 	{
-		if ( !Networking.IsHost )
+		if ( !IsWeatherAuthority )
 			return;
 
 		var profile = WeatherProfile.GetPreset( TargetWeather );
@@ -90,7 +94,7 @@ public sealed class WeatherManagerComponent : Component
 	{
 		var networkRate = Scene.NetworkRate;
 
-		if ( Networking.IsHost )
+		if ( IsWeatherAuthority )
 		{
 			CopySyncedToDisplay();
 			return;
@@ -113,7 +117,7 @@ public sealed class WeatherManagerComponent : Component
 	/// </summary>
 	public void SetTargetWeather( WeatherType weatherType )
 	{
-		if ( !Networking.IsHost )
+		if ( !IsWeatherAuthority )
 			return;
 
 		TargetWeather = weatherType;

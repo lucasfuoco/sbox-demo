@@ -5,15 +5,41 @@ Layer0
 	shader "shaders/sky_cycle.shader"
 
 	//---- Blend ----
-	g_flBlendDay "0.000"
-	g_flBlendNight "0.000"
-	g_flBlendSunrise "0.000"
-	g_flBlendSunset "0.000"
-	g_vWeatherTint "[1.000 1.000 1.000]"
+	g_flCloudCoverage "0.000"
+	g_flDayAmount "1.000"
+	g_flMilkyWayIntensity "1.000"
+	g_flNightAmount "0.000"
+	g_flStarIntensity "0.000"
+	g_flSunriseAmount "0.000"
+	g_flSunsetAmount "0.000"
+	g_flWeatherDarkness "0.000"
 
-	//---- Skies ----
-	SkyDay "materials/skybox/qwantani_late_afternoon_puresky_4k.exr"
-	SkyNight "materials/skybox/qwantani_night_puresky_4k.exr"
-	SkySunrise "materials/skybox/qwantani_dusk_2_puresky_4k.exr"
-	SkySunset "materials/skybox/syferfontein_0d_clear_puresky_4k.exr"
+	//---- Celestial ----
+	g_flMoonGlowStrength "0.180"
+	g_flSunGlowStrength "0.450"
+	g_vMoonDirection "[0.000 0.000 -1.000]"
+	g_vMoonGlowColor "[0.780 0.860 1.000]"
+	g_vSunDirection "[0.000 0.000 1.000]"
+	g_vSunGlowColor "[1.000 0.920 0.780]"
+
+	//---- Day ----
+	g_vDayHorizonColor "[0.720 0.820 0.950]"
+	g_vDayZenithColor "[0.220 0.480 0.920]"
+
+	//---- Night ----
+	g_vNightHorizonColor "[0.040 0.060 0.120]"
+	g_vNightZenithColor "[0.010 0.020 0.060]"
+
+	//---- Sunrise ----
+	g_vSunriseHorizonColor "[1.000 0.550 0.280]"
+	g_vSunriseZenithColor "[0.550 0.620 0.880]"
+
+	//---- Sunset ----
+	g_vSunsetHorizonColor "[1.000 0.420 0.320]"
+	g_vSunsetZenithColor "[0.480 0.380 0.720]"
+
+	//---- Textures ----
+	CloudNoise ""
+	MilkyWayTexture "materials/skybox/milkyway.exr"
+	StarTexture ""
 }

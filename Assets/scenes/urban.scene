@@ -48,7 +48,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "0900253b-9b22-4fc0-bc31-bb0f58266fbc"
+              "IdValue": "23914741-163a-4ca2-be3b-eedf58d37643"
             },
             "Parent": {
               "Type": "GameObject",
@@ -61,7 +61,7 @@
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "0900253b-9b22-4fc0-bc31-bb0f58266fbc",
+              "__guid": "23914741-163a-4ca2-be3b-eedf58d37643",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -83,7 +83,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "a811aba3-feac-4a9f-9468-4d64a8dd94d3"
+              "IdValue": "e20baa15-8016-4fe1-86b3-94d15155026c"
             },
             "Parent": {
               "Type": "GameObject",
@@ -91,12 +91,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "0900253b-9b22-4fc0-bc31-bb0f58266fbc"
+              "IdValue": "23914741-163a-4ca2-be3b-eedf58d37643"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "a811aba3-feac-4a9f-9468-4d64a8dd94d3",
+              "__guid": "e20baa15-8016-4fe1-86b3-94d15155026c",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -118,7 +118,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "5d98be2e-5010-44e5-b943-81bea7428f1f"
+              "IdValue": "d390c037-e703-47b6-a623-69525441028a"
             },
             "Parent": {
               "Type": "GameObject",
@@ -126,12 +126,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "a811aba3-feac-4a9f-9468-4d64a8dd94d3"
+              "IdValue": "e20baa15-8016-4fe1-86b3-94d15155026c"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "5d98be2e-5010-44e5-b943-81bea7428f1f",
+              "__guid": "d390c037-e703-47b6-a623-69525441028a",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -153,7 +153,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "4f59bcab-efce-44ad-9ce3-875e30b3dc9a"
+              "IdValue": "54875561-e728-4b1f-920b-a55c55956d83"
             },
             "Parent": {
               "Type": "GameObject",
@@ -161,12 +161,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "5d98be2e-5010-44e5-b943-81bea7428f1f"
+              "IdValue": "d390c037-e703-47b6-a623-69525441028a"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "4f59bcab-efce-44ad-9ce3-875e30b3dc9a",
+              "__guid": "54875561-e728-4b1f-920b-a55c55956d83",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -188,7 +188,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "f90cfcf8-83db-41bf-aa75-97da28a74cda"
+              "IdValue": "3f07dccd-01fa-4201-956c-f2932fcd870b"
             },
             "Parent": {
               "Type": "GameObject",
@@ -196,12 +196,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "4f59bcab-efce-44ad-9ce3-875e30b3dc9a"
+              "IdValue": "54875561-e728-4b1f-920b-a55c55956d83"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "f90cfcf8-83db-41bf-aa75-97da28a74cda",
+              "__guid": "3f07dccd-01fa-4201-956c-f2932fcd870b",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -223,7 +223,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "cb24f5f3-6964-4cd5-a4b0-c26ce6971c2c"
+              "IdValue": "074ddd5f-284b-4deb-92b9-563c72785ec7"
             },
             "Parent": {
               "Type": "GameObject",
@@ -231,12 +231,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "f90cfcf8-83db-41bf-aa75-97da28a74cda"
+              "IdValue": "3f07dccd-01fa-4201-956c-f2932fcd870b"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "cb24f5f3-6964-4cd5-a4b0-c26ce6971c2c",
+              "__guid": "074ddd5f-284b-4deb-92b9-563c72785ec7",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -258,7 +258,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "38f7f25f-a4f1-41a0-9d74-85cea6fb3ec3"
+              "IdValue": "7e85a0ae-3add-4c8a-85b9-7f1e593f2e6d"
             },
             "Parent": {
               "Type": "GameObject",
@@ -266,12 +266,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "cb24f5f3-6964-4cd5-a4b0-c26ce6971c2c"
+              "IdValue": "074ddd5f-284b-4deb-92b9-563c72785ec7"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "38f7f25f-a4f1-41a0-9d74-85cea6fb3ec3",
+              "__guid": "7e85a0ae-3add-4c8a-85b9-7f1e593f2e6d",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -293,7 +293,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "5691cfc1-1784-4af6-9dc0-a80a08dd0bd4"
+              "IdValue": "a1fd0024-00c6-4778-8883-cea38999328a"
             },
             "Parent": {
               "Type": "GameObject",
@@ -301,12 +301,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "38f7f25f-a4f1-41a0-9d74-85cea6fb3ec3"
+              "IdValue": "7e85a0ae-3add-4c8a-85b9-7f1e593f2e6d"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "5691cfc1-1784-4af6-9dc0-a80a08dd0bd4",
+              "__guid": "a1fd0024-00c6-4778-8883-cea38999328a",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -328,7 +328,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "8c9483ab-c602-493e-b3fe-18bbd739e9df"
+              "IdValue": "e661dfc8-d0be-4ca4-917e-7fdcd4b7f727"
             },
             "Parent": {
               "Type": "GameObject",
@@ -336,12 +336,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "5691cfc1-1784-4af6-9dc0-a80a08dd0bd4"
+              "IdValue": "a1fd0024-00c6-4778-8883-cea38999328a"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "8c9483ab-c602-493e-b3fe-18bbd739e9df",
+              "__guid": "e661dfc8-d0be-4ca4-917e-7fdcd4b7f727",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -363,7 +363,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "ba07cbbe-0388-4e9a-87fc-1c07fbc36c92"
+              "IdValue": "8a357cfc-a17c-4da7-8e1d-dabe270efed4"
             },
             "Parent": {
               "Type": "GameObject",
@@ -371,12 +371,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "8c9483ab-c602-493e-b3fe-18bbd739e9df"
+              "IdValue": "e661dfc8-d0be-4ca4-917e-7fdcd4b7f727"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "ba07cbbe-0388-4e9a-87fc-1c07fbc36c92",
+              "__guid": "8a357cfc-a17c-4da7-8e1d-dabe270efed4",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -398,7 +398,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "5b01c68e-6394-44c9-b032-416970bf8711"
+              "IdValue": "dd3c07da-8209-4338-9190-be678aacae5b"
             },
             "Parent": {
               "Type": "GameObject",
@@ -406,12 +406,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "ba07cbbe-0388-4e9a-87fc-1c07fbc36c92"
+              "IdValue": "8a357cfc-a17c-4da7-8e1d-dabe270efed4"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "5b01c68e-6394-44c9-b032-416970bf8711",
+              "__guid": "dd3c07da-8209-4338-9190-be678aacae5b",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -433,7 +433,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "eea76eb2-b88b-4a06-806e-7db1d78a1b8d"
+              "IdValue": "0a0dcdb6-7441-44bf-8c82-c20eeb45804c"
             },
             "Parent": {
               "Type": "GameObject",
@@ -441,12 +441,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "5b01c68e-6394-44c9-b032-416970bf8711"
+              "IdValue": "dd3c07da-8209-4338-9190-be678aacae5b"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "eea76eb2-b88b-4a06-806e-7db1d78a1b8d",
+              "__guid": "0a0dcdb6-7441-44bf-8c82-c20eeb45804c",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -468,7 +468,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "294fde4a-6450-4e57-9e7d-5acdafb8b60c"
+              "IdValue": "61803a0e-aac2-4d49-87f0-4728b7d35bf8"
             },
             "Parent": {
               "Type": "GameObject",
@@ -476,12 +476,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "eea76eb2-b88b-4a06-806e-7db1d78a1b8d"
+              "IdValue": "0a0dcdb6-7441-44bf-8c82-c20eeb45804c"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "294fde4a-6450-4e57-9e7d-5acdafb8b60c",
+              "__guid": "61803a0e-aac2-4d49-87f0-4728b7d35bf8",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -503,7 +503,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "d2b23c44-4a21-4735-bf12-eb747908f574"
+              "IdValue": "e711f736-c323-45b2-b7e6-71669fceac97"
             },
             "Parent": {
               "Type": "GameObject",
@@ -511,12 +511,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "294fde4a-6450-4e57-9e7d-5acdafb8b60c"
+              "IdValue": "61803a0e-aac2-4d49-87f0-4728b7d35bf8"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "d2b23c44-4a21-4735-bf12-eb747908f574",
+              "__guid": "e711f736-c323-45b2-b7e6-71669fceac97",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -538,7 +538,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "bfaf7064-b327-4ced-902d-b2d182e7cf29"
+              "IdValue": "df8d588c-f177-470f-93fb-db9291a32dcd"
             },
             "Parent": {
               "Type": "GameObject",
@@ -546,12 +546,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "d2b23c44-4a21-4735-bf12-eb747908f574"
+              "IdValue": "e711f736-c323-45b2-b7e6-71669fceac97"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "bfaf7064-b327-4ced-902d-b2d182e7cf29",
+              "__guid": "df8d588c-f177-470f-93fb-db9291a32dcd",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -573,7 +573,7 @@
           {
             "Id": {
               "Type": "GameObject",
-              "IdValue": "d0ad3657-c6bc-4816-b72d-090932a0b3de"
+              "IdValue": "4dc9df8b-42d5-4c73-b944-20ece3032dfa"
             },
             "Parent": {
               "Type": "GameObject",
@@ -581,12 +581,12 @@
             },
             "PreviousElement": {
               "Type": "GameObject",
-              "IdValue": "bfaf7064-b327-4ced-902d-b2d182e7cf29"
+              "IdValue": "df8d588c-f177-470f-93fb-db9291a32dcd"
             },
             "ContainerProperty": "Children",
             "IsContainerArray": true,
             "Data": {
-              "__guid": "d0ad3657-c6bc-4816-b72d-090932a0b3de",
+              "__guid": "4dc9df8b-42d5-4c73-b944-20ece3032dfa",
               "__version": 2,
               "Flags": 0,
               "Name": "GameObject",
@@ -967,7 +967,7 @@
               "OnComponentUpdate": null,
               "PauseTime": false,
               "StartingTimeOfDay": 16.642336,
-              "TimeOfDaySlider": 11.386862
+              "TimeOfDaySlider": 4.846715
             },
             {
               "__type": "Sandbox.Components.WeatherManagerComponent",
@@ -981,7 +981,7 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "StartingWeather": "Clear",
-              "WeatherTransitionSpeed": 0.22080292
+              "WeatherTransitionSpeed": 0.46751827
             },
             {
               "__type": "Sandbox.Components.SingletonComponents.WorldManagerComponent",
@@ -1011,6 +1011,12 @@
                 "component_id": "0befdff5-5532-42c7-94d1-4a4597c3a1d1",
                 "go": "8b99d3a4-f0bd-47fc-beb7-6b05859912c1",
                 "component_type": "GradientFog"
+              },
+              "Moon": {
+                "_type": "component",
+                "component_id": "8715e91b-55ac-4d1a-905c-b270da05324b",
+                "go": "6d9afb21-8ac1-439a-ab13-870491c2f71a",
+                "component_type": "DirectionalLight"
               },
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -1160,7 +1166,7 @@
           "Flags": 0,
           "Name": "Sun",
           "Position": "-163323.859,-154787.547,-43157.2539",
-          "Rotation": "0.579360366,-0.0465992875,0.811118782,0.0652401522",
+          "Rotation": "-0.110100016,0.149607241,0.582405806,0.791390657",
           "Scale": "1,1,1",
           "Tags": "light_directional,light",
           "Enabled": true,
@@ -1173,12 +1179,12 @@
             {
               "__type": "Sandbox.DirectionalLight",
               "__guid": "888fca07-4af7-4df4-ac99-3737fadd0f3d",
-              "__enabled": true,
+              "__enabled": false,
               "Flags": 0,
               "Contribution": "Diffuse, Specular, Transmissive",
               "FogMode": "Enabled",
               "FogStrength": 0,
-              "LightColor": "0.94,0.9021,0.8372,1",
+              "LightColor": "0.47023,0.47654,0.6194,0",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -1189,8 +1195,8 @@
               "ShadowCascadeCount": 4,
               "ShadowCascadeSplitRatio": 0.7931873,
               "ShadowHardness": 0,
-              "Shadows": true,
-              "SkyColor": "0.45,0.68,0.95,1",
+              "Shadows": false,
+              "SkyColor": "0.02,0.04,0.1,1",
               "Visualizer": {}
             }
           ],
@@ -12790,6 +12796,48 @@
               "OnComponentUpdate": null,
               "StartDistance": 64,
               "VerticalFalloffExponent": 2
+            }
+          ],
+          "Children": []
+        },
+        {
+          "__guid": "6d9afb21-8ac1-439a-ab13-870491c2f71a",
+          "__version": 2,
+          "Flags": 0,
+          "Name": "Moon",
+          "Position": "0,0,0",
+          "Rotation": "0.149607241,0.110100023,0.791390657,-0.582405806",
+          "Scale": "1,1,1",
+          "Tags": "light_directional,light",
+          "Enabled": true,
+          "NetworkMode": 2,
+          "NetworkFlags": 0,
+          "NetworkOrphaned": 0,
+          "NetworkTransmit": true,
+          "OwnerTransfer": 1,
+          "Components": [
+            {
+              "__type": "Sandbox.DirectionalLight",
+              "__guid": "8715e91b-55ac-4d1a-905c-b270da05324b",
+              "__enabled": true,
+              "Flags": 0,
+              "Contribution": "Diffuse, Specular, Transmissive",
+              "FogMode": "Enabled",
+              "FogStrength": 0,
+              "LightColor": "0.72,0.82,1,1",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "ShadowBias": 0.0005,
+              "ShadowCascadeCount": 4,
+              "ShadowCascadeSplitRatio": 0.91,
+              "ShadowHardness": 0,
+              "Shadows": false,
+              "SkyColor": "0.02,0.04,0.1,1",
+              "Visualizer": {}
             }
           ],
           "Children": []
