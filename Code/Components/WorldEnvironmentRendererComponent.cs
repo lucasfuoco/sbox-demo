@@ -257,15 +257,17 @@ public sealed class WorldEnvironmentRendererComponent : Component, Component.Exe
 
 		var sunDirection = WorldAtmospherePalette.GetSunSkyDirection( time );
 		var moonDirection = WorldAtmospherePalette.GetMoonSkyDirection( time );
-		var sunGlow = WorldAtmospherePalette.GetSunGlowColor( time, clouds );
-		var moonGlow = WorldAtmospherePalette.GetMoonDiscColor( time, clouds );
+		var sunDiscColor = WorldAtmospherePalette.GetSunDiscColor( time, clouds );
+		var moonDiscColor = WorldAtmospherePalette.GetMoonDiscColor( time, clouds );
 
 		_skyMaterial.Set( "g_vSunDirection", sunDirection );
 		_skyMaterial.Set( "g_vMoonDirection", moonDirection );
-		_skyMaterial.Set( "g_vSunGlowColor", WorldAtmospherePalette.ToVector3( sunGlow ) );
-		_skyMaterial.Set( "g_vMoonGlowColor", WorldAtmospherePalette.ToVector3( moonGlow ) );
+		_skyMaterial.Set( "g_vSunDiscColor", WorldAtmospherePalette.ToVector3( sunDiscColor ) );
+		_skyMaterial.Set( "g_vMoonDiscColor", WorldAtmospherePalette.ToVector3( moonDiscColor ) );
+		_skyMaterial.Set( "g_flSunBrightness", WorldAtmospherePalette.GetSunBodyVisibility( time ) );
+		_skyMaterial.Set( "g_flMoonBrightness", WorldAtmospherePalette.GetMoonBodyVisibility( time ) );
 		_skyMaterial.Set( "g_flSunGlowStrength", WorldAtmospherePalette.GetSunGlowStrength( time ) * blend.Day );
-		_skyMaterial.Set( "g_flMoonGlowStrength", 0.18f * blend.Night );
+		_skyMaterial.Set( "g_flMoonGlowStrength", MathX.Lerp( 0.35f, 0.7f, blend.Night ) );
 
 		Sky.Tint = Color.White;
 	}

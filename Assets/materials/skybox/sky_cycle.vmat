@@ -15,16 +15,27 @@ Layer0
 	g_flWeatherDarkness "0.000"
 
 	//---- Celestial ----
-	g_flMoonGlowStrength "0.180"
-	g_flSunGlowStrength "0.450"
+	g_flMoonBrightness "24.390"
+	g_flMoonDiscSize "4.000"
+	g_flMoonGlowSize "8.500"
+	g_flMoonGlowStrength "0.150"
+	g_flSunBrightness "0.000"
+	g_flSunDiscSize "2.200"
+	g_flSunGlowSize "7.000"
+	g_flSunGlowStrength "0.350"
 	g_vMoonDirection "[0.000 0.000 -1.000]"
-	g_vMoonGlowColor "[0.780 0.860 1.000]"
+	g_vMoonDiscColor "[1.000 1.000 1.000]"
 	g_vSunDirection "[0.000 0.000 1.000]"
-	g_vSunGlowColor "[1.000 0.920 0.780]"
+	g_vSunDiscColor "[1.000 0.950 0.850]"
 
 	//---- Day ----
 	g_vDayHorizonColor "[0.720 0.820 0.950]"
 	g_vDayZenithColor "[0.220 0.480 0.920]"
+
+	//---- Moon Texture ----
+	g_flMoonEdgeSoft "0.080"
+	g_flMoonTextureBrightness "2.500"
+	g_flMoonTextureRadial "0.420"
 
 	//---- Night ----
 	g_vNightHorizonColor "[0.040 0.060 0.120]"
@@ -41,5 +52,7 @@ Layer0
 	//---- Textures ----
 	CloudNoise ""
 	MilkyWayTexture "materials/skybox/milkyway.exr"
+	MoonTexture "materials/skybox/moon.png"
 	StarTexture ""
+	SunTexture "materials/skybox/sun_luminance.png"
 }

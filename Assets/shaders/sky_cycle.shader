@@ -62,14 +62,19 @@ PS
 	BoolAttribute( sky, true );
 
 	SamplerState g_sSky < Filter( Linear ); AddressU( Wrap ); AddressV( Clamp ); >;
+	SamplerState g_sMoon < Filter( Linear ); AddressU( Clamp ); AddressV( Clamp ); >;
 
-	CreateInputTexture2D( MilkyWayTexture, Linear, 8, "", "", "Textures, 1/3", Default( 0.5 ) );
-	CreateInputTexture2D( StarTexture, Linear, 8, "", "", "Textures, 2/3", Default( 0.5 ) );
-	CreateInputTexture2D( CloudNoise, Linear, 8, "", "", "Textures, 3/3", Default( 0.5 ) );
+	CreateInputTexture2D( MilkyWayTexture, Linear, 8, "", "", "Textures, 1/5", Default( 0.5 ) );
+	CreateInputTexture2D( StarTexture, Linear, 8, "", "", "Textures, 2/5", Default( 0.5 ) );
+	CreateInputTexture2D( CloudNoise, Linear, 8, "", "", "Textures, 3/5", Default( 0.5 ) );
+	CreateInputTexture2D( SunTexture, Linear, 8, "", "", "Textures, 4/5", Default( 0.5 ) );
+	CreateInputTexture2D( MoonTexture, Linear, 8, "", "", "Textures, 5/5", Default( 0.5 ) );
 
 	Texture2D g_tMilkyWayTexture < Channel( RGBA, Box( MilkyWayTexture ), Linear ); OutputFormat( BC7 ); SrgbRead( true ); >;
 	Texture2D g_tStarTexture < Channel( RGBA, Box( StarTexture ), Linear ); OutputFormat( BC7 ); SrgbRead( true ); >;
 	Texture2D g_tCloudNoise < Channel( RGBA, Box( CloudNoise ), Linear ); OutputFormat( BC7 ); SrgbRead( true ); >;
+	Texture2D g_tSunTexture < Channel( RGBA, Box( SunTexture ), Linear ); OutputFormat( BC7 ); SrgbRead( true ); >;
+	Texture2D g_tMoonTexture < Channel( RGBA, Box( MoonTexture ), Linear ); OutputFormat( BC7 ); SrgbRead( true ); >;
 
 	float3 g_vDayHorizonColor < Default3( 0.72, 0.82, 0.95 ); UiGroup( "Day, 1/2" ); >;
 	float3 g_vDayZenithColor < Default3( 0.22, 0.48, 0.92 ); UiGroup( "Day, 2/2" ); >;
@@ -92,12 +97,22 @@ PS
 	float g_flCloudCoverage < Default( 0.0 ); UiGroup( "Blend, 7/8" ); >;
 	float g_flWeatherDarkness < Default( 0.0 ); UiGroup( "Blend, 8/8" ); >;
 
-	float3 g_vSunDirection < Default3( 0.0, 0.0, 1.0 ); UiGroup( "Celestial, 1/6" ); >;
-	float3 g_vMoonDirection < Default3( 0.0, 0.0, -1.0 ); UiGroup( "Celestial, 2/6" ); >;
-	float g_flSunGlowStrength < Default( 0.45 ); UiGroup( "Celestial, 3/6" ); >;
-	float g_flMoonGlowStrength < Default( 0.18 ); UiGroup( "Celestial, 4/6" ); >;
-	float3 g_vSunGlowColor < Default3( 1.0, 0.92, 0.78 ); UiGroup( "Celestial, 5/6" ); >;
-	float3 g_vMoonGlowColor < Default3( 0.78, 0.86, 1.0 ); UiGroup( "Celestial, 6/6" ); >;
+	float3 g_vSunDirection < Default3( 0.0, 0.0, 1.0 ); UiGroup( "Celestial, 1/12" ); >;
+	float3 g_vMoonDirection < Default3( 0.0, 0.0, -1.0 ); UiGroup( "Celestial, 2/12" ); >;
+	float g_flSunDiscSize < Default( 2.2 ); UiGroup( "Celestial, 3/12" ); >;
+	float g_flMoonDiscSize < Default( 1.8 ); UiGroup( "Celestial, 4/12" ); >;
+	float g_flSunBrightness < Default( 0.0 ); UiGroup( "Celestial, 5/12" ); >;
+	float g_flMoonBrightness < Default( 0.0 ); UiGroup( "Celestial, 6/12" ); >;
+	float g_flSunGlowStrength < Default( 0.35 ); UiGroup( "Celestial, 7/12" ); >;
+	float g_flMoonGlowStrength < Default( 0.15 ); UiGroup( "Celestial, 8/12" ); >;
+	float g_flSunGlowSize < Default( 7.0 ); UiGroup( "Celestial, 9/12" ); >;
+	float g_flMoonGlowSize < Default( 4.5 ); UiGroup( "Celestial, 10/12" ); >;
+	float3 g_vSunDiscColor < Default3( 1.0, 0.95, 0.85 ); UiGroup( "Celestial, 11/12" ); >;
+	float3 g_vMoonDiscColor < Default3( 1.0, 1.0, 1.0 ); UiGroup( "Celestial, 12/12" ); >;
+
+	float g_flMoonTextureRadial < Default( 0.42 ); UiGroup( "Moon Texture, 1/3" ); >;
+	float g_flMoonEdgeSoft < Default( 0.08 ); UiGroup( "Moon Texture, 2/3" ); >;
+	float g_flMoonTextureBrightness < Default( 1.0 ); UiGroup( "Moon Texture, 3/3" ); >;
 
 	float2 EquirectUv( float3 dir )
 	{
@@ -157,6 +172,99 @@ PS
 		float cosGlow = cos( radians( glowDegrees ) );
 		float glow = pow( saturate( (cosAngle - cosGlow) / max( 1.0 - cosGlow, 0.001 ) ), 4.0 );
 		return glow * strength;
+	}
+
+	float CelestialDiscMask( float3 rayDir, float3 bodyDir, float discDegrees )
+	{
+		bodyDir = normalize( bodyDir );
+		float cosAngle = saturate( dot( rayDir, bodyDir ) );
+		float cosInner = cos( radians( discDegrees ) );
+		float cosOuter = cos( radians( discDegrees * 1.12 ) );
+		return smoothstep( cosOuter, cosInner, cosAngle );
+	}
+
+	float MoonRadialMask( float3 rayDir, float3 bodyDir, float discDegrees )
+	{
+		bodyDir = normalize( bodyDir );
+		float cosAngle = saturate( dot( rayDir, bodyDir ) );
+		float cosInner = cos( radians( discDegrees ) );
+		float cosOuter = cos( radians( discDegrees * (1.0 + g_flMoonEdgeSoft) ) );
+		return smoothstep( cosOuter, cosInner, cosAngle );
+	}
+
+	float3 MoonDiscColor(
+		float3 rayDir,
+		float3 bodyDir,
+		float discDegrees,
+		float3 tintColor,
+		float brightness )
+	{
+		bodyDir = normalize( bodyDir );
+		float cosAngle = dot( rayDir, bodyDir );
+		float discRadius = max( radians( discDegrees ), 0.001 );
+
+		float3 upRef = abs( bodyDir.z ) < 0.999 ? float3( 0.0, 0.0, 1.0 ) : float3( 0.0, 1.0, 0.0 );
+		float3 tangent = normalize( cross( upRef, bodyDir ) );
+		float3 bitangent = cross( bodyDir, tangent );
+
+		float sinTheta = sqrt( saturate( 1.0 - cosAngle * cosAngle ) );
+		float phi = atan2( dot( rayDir, bitangent ), dot( rayDir, tangent ) );
+		float radial = saturate( sinTheta / discRadius );
+		float2 uvDir = float2( cos( phi ), sin( phi ) );
+
+		float maxUvOffset = max( g_flMoonTextureRadial, 0.01 );
+		float2 uvOffset = uvDir * radial * maxUvOffset;
+		float uvOffsetLen = length( uvOffset );
+		if ( uvOffsetLen > maxUvOffset )
+			uvOffset = uvOffset * (maxUvOffset / uvOffsetLen);
+
+		float2 discUv = uvOffset + 0.5;
+		float3 sampleRgb = g_tMoonTexture.SampleLevel( g_sMoon, discUv, 0 ).rgb;
+		return sampleRgb * tintColor * brightness * g_flMoonTextureBrightness;
+	}
+
+	float3 CelestialDiscColor(
+		float3 rayDir,
+		float3 bodyDir,
+		float discDegrees,
+		Texture2D discTexture,
+		float3 tintColor,
+		float brightness,
+		float fullBrightDisc )
+	{
+		float mask = CelestialDiscMask( rayDir, bodyDir, discDegrees );
+		if ( mask <= 0.001 )
+			return float3( 0.0, 0.0, 0.0 );
+
+		bodyDir = normalize( bodyDir );
+		float cosAngle = dot( rayDir, bodyDir );
+		float discRadius = max( radians( discDegrees ), 0.001 );
+
+		float luma = 1.0;
+		float3 surfaceColor = tintColor;
+
+		if ( fullBrightDisc > 0.5 )
+		{
+			if ( cosAngle < 0.9995 )
+			{
+				float3 upRef = abs( bodyDir.z ) < 0.999 ? float3( 0.0, 0.0, 1.0 ) : float3( 0.0, 1.0, 0.0 );
+				float3 tangent = normalize( cross( upRef, bodyDir ) );
+				float3 bitangent = cross( bodyDir, tangent );
+
+				float sinTheta = sqrt( saturate( 1.0 - cosAngle * cosAngle ) );
+				float phi = atan2( dot( rayDir, bitangent ), dot( rayDir, tangent ) );
+				float radial = saturate( sinTheta / discRadius );
+				float2 discUv = float2( cos( phi ), sin( phi ) ) * radial * 0.5 + 0.5;
+
+				float texLuma = dot( discTexture.SampleLevel( g_sSky, discUv, 0 ).rgb, float3( 0.2126, 0.7152, 0.0722 ) );
+				float centerDetail = (1.0 - radial) * (1.0 - radial);
+				luma = lerp( 1.0, max( texLuma, 1.0 ), centerDetail * 0.2 );
+			}
+
+			return tintColor * luma * brightness;
+		}
+
+		return MoonDiscColor( rayDir, bodyDir, discDegrees, tintColor, brightness );
 	}
 
 	struct PS_OUTPUT
@@ -220,10 +328,19 @@ PS
 			color = lerp( color, cloudTint, cloudPatch * cloudMask * 0.75 );
 		}
 
-		float sunGlow = CelestialGlow( vRay, g_vSunDirection, 8.0, g_flSunGlowStrength ) * g_flDayAmount;
-		float moonGlow = CelestialGlow( vRay, g_vMoonDirection, 6.0, g_flMoonGlowStrength ) * g_flNightAmount;
-		color += g_vSunGlowColor * sunGlow;
-		color += g_vMoonGlowColor * moonGlow;
+		float sunGlow = CelestialGlow( vRay, g_vSunDirection, g_flSunGlowSize, g_flSunGlowStrength );
+		float moonGlow = CelestialGlow( vRay, g_vMoonDirection, g_flMoonGlowSize, g_flMoonGlowStrength );
+		float sunMask = CelestialDiscMask( vRay, g_vSunDirection, g_flSunDiscSize );
+		float moonMask = MoonRadialMask( vRay, g_vMoonDirection, g_flMoonDiscSize );
+		float3 sunDisc = CelestialDiscColor( vRay, g_vSunDirection, g_flSunDiscSize, g_tSunTexture, g_vSunDiscColor, g_flSunBrightness, 1.0 );
+		float3 moonDisc = MoonDiscColor( vRay, g_vMoonDirection, g_flMoonDiscSize, g_vMoonDiscColor, g_flMoonBrightness );
+
+		color += g_vSunDiscColor * sunGlow;
+		color += g_vMoonDiscColor * moonGlow * g_flNightAmount;
+		color = max( color, sunDisc * sunMask );
+
+		float moonBlend = moonMask * (1.0 - sunMask * 0.85);
+		color = lerp( color, moonDisc, moonBlend );
 
 		color *= 1.0 - g_flWeatherDarkness * 0.65;
 

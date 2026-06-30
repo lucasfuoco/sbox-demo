@@ -30,27 +30,40 @@ static class WorldAtmospherePalette
 		return timeOfDay / 24f * 360f;
 	}
 
-	public static Rotation GetSunRotation( float timeOfDay )
-	{
-		var elevation = GetSunElevationDegrees( timeOfDay );
-		var azimuth = GetSunAzimuthDegrees( timeOfDay );
-		return Rotation.From( new Angles( -elevation, azimuth, 0f ) );
-	}
-
-	public static Rotation GetMoonRotation( float timeOfDay ) =>
-		GetSunRotation( (timeOfDay + 12f) % 24f );
-
 	/// <summary>
-	/// World-space direction toward the visible sun disc in the sky.
+	/// World-space direction from the observer toward the sun in the sky dome.
 	/// </summary>
 	public static Vector3 GetSunSkyDirection( float timeOfDay ) =>
-		(-GetSunRotation( timeOfDay ).Forward).Normal;
+		DirectionFromElevationAzimuth( GetSunElevationDegrees( timeOfDay ), GetSunAzimuthDegrees( timeOfDay ) );
 
 	/// <summary>
 	/// World-space direction toward the visible moon disc (roughly opposite the sun).
 	/// </summary>
 	public static Vector3 GetMoonSkyDirection( float timeOfDay ) =>
 		GetSunSkyDirection( (timeOfDay + 12f) % 24f );
+
+	public static Rotation GetSunRotation( float timeOfDay )
+	{
+		var toSun = GetSunSkyDirection( timeOfDay );
+		return Rotation.LookAt( -toSun, Vector3.Up );
+	}
+
+	public static Rotation GetMoonRotation( float timeOfDay ) =>
+		GetSunRotation( (timeOfDay + 12f) % 24f );
+
+	static Vector3 DirectionFromElevationAzimuth( float elevationDegrees, float azimuthDegrees )
+	{
+		var elev = elevationDegrees * (MathF.PI / 180f);
+		var azim = azimuthDegrees * (MathF.PI / 180f );
+		var horizontal = MathF.Cos( elev );
+
+		// Azimuth rotates around world up (Z). 6:00 = 90° (east), 12:00 = 180°, 18:00 = 270°.
+		return new Vector3(
+			horizontal * MathF.Sin( azim ),
+			horizontal * MathF.Cos( azim ),
+			MathF.Sin( elev )
+		).Normal;
+	}
 
 	public static float GetSunBodyVisibility( float timeOfDay )
 	{
@@ -60,8 +73,10 @@ static class WorldAtmospherePalette
 
 	public static float GetMoonBodyVisibility( float timeOfDay )
 	{
-		var elevation = GetSunElevationDegrees( (timeOfDay + 12f) % 24f );
-		return MathX.Clamp( elevation / 3f, 0f, 1f );
+		var moonElevation = GetSunElevationDegrees( (timeOfDay + 12f) % 24f );
+		var aboveHorizon = MathX.Clamp( moonElevation / 2f, 0f, 1f );
+		var night = 1f - GetSunLightIntensity( timeOfDay );
+		return MathX.Clamp( aboveHorizon * MathX.Lerp( 0.35f, 1f, night ), 0f, 1f );
 	}
 
 	public static Color GetSunDiscColor( float timeOfDay, float cloudAmount )
@@ -76,8 +91,8 @@ static class WorldAtmospherePalette
 
 	public static Color GetMoonDiscColor( float timeOfDay, float cloudAmount )
 	{
-		var color = new Color( 0.82f, 0.88f, 1f );
-		color *= Color.Lerp( Color.White, OvercastTint, cloudAmount * 0.65f );
+		var color = Color.White;
+		color *= Color.Lerp( Color.White, OvercastTint, cloudAmount * 0.35f );
 		return color;
 	}
 
