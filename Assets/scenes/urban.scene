@@ -985,7 +985,7 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "StartingWeather": "Clear",
-              "WeatherTransitionSpeed": 0.5624088
+              "WeatherTransitionSpeed": 0.4390511
             },
             {
               "__type": "Sandbox.Components.SingletonComponents.WorldManagerComponent",

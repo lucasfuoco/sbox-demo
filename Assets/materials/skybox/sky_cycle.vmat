@@ -32,6 +32,9 @@ Layer0
 	g_vDayHorizonColor "[0.720 0.820 0.950]"
 	g_vDayZenithColor "[0.220 0.480 0.920]"
 
+	//---- Milky Way ----
+	g_flMilkyWayBrightness "2.500"
+
 	//---- Moon Texture ----
 	g_flMoonEdgeSoft "0.080"
 	g_flMoonTextureBrightness "2.500"
@@ -40,6 +43,12 @@ Layer0
 	//---- Night ----
 	g_vNightHorizonColor "[0.040 0.060 0.120]"
 	g_vNightZenithColor "[0.010 0.020 0.060]"
+
+	//---- Stars ----
+	g_flStarNoiseDensity "0.985"
+	g_flStarNoiseScale "280.000"
+	g_flStarTwinkleAmount "0.900"
+	g_flStarTwinkleSpeed "1.600"
 
 	//---- Sunrise ----
 	g_vSunriseHorizonColor "[1.000 0.550 0.280]"
@@ -53,6 +62,5 @@ Layer0
 	CloudNoise ""
 	MilkyWayTexture "materials/skybox/milkyway.exr"
 	MoonTexture "materials/skybox/moon.png"
-	StarTexture ""
 	SunTexture "materials/skybox/sun_luminance.png"
 }
