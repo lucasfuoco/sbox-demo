@@ -1,7 +1,7 @@
 namespace Sandbox;
 
 /// <summary>
-/// Procedural cloud patches used to localize rain and thunder in the world.
+/// Procedural cloud patch density for localized weather volumes.
 /// </summary>
 public static class WorldAmbientCloudCoverage
 {
@@ -36,6 +36,6 @@ public static class WorldAmbientCloudCoverage
 	{
 		var value = MathF.Sin( x * 12.9898f + y * 78.233f ) * 43758.5453f;
 		value = value - MathF.Floor( value );
-		return value * value * (3f - 2f * value);
+		return value * value * (3f - 2f * value );
 	}
 }

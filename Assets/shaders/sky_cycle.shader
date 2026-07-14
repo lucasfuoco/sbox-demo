@@ -61,16 +61,15 @@ PS
 
 	BoolAttribute( sky, true );
 
-	SamplerState g_sSky < Filter( Linear ); AddressU( Wrap ); AddressV( Clamp ); >;
-	SamplerState g_sMoon < Filter( Linear ); AddressU( Clamp ); AddressV( Clamp ); >;
+	SamplerState g_sSky < Filter( Anisotropic ); MaxAniso( 8 ); AddressU( Wrap ); AddressV( Clamp ); >;
+	SamplerState g_sMoon < Filter( Anisotropic ); MaxAniso( 4 ); AddressU( Clamp ); AddressV( Clamp ); >;
 
-	CreateInputTexture2D( MilkyWayTexture, Linear, 8, "", "", "Textures, 1/4", Default( 0.5 ) );
-	CreateInputTexture2D( CloudNoise, Linear, 8, "", "", "Textures, 2/4", Default( 0.5 ) );
-	CreateInputTexture2D( SunTexture, Linear, 8, "", "", "Textures, 3/4", Default( 0.5 ) );
-	CreateInputTexture2D( MoonTexture, Linear, 8, "", "", "Textures, 4/4", Default( 0.5 ) );
+	CreateInputTexture2D( MilkyWayTexture, Linear, 8, "", "", "Textures, 1/3", Default( 0.5 ) );
+	CreateInputTexture2D( SunTexture, Linear, 8, "", "", "Textures, 2/3", Default( 0.5 ) );
+	CreateInputTexture2D( MoonTexture, Linear, 8, "", "", "Textures, 3/3", Default( 0.5 ) );
 
-	Texture2D g_tMilkyWayTexture < Channel( RGBA, Box( MilkyWayTexture ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
-	Texture2D g_tCloudNoise < Channel( RGBA, Box( CloudNoise ), Linear ); OutputFormat( BC7 ); SrgbRead( true ); >;
+	// None + RGBA8888 keeps the equirect milky-way sharp (BC7/Box looked soft and blocky on sky).
+	Texture2D g_tMilkyWayTexture < Channel( RGBA, None( MilkyWayTexture ), Linear ); OutputFormat( RGBA8888 ); SrgbRead( false ); >;
 	Texture2D g_tSunTexture < Channel( RGBA, Box( SunTexture ), Linear ); OutputFormat( BC7 ); SrgbRead( true ); >;
 	Texture2D g_tMoonTexture < Channel( RGBA, Box( MoonTexture ), Linear ); OutputFormat( BC7 ); SrgbRead( true ); >;
 
@@ -93,21 +92,26 @@ PS
 	float g_flStarIntensity < Default( 0.0 ); UiGroup( "Blend, 5/8" ); >;
 	float g_flMilkyWayIntensity < Default( 1.0 ); UiGroup( "Blend, 6/8" ); >;
 	float g_flMilkyWayBrightness < Default( 2.5 ); UiGroup( "Milky Way, 1/1" ); >;
-	float g_flCloudCoverage < Default( 0.0 ); UiGroup( "Blend, 7/8" ); >;
-	float g_flWeatherDarkness < Default( 0.0 ); UiGroup( "Blend, 8/8" ); >;
+	float g_flWeatherDarkness < Default( 0.0 ); UiGroup( "Blend, 7/7" ); >;
 
 	float3 g_vSunDirection < Default3( 0.0, 0.0, 1.0 ); UiGroup( "Celestial, 1/12" ); >;
 	float3 g_vMoonDirection < Default3( 0.0, 0.0, -1.0 ); UiGroup( "Celestial, 2/12" ); >;
-	float g_flSunDiscSize < Default( 2.2 ); UiGroup( "Celestial, 3/12" ); >;
+	float g_flSunDiscSize < Default( 1.15 ); UiGroup( "Celestial, 3/12" ); >;
 	float g_flMoonDiscSize < Default( 1.8 ); UiGroup( "Celestial, 4/12" ); >;
 	float g_flSunBrightness < Default( 0.0 ); UiGroup( "Celestial, 5/12" ); >;
 	float g_flMoonBrightness < Default( 0.0 ); UiGroup( "Celestial, 6/12" ); >;
 	float g_flSunGlowStrength < Default( 0.35 ); UiGroup( "Celestial, 7/12" ); >;
 	float g_flMoonGlowStrength < Default( 0.15 ); UiGroup( "Celestial, 8/12" ); >;
-	float g_flSunGlowSize < Default( 7.0 ); UiGroup( "Celestial, 9/12" ); >;
-	float g_flMoonGlowSize < Default( 4.5 ); UiGroup( "Celestial, 10/12" ); >;
-	float3 g_vSunDiscColor < Default3( 1.0, 0.95, 0.85 ); UiGroup( "Celestial, 11/12" ); >;
-	float3 g_vMoonDiscColor < Default3( 1.0, 1.0, 1.0 ); UiGroup( "Celestial, 12/12" ); >;
+	float g_flSunGlowSize < Default( 4.0 ); UiGroup( "Celestial, 9/14" ); >;
+	float g_flMoonGlowSize < Default( 4.5 ); UiGroup( "Celestial, 10/14" ); >;
+	float3 g_vSunDiscColor < Default3( 1.0, 0.95, 0.85 ); UiGroup( "Celestial, 11/14" ); >;
+	float3 g_vMoonDiscColor < Default3( 1.0, 1.0, 1.0 ); UiGroup( "Celestial, 12/14" ); >;
+	float g_flSunFlareStrength < Default( 0.0 ); UiGroup( "Celestial, 13/18" ); >;
+	float3 g_vSunFlareColor < Default3( 1.0, 0.96, 0.88 ); UiGroup( "Celestial, 14/18" ); >;
+	float g_flSunFlareBloom < Default( 1.0 ); UiGroup( "Celestial, 15/18" ); >;
+	float g_flSunFlareStreaks < Default( 1.0 ); UiGroup( "Celestial, 16/18" ); >;
+	float g_flSunFlareGhosts < Default( 1.0 ); UiGroup( "Celestial, 17/18" ); >;
+	float g_flSunFlareHalo < Default( 1.0 ); UiGroup( "Celestial, 18/18" ); >;
 
 	float g_flMoonTextureRadial < Default( 0.42 ); UiGroup( "Moon Texture, 1/3" ); >;
 	float g_flMoonEdgeSoft < Default( 0.08 ); UiGroup( "Moon Texture, 2/3" ); >;
@@ -146,25 +150,24 @@ PS
 	float StarSparkle( float2 cell, float baseBright )
 	{
 		float phase = Hash( cell + 31.0 ) * 6.2831853f;
-		float slowRate = lerp( 0.5, 2.2, Hash( cell + 67.0 ) );
-		float fastRate = lerp( 2.5, 10.0, Hash( cell + 89.0 ) );
+		float slowRate = lerp( 0.35, 1.6, Hash( cell + 67.0 ) );
+		float fastRate = lerp( 2.2, 9.0, Hash( cell + 89.0 ) );
+		float flickerRate = lerp( 4.0, 12.0, Hash( cell + 113.0 ) );
 		float time = g_flTime * g_flStarTwinkleSpeed;
 
 		float slowPulse = sin( time * slowRate + phase ) * 0.5 + 0.5;
-		float sharpFlash = pow( abs( sin( time * fastRate + phase * 1.73 ) ), 8.0 );
-		float shimmer = sin( time * fastRate * 2.4 + phase * 2.1 ) * sin( time * slowRate * 3.1 + phase * 0.6 );
-		shimmer = shimmer * 0.5 + 0.5;
+		float sharpFlash = pow( abs( sin( time * fastRate + phase * 1.73 ) ), 6.0 );
 
-		float sparkle = slowPulse * 0.35 + sharpFlash * 0.85 + shimmer * 0.25;
-		sparkle = saturate( sparkle );
+		// Occasional blinks — stay mostly on so stars remain visible.
+		float flickerNoise = Hash( cell + floor( time * flickerRate ) + 191.0 );
+		float hardFlicker = lerp( 0.35, 1.0, step( 0.18, flickerNoise ) );
 
-		float popGate = Hash( cell + floor( time * slowRate * 1.5 ) + 211.0 );
-		float pop = step( 0.988, popGate ) * sharpFlash;
-		sparkle = saturate( sparkle + pop * 0.9 );
+		float sparkle = saturate( slowPulse * 0.45 + sharpFlash * 0.7 ) * hardFlicker;
 
-		float flash = lerp( 1.0 - g_flStarTwinkleAmount, 1.0, sparkle );
-		flash = lerp( flash, 1.0, saturate( baseBright - 0.5 ) * 0.25 );
-		return flash;
+		// Twinkle modulates brightness but keeps a solid floor so stars don't vanish.
+		float floorBright = lerp( 0.45, 0.7, saturate( baseBright ) );
+		float flash = lerp( floorBright, 1.0, sparkle * g_flStarTwinkleAmount );
+		return saturate( flash );
 	}
 
 	float StarCore( float2 local, float2 starCenter, float size, float bright )
@@ -193,8 +196,8 @@ PS
 			if ( noise > g_flStarNoiseDensity )
 			{
 				float2 starCenter = float2( Hash( cell + 41.0 ), Hash( cell + 73.0 ) );
-				float size = lerp( 0.012, 0.035, Hash( cell + 109.0 ) );
-				float bright = lerp( 0.35, 1.0, Hash( cell + 151.0 ) );
+				float size = lerp( 0.018, 0.045, Hash( cell + 109.0 ) );
+				float bright = lerp( 0.55, 1.0, Hash( cell + 151.0 ) );
 				float core = StarCore( local, starCenter, size, bright );
 				star += core * bright * StarSparkle( cell + layer * 23.0, bright );
 			}
@@ -210,6 +213,45 @@ PS
 		float cosGlow = cos( radians( glowDegrees ) );
 		float glow = pow( saturate( (cosAngle - cosGlow) / max( 1.0 - cosGlow, 0.001 ) ), 4.0 );
 		return glow * strength;
+	}
+
+	float3 SunLensFlare( float3 rayDir, float3 sunDir, float3 flareColor, float strength )
+	{
+		if ( strength <= 0.001 )
+			return float3( 0.0, 0.0, 0.0 );
+
+		sunDir = normalize( sunDir );
+		float mu = saturate( dot( rayDir, sunDir ) );
+
+		float bloom = (pow( mu, 96.0 ) * 2.2 + pow( mu, 18.0 ) * 0.55 + pow( mu, 6.0 ) * 0.12) * g_flSunFlareBloom;
+
+		float3 upRef = abs( sunDir.z ) < 0.99 ? float3( 0.0, 0.0, 1.0 ) : float3( 0.0, 1.0, 0.0 );
+		float3 right = normalize( cross( upRef, sunDir ) );
+		float3 upSun = cross( sunDir, right );
+		float3 offset = rayDir - sunDir * mu;
+		float u = dot( offset, right );
+		float v = dot( offset, upSun );
+
+		float streakH = exp( -abs( u ) * 26.0 ) * exp( -abs( v ) * 160.0 );
+		float streakHSoft = exp( -abs( u ) * 10.0 ) * exp( -abs( v ) * 70.0 );
+		float streakV = exp( -abs( v ) * 26.0 ) * exp( -abs( u ) * 160.0 );
+		float streaks = (streakH * 1.55 + streakHSoft * 0.65 + streakV * 0.45) * g_flSunFlareStreaks;
+
+		float ghosts = 0.0;
+		[unroll]
+		for ( int i = 1; i <= 5; i++ )
+		{
+			float t = i * 0.16;
+			float3 ghostDir = normalize( lerp( sunDir, -sunDir, t ) );
+			float ghostMu = saturate( dot( rayDir, ghostDir ) );
+			ghosts += pow( ghostMu, 280.0 / max( t, 0.08 ) ) * (0.42 / i);
+		}
+		ghosts *= g_flSunFlareGhosts;
+
+		float ring = abs( mu - 0.72 );
+		float halo = exp( -ring * ring * 220.0 ) * 0.22 * g_flSunFlareHalo;
+
+		return flareColor * (bloom + streaks + ghosts + halo) * strength;
 	}
 
 	float CelestialDiscMask( float3 rayDir, float3 bodyDir, float discDegrees )
@@ -323,60 +365,73 @@ PS
 		float3 sunsetGrad = VerticalGradient( g_vSunsetHorizonColor, g_vSunsetZenithColor, gradientT );
 		float3 nightGrad = VerticalGradient( g_vNightHorizonColor, g_vNightZenithColor, gradientT );
 
-		float blendTotal = g_flDayAmount + g_flSunriseAmount + g_flSunsetAmount + g_flNightAmount;
+		float sunriseW = g_flSunriseAmount;
+		float sunsetW = g_flSunsetAmount;
+		// Extra safety: do not keep warm twilight once night owns the blend.
+		float deepNight = saturate( (g_flNightAmount - 0.35) / 0.65 );
+		sunriseW *= 1.0 - deepNight;
+		sunsetW *= 1.0 - deepNight;
+
+		float blendTotal = g_flDayAmount + sunriseW + sunsetW + g_flNightAmount;
 		float invBlend = 1.0 / max( blendTotal, 0.0001 );
 
 		float3 skyGradient = dayGrad * g_flDayAmount
-			+ sunriseGrad * g_flSunriseAmount
-			+ sunsetGrad * g_flSunsetAmount
+			+ sunriseGrad * sunriseW
+			+ sunsetGrad * sunsetW
 			+ nightGrad * g_flNightAmount;
 		skyGradient *= invBlend;
 
 		float horizonWarmth = pow( 1.0 - gradientT, 2.5 );
+		float twilightAmt = saturate( sunriseW + sunsetW );
 		skyGradient = lerp(
 			skyGradient,
-			lerp( g_vSunriseHorizonColor, g_vSunsetHorizonColor, g_flSunsetAmount / max( g_flSunriseAmount + g_flSunsetAmount, 0.001 ) ),
-			horizonWarmth * saturate( g_flSunriseAmount + g_flSunsetAmount ) * 0.55 );
+			lerp( g_vSunriseHorizonColor, g_vSunsetHorizonColor, sunsetW / max( sunriseW + sunsetW, 0.001 ) ),
+			horizonWarmth * twilightAmt * 0.55 );
 
-		float cloudMask = saturate( g_flCloudCoverage );
 		float milkyReveal = saturate( g_flMilkyWayIntensity ) * saturate( g_flNightAmount );
-		milkyReveal *= 1.0 - cloudMask * 0.95;
 
-		float3 milkyWay = g_tMilkyWayTexture.SampleLevel( g_sSky, uv, 0 ).rgb;
-		milkyWay *= g_flMilkyWayBrightness * milkyReveal;
+		// Near-black night wash so the milky-way base texture doesn't dominate.
+		float3 blackNight = VerticalGradient(
+			g_vNightHorizonColor * 0.35,
+			g_vNightZenithColor * 0.15,
+			gradientT );
+
+		float3 milkyWay = g_tMilkyWayTexture.Sample( g_sSky, uv ).rgb;
+		// Soften into the dark gradient, but keep a readable band.
+		milkyWay = pow( saturate( milkyWay ), 1.2 );
+		milkyWay *= g_flMilkyWayBrightness * milkyReveal * 0.55;
 
 		float stars = 0.0;
-		if ( g_flStarIntensity > 0.001 && milkyReveal > 0.001 )
-			stars = NoiseIlluminatedStars( uv ) * g_flStarIntensity * milkyReveal;
+		if ( g_flStarIntensity > 0.001 && g_flNightAmount > 0.05 )
+			stars = NoiseIlluminatedStars( uv ) * g_flStarIntensity * saturate( g_flNightAmount ) * 2.4;
 
-		float3 nightLayer = milkyWay + stars * float3( 0.92, 0.95, 1.0 );
+		float3 nightLayer = blackNight;
+		nightLayer = lerp( nightLayer, nightLayer + milkyWay, milkyReveal );
 
-		float gradientCover = saturate( g_flDayAmount + g_flSunriseAmount * 0.85 + g_flSunsetAmount * 0.85 );
-		gradientCover *= 1.0 - milkyReveal * 0.95;
+		float gradientCover = saturate( g_flDayAmount + sunriseW * 0.85 + sunsetW * 0.85 );
+		// Night owns more of the sky once dark — keep black gradient over the base texture.
+		gradientCover *= 1.0 - saturate( g_flNightAmount ) * 0.92;
 
 		float3 color = lerp( nightLayer, skyGradient, gradientCover );
-		color = max( color, milkyWay );
-
-		if ( g_flCloudCoverage > 0.001 )
-		{
-			float cloudNoise = g_tCloudNoise.SampleLevel( g_sSky, uv * float2( 2.0, 1.0 ), 0 ).r;
-			float cloudPatch = smoothstep( 1.0 - cloudMask, 1.0, cloudNoise );
-			float3 cloudTint = lerp( float3( 0.55, 0.58, 0.62 ), float3( 0.35, 0.38, 0.42 ), g_flNightAmount );
-			color = lerp( color, cloudTint, cloudPatch * cloudMask * 0.75 );
-		}
+		// Add stars after the sky blend so they always read on top of the night wash.
+		color += stars * float3( 0.95, 0.97, 1.0 );
 
 		float sunGlow = CelestialGlow( vRay, g_vSunDirection, g_flSunGlowSize, g_flSunGlowStrength );
 		float moonGlow = CelestialGlow( vRay, g_vMoonDirection, g_flMoonGlowSize, g_flMoonGlowStrength );
 		float sunMask = CelestialDiscMask( vRay, g_vSunDirection, g_flSunDiscSize );
 		float moonMask = MoonRadialMask( vRay, g_vMoonDirection, g_flMoonDiscSize );
 		float3 sunDisc = CelestialDiscColor( vRay, g_vSunDirection, g_flSunDiscSize, g_tSunTexture, g_vSunDiscColor, g_flSunBrightness, 1.0 );
-		float3 moonDisc = MoonDiscColor( vRay, g_vMoonDirection, g_flMoonDiscSize, g_vMoonDiscColor, g_flMoonBrightness );
+		// Keep disc albedo bright; use g_flMoonBrightness as visibility/blend, not as RGB scale
+		// (scaling then lerping punched a black hole in the sky while the moon was rising).
+		float moonVis = saturate( g_flMoonBrightness );
+		float3 moonDisc = MoonDiscColor( vRay, g_vMoonDirection, g_flMoonDiscSize, g_vMoonDiscColor, 1.0 );
 
-		color += g_vSunDiscColor * sunGlow;
-		color += g_vMoonDiscColor * moonGlow * g_flNightAmount;
+		color += g_vSunDiscColor * sunGlow * saturate( g_flSunBrightness );
+		color += SunLensFlare( vRay, g_vSunDirection, g_vSunFlareColor, g_flSunFlareStrength * g_flSunBrightness );
+		color += g_vMoonDiscColor * moonGlow * g_flNightAmount * moonVis;
 		color = max( color, sunDisc * sunMask );
 
-		float moonBlend = moonMask * (1.0 - sunMask * 0.85);
+		float moonBlend = moonMask * (1.0 - sunMask * 0.85) * moonVis;
 		color = lerp( color, moonDisc, moonBlend );
 
 		color *= 1.0 - g_flWeatherDarkness * 0.65;

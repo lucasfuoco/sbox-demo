@@ -53,6 +53,7 @@ public sealed class WorldAmbientSpatialField
 	}
 
 	readonly Dictionary<CellKey, SoundHandle> _handles = new();
+	readonly Dictionary<CellKey, SoundEvent> _handleEvents = new();
 	readonly HashSet<CellKey> _activeKeys = new();
 
 	static readonly LayerConfig[] LayerConfigs =
@@ -71,12 +72,13 @@ public sealed class WorldAmbientSpatialField
 		WorldManagerSingletonComponent terrain,
 		WorldAmbientConditions conditions,
 		WorldAmbientSoundSet sounds,
-		WorldAmbientVolumeSet volumes )
+		WorldAmbientVolumeSet volumes,
+		WorldAmbientWindSoundSet windSounds )
 	{
 		_activeKeys.Clear();
 
 		foreach ( var config in LayerConfigs )
-			UpdateLayer( config, listenerPosition, terrain, conditions, sounds, volumes );
+			UpdateLayer( config, listenerPosition, terrain, conditions, sounds, volumes, windSounds );
 
 		PruneInactive();
 	}
@@ -87,8 +89,15 @@ public sealed class WorldAmbientSpatialField
 		WorldManagerSingletonComponent terrain,
 		WorldAmbientConditions conditions,
 		WorldAmbientSoundSet sounds,
-		WorldAmbientVolumeSet volumes )
+		WorldAmbientVolumeSet volumes,
+		WorldAmbientWindSoundSet windSounds )
 	{
+		if ( config.Layer == WorldAmbientLayer.Wind && windSounds.HasAny )
+		{
+			UpdateTerrainWindLayer( config, listenerPosition, terrain, conditions, sounds, volumes, windSounds );
+			return;
+		}
+
 		var soundEvent = sounds.Get( config.Layer );
 		if ( soundEvent is null )
 			return;
@@ -106,8 +115,51 @@ public sealed class WorldAmbientSpatialField
 				var sample = WorldAmbientTerrainSample.Sample( terrain, anchor.x, anchor.y );
 				var position = sample.GroundPosition.WithZ( sample.GroundPosition.z + config.HeightOffset );
 				var volume = GetLayerVolume( config.Layer, sample, conditions, volumes, anchor.x, anchor.y );
+
+				if ( volume > 0.001f && IsDirectionalWindLayer( config.Layer ) )
+					volume *= GetWindDirectionalWeight( position, listenerPosition, conditions.WindDirection );
+
 				var pitch = GetLayerPitch( config.Layer, conditions );
 
+				var key = new CellKey( config.Layer, cellX, cellY );
+				_activeKeys.Add( key );
+				UpdateEmitter( key, soundEvent, position, volume, pitch );
+			}
+		}
+	}
+
+	void UpdateTerrainWindLayer(
+		LayerConfig config,
+		Vector3 listenerPosition,
+		WorldManagerSingletonComponent terrain,
+		WorldAmbientConditions conditions,
+		WorldAmbientSoundSet sounds,
+		WorldAmbientVolumeSet volumes,
+		WorldAmbientWindSoundSet windSounds )
+	{
+		if ( volumes.Wind <= 0.01f || conditions.Wind <= 0.01f )
+			return;
+
+		var centerCellX = (int)MathF.Floor( listenerPosition.x / config.CellSize );
+		var centerCellY = (int)MathF.Floor( listenerPosition.y / config.CellSize );
+		var fallbackWind = sounds.Wind;
+
+		for ( var offsetY = -config.Radius; offsetY <= config.Radius; offsetY++ )
+		{
+			for ( var offsetX = -config.Radius; offsetX <= config.Radius; offsetX++ )
+			{
+				var cellX = centerCellX + offsetX;
+				var cellY = centerCellY + offsetY;
+				var anchor = GetCellAnchor( config.Layer, cellX, cellY, config.CellSize );
+				var sample = WorldAmbientTerrainSample.Sample( terrain, anchor.x, anchor.y );
+				var soundEvent = windSounds.Resolve( sample, fallbackWind );
+				var position = sample.GroundPosition.WithZ( sample.GroundPosition.z + config.HeightOffset );
+				var volume = GetLayerVolume( config.Layer, sample, conditions, volumes, anchor.x, anchor.y );
+
+				if ( volume > 0.001f )
+					volume *= GetWindDirectionalWeight( position, listenerPosition, conditions.WindDirection );
+
+				var pitch = GetLayerPitch( config.Layer, conditions );
 				var key = new CellKey( config.Layer, cellX, cellY );
 				_activeKeys.Add( key );
 				UpdateEmitter( key, soundEvent, position, volume, pitch );
@@ -139,17 +191,12 @@ public sealed class WorldAmbientSpatialField
 			WorldAmbientLayer.Wind => conditions.Wind * sample.OpenExposure * volumes.Wind,
 			WorldAmbientLayer.Leaves => conditions.Wind * sample.TreeDensity * (1f - conditions.Rain * 0.55f) * volumes.Leaves,
 			WorldAmbientLayer.Water => sample.Water * (1f - conditions.Rain * 0.25f) * volumes.Water,
-			WorldAmbientLayer.Rain => conditions.Rain * WorldAmbientCloudCoverage.Sample(
-				worldX,
-				worldY,
-				conditions.TimeSeconds,
-				conditions.WindDirection,
-				conditions.CloudAmount ) * volumes.Rain,
+			WorldAmbientLayer.Rain => conditions.Rain * volumes.Rain,
 			WorldAmbientLayer.Crickets => conditions.Night * sample.Grass * rainAttenuation * windAttenuation * volumes.Crickets,
 			WorldAmbientLayer.Owls => conditions.DeepNight * sample.TreeDensity * (1f - conditions.Rain * 0.85f) * volumes.Owls,
 			WorldAmbientLayer.Frogs => conditions.Evening * sample.Shore * (1f - conditions.Rain * 0.35f) * volumes.Frogs,
 			_ => 0f,
-		};
+		} * (1f - conditions.AudioMuffleAmount * 0.35f);
 	}
 
 	static float GetLayerPitch( WorldAmbientLayer layer, WorldAmbientConditions conditions ) =>
@@ -160,11 +207,35 @@ public sealed class WorldAmbientSpatialField
 			_ => 1f,
 		};
 
+	static bool IsDirectionalWindLayer( WorldAmbientLayer layer ) =>
+		layer is WorldAmbientLayer.Wind or WorldAmbientLayer.Leaves;
+
+	/// <summary>
+	/// Louder upwind, quieter downwind so 3D wind reads with a clear direction.
+	/// </summary>
+	static float GetWindDirectionalWeight( Vector3 emitterPosition, Vector3 listenerPosition, Vector3 windDirection )
+	{
+		var wind = windDirection.WithZ( 0f );
+		if ( wind.LengthSquared <= 0.0001f )
+			return 1f;
+
+		wind = wind.Normal;
+		var toEmitter = (emitterPosition - listenerPosition).WithZ( 0f );
+		if ( toEmitter.LengthSquared <= 1f )
+			return 0.55f;
+
+		toEmitter = toEmitter.Normal;
+		var upwind = -wind;
+		var alignment = Vector3.Dot( toEmitter, upwind );
+
+		return MathX.Lerp( 0.15f, 1f, (alignment + 1f) * 0.5f );
+	}
+
 	void UpdateEmitter( CellKey key, SoundEvent soundEvent, Vector3 position, float volume, float pitch )
 	{
 		const float epsilon = 0.01f;
 
-		if ( volume <= epsilon )
+		if ( soundEvent is null || volume <= epsilon )
 		{
 			if ( _handles.TryGetValue( key, out var silent ) && silent.IsValid() )
 				silent.Volume = 0f;
@@ -172,8 +243,15 @@ public sealed class WorldAmbientSpatialField
 			return;
 		}
 
-		if ( !_handles.TryGetValue( key, out var handle ) || !handle.IsValid() || handle.Finished )
+		if ( !_handles.TryGetValue( key, out var handle )
+			|| !handle.IsValid()
+			|| handle.Finished
+			|| !_handleEvents.TryGetValue( key, out var activeSound )
+			|| activeSound != soundEvent )
+		{
 			handle = Sound.Play( soundEvent );
+			_handleEvents[key] = soundEvent;
+		}
 
 		handle.Position = position;
 		handle.Volume = volume;
@@ -197,7 +275,10 @@ public sealed class WorldAmbientSpatialField
 		}
 
 		foreach ( var key in stale )
+		{
 			_handles.Remove( key );
+			_handleEvents.Remove( key );
+		}
 	}
 
 	static int Hash( int cellX, int cellY, int salt )
@@ -245,4 +326,40 @@ public readonly struct WorldAmbientVolumeSet
 	public float Leaves { get; init; }
 	public float Water { get; init; }
 	public float Rain { get; init; }
+}
+
+/// <summary>
+/// Optional terrain-specific wind loops. Assign on <see cref="Sandbox.Components.WorldAmbientAudioComponent"/>.
+/// </summary>
+public readonly struct WorldAmbientWindSoundSet
+{
+	public SoundEvent Sand { get; init; }
+	public SoundEvent Grass { get; init; }
+	public SoundEvent Forest { get; init; }
+	public SoundEvent Mountain { get; init; }
+
+	public bool HasAny => Sand is not null
+		|| Grass is not null
+		|| Forest is not null
+		|| Mountain is not null;
+
+	public SoundEvent Resolve( WorldAmbientTerrainSample sample, SoundEvent fallback ) =>
+		Get( sample ) ?? fallback;
+
+	public SoundEvent Get( WorldAmbientTerrainSample sample )
+	{
+		if ( sample.Water >= 0.55f )
+			return null;
+
+		if ( sample.Sand >= sample.Grass && sample.Sand >= sample.Rock )
+			return Sand;
+
+		if ( sample.Rock >= sample.Grass )
+			return Mountain;
+
+		if ( sample.TreeDensity >= 0.35f )
+			return Forest ?? Grass;
+
+		return Grass;
+	}
 }

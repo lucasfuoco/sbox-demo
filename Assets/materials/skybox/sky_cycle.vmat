@@ -5,7 +5,6 @@ Layer0
 	shader "shaders/sky_cycle.shader"
 
 	//---- Blend ----
-	g_flCloudCoverage "0.000"
 	g_flDayAmount "1.000"
 	g_flMilkyWayIntensity "1.000"
 	g_flNightAmount "0.000"
@@ -20,13 +19,19 @@ Layer0
 	g_flMoonGlowSize "8.500"
 	g_flMoonGlowStrength "0.150"
 	g_flSunBrightness "0.000"
-	g_flSunDiscSize "2.200"
-	g_flSunGlowSize "7.000"
+	g_flSunDiscSize "1.150"
+	g_flSunGlowSize "4.000"
 	g_flSunGlowStrength "0.350"
+	g_flSunFlareStrength "0.000"
+	g_flSunFlareBloom "1.000"
+	g_flSunFlareStreaks "1.000"
+	g_flSunFlareGhosts "1.000"
+	g_flSunFlareHalo "1.000"
 	g_vMoonDirection "[0.000 0.000 -1.000]"
 	g_vMoonDiscColor "[1.000 1.000 1.000]"
 	g_vSunDirection "[0.000 0.000 1.000]"
 	g_vSunDiscColor "[1.000 0.950 0.850]"
+	g_vSunFlareColor "[1.000 0.960 0.880]"
 
 	//---- Day ----
 	g_vDayHorizonColor "[0.720 0.820 0.950]"
@@ -45,8 +50,8 @@ Layer0
 	g_vNightZenithColor "[0.010 0.020 0.060]"
 
 	//---- Stars ----
-	g_flStarNoiseDensity "0.985"
-	g_flStarNoiseScale "280.000"
+	g_flStarNoiseDensity "0.9965"
+	g_flStarNoiseScale "160.000"
 	g_flStarTwinkleAmount "0.900"
 	g_flStarTwinkleSpeed "1.600"
 
@@ -59,7 +64,6 @@ Layer0
 	g_vSunsetZenithColor "[0.480 0.380 0.720]"
 
 	//---- Textures ----
-	CloudNoise ""
 	MilkyWayTexture "materials/skybox/milkyway.exr"
 	MoonTexture "materials/skybox/moon.png"
 	SunTexture "materials/skybox/sun_luminance.png"

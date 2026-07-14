@@ -1,0 +1,58 @@
+{
+  "RootObject": {
+    "__guid": "c1d2e3f4-a5b6-7890-cdef-111111111101",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "storm_cloud_volume",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "weather_volume",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.Components.WeatherVolumeComponent",
+        "__guid": "c1d2e3f4-a5b6-7890-cdef-111111111102",
+        "__enabled": true,
+        "Flags": 0,
+        "BlendDistance": 768,
+        "DrawBlendShell": true,
+        "GizmoColor": "0.25,0.35,0.75,0.35",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Sample": {
+          "AudioMuffleAmount": 0,
+          "CloudDensity": 0,
+          "FogAmount": 0,
+          "RainAmount": 0,
+          "SnowAmount": 0,
+          "StormAmount": 0,
+          "TemperatureModifier": 0,
+          "VisibilityMultiplier": 1,
+          "WindStrength": 0
+        },
+        "Size": "8192,1800,8192",
+        "UseTypeDefaults": true,
+        "VolumeType": "StormCloud"
+      }
+    ],
+    "Children": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": true,
+  "MenuPath": "Weather/Storm Cloud Volume",
+  "MenuDescription": "Localized storm cloud with rain, wind, thunder, and reduced visibility.",
+  "MenuIcon": "cloud",
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

@@ -7,16 +7,24 @@ public static class WeatherProgression
 {
 	static readonly WeatherType[] AllTypes = Enum.GetValues<WeatherType>();
 
-	public static WeatherType PickNext( WeatherType current, float timeOfDayHours, float timeInfluence )
+	public static WeatherType PickNext(
+		WeatherType current,
+		float timeOfDayHours,
+		float timeInfluence,
+		float randomBlend = 0f )
 	{
 		timeInfluence = MathX.Clamp( timeInfluence, 0f, 1f );
+		randomBlend = MathX.Clamp( randomBlend, 0f, 1f );
 
 		var weights = new Dictionary<WeatherType, float>();
 
 		foreach ( var type in AllTypes )
 		{
-			var weight = GetTransitionWeight( current, type );
-			weight *= Lerp( 1f, GetTimeOfDayWeight( type, timeOfDayHours ), timeInfluence );
+			var graphWeight = GetTransitionWeight( current, type );
+			graphWeight *= Lerp( 1f, GetTimeOfDayWeight( type, timeOfDayHours ), timeInfluence );
+
+			var uniformWeight = type == current ? 0.08f : 1f;
+			var weight = Lerp( graphWeight, uniformWeight, randomBlend );
 
 			if ( weight > 0.001f )
 				weights[type] = weight;
@@ -37,7 +45,7 @@ public static class WeatherProgression
 		if ( total <= 0f )
 			return weights.Keys.First();
 
-		var roll = Game.Random.Float( 0f, total );
+		var roll = Random.Shared.Float( 0f, total );
 		foreach ( var (type, weight) in weights )
 		{
 			roll -= weight;

@@ -24,8 +24,12 @@ public sealed class WeatherProgressionComponent : Component
 	[Property, Group( "Progression" ), Title( "Time Of Day Influence" ), Description( "How strongly dawn/day/dusk/night biases the next weather pick." ), Range( 0f, 1f )]
 	public float TimeOfDayInfluence { get; set; } = 0.65f;
 
-	float _nextChangeInterval;
+	[Property, Group( "Progression" ), Title( "Random Blend" ), Description( "0 = realistic neighbor transitions, 1 = pick any weather type with equal chance." ), Range( 0f, 1f )]
+	public float RandomBlend { get; set; } = 0.45f;
+
+	float _nextChangeInterval = float.MaxValue;
 	RealTimeSince _sinceLastChange;
+	bool _ready;
 
 	bool IsWeatherAuthority =>
 		Networking.IsHost
@@ -33,15 +37,33 @@ public sealed class WeatherProgressionComponent : Component
 
 	bool IsEditMode => Game.IsEditor && !Game.IsPlaying;
 
+	protected override void OnAwake()
+	{
+		EnsureReferences();
+	}
+
 	protected override void OnStart()
 	{
+		EnsureReferences();
+
+		if ( !Weather.IsValid() || !Time.IsValid() )
+		{
+			Log.Warning( $"{nameof( WeatherProgressionComponent )} is missing required weather or time components." );
+			return;
+		}
+
 		if ( IsWeatherAuthority )
 			ScheduleNextChange();
+
+		_ready = true;
 	}
 
 	protected override void OnFixedUpdate()
 	{
-		if ( !EnableAutoProgression || !IsWeatherAuthority || IsEditMode )
+		if ( !_ready || !EnableAutoProgression || !IsWeatherAuthority || IsEditMode )
+			return;
+
+		if ( !Weather.IsValid() || !Time.IsValid() )
 			return;
 
 		if ( Weather.CurrentWeather != Weather.TargetWeather )
@@ -50,16 +72,26 @@ public sealed class WeatherProgressionComponent : Component
 		if ( _sinceLastChange < _nextChangeInterval )
 			return;
 
-		var next = WeatherProgression.PickNext( Weather.CurrentWeather, Time.TimeOfDay, TimeOfDayInfluence );
+		var next = WeatherProgression.PickNext(
+			Weather.CurrentWeather,
+			Time.TimeOfDay,
+			TimeOfDayInfluence,
+			RandomBlend );
 		Weather.SetTargetWeather( next );
 		ScheduleNextChange();
+	}
+
+	void EnsureReferences()
+	{
+		Weather ??= Components.Get<WeatherManagerComponent>();
+		Time ??= Components.Get<WorldTimeComponent>();
 	}
 
 	void ScheduleNextChange()
 	{
 		var min = Math.Min( MinIntervalSeconds, MaxIntervalSeconds );
 		var max = Math.Max( MinIntervalSeconds, MaxIntervalSeconds );
-		_nextChangeInterval = Game.Random.Float( min, max );
+		_nextChangeInterval = Random.Shared.Float( min, max );
 		_sinceLastChange = 0;
 	}
 }

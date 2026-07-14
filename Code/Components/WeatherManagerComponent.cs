@@ -4,7 +4,7 @@ namespace Sandbox.Components;
 /// Server-authoritative weather simulation. Clients interpolate atmospheric values for rendering.
 /// </summary>
 [Title( "Weather Manager" ), Category( "World Simulation" )]
-public sealed class WeatherManagerComponent : Component
+public sealed class WeatherManagerComponent : Component, Component.ExecuteInEditor
 {
 	const float AmountEpsilon = 0.01f;
 	const float TemperatureEpsilon = 0.1f;
@@ -32,7 +32,7 @@ public sealed class WeatherManagerComponent : Component
 	float SyncedFogAmount { get; set; }
 
 	[Sync( SyncFlags.FromHost )]
-	float SyncedCloudAmount { get; set; }
+	float SyncedOvercastAmount { get; set; }
 
 	[Sync( SyncFlags.FromHost )]
 	float SyncedWindStrength { get; set; }
@@ -46,7 +46,7 @@ public sealed class WeatherManagerComponent : Component
 	float _displayRainAmount;
 	float _displaySnowAmount;
 	float _displayFogAmount;
-	float _displayCloudAmount;
+	float _displayOvercastAmount;
 	float _displayWindStrength;
 	Vector3 _displayWindDirection = Vector3.Forward;
 	float _displayTemperature = 20f;
@@ -54,7 +54,7 @@ public sealed class WeatherManagerComponent : Component
 	public float RainAmount => _displayRainAmount;
 	public float SnowAmount => _displaySnowAmount;
 	public float FogAmount => _displayFogAmount;
-	public float CloudAmount => _displayCloudAmount;
+	public float OvercastAmount => _displayOvercastAmount;
 	public float WindStrength => _displayWindStrength;
 	public Vector3 WindDirection => _displayWindDirection;
 	public float Temperature => _displayTemperature;
@@ -62,6 +62,20 @@ public sealed class WeatherManagerComponent : Component
 	bool IsWeatherAuthority =>
 		Networking.IsHost
 		|| !Networking.IsActive;
+
+	bool IsEditorPreview => Game.IsEditor && !Game.IsPlaying;
+
+	protected override void OnAwake()
+	{
+		if ( IsEditorPreview )
+			ApplyProfileImmediate( WeatherProfile.GetPreset( StartingWeather ) );
+	}
+
+	protected override void OnValidate()
+	{
+		if ( IsEditorPreview )
+			ApplyProfileImmediate( WeatherProfile.GetPreset( StartingWeather ) );
+	}
 
 	protected override void OnStart()
 	{
@@ -81,7 +95,7 @@ public sealed class WeatherManagerComponent : Component
 		SyncedRainAmount = SyncedRainAmount.MoveToLinear( profile.RainAmount, WeatherTransitionSpeed );
 		SyncedSnowAmount = SyncedSnowAmount.MoveToLinear( profile.SnowAmount, WeatherTransitionSpeed );
 		SyncedFogAmount = SyncedFogAmount.MoveToLinear( profile.FogAmount, WeatherTransitionSpeed );
-		SyncedCloudAmount = SyncedCloudAmount.MoveToLinear( profile.CloudAmount, WeatherTransitionSpeed );
+		SyncedOvercastAmount = SyncedOvercastAmount.MoveToLinear( profile.OvercastAmount, WeatherTransitionSpeed );
 		SyncedWindStrength = SyncedWindStrength.MoveToLinear( profile.WindStrength, WeatherTransitionSpeed );
 		SyncedTemperature = SyncedTemperature.MoveToLinear( profile.Temperature, WeatherTransitionSpeed );
 		SyncedWindDirection = MoveWindDirectionToward( SyncedWindDirection, profile.WindDirection, WeatherTransitionSpeed );
@@ -103,7 +117,7 @@ public sealed class WeatherManagerComponent : Component
 		_displayRainAmount = WorldSimulationInterpolation.NetworkLerp( _displayRainAmount, SyncedRainAmount, Time.Delta, networkRate );
 		_displaySnowAmount = WorldSimulationInterpolation.NetworkLerp( _displaySnowAmount, SyncedSnowAmount, Time.Delta, networkRate );
 		_displayFogAmount = WorldSimulationInterpolation.NetworkLerp( _displayFogAmount, SyncedFogAmount, Time.Delta, networkRate );
-		_displayCloudAmount = WorldSimulationInterpolation.NetworkLerp( _displayCloudAmount, SyncedCloudAmount, Time.Delta, networkRate );
+		_displayOvercastAmount = WorldSimulationInterpolation.NetworkLerp( _displayOvercastAmount, SyncedOvercastAmount, Time.Delta, networkRate );
 		_displayWindStrength = WorldSimulationInterpolation.NetworkLerp( _displayWindStrength, SyncedWindStrength, Time.Delta, networkRate );
 		_displayTemperature = WorldSimulationInterpolation.NetworkLerp( _displayTemperature, SyncedTemperature, Time.Delta, networkRate );
 		_displayWindDirection = WorldSimulationInterpolation.NetworkLerp( _displayWindDirection, SyncedWindDirection.Normal, Time.Delta, networkRate );
@@ -130,7 +144,7 @@ public sealed class WeatherManagerComponent : Component
 		SyncedRainAmount = profile.RainAmount;
 		SyncedSnowAmount = profile.SnowAmount;
 		SyncedFogAmount = profile.FogAmount;
-		SyncedCloudAmount = profile.CloudAmount;
+		SyncedOvercastAmount = profile.OvercastAmount;
 		SyncedWindStrength = profile.WindStrength;
 		SyncedWindDirection = profile.WindDirection.Normal;
 		SyncedTemperature = profile.Temperature;
@@ -142,7 +156,7 @@ public sealed class WeatherManagerComponent : Component
 		_displayRainAmount = SyncedRainAmount;
 		_displaySnowAmount = SyncedSnowAmount;
 		_displayFogAmount = SyncedFogAmount;
-		_displayCloudAmount = SyncedCloudAmount;
+		_displayOvercastAmount = SyncedOvercastAmount;
 		_displayWindStrength = SyncedWindStrength;
 		_displayWindDirection = SyncedWindDirection.Normal;
 		_displayTemperature = SyncedTemperature;
@@ -153,7 +167,7 @@ public sealed class WeatherManagerComponent : Component
 		return MathF.Abs( SyncedRainAmount - profile.RainAmount ) <= AmountEpsilon
 			&& MathF.Abs( SyncedSnowAmount - profile.SnowAmount ) <= AmountEpsilon
 			&& MathF.Abs( SyncedFogAmount - profile.FogAmount ) <= AmountEpsilon
-			&& MathF.Abs( SyncedCloudAmount - profile.CloudAmount ) <= AmountEpsilon
+			&& MathF.Abs( SyncedOvercastAmount - profile.OvercastAmount ) <= AmountEpsilon
 			&& MathF.Abs( SyncedWindStrength - profile.WindStrength ) <= AmountEpsilon
 			&& MathF.Abs( SyncedTemperature - profile.Temperature ) <= TemperatureEpsilon
 			&& (SyncedWindDirection.Normal - profile.WindDirection.Normal).Length <= WindDirectionEpsilon;

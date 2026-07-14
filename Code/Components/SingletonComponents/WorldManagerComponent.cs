@@ -12,6 +12,9 @@ public sealed class WorldManagerComponent : SingletonComponent<WorldManagerCompo
 	[RequireComponent]
 	public WeatherManagerComponent Weather { get; private set; }
 
+	[RequireComponent]
+	public WeatherProgressionComponent Progression { get; private set; }
+
 	public float TimeOfDay => Time.TimeOfDay;
 
 	public float NormalizedTimeOfDay => Time.NormalizedTimeOfDay;
@@ -30,7 +33,7 @@ public sealed class WorldManagerComponent : SingletonComponent<WorldManagerCompo
 
 	public float FogAmount => Weather.FogAmount;
 
-	public float CloudAmount => Weather.CloudAmount;
+	public float OvercastAmount => Weather.OvercastAmount;
 
 	public float WindStrength => Weather.WindStrength;
 
@@ -41,4 +44,14 @@ public sealed class WorldManagerComponent : SingletonComponent<WorldManagerCompo
 	public void SetTimeOfDay( float hours ) => Time.SetTimeOfDay( hours );
 
 	public void SetTargetWeather( WeatherType weatherType ) => Weather.SetTargetWeather( weatherType );
+
+	public bool AutoWeatherProgression
+	{
+		get => Progression.IsValid() && Progression.EnableAutoProgression;
+		set
+		{
+			if ( Progression.IsValid() )
+				Progression.EnableAutoProgression = value;
+		}
+	}
 }

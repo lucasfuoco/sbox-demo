@@ -53,6 +53,21 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 	[Property, Group( "Map" ), Title( "View Direction Arrow (Chunks)" ), Description( "Arrow length in chunk sizes on the map preview." ), Range( 0.25f, 6f )]
 	public float ViewDirectionArrowChunks { get; set; } = 1.5f;
 
+	[Property, Group( "Map" ), Title( "Show Wind Direction" ), Description( "Draw an arrow showing effective wind direction at the viewer." )]
+	public bool ShowWindDirection { get; set; } = true;
+
+	[Property, Group( "Map" ), Title( "Wind Direction Arrow (Chunks)" ), Description( "Wind arrow length in chunk sizes on the map preview." ), Range( 0.25f, 6f )]
+	public float WindDirectionArrowChunks { get; set; } = 1.25f;
+
+	[Property, Group( "Map" ), Title( "World Manager" ), Description( "Used for global wind direction and strength." )]
+	public WorldManagerComponent SimulationWorld { get; set; }
+
+	[Property, Group( "Map" ), Title( "Weather Volume Manager" ), Description( "Optional. Blends local volume wind at the viewer position." )]
+	public WeatherVolumeManagerComponent VolumeManager { get; set; }
+
+	[Property, Group( "Map" ), Title( "Weather Manager" ), Description( "Used for editor wind preview when simulation has not started." )]
+	public WeatherManagerComponent WeatherManager { get; set; }
+
 	[Property, Group( "Map" ), Title( "Show Loaded Chunks" ), Description( "Highlight loaded terrain with one border around the whole loaded region." )]
 	public bool ShowLoadedChunks { get; set; } = true;
 
@@ -212,6 +227,9 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 
 			if ( ShowCameraMarker && _cameraOnMap )
 				DrawCameraMarker( rect );
+
+			if ( ShowWindDirection )
+				DrawWindDirectionOverlay( rect );
 		}
 	}
 
@@ -791,6 +809,7 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 				}
 			}
 		}
+
 	}
 
 	void DrawCameraMarker( Rect rect )
@@ -820,6 +839,276 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 
 		if ( ShowViewDirection )
 			DrawViewDirectionArrow( rect, worldMin, worldSize, screenPos );
+	}
+
+	void DrawWindDirectionOverlay( Rect rect )
+	{
+		if ( !TryGetPreviewWindSample( out var sample ) )
+			return;
+
+		DrawWindCompass( rect, sample );
+
+		if ( !_hasCachedCameraPosition || !TryGetMapWorldBounds( out var worldMin, out var worldSize ) )
+			return;
+
+		var mapUv = WorldToMapUvExact( _cachedCameraPosition.x, _cachedCameraPosition.y, worldMin, worldSize );
+		if ( mapUv.x < 0f || mapUv.x > 1f || mapUv.y < 0f || mapUv.y > 1f )
+			return;
+
+		var screenStart = MapUvToScreen( mapUv, rect );
+		DrawWindDirectionArrow( rect, worldMin, worldSize, screenStart, sample );
+	}
+
+	void DrawWindCompass( Rect rect, WeatherSample sample )
+	{
+		const float compassSize = 56f;
+		var center = new Vector2( rect.Right - compassSize * 0.5f - 12f, rect.Bottom - compassSize * 0.5f - 14f );
+		var strength = MathX.Clamp( sample.WindStrength, 0f, 1f );
+		var ringColor = new Color( 0.55f, 0.85f, 1f ).WithAlpha( 0.85f );
+		var arrowColor = Color.Lerp( new Color( 0.55f, 0.85f, 1f ), Color.White, MathF.Max( strength, 0.25f ) ).WithAlpha( 0.98f );
+
+		Gizmo.Draw.ScreenRect(
+			new Rect( center.x - compassSize * 0.5f, center.y - compassSize * 0.5f, compassSize, compassSize ),
+			Color.Black.WithAlpha( 0.72f ),
+			new Vector4( compassSize * 0.5f ),
+			ringColor,
+			new Vector4( 2f ),
+			BlendMode.Normal );
+
+		var screenDirection = GetWindMapScreenDirection( sample.WindDirection, rect );
+		var arrowLength = 18f + strength * 6f;
+		var tip = center + screenDirection * arrowLength;
+		var thickness = MathX.Lerp( 2.5f, 3.5f, strength );
+
+		DrawScreenLine( center, tip, thickness, arrowColor );
+
+		var headLength = 8f + strength * 2f;
+		var headWidth = 5f + strength * 1.5f;
+		var left = new Vector2(
+			screenDirection.x * -headLength + screenDirection.y * headWidth,
+			screenDirection.y * -headLength + screenDirection.x * -headWidth );
+		var right = new Vector2(
+			screenDirection.x * -headLength + screenDirection.y * -headWidth,
+			screenDirection.y * -headLength + screenDirection.x * headWidth );
+
+		DrawScreenLine( tip, tip + left, thickness, arrowColor );
+		DrawScreenLine( tip, tip + right, thickness, arrowColor );
+
+		var compass = WeatherSample.GetCompassLabel( sample.WindDirection );
+		var degrees = (int)MathF.Round( WeatherSample.GetCompassDegrees( sample.WindDirection ) );
+		var label = $"Wind {compass} {degrees}°";
+		var labelPos = new Vector2( center.x, center.y + compassSize * 0.5f + 6f );
+		Gizmo.Draw.ScreenText( label, labelPos, "Inter", 10f, TextFlag.Center );
+	}
+
+	Vector2 GetWindMapScreenDirection( Vector3 windDirection, Rect panelRect )
+	{
+		var wind = windDirection.WithZ( 0f );
+		if ( wind.LengthSquared <= 0.0001f )
+			return Vector2.Right;
+
+		if ( TryGetMapWorldBounds( out _, out var worldSize ) )
+		{
+			// Map preview flips world X when converting to UV, so mirror X here too.
+			var mapDelta = new Vector2(
+				-wind.x / MathF.Max( worldSize.x, 1f ),
+				wind.y / MathF.Max( worldSize.y, 1f ) );
+
+			var screenDelta = new Vector2( mapDelta.x * panelRect.Width, mapDelta.y * panelRect.Height );
+			if ( screenDelta.LengthSquared > 0.001f )
+				return screenDelta.Normal;
+		}
+
+		return new Vector2( -wind.x, wind.y ).Normal;
+	}
+
+	bool TryGetWindScreenDirection( Vector3 windDirection, Rect rect, out Vector2 screenDirection )
+	{
+		screenDirection = GetWindMapScreenDirection( windDirection, rect );
+		return screenDirection.LengthSquared > 0.001f;
+	}
+
+	void DrawWindDirectionArrow( Rect rect, Vector2 worldMin, Vector2 worldSize, Vector2 screenStart, WeatherSample sample )
+	{
+		if ( !TryGetWindDirectionWorldEnd( sample, out var worldEnd, out var windStrength ) )
+			return;
+
+		var screenEnd = MapUvToScreen( WorldToMapUvExact( worldEnd.x, worldEnd.y, worldMin, worldSize ), rect );
+		var screenDelta = screenEnd - screenStart;
+		const float minArrowPixels = 18f;
+
+		if ( screenDelta.Length < minArrowPixels )
+		{
+			var screenDirection = GetWindMapScreenDirection( sample.WindDirection, rect );
+			screenEnd = screenStart + screenDirection * minArrowPixels;
+		}
+
+		var arrowColor = Color.Lerp( new Color( 0.55f, 0.85f, 1f ), Color.White, MathF.Max( windStrength, 0.2f ) ).WithAlpha( 0.95f );
+		var thickness = MathX.Lerp( 2f, 3.5f, windStrength );
+
+		DrawScreenLine( screenStart, screenEnd, thickness, arrowColor );
+
+		var screenForward = screenEnd - screenStart;
+		if ( screenForward.LengthSquared <= 1f )
+			return;
+
+		screenForward = screenForward.Normal;
+		var headLength = 8f + windStrength * 4f;
+		var headWidth = 5f + windStrength * 2f;
+		var left = new Vector2(
+			screenForward.x * -headLength + screenForward.y * headWidth,
+			screenForward.y * -headLength + screenForward.x * -headWidth );
+		var right = new Vector2(
+			screenForward.x * -headLength + screenForward.y * -headWidth,
+			screenForward.y * -headLength + screenForward.x * headWidth );
+
+		DrawScreenLine( screenEnd, screenEnd + left, thickness, arrowColor );
+		DrawScreenLine( screenEnd, screenEnd + right, thickness, arrowColor );
+	}
+
+	void DrawWindDirectionArrow( Rect rect, Vector2 worldMin, Vector2 worldSize, Vector2 screenStart )
+	{
+		if ( !TryGetPreviewWindSample( out var sample ) )
+			return;
+
+		DrawWindDirectionArrow( rect, worldMin, worldSize, screenStart, sample );
+	}
+
+	bool TryGetWindDirectionWorldEnd( WeatherSample sample, out Vector2 worldEnd, out float windStrength )
+	{
+		worldEnd = default;
+		windStrength = MathX.Clamp( sample.WindStrength, 0f, 1f );
+
+		if ( !_hasCachedCameraPosition )
+			return false;
+
+		var wind = sample.WindDirection.WithZ( 0f );
+		if ( wind.LengthSquared <= 0.0001f )
+			return false;
+
+		wind = wind.Normal;
+		ResolveChunkStreamer();
+
+		var arrowLength = ChunkStreamer.IsValid()
+			? Math.Max( ChunkStreamer.ChunkSize, 1 ) * WindDirectionArrowChunks.Clamp( 0.25f, 6f )
+			: 2048f * WindDirectionArrowChunks.Clamp( 0.25f, 6f );
+
+		arrowLength *= 0.65f + MathF.Max( windStrength, 0.15f ) * 0.75f;
+
+		worldEnd = new Vector2(
+			_cachedCameraPosition.x + wind.x * arrowLength,
+			_cachedCameraPosition.y + wind.y * arrowLength );
+		return true;
+	}
+
+	bool TryGetWindDirectionWorldEnd( out Vector2 worldEnd, out float windStrength )
+	{
+		if ( !TryGetPreviewWindSample( out var sample ) )
+		{
+			worldEnd = default;
+			windStrength = 0f;
+			return false;
+		}
+
+		return TryGetWindDirectionWorldEnd( sample, out worldEnd, out windStrength );
+	}
+
+	bool TryGetPreviewWindSample( out WeatherSample sample )
+	{
+		sample = default;
+
+		if ( !_hasCachedCameraPosition && !TryGetFallbackPreviewPosition( out _cachedCameraPosition ) )
+			_cachedCameraPosition = Vector3.Zero;
+
+		_hasCachedCameraPosition = true;
+
+		ResolveSimulationWorld();
+		ResolveVolumeManager();
+		ResolveWeatherManager();
+
+		if ( VolumeManager.IsValid() )
+			sample = VolumeManager.GetWeatherAt( _cachedCameraPosition );
+		else if ( SimulationWorld.IsValid() )
+			sample = WeatherSample.FromGlobal( SimulationWorld );
+
+		if ( sample.WindStrength <= 0.001f || sample.WindDirection.WithZ( 0f ).LengthSquared <= 0.0001f )
+			ApplyEditorWindFallback( ref sample );
+
+		return sample.WindDirection.WithZ( 0f ).LengthSquared > 0.0001f;
+	}
+
+	void ApplyEditorWindFallback( ref WeatherSample sample )
+	{
+		ResolveWeatherManager();
+
+		var weatherType = WeatherManager.IsValid()
+			? WeatherManager.StartingWeather
+			: WeatherType.Clear;
+
+		var profile = WeatherProfile.GetPreset( weatherType );
+		sample.WindStrength = MathF.Max( sample.WindStrength, profile.WindStrength );
+		sample.WindDirection = WeatherSample.NormalizeWindDirection( profile.WindDirection );
+	}
+
+	bool TryGetFallbackPreviewPosition( out Vector3 position )
+	{
+		position = default;
+
+		ResolveChunkStreamer();
+
+		if ( ChunkStreamer.IsValid() && ChunkStreamer.TryGetStreamWorldPosition( out position ) )
+			return true;
+
+		if ( TryGetEditorCameraPosition( out position ) )
+			return true;
+
+		if ( WorldManager.IsValid() )
+		{
+			var center = WorldManager.WorldMin + WorldManager.WorldSize * 0.5f;
+			position = new Vector3( center.x, center.y, 0f );
+			return true;
+		}
+
+		return false;
+	}
+
+	void ResolveSimulationWorld()
+	{
+		if ( SimulationWorld.IsValid() )
+			return;
+
+		SimulationWorld = WorldManagerComponent.Instance;
+
+		if ( SimulationWorld.IsValid() || Scene is null )
+			return;
+
+		SimulationWorld = Scene.GetAllComponents<WorldManagerComponent>().FirstOrDefault();
+	}
+
+	void ResolveVolumeManager()
+	{
+		if ( VolumeManager.IsValid() )
+			return;
+
+		VolumeManager = Components.Get<WeatherVolumeManagerComponent>();
+
+		if ( VolumeManager.IsValid() || Scene is null )
+			return;
+
+		VolumeManager = Scene.GetAllComponents<WeatherVolumeManagerComponent>().FirstOrDefault();
+	}
+
+	void ResolveWeatherManager()
+	{
+		if ( WeatherManager.IsValid() )
+			return;
+
+		WeatherManager = Components.Get<WeatherManagerComponent>();
+
+		if ( WeatherManager.IsValid() || Scene is null )
+			return;
+
+		WeatherManager = Scene.GetAllComponents<WeatherManagerComponent>().FirstOrDefault();
 	}
 
 	void DrawViewDirectionArrow( Rect rect, Vector2 worldMin, Vector2 worldSize, Vector2 screenStart )
@@ -947,10 +1236,23 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 	void DrawMapLegend( Rect rect )
 	{
 		ResolveChunkStreamer();
+		ResolveSimulationWorld();
+		ResolveVolumeManager();
+		ResolveWeatherManager();
 
 		var loaded = ChunkStreamer.IsValid() ? ChunkStreamer.LoadedChunkCount : 0;
 		var pending = ChunkStreamer.IsValid() ? ChunkStreamer.PendingChunkCount : 0;
 		var lines = new List<string> { "Viewer +" };
+
+		if ( ShowViewDirection )
+			lines.Add( "Look C" );
+
+		if ( ShowWindDirection && TryGetPreviewWindSample( out var windSample ) )
+		{
+			var compass = WeatherSample.GetCompassLabel( windSample.WindDirection );
+			var degrees = (int)MathF.Round( WeatherSample.GetCompassDegrees( windSample.WindDirection ) );
+			lines.Add( $"Wind {windSample.WindStrength:0.00} {compass} {degrees}°" );
+		}
 
 		if ( ShowLoadedChunks )
 			lines.Add( $"Loaded {loaded}" );
@@ -964,6 +1266,12 @@ public sealed class WorldMapPreviewComponent : Component, Component.ExecuteInEdi
 		var text = string.Join( "  ", lines );
 		var textPos = new Vector2( rect.Left + 8f, rect.Top + 8f );
 		Gizmo.Draw.ScreenText( text, textPos, "Inter", 11f, TextFlag.Left );
+
+		if ( ShowWindDirection && ShowViewDirection )
+		{
+			var hintPos = new Vector2( rect.Left + 8f, rect.Top + 22f );
+			Gizmo.Draw.ScreenText( "Cyan = look  Compass = wind", hintPos, "Inter", 10f, TextFlag.Left );
+		}
 	}
 
 	static bool TryGetChunkRegionBounds(

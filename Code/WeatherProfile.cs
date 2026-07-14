@@ -9,7 +9,7 @@ public sealed class WeatherProfile
 	public float RainAmount { get; init; }
 	public float SnowAmount { get; init; }
 	public float FogAmount { get; init; }
-	public float CloudAmount { get; init; }
+	public float OvercastAmount { get; init; }
 	public float WindStrength { get; init; }
 	public Vector3 WindDirection { get; init; } = Vector3.Forward;
 	public float Temperature { get; init; }
@@ -19,7 +19,7 @@ public sealed class WeatherProfile
 		[WeatherType.Clear] = new()
 		{
 			Type = WeatherType.Clear,
-			CloudAmount = 0.1f,
+			OvercastAmount = 0f,
 			WindStrength = 0.15f,
 			WindDirection = new Vector3( 1f, 0f, 0.2f ).Normal,
 			Temperature = 24f,
@@ -27,7 +27,7 @@ public sealed class WeatherProfile
 		[WeatherType.Cloudy] = new()
 		{
 			Type = WeatherType.Cloudy,
-			CloudAmount = 0.45f,
+			OvercastAmount = 0.45f,
 			WindStrength = 0.25f,
 			WindDirection = new Vector3( 0.8f, 0f, 0.4f ).Normal,
 			Temperature = 20f,
@@ -35,7 +35,7 @@ public sealed class WeatherProfile
 		[WeatherType.Overcast] = new()
 		{
 			Type = WeatherType.Overcast,
-			CloudAmount = 0.85f,
+			OvercastAmount = 0.85f,
 			WindStrength = 0.35f,
 			WindDirection = new Vector3( 0.6f, 0f, 0.8f ).Normal,
 			Temperature = 17f,
@@ -43,7 +43,7 @@ public sealed class WeatherProfile
 		[WeatherType.Rain] = new()
 		{
 			Type = WeatherType.Rain,
-			CloudAmount = 0.9f,
+			OvercastAmount = 0.9f,
 			RainAmount = 0.55f,
 			WindStrength = 0.45f,
 			WindDirection = new Vector3( 0.9f, 0f, 0.3f ).Normal,
@@ -52,7 +52,7 @@ public sealed class WeatherProfile
 		[WeatherType.HeavyRain] = new()
 		{
 			Type = WeatherType.HeavyRain,
-			CloudAmount = 1f,
+			OvercastAmount = 1f,
 			RainAmount = 1f,
 			WindStrength = 0.65f,
 			WindDirection = new Vector3( 1f, 0f, 0.1f ).Normal,
@@ -61,7 +61,7 @@ public sealed class WeatherProfile
 		[WeatherType.Snow] = new()
 		{
 			Type = WeatherType.Snow,
-			CloudAmount = 0.8f,
+			OvercastAmount = 0.8f,
 			SnowAmount = 0.65f,
 			WindStrength = 0.3f,
 			WindDirection = new Vector3( 0.4f, 0f, 0.9f ).Normal,
@@ -70,7 +70,7 @@ public sealed class WeatherProfile
 		[WeatherType.Blizzard] = new()
 		{
 			Type = WeatherType.Blizzard,
-			CloudAmount = 1f,
+			OvercastAmount = 1f,
 			SnowAmount = 1f,
 			FogAmount = 0.25f,
 			WindStrength = 0.95f,
@@ -80,7 +80,7 @@ public sealed class WeatherProfile
 		[WeatherType.Fog] = new()
 		{
 			Type = WeatherType.Fog,
-			CloudAmount = 0.35f,
+			OvercastAmount = 0.35f,
 			FogAmount = 0.85f,
 			WindStrength = 0.08f,
 			WindDirection = Vector3.Forward,
@@ -89,7 +89,7 @@ public sealed class WeatherProfile
 		[WeatherType.Storm] = new()
 		{
 			Type = WeatherType.Storm,
-			CloudAmount = 1f,
+			OvercastAmount = 1f,
 			RainAmount = 0.9f,
 			WindStrength = 1f,
 			WindDirection = new Vector3( 0.7f, 0f, 0.7f ).Normal,

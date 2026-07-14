@@ -1,4 +1,5 @@
 using Sandbox.Components.SingletonComponents;
+using Sandbox.Components;
 
 namespace Sandbox;
 
@@ -10,7 +11,10 @@ public readonly struct WorldAmbientConditions
 	public float Rain { get; init; }
 	public float Snow { get; init; }
 	public float Wind { get; init; }
-	public float CloudAmount { get; init; }
+	public float OvercastAmount { get; init; }
+	public float StormAmount { get; init; }
+	public float AudioMuffleAmount { get; init; }
+	public float VisibilityMultiplier { get; init; }
 	public float Night { get; init; }
 	public float Evening { get; init; }
 	public float DeepNight { get; init; }
@@ -18,23 +22,30 @@ public readonly struct WorldAmbientConditions
 	public Vector3 WindDirection { get; init; }
 	public float TimeSeconds { get; init; }
 
-	public static WorldAmbientConditions FromWorld( WorldManagerComponent world, float timeSeconds )
+	public static WorldAmbientConditions FromWorld( WorldManagerComponent world, float timeSeconds ) =>
+		FromWorld( world, timeSeconds, localWeather: null );
+
+	public static WorldAmbientConditions FromWorld( WorldManagerComponent world, float timeSeconds, WeatherSample? localWeather )
 	{
-		var rain = MathX.Clamp( world.RainAmount, 0f, 1f );
-		var snow = MathX.Clamp( world.SnowAmount, 0f, 1f );
-		var wind = MathX.Clamp( world.WindStrength + rain * 0.25f + snow * 0.35f, 0f, 1f );
+		var sample = localWeather ?? WeatherSample.FromGlobal( world );
+		var rain = MathX.Clamp( sample.RainAmount, 0f, 1f );
+		var snow = MathX.Clamp( sample.SnowAmount, 0f, 1f );
+		var wind = MathX.Clamp( sample.WindStrength + rain * 0.25f + snow * 0.35f, 0f, 1f );
 
 		return new WorldAmbientConditions
 		{
 			Rain = MathX.Clamp( rain + snow * 0.15f, 0f, 1f ),
 			Snow = snow,
 			Wind = wind,
-			CloudAmount = MathX.Clamp( world.CloudAmount, 0f, 1f ),
+			OvercastAmount = MathX.Clamp( sample.CloudDensity, 0f, 1f ),
+			StormAmount = MathX.Clamp( sample.StormAmount, 0f, 1f ),
+			AudioMuffleAmount = MathX.Clamp( sample.AudioMuffleAmount, 0f, 1f ),
+			VisibilityMultiplier = MathX.Clamp( sample.VisibilityMultiplier, 0.05f, 1f ),
 			Night = GetNightBlend( world.TimeOfDay ),
 			Evening = GetEveningBlend( world.TimeOfDay ),
 			DeepNight = GetDeepNightBlend( world.TimeOfDay ),
-			ThunderChance = MathX.Clamp( rain * 0.75f + world.WindStrength * 0.35f, 0f, 1f ),
-			WindDirection = world.WindDirection,
+			ThunderChance = MathX.Clamp( sample.StormAmount * 0.85f + rain * 0.55f + sample.WindStrength * 0.35f, 0f, 1f ),
+			WindDirection = WeatherSample.NormalizeWindDirection( sample.WindDirection ),
 			TimeSeconds = timeSeconds,
 		};
 	}

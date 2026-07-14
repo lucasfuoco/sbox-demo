@@ -1,0 +1,58 @@
+{
+  "RootObject": {
+    "__guid": "c1d2e3f4-a5b6-7890-cdef-222222222201",
+    "__version": 2,
+    "Flags": 0,
+    "Name": "fog_bank_volume",
+    "Position": "0,0,0",
+    "Rotation": "0,0,0,1",
+    "Scale": "1,1,1",
+    "Tags": "weather_volume",
+    "Enabled": true,
+    "NetworkMode": 2,
+    "NetworkFlags": 0,
+    "NetworkOrphaned": 0,
+    "NetworkTransmit": true,
+    "OwnerTransfer": 1,
+    "Components": [
+      {
+        "__type": "Sandbox.Components.WeatherVolumeComponent",
+        "__guid": "c1d2e3f4-a5b6-7890-cdef-222222222202",
+        "__enabled": true,
+        "Flags": 0,
+        "BlendDistance": 1024,
+        "DrawBlendShell": true,
+        "GizmoColor": "0.75,0.78,0.82,0.35",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null,
+        "Sample": {
+          "AudioMuffleAmount": 0,
+          "CloudDensity": 0,
+          "FogAmount": 0,
+          "RainAmount": 0,
+          "SnowAmount": 0,
+          "StormAmount": 0,
+          "TemperatureModifier": 0,
+          "VisibilityMultiplier": 1,
+          "WindStrength": 0
+        },
+        "Size": "6144,900,6144",
+        "UseTypeDefaults": true,
+        "VolumeType": "FogBank"
+      }
+    ],
+    "Children": []
+  },
+  "ResourceVersion": 2,
+  "ShowInMenu": true,
+  "MenuPath": "Weather/Fog Bank Volume",
+  "MenuDescription": "Dense fog bank with visibility reduction and muffled audio.",
+  "MenuIcon": "blur_on",
+  "DontBreakAsTemplate": false,
+  "__references": [],
+  "__version": 2
+}

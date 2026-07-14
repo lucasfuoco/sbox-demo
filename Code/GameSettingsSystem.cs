@@ -67,19 +67,34 @@ public partial class GameSettingsSystem
 
 	public static void Save()
 	{
-		Mixer.Master.Volume = Current.MasterVolume / 100;
-		var channel = Mixer.Master.GetChildren();
-		channel[0].Volume = Current.MusicVolume / 100;
-		channel[1].Volume = Current.SFXVolume / 100;
-		channel[2].Volume = Current.UIVolume / 100;
-		channel[3].Volume = Current.RadioVolume / 100;
-		channel[4].Volume = Current.VoiceVolume / 100;
-
+		ApplyVolumes();
 		FileSystem.Data.WriteJson( FilePath, Current );
 	}
 
 	public static void Load()
 	{
 		Current = FileSystem.Data.ReadJson<GameSettings>( FilePath, new() );
+	}
+
+	static void ApplyVolumes()
+	{
+		if ( Mixer.Master is not null )
+			Mixer.Master.Volume = Current.MasterVolume / 100;
+
+		SetMixerVolume( "Music", Current.MusicVolume );
+		SetMixerVolume( "Game", Current.SFXVolume );
+		SetMixerVolume( "SFX", Current.SFXVolume );
+		SetMixerVolume( "ui", Current.UIVolume );
+		SetMixerVolume( "UI", Current.UIVolume );
+		SetMixerVolume( "Radio", Current.RadioVolume );
+		SetMixerVolume( "voice", Current.VoiceVolume );
+		SetMixerVolume( "Voice", Current.VoiceVolume );
+	}
+
+	static void SetMixerVolume( string name, float volumePercent )
+	{
+		var mixer = Mixer.FindMixerByName( name );
+		if ( mixer is not null )
+			mixer.Volume = volumePercent / 100;
 	}
 }
