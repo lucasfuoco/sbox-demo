@@ -1,0 +1,86 @@
+// Realistic ocean water — assign on WaterBodyRenderer / WaterQuad
+// Surface stays translucent; underwater fill is handled by OceanUnderwaterFillController.
+
+Layer0
+{
+	shader "shaders/realistic_water.shader"
+
+	F_DO_NOT_CAST_SHADOWS 1
+	F_RENDER_BACKFACES 1
+	F_TRANSLUCENT 1
+
+	//---- Caustics ----
+	g_flCausticsAnimSpeed "1.200"
+	g_flCausticsIntensity "0.120"
+	g_flCausticsScrollSpeed "0.012"
+	g_flCausticsThresholdMax "1.600"
+	g_flCausticsThresholdMin "0.350"
+	g_flCausticsTilingMultiplier "1.250"
+
+	//---- Depth ----
+	g_flAbsorption "0.028"
+	g_flDepthBlend "0.900"
+	g_flDepthFalloff "0.700"
+	g_flDepthMultiplier "1.200"
+	g_flShoreOpacity "0.050"
+	g_flShoreOpacityRange "12.000"
+	g_vDeepColor "[0.015686 0.078431 0.160784 0.941176]"
+	g_vScatterColor "[0.031373 0.250980 0.321569]"
+	g_vShallowColor "[0.219608 0.611765 0.588235 0.470588]"
+
+	//---- Foam ----
+	g_flCrestFoamIntensity "1.350"
+	g_flCrestFoamThreshold "0.220"
+	g_flFoamCoverage "0.450"
+	g_flFoamDepth "55.000"
+	g_flFoamEdgeScale "5.000"
+	g_flFoamEdgeSpeed "0.120"
+	g_flFoamEdgeWarp "0.550"
+	g_flFoamFalloff "1.800"
+	g_flFoamIntensity "1.600"
+	g_flFoamNoiseScale "18.000"
+	g_flFoamNoiseSpeed "0.350"
+	g_flFoamSoftness "1.200"
+	g_vFoamColor "[0.920000 0.950000 0.970000 1.000000]"
+
+	//---- Flow ----
+	g_flFlowSpeed "0.050"
+	g_vFlowDirection "[1.000000 0.350000]"
+
+	//---- Fresnel ----
+	g_flFresnelF0 "0.020"
+	g_flFresnelPower "5.000"
+	g_vFresnelColor "[0.450980 0.670588 0.800000 1.000000]"
+
+	//---- Lighting ----
+	g_flGlitterIntensity "0.700"
+	g_flGlitterScale "28.000"
+	g_flSpecularIntensity "1.600"
+	g_flSpecularPower "320.000"
+	g_flSubsurfaceIntensity "0.500"
+	g_vSubsurfaceColor "[0.039216 0.400000 0.380392]"
+	g_vSunColor "[1.000000 0.960784 0.878431]"
+	g_vSunDirection "[0.350000 0.550000 0.750000]"
+
+	//---- Normals ----
+	g_flNormalStrength "0.550"
+	g_flSpeedMainNormal "12.000"
+	g_flSpeedSecondNormal "-28.000"
+	MainNormal "textures/water/water_normal.jpg"
+	SecondNormal "textures/water/water_normal.jpg"
+
+	//---- Reflection ----
+	g_bUseScreenSpaceReflection "1"
+	g_flFoamReflectionStrength "0.150"
+	g_flHorizonStrength "0.400"
+	g_flReflectionStepSize "1600.000"
+	g_flReflectionStrength "0.900"
+	g_vHorizonColor "[0.400000 0.580000 0.760000]"
+
+	//---- Refraction ----
+	g_flRefractionStrength "0.080"
+
+	//---- Surface ----
+	g_flContrast "1.050"
+	g_flRoughness "0.060"
+}

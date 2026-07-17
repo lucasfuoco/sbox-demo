@@ -10,6 +10,9 @@ public readonly struct TerrainBuildSnapshot
 	public WorldNoise Noise { get; init; }
 	public float WaterLevel { get; init; }
 	public float HeightNoiseAmplitude { get; init; }
+	public float HeightPlainsLevel { get; init; }
+	public float HeightMountainStart { get; init; }
+	public float HeightPeakPower { get; init; }
 	public float TerrainBottomHeight { get; init; }
 	public bool UseWorldBounds { get; init; }
 	public Vector2 WorldMin { get; init; }
@@ -58,6 +61,9 @@ public readonly struct TerrainBuildSnapshot
 				worldManager.HeightNoiseWeightedStrength ),
 			WaterLevel = worldManager.WaterLevel,
 			HeightNoiseAmplitude = worldManager.HeightNoiseAmplitude,
+			HeightPlainsLevel = worldManager.HeightPlainsLevel,
+			HeightMountainStart = worldManager.HeightMountainStart,
+			HeightPeakPower = worldManager.HeightPeakPower,
 			TerrainBottomHeight = worldManager.TerrainBottomHeight,
 			UseWorldBounds = worldManager.UseWorldBounds,
 			WorldMin = worldManager.WorldMin,
@@ -105,7 +111,14 @@ public readonly struct TerrainBuildSnapshot
 				falloff = GetLandFalloff( worldU, worldV );
 		}
 
-		return WaterLevel + Noise.GetHeight( worldX, worldY, HeightNoiseAmplitude, falloff );
+		return WaterLevel + Noise.GetHeight(
+			worldX,
+			worldY,
+			HeightNoiseAmplitude,
+			falloff,
+			HeightPlainsLevel,
+			HeightMountainStart,
+			HeightPeakPower );
 	}
 
 	public (Color32 Blend, Color32 Tint) SampleBlendPaint( float worldX, float worldY, float height, float slope )

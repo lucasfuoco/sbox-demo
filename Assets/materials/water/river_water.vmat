@@ -1,0 +1,85 @@
+// Realistic river water — directional flow, clearer shallow color, less swell foam
+
+Layer0
+{
+	shader "shaders/realistic_water.shader"
+
+	F_DO_NOT_CAST_SHADOWS 1
+	F_RENDER_BACKFACES 1
+	F_TRANSLUCENT 1
+
+	//---- Caustics ----
+	g_flCausticsAnimSpeed "1.400"
+	g_flCausticsIntensity "0.350"
+	g_flCausticsScrollSpeed "0.018"
+	g_flCausticsThresholdMax "1.500"
+	g_flCausticsThresholdMin "0.300"
+	g_flCausticsTilingMultiplier "1.800"
+
+	//---- Depth ----
+	g_flAbsorption "0.045"
+	g_flDepthBlend "0.750"
+	g_flDepthFalloff "0.550"
+	g_flDepthMultiplier "0.650"
+	g_flShoreOpacity "0.000"
+	g_flShoreOpacityRange "6.000"
+	g_vDeepColor "[0.050980 0.160784 0.137255 0.862745]"
+	g_vScatterColor "[0.078431 0.321569 0.250980]"
+	g_vShallowColor "[0.290196 0.560784 0.450980 0.392157]"
+
+	//---- Foam ----
+	g_flCrestFoamIntensity "0.250"
+	g_flCrestFoamThreshold "0.450"
+	g_flFoamCoverage "0.400"
+	g_flFoamDepth "28.000"
+	g_flFoamEdgeScale "6.000"
+	g_flFoamEdgeSpeed "0.220"
+	g_flFoamEdgeWarp "0.650"
+	g_flFoamFalloff "2.000"
+	g_flFoamIntensity "0.900"
+	g_flFoamNoiseScale "22.000"
+	g_flFoamNoiseSpeed "0.550"
+	g_flFoamSoftness "1.000"
+	g_vFoamColor "[0.900000 0.940000 0.960000 1.000000]"
+
+	//---- Flow ----
+	g_flFlowSpeed "1.350"
+	g_vFlowDirection "[1.000000 0.150000]"
+
+	//---- Fresnel ----
+	g_flFresnelF0 "0.020"
+	g_flFresnelPower "4.500"
+	g_vFresnelColor "[0.420000 0.620000 0.580000 1.000000]"
+
+	//---- Lighting ----
+	g_flGlitterIntensity "0.350"
+	g_flGlitterScale "36.000"
+	g_flSpecularIntensity "1.100"
+	g_flSpecularPower "220.000"
+	g_flSubsurfaceIntensity "0.550"
+	g_vSubsurfaceColor "[0.080000 0.420000 0.280000]"
+	g_vSunColor "[1.000000 0.960784 0.878431]"
+	g_vSunDirection "[0.350000 0.550000 0.750000]"
+
+	//---- Normals ----
+	g_flNormalStrength "0.400"
+	g_flSpeedMainNormal "12.000"
+	g_flSpeedSecondNormal "-22.000"
+	MainNormal "textures/water/water_normal.jpg"
+	SecondNormal "textures/water/water_normal.jpg"
+
+	//---- Reflection ----
+	g_bUseScreenSpaceReflection "1"
+	g_flFoamReflectionStrength "0.100"
+	g_flHorizonStrength "0.250"
+	g_flReflectionStepSize "800.000"
+	g_flReflectionStrength "0.700"
+	g_vHorizonColor "[0.450000 0.600000 0.550000]"
+
+	//---- Refraction ----
+	g_flRefractionStrength "0.100"
+
+	//---- Surface ----
+	g_flContrast "1.080"
+	g_flRoughness "0.100"
+}

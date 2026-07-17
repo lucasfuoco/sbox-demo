@@ -50,11 +50,17 @@ public sealed class WaterBody : VolumeComponent, Component.ExecuteInEditor
 
 	protected override void DrawGizmos()
 	{
-		if (!Gizmo.IsSelected || !m_HullCollider.IsValid())
+		// Keep VolumeComponent's SceneVolume handles so size stays editable in the editor.
+		base.DrawGizmos();
+
+		if (!Gizmo.IsSelected)
 			return;
 
-		Gizmo.Draw.Color = Color.Cyan;
-		Gizmo.Draw.LineBBox(m_HullCollider.LocalBounds);
+		var bounds = SceneVolume.GetBounds();
+		Gizmo.Draw.Color = Color.Cyan.WithAlpha(0.35f);
+		Gizmo.Draw.LineBBox(bounds);
+		Gizmo.Draw.Color = Color.Cyan.WithAlpha(0.08f);
+		Gizmo.Draw.SolidBox(bounds);
 	}
 
 	// Bounds

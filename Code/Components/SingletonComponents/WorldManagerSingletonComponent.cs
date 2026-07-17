@@ -79,6 +79,15 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 	[Property, Group( "Height Noise" ), Title( "Amplitude" ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
 	public float HeightNoiseAmplitude { get; set; } = 500f;
 
+	[Property, Group( "Height Noise" ), Title( "Plains Level" ), Description( "Flat land shelf height as a fraction of Amplitude. Keep above the water shoreline." ), Range( 0.1f, 0.8f ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
+	public float HeightPlainsLevel { get; set; } = 0.4f;
+
+	[Property, Group( "Height Noise" ), Title( "Mountain Start" ), Description( "Noise value where peaks begin. Higher = mountains only toward landmass centers." ), Range( 0.35f, 0.95f ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
+	public float HeightMountainStart { get; set; } = 0.68f;
+
+	[Property, Group( "Height Noise" ), Title( "Peak Power" ), Description( "Mountain ramp above Mountain Start. Higher = sharper / rarer peaks." ), Range( 1f, 3.5f ), Change( nameof( OnHeightNoiseSettingsChanged ) )]
+	public float HeightPeakPower { get; set; } = 1.6f;
+
 	[Property, Group( "Terrain" ), Title( "Bottom Height" ), Change( nameof( OnTerrainMeshSettingsChanged ) )]
 	public float TerrainBottomHeight { get; set; } = -200f;
 
@@ -345,7 +354,14 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 				falloff = GetLandFalloff( worldU, worldV );
 		}
 
-		return WaterLevel + Noise.GetHeight( worldX, worldY, HeightNoiseAmplitude, falloff );
+		return WaterLevel + Noise.GetHeight(
+			worldX,
+			worldY,
+			HeightNoiseAmplitude,
+			falloff,
+			HeightPlainsLevel,
+			HeightMountainStart,
+			HeightPeakPower );
 	}
 
 	public float GetBiomeSampleFromHeight( float height )
