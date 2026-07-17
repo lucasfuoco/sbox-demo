@@ -300,9 +300,11 @@ VS
 	float g_flUvWarpStrengthSand < Default( 0.0 ); Range( 0.0, 2.0 ); UiGroup( "Rotation,10/30" ); >;
 	float g_flUvWarpStrengthRock < Default( 0.0 ); Range( 0.0, 2.0 ); UiGroup( "Rotation,10/40" ); >;
 
-	float g_flDisplacementScaleGrass < Default( 4.0 ); Range( 0.0, 32.0 ); UiGroup( "Grass,10/60" ); >;
-	float g_flDisplacementScaleSand < Default( 3.0 ); Range( 0.0, 32.0 ); UiGroup( "Sand,10/60" ); >;
-	float g_flDisplacementScaleRock < Default( 8.0 ); Range( 0.0, 32.0 ); UiGroup( "Rock,10/60" ); >;
+	float g_flDisplacementScale < Default( 1.0 ); Range( 0.0, 4.0 ); UiGroup( "Material,10/5" ); >;
+	float g_flDisplacementScaleGrass < Default( 2.5 ); Range( 0.0, 32.0 ); UiGroup( "Grass,10/61" ); >;
+	float g_flDisplacementScaleSand < Default( 2.0 ); Range( 0.0, 32.0 ); UiGroup( "Sand,10/61" ); >;
+	float g_flDisplacementScaleRock < Default( 5.0 ); Range( 0.0, 32.0 ); UiGroup( "Rock,10/61" ); >;
+	float g_flDisplacementCenter < Default( 0.5 ); Range( 0.0, 1.0 ); UiGroup( "Material,10/6" ); >;
 
 	float SampleDisplacement( float2 uv, Texture2D map )
 	{
@@ -333,11 +335,12 @@ VS
 
 	float BlendDisplacement( float2 worldUv, float3 weights )
 	{
-		float grass = ( SampleLayerDisplacement( g_tDispGrass, worldUv, g_vScaleGrass, g_flRotationGrass, g_vOffsetGrass, 17.3, g_flUvWarpStrengthGrass, g_bRandomRotationGrass ) - 0.5 ) * 2.0 * g_flDisplacementScaleGrass;
-		float sand = ( SampleLayerDisplacement( g_tDispSand, worldUv, g_vScaleSand, g_flRotationSand, g_vOffsetSand, 41.9, g_flUvWarpStrengthSand, g_bRandomRotationSand ) - 0.5 ) * 2.0 * g_flDisplacementScaleSand;
-		float rock = ( SampleLayerDisplacement( g_tDispRock, worldUv, g_vScaleRock, g_flRotationRock, g_vOffsetRock, 93.7, g_flUvWarpStrengthRock, g_bRandomRotationRock ) - 0.5 ) * 2.0 * g_flDisplacementScaleRock;
+		float center = g_flDisplacementCenter;
+		float grass = ( SampleLayerDisplacement( g_tDispGrass, worldUv, g_vScaleGrass, g_flRotationGrass, g_vOffsetGrass, 17.3, g_flUvWarpStrengthGrass, g_bRandomRotationGrass ) - center ) * 2.0 * g_flDisplacementScaleGrass;
+		float sand = ( SampleLayerDisplacement( g_tDispSand, worldUv, g_vScaleSand, g_flRotationSand, g_vOffsetSand, 41.9, g_flUvWarpStrengthSand, g_bRandomRotationSand ) - center ) * 2.0 * g_flDisplacementScaleSand;
+		float rock = ( SampleLayerDisplacement( g_tDispRock, worldUv, g_vScaleRock, g_flRotationRock, g_vOffsetRock, 93.7, g_flUvWarpStrengthRock, g_bRandomRotationRock ) - center ) * 2.0 * g_flDisplacementScaleRock;
 
-		return grass * weights.r + sand * weights.g + rock * weights.b;
+		return ( grass * weights.r + sand * weights.g + rock * weights.b ) * g_flDisplacementScale;
 	}
 
 	PixelInput MainVs( VertexInput i )
@@ -373,50 +376,107 @@ PS
 	CreateInputTexture2D( TextureGrass, Srgb, 8, "", "_color", "Grass,10/10", Default3( 0.2, 0.45, 0.1 ) );
 	CreateInputTexture2D( TextureNormalGrass, Linear, 8, "NormalizeNormals", "_normal", "Grass,10/15", Default3( 0.5, 0.5, 1.0 ) );
 	CreateInputTexture2D( TextureRoughnessGrass, Linear, 8, "", "_rough", "Grass,10/20", Default( 0.85 ) );
+	CreateInputTexture2D( TextureGlossGrass, Linear, 8, "", "_gloss", "Grass,10/22", Default( 0.0 ) );
+	CreateInputTexture2D( TextureSpecularGrass, Linear, 8, "", "_spec", "Grass,10/25", Default( 1.0 ) );
+	CreateInputTexture2D( TextureAmbientOcclusionGrass, Linear, 8, "", "_ao", "Grass,10/28", Default( 1.0 ) );
+	CreateInputTexture2D( TextureBumpGrass, Linear, 8, "", "_bump", "Grass,10/29", Default( 0.5 ) );
+	CreateInputTexture2D( TextureCavityGrass, Linear, 8, "", "_cavity", "Grass,10/30", Default( 1.0 ) );
 
 	CreateInputTexture2D( TextureSand, Srgb, 8, "", "_color", "Sand,10/10", Default3( 0.78, 0.72, 0.45 ) );
 	CreateInputTexture2D( TextureNormalSand, Linear, 8, "NormalizeNormals", "_normal", "Sand,10/15", Default3( 0.5, 0.5, 1.0 ) );
 	CreateInputTexture2D( TextureRoughnessSand, Linear, 8, "", "_rough", "Sand,10/20", Default( 0.75 ) );
+	CreateInputTexture2D( TextureGlossSand, Linear, 8, "", "_gloss", "Sand,10/22", Default( 0.0 ) );
+	CreateInputTexture2D( TextureSpecularSand, Linear, 8, "", "_spec", "Sand,10/25", Default( 1.0 ) );
+	CreateInputTexture2D( TextureAmbientOcclusionSand, Linear, 8, "", "_ao", "Sand,10/28", Default( 1.0 ) );
+	CreateInputTexture2D( TextureBumpSand, Linear, 8, "", "_bump", "Sand,10/29", Default( 0.5 ) );
+	CreateInputTexture2D( TextureCavitySand, Linear, 8, "", "_cavity", "Sand,10/30", Default( 1.0 ) );
 
 	CreateInputTexture2D( TextureRock, Srgb, 8, "", "_color", "Rock,10/10", Default3( 0.45, 0.42, 0.38 ) );
 	CreateInputTexture2D( TextureNormalRock, Linear, 8, "NormalizeNormals", "_normal", "Rock,10/15", Default3( 0.5, 0.5, 1.0 ) );
 	CreateInputTexture2D( TextureRoughnessRock, Linear, 8, "", "_rough", "Rock,10/20", Default( 0.9 ) );
+	CreateInputTexture2D( TextureGlossRock, Linear, 8, "", "_gloss", "Rock,10/22", Default( 0.0 ) );
+	CreateInputTexture2D( TextureSpecularRock, Linear, 8, "", "_spec", "Rock,10/25", Default( 1.0 ) );
+	CreateInputTexture2D( TextureAmbientOcclusionRock, Linear, 8, "", "_ao", "Rock,10/28", Default( 1.0 ) );
+	CreateInputTexture2D( TextureBumpRock, Linear, 8, "", "_bump", "Rock,10/29", Default( 0.5 ) );
+	CreateInputTexture2D( TextureCavityRock, Linear, 8, "", "_cavity", "Rock,10/30", Default( 1.0 ) );
 
 	CreateInputTexture2D( TextureHueSatNoise, Linear, 8, "", "_color", "Color Noise,10/10", Default3( 0.5, 0.5, 0.5 ) );
 
 	Texture2D g_tGrass < Channel( RGB, Box( TextureGrass ), Srgb ); OutputFormat( BC7 ); SrgbRead( true ); >;
 	Texture2D g_tNormalGrass < Channel( RGB, Box( TextureNormalGrass ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 	Texture2D g_tRoughGrass < Channel( R, Box( TextureRoughnessGrass ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tGlossGrass < Channel( R, Box( TextureGlossGrass ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tSpecGrass < Channel( R, Box( TextureSpecularGrass ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tAoGrass < Channel( R, Box( TextureAmbientOcclusionGrass ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tBumpGrass < Channel( R, Box( TextureBumpGrass ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tCavityGrass < Channel( R, Box( TextureCavityGrass ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 
 	Texture2D g_tSand < Channel( RGB, Box( TextureSand ), Srgb ); OutputFormat( BC7 ); SrgbRead( true ); >;
 	Texture2D g_tNormalSand < Channel( RGB, Box( TextureNormalSand ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 	Texture2D g_tRoughSand < Channel( R, Box( TextureRoughnessSand ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tGlossSand < Channel( R, Box( TextureGlossSand ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tSpecSand < Channel( R, Box( TextureSpecularSand ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tAoSand < Channel( R, Box( TextureAmbientOcclusionSand ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tBumpSand < Channel( R, Box( TextureBumpSand ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tCavitySand < Channel( R, Box( TextureCavitySand ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 
 	Texture2D g_tRock < Channel( RGB, Box( TextureRock ), Srgb ); OutputFormat( BC7 ); SrgbRead( true ); >;
 	Texture2D g_tNormalRock < Channel( RGB, Box( TextureNormalRock ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 	Texture2D g_tRoughRock < Channel( R, Box( TextureRoughnessRock ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tGlossRock < Channel( R, Box( TextureGlossRock ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tSpecRock < Channel( R, Box( TextureSpecularRock ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tAoRock < Channel( R, Box( TextureAmbientOcclusionRock ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tBumpRock < Channel( R, Box( TextureBumpRock ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tCavityRock < Channel( R, Box( TextureCavityRock ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 	Texture2D g_tHueSatNoise < Channel( RG, Box( TextureHueSatNoise ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 
 	float g_flRoughnessScale < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Material,10/10" ); >;
+	float g_flGlossMapBlend < Default( 0.0 ); Range( 0.0, 1.0 ); UiGroup( "Material,10/15" ); >;
+	float g_flGlossScale < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Material,10/16" ); >;
 	float g_flMetalnessScale < Default( 1.0 ); Range( 0.0, 1.0 ); UiGroup( "Material,10/20" ); >;
+	float g_flSpecularScale < Default( 1.0 ); Range( 0.0, 3.0 ); UiGroup( "Material,10/30" ); >;
+	float g_flAmbientOcclusionScale < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Material,10/40" ); >;
+	float g_flAmbientOcclusionStrength < Default( 1.0 ); Range( 0.0, 1.0 ); UiGroup( "Material,10/45" ); >;
+	float g_flCavityAoStrength < Default( 0.35 ); Range( 0.0, 1.0 ); UiGroup( "Material,10/50" ); >;
+	float g_flSlopeAoStrength < Default( 0.25 ); Range( 0.0, 1.0 ); UiGroup( "Material,10/55" ); >;
+	float g_flBumpTexelScale < Default( 1.5 ); Range( 0.25, 4.0 ); UiGroup( "Material,10/60" ); >;
+	float g_flCavityMapStrength < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Material,10/70" ); >;
+	float g_flCavityFromBumpStrength < Default( 0.55 ); Range( 0.0, 2.0 ); UiGroup( "Material,10/75" ); >;
+	float g_flCavityAlbedoDarken < Default( 0.35 ); Range( 0.0, 1.0 ); UiGroup( "Material,10/80" ); >;
+	float g_flCavitySpecularDarken < Default( 0.45 ); Range( 0.0, 1.0 ); UiGroup( "Material,10/85" ); >;
 
 	float2 g_vScaleGrass < Default2( 1.0, 1.0 ); Range2( 0.1, 0.1, 4.0, 4.0 ); UiGroup( "Grass,10/30" ); >;
 	float g_flRotationGrass < Default( 0.0 ); Range( 0.0, 360.0 ); UiGroup( "Grass,10/40" ); >;
 	float2 g_vOffsetGrass < Default2( 0.0, 0.0 ); UiGroup( "Grass,10/50" ); >;
 	float g_flNormalStrengthGrass < Default( 1.5 ); Range( 0.0, 8.0 ); UiGroup( "Grass,10/55" ); >;
 	float g_flMetalnessGrass < Default( 0.0 ); Range( 0.0, 1.0 ); UiGroup( "Grass,10/56" ); >;
+	float g_flSpecularGrass < Default( 0.35 ); Range( 0.0, 2.0 ); UiGroup( "Grass,10/57" ); >;
+	float g_flGlossBlendGrass < Default( 0.0 ); Range( 0.0, 1.0 ); UiGroup( "Grass,10/57a" ); >;
+	float g_flAmbientOcclusionGrass < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Grass,10/58" ); >;
+	float g_flBumpStrengthGrass < Default( 1.0 ); Range( 0.0, 8.0 ); UiGroup( "Grass,10/59" ); >;
+	float g_flCavityGrass < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Grass,10/60" ); >;
 
 	float2 g_vScaleSand < Default2( 0.87, 0.93 ); Range2( 0.1, 0.1, 4.0, 4.0 ); UiGroup( "Sand,10/30" ); >;
 	float g_flRotationSand < Default( 47.0 ); Range( 0.0, 360.0 ); UiGroup( "Sand,10/40" ); >;
 	float2 g_vOffsetSand < Default2( 0.31, 0.67 ); UiGroup( "Sand,10/50" ); >;
 	float g_flNormalStrengthSand < Default( 1.0 ); Range( 0.0, 8.0 ); UiGroup( "Sand,10/55" ); >;
 	float g_flMetalnessSand < Default( 0.0 ); Range( 0.0, 1.0 ); UiGroup( "Sand,10/56" ); >;
+	float g_flSpecularSand < Default( 0.85 ); Range( 0.0, 2.0 ); UiGroup( "Sand,10/57" ); >;
+	float g_flGlossBlendSand < Default( 0.0 ); Range( 0.0, 1.0 ); UiGroup( "Sand,10/57a" ); >;
+	float g_flAmbientOcclusionSand < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Sand,10/58" ); >;
+	float g_flBumpStrengthSand < Default( 1.0 ); Range( 0.0, 8.0 ); UiGroup( "Sand,10/59" ); >;
+	float g_flCavitySand < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Sand,10/60" ); >;
 
 	float2 g_vScaleRock < Default2( 1.14, 0.82 ); Range2( 0.1, 0.1, 4.0, 4.0 ); UiGroup( "Rock,10/30" ); >;
 	float g_flRotationRock < Default( 103.0 ); Range( 0.0, 360.0 ); UiGroup( "Rock,10/40" ); >;
 	float2 g_vOffsetRock < Default2( 0.79, 0.23 ); UiGroup( "Rock,10/50" ); >;
 	float g_flNormalStrengthRock < Default( 2.5 ); Range( 0.0, 8.0 ); UiGroup( "Rock,10/55" ); >;
 	float g_flMetalnessRock < Default( 0.0 ); Range( 0.0, 1.0 ); UiGroup( "Rock,10/56" ); >;
+	float g_flSpecularRock < Default( 1.35 ); Range( 0.0, 2.0 ); UiGroup( "Rock,10/57" ); >;
+	float g_flGlossBlendRock < Default( 0.0 ); Range( 0.0, 1.0 ); UiGroup( "Rock,10/57a" ); >;
+	float g_flAmbientOcclusionRock < Default( 1.15 ); Range( 0.0, 2.0 ); UiGroup( "Rock,10/58" ); >;
+	float g_flBumpStrengthRock < Default( 1.5 ); Range( 0.0, 8.0 ); UiGroup( "Rock,10/59" ); >;
+	float g_flCavityRock < Default( 1.25 ); Range( 0.0, 2.0 ); UiGroup( "Rock,10/60" ); >;
 
 	float g_flTextureBlendSoftness < Default( 0.35 ); Range( 0.0, 1.0 ); UiGroup( "Texture Blend,10/10" ); >;
 	float g_flGrassTextureWeight < Default( 1.0 ); Range( 0.0, 2.0 ); UiGroup( "Texture Blend,10/20" ); >;
@@ -450,42 +510,122 @@ PS
 		return normalize( normalTs );
 	}
 
+	// Height/bump map → tangent-space normal via central differences.
+	float3 SampleBumpNormalTs( Texture2D bumpMap, float2 uv, float strength )
+	{
+		if ( strength <= 0.001 )
+			return float3( 0, 0, 1 );
+
+		float2 texel = max( abs( ddx( uv ) ), abs( ddy( uv ) ) ) * g_flBumpTexelScale;
+		texel = max( texel, float2( 1e-5, 1e-5 ) );
+
+		float hL = bumpMap.Sample( g_sAniso, uv - float2( texel.x, 0 ) ).r;
+		float hR = bumpMap.Sample( g_sAniso, uv + float2( texel.x, 0 ) ).r;
+		float hD = bumpMap.Sample( g_sAniso, uv - float2( 0, texel.y ) ).r;
+		float hU = bumpMap.Sample( g_sAniso, uv + float2( 0, texel.y ) ).r;
+
+		return normalize( float3( ( hL - hR ) * strength, ( hD - hU ) * strength, 1.0 ) );
+	}
+
+	float3 CombineNormalAndBump( float3 normalTs, float3 bumpTs, float bumpStrength )
+	{
+		if ( bumpStrength <= 0.001 )
+			return normalTs;
+
+		// Detail bump adds micro relief on top of the authored normal map.
+		return normalize( float3( normalTs.xy + bumpTs.xy, normalTs.z ) );
+	}
+
+	// White = open surface, black = cavity. Also derives crevices from bump height curvature.
+	float SampleCavity( Texture2D cavityMap, Texture2D bumpMap, float2 uv )
+	{
+		float mapCavity = cavityMap.Sample( g_sAniso, uv ).r;
+
+		float2 texel = max( abs( ddx( uv ) ), abs( ddy( uv ) ) ) * g_flBumpTexelScale;
+		texel = max( texel, float2( 1e-5, 1e-5 ) );
+		float hC = bumpMap.Sample( g_sAniso, uv ).r;
+		float hL = bumpMap.Sample( g_sAniso, uv - float2( texel.x, 0 ) ).r;
+		float hR = bumpMap.Sample( g_sAniso, uv + float2( texel.x, 0 ) ).r;
+		float hD = bumpMap.Sample( g_sAniso, uv - float2( 0, texel.y ) ).r;
+		float hU = bumpMap.Sample( g_sAniso, uv + float2( 0, texel.y ) ).r;
+		float lap = ( hL + hR + hD + hU ) * 0.25 - hC; // >0 when neighbors higher (crevice)
+		float bumpCavity = saturate( 1.0 - lap * 4.0 * g_flCavityFromBumpStrength );
+
+		return saturate( mapCavity * bumpCavity );
+	}
+
 	struct LayerSample
 	{
 		float3 albedo;
 		float roughness;
+		float gloss;
+		float specular;
+		float ao;
+		float cavity;
 		float3 normalTs;
 	};
+
+	float ResolveLayerRoughness( float roughSample, float glossSample, float layerGlossBlend )
+	{
+		float fromRough = roughSample;
+		float fromGloss = saturate( 1.0 - saturate( glossSample * g_flGlossScale ) );
+		float blend = saturate( g_flGlossMapBlend * layerGlossBlend );
+		return lerp( fromRough, fromGloss, blend );
+	}
 
 	LayerSample SampleLayer(
 		Texture2D colorMap,
 		Texture2D roughMap,
+		Texture2D glossMap,
+		Texture2D specMap,
+		Texture2D aoMap,
 		Texture2D normalMap,
+		Texture2D bumpMap,
+		Texture2D cavityMap,
 		float2 uv,
-		float normalStrength )
+		float normalStrength,
+		float bumpStrength,
+		float layerGlossBlend )
 	{
 		LayerSample layer;
 		layer.albedo = colorMap.Sample( g_sAniso, uv ).rgb;
-		layer.roughness = roughMap.Sample( g_sAniso, uv ).r;
-		layer.normalTs = SampleNormalTs( normalMap, uv, normalStrength );
+		layer.gloss = glossMap.Sample( g_sAniso, uv ).r;
+		layer.roughness = ResolveLayerRoughness( roughMap.Sample( g_sAniso, uv ).r, layer.gloss, layerGlossBlend );
+		layer.specular = specMap.Sample( g_sAniso, uv ).r;
+		layer.ao = aoMap.Sample( g_sAniso, uv ).r;
+		layer.cavity = SampleCavity( cavityMap, bumpMap, uv );
+		float3 normalTs = SampleNormalTs( normalMap, uv, normalStrength );
+		float3 bumpTs = SampleBumpNormalTs( bumpMap, uv, bumpStrength );
+		layer.normalTs = CombineNormalAndBump( normalTs, bumpTs, bumpStrength );
 		return layer;
 	}
 
 	LayerSample SampleLayerBlended(
 		Texture2D colorMap,
 		Texture2D roughMap,
+		Texture2D glossMap,
+		Texture2D specMap,
+		Texture2D aoMap,
 		Texture2D normalMap,
+		Texture2D bumpMap,
+		Texture2D cavityMap,
 		RotatedUvPair uvs,
-		float normalStrength )
+		float normalStrength,
+		float bumpStrength,
+		float layerGlossBlend )
 	{
-		LayerSample sampleA = SampleLayer( colorMap, roughMap, normalMap, uvs.primary, normalStrength );
+		LayerSample sampleA = SampleLayer( colorMap, roughMap, glossMap, specMap, aoMap, normalMap, bumpMap, cavityMap, uvs.primary, normalStrength, bumpStrength, layerGlossBlend );
 		if ( uvs.primaryWeight >= 0.999 )
 			return sampleA;
 
-		LayerSample sampleB = SampleLayer( colorMap, roughMap, normalMap, uvs.secondary, normalStrength );
+		LayerSample sampleB = SampleLayer( colorMap, roughMap, glossMap, specMap, aoMap, normalMap, bumpMap, cavityMap, uvs.secondary, normalStrength, bumpStrength, layerGlossBlend );
 		LayerSample result;
 		result.albedo = lerp( sampleB.albedo, sampleA.albedo, uvs.primaryWeight );
 		result.roughness = lerp( sampleB.roughness, sampleA.roughness, uvs.primaryWeight );
+		result.gloss = lerp( sampleB.gloss, sampleA.gloss, uvs.primaryWeight );
+		result.specular = lerp( sampleB.specular, sampleA.specular, uvs.primaryWeight );
+		result.ao = lerp( sampleB.ao, sampleA.ao, uvs.primaryWeight );
+		result.cavity = lerp( sampleB.cavity, sampleA.cavity, uvs.primaryWeight );
 		result.normalTs = normalize( lerp( sampleB.normalTs, sampleA.normalTs, uvs.primaryWeight ) );
 		return result;
 	}
@@ -493,7 +633,12 @@ PS
 	LayerSample SampleBiomeLayer(
 		Texture2D colorMap,
 		Texture2D roughMap,
+		Texture2D glossMap,
+		Texture2D specMap,
+		Texture2D aoMap,
 		Texture2D normalMap,
+		Texture2D bumpMap,
+		Texture2D cavityMap,
 		float2 worldUv,
 		float2 scale,
 		float rotation,
@@ -501,13 +646,27 @@ PS
 		float layerSeed,
 		float warpStrength,
 		float normalStrength,
+		float bumpStrength,
+		float layerGlossBlend,
 		bool randomizeRotation )
 	{
 		RotatedUvPair uvs = LayerAntiTileUvPair(
 			worldUv, scale, rotation, layerOffset, layerSeed, warpStrength,
 			g_flRotationTileSize, randomizeRotation,
 			g_flRotationSquiggleStrength, g_flRotationSquiggleScale, g_flRotationEdgeBlend );
-		return SampleLayerBlended( colorMap, roughMap, normalMap, uvs, normalStrength );
+		return SampleLayerBlended( colorMap, roughMap, glossMap, specMap, aoMap, normalMap, bumpMap, cavityMap, uvs, normalStrength, bumpStrength, layerGlossBlend );
+	}
+
+	// Specular 0 = matte, 1 = roughness map as authored, >1 = glossier highlights.
+	float ApplySpecularToRoughness( float roughness, float specular )
+	{
+		specular = max( specular, 0.0 );
+		if ( specular <= 1.0 )
+			return lerp( 1.0, roughness, specular );
+
+		float gloss = saturate( 1.0 - roughness );
+		gloss = saturate( gloss * specular );
+		return saturate( 1.0 - gloss );
 	}
 
 	float2 SampleHueSatNoiseTexture( float2 worldUv )
@@ -541,19 +700,19 @@ PS
 		float2 worldUv = i.vTextureCoords.xy;
 
 		LayerSample grass = SampleBiomeLayer(
-			g_tGrass, g_tRoughGrass, g_tNormalGrass,
+			g_tGrass, g_tRoughGrass, g_tGlossGrass, g_tSpecGrass, g_tAoGrass, g_tNormalGrass, g_tBumpGrass, g_tCavityGrass,
 			worldUv, g_vScaleGrass, g_flRotationGrass, g_vOffsetGrass,
-			17.3, g_flUvWarpStrengthGrass, g_flNormalStrengthGrass, g_bRandomRotationGrass );
+			17.3, g_flUvWarpStrengthGrass, g_flNormalStrengthGrass, g_flBumpStrengthGrass, g_flGlossBlendGrass, g_bRandomRotationGrass );
 
 		LayerSample sand = SampleBiomeLayer(
-			g_tSand, g_tRoughSand, g_tNormalSand,
+			g_tSand, g_tRoughSand, g_tGlossSand, g_tSpecSand, g_tAoSand, g_tNormalSand, g_tBumpSand, g_tCavitySand,
 			worldUv, g_vScaleSand, g_flRotationSand, g_vOffsetSand,
-			41.9, g_flUvWarpStrengthSand, g_flNormalStrengthSand, g_bRandomRotationSand );
+			41.9, g_flUvWarpStrengthSand, g_flNormalStrengthSand, g_flBumpStrengthSand, g_flGlossBlendSand, g_bRandomRotationSand );
 
 		LayerSample rock = SampleBiomeLayer(
-			g_tRock, g_tRoughRock, g_tNormalRock,
+			g_tRock, g_tRoughRock, g_tGlossRock, g_tSpecRock, g_tAoRock, g_tNormalRock, g_tBumpRock, g_tCavityRock,
 			worldUv, g_vScaleRock, g_flRotationRock, g_vOffsetRock,
-			93.7, g_flUvWarpStrengthRock, g_flNormalStrengthRock, g_bRandomRotationRock );
+			93.7, g_flUvWarpStrengthRock, g_flNormalStrengthRock, g_flBumpStrengthRock, g_flGlossBlendRock, g_bRandomRotationRock );
 
 		float3 weights = ApplyTextureBlendWeights(
 			saturate( i.vBlendValues.rgb ),
@@ -569,19 +728,47 @@ PS
 		float roughness = grass.roughness * weights.r + sand.roughness * weights.g + rock.roughness * weights.b;
 		roughness = saturate( roughness * g_flRoughnessScale );
 
+		float specularMap = grass.specular * weights.r + sand.specular * weights.g + rock.specular * weights.b;
+		float specular = ( g_flSpecularGrass * weights.r + g_flSpecularSand * weights.g + g_flSpecularRock * weights.b )
+			* specularMap
+			* g_flSpecularScale;
+
 		float metalness = g_flMetalnessGrass * weights.r + g_flMetalnessSand * weights.g + g_flMetalnessRock * weights.b;
 		metalness = saturate( metalness * g_flMetalnessScale );
 
 		float3 normalTs = grass.normalTs * weights.r + sand.normalTs * weights.g + rock.normalTs * weights.b;
 		normalTs = normalize( normalTs );
+		float3 worldNormal = TransformNormal( normalTs, i.vNormalWs, i.vTangentUWs, i.vTangentVWs );
+
+		float cavityMap = grass.cavity * weights.r + sand.cavity * weights.g + rock.cavity * weights.b;
+		float cavityLayer = g_flCavityGrass * weights.r + g_flCavitySand * weights.g + g_flCavityRock * weights.b;
+		float cavity = saturate( cavityMap * cavityLayer * g_flCavityMapStrength );
+
+		float aoMap = grass.ao * weights.r + sand.ao * weights.g + rock.ao * weights.b;
+		float aoLayer = g_flAmbientOcclusionGrass * weights.r + g_flAmbientOcclusionSand * weights.g + g_flAmbientOcclusionRock * weights.b;
+		float ao = saturate( aoMap * aoLayer * g_flAmbientOcclusionScale );
+
+		// Procedural fallback cavity from detail normals + soft darkening on steep slopes.
+		float normalCavity = saturate( 0.35 + 0.65 * saturate( normalTs.z ) );
+		float slopeAo = saturate( 0.55 + 0.45 * saturate( worldNormal.z ) );
+		ao *= lerp( 1.0, normalCavity, g_flCavityAoStrength );
+		ao *= lerp( 1.0, slopeAo, g_flSlopeAoStrength );
+		ao *= cavity;
+		ao = lerp( 1.0, ao, g_flAmbientOcclusionStrength );
+		ao = saturate( ao );
+
+		// Darken albedo / mute specular in cavities (classic cavity map usage).
+		albedo *= lerp( 1.0, cavity, g_flCavityAlbedoDarken );
+		specular *= lerp( 1.0, cavity, g_flCavitySpecularDarken );
+		roughness = ApplySpecularToRoughness( roughness, specular );
 
 		Material m = Material::Init( i );
 		m.Albedo = albedo;
 		m.Roughness = roughness;
 		m.Metalness = metalness;
-		m.AmbientOcclusion = 1.0;
+		m.AmbientOcclusion = ao;
 		m.Opacity = 1.0;
-		m.Normal = TransformNormal( normalTs, i.vNormalWs, i.vTangentUWs, i.vTangentVWs );
+		m.Normal = worldNormal;
 
 		return ShadingModelStandard::Shade( i, m );
 	}
