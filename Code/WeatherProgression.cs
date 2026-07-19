@@ -100,32 +100,39 @@ public static class WeatherProgression
 			WeatherType.Cloudy => to switch
 			{
 				WeatherType.Clear or WeatherType.Overcast or WeatherType.Fog => 1,
-				WeatherType.Rain or WeatherType.Snow => 2,
+				WeatherType.LightRain or WeatherType.Rain or WeatherType.Snow => 2,
 				_ => 3,
 			},
 			WeatherType.Overcast => to switch
 			{
-				WeatherType.Cloudy or WeatherType.Rain or WeatherType.Snow or WeatherType.Fog => 1,
+				WeatherType.Cloudy or WeatherType.LightRain or WeatherType.Rain or WeatherType.Snow or WeatherType.Fog => 1,
 				WeatherType.HeavyRain or WeatherType.Blizzard => 2,
 				WeatherType.Storm => 3,
 				_ => 2,
 			},
+			WeatherType.LightRain => to switch
+			{
+				WeatherType.Overcast or WeatherType.Rain => 1,
+				WeatherType.Cloudy or WeatherType.HeavyRain => 2,
+				_ => 3,
+			},
 			WeatherType.Rain => to switch
 			{
-				WeatherType.Overcast or WeatherType.HeavyRain => 1,
+				WeatherType.LightRain or WeatherType.Overcast or WeatherType.HeavyRain => 1,
 				WeatherType.Cloudy or WeatherType.Storm => 2,
 				_ => 3,
 			},
 			WeatherType.HeavyRain => to switch
 			{
 				WeatherType.Rain or WeatherType.Storm => 1,
-				WeatherType.Overcast => 2,
+				WeatherType.LightRain or WeatherType.Overcast => 2,
 				_ => 3,
 			},
 			WeatherType.Storm => to switch
 			{
 				WeatherType.HeavyRain => 1,
 				WeatherType.Rain => 2,
+				WeatherType.LightRain => 3,
 				_ => 3,
 			},
 			WeatherType.Snow => to switch
@@ -167,6 +174,8 @@ public static class WeatherProgression
 			WeatherType.Overcast when isDusk => 1.8f,
 			WeatherType.Fog when isDawn => 3f,
 			WeatherType.Fog when isNight => 2f,
+			WeatherType.LightRain when isDusk => 2f,
+			WeatherType.LightRain when isDay => 1.1f,
 			WeatherType.Rain when isDusk => 2.2f,
 			WeatherType.Rain when isDay => 0.8f,
 			WeatherType.HeavyRain when isDusk => 1.5f,
@@ -181,7 +190,7 @@ public static class WeatherProgression
 	}
 
 	static bool IsWet( WeatherType type ) =>
-		type is WeatherType.Rain or WeatherType.HeavyRain or WeatherType.Storm;
+		type is WeatherType.LightRain or WeatherType.Rain or WeatherType.HeavyRain or WeatherType.Storm;
 
 	static bool IsCold( WeatherType type ) =>
 		type is WeatherType.Snow or WeatherType.Blizzard;

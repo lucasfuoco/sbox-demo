@@ -1,0 +1,57 @@
+{
+  "UI": false,
+  "Volume": "1.15",
+  "Pitch": "0.92,1.08",
+  "Decibels": 82,
+  "SelectionMode": "Random",
+  "Sounds": [
+    "sound/ambient/thunder_strike_variation1.vsnd",
+    "sound/ambient/thunder_strike_variation2.vsnd",
+    "sound/ambient/thunder_strike_variation3.vsnd",
+    "sound/ambient/thunder_strike_variation4.vsnd"
+  ],
+  "OcclusionEnabled": false,
+  "Occlusion": false,
+  "ReverbEnabled": true,
+  "Reflections": true,
+  "AirAbsorption": false,
+  "Transmission": false,
+  "DistanceAttenuation": true,
+  "Distance": 45000,
+  "Falloff": [
+    {
+      "x": 0,
+      "y": 1,
+      "in": 0,
+      "out": -0.4,
+      "mode": "Mirrored"
+    },
+    {
+      "x": 0.15,
+      "y": 0.75,
+      "in": 0.5,
+      "out": -0.5,
+      "mode": "Mirrored"
+    },
+    {
+      "x": 0.45,
+      "y": 0.35,
+      "in": 0.2,
+      "out": -0.2,
+      "mode": "Mirrored"
+    },
+    {
+      "x": 1,
+      "y": 0.05,
+      "in": 0,
+      "out": 0,
+      "mode": "Mirrored"
+    }
+  ],
+  "DefaultMixer": {
+    "Name": "game",
+    "Id": "c4350297-fde3-42f6-9090-b86b6ad39cb0"
+  },
+  "__references": [],
+  "__version": 1
+}

@@ -27,7 +27,7 @@ static class WeatherCloudPalette
 		WeatherType.Clear => ClearSkyCloud,
 		WeatherType.Cloudy => new Color( 0.94f, 0.95f, 0.98f, 1f ),
 		WeatherType.Overcast => OvercastCloud,
-		WeatherType.Rain or WeatherType.HeavyRain => RainCloud,
+		WeatherType.LightRain or WeatherType.Rain or WeatherType.HeavyRain => RainCloud,
 		WeatherType.Storm => StormCloud,
 		WeatherType.Snow or WeatherType.Blizzard => SnowCloud,
 		WeatherType.Fog => FogBank,

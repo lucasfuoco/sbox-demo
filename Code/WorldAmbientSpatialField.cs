@@ -98,7 +98,9 @@ public sealed class WorldAmbientSpatialField
 			return;
 		}
 
-		var soundEvent = sounds.Get( config.Layer );
+		var soundEvent = config.Layer == WorldAmbientLayer.Rain
+			? sounds.ResolveRain( conditions.Rain )
+			: sounds.Get( config.Layer );
 		if ( soundEvent is null )
 			return;
 
@@ -204,6 +206,12 @@ public sealed class WorldAmbientSpatialField
 		{
 			WorldAmbientLayer.Wind => 0.85f + conditions.Wind * 0.25f,
 			WorldAmbientLayer.Leaves => 0.9f + conditions.Wind * 0.2f,
+			WorldAmbientLayer.Rain => WeatherRainStrengthUtil.FromAmount( conditions.Rain ) switch
+			{
+				WeatherRainStrength.Light => 1.05f,
+				WeatherRainStrength.Strong => 0.92f,
+				_ => 1f,
+			},
 			_ => 1f,
 		};
 
@@ -249,8 +257,15 @@ public sealed class WorldAmbientSpatialField
 			|| !_handleEvents.TryGetValue( key, out var activeSound )
 			|| activeSound != soundEvent )
 		{
-			handle = Sound.Play( soundEvent );
+			handle = Sound.Play( soundEvent, position );
 			_handleEvents[key] = soundEvent;
+		}
+
+		if ( !handle.IsValid() )
+		{
+			_handles.Remove( key );
+			_handleEvents.Remove( key );
+			return;
 		}
 
 		handle.Position = position;
@@ -303,6 +318,9 @@ public readonly struct WorldAmbientSoundSet
 	public SoundEvent Leaves { get; init; }
 	public SoundEvent Water { get; init; }
 	public SoundEvent Rain { get; init; }
+	public SoundEvent LightRain { get; init; }
+	public SoundEvent MediumRain { get; init; }
+	public SoundEvent StrongRain { get; init; }
 
 	public SoundEvent Get( WorldAmbientLayer layer ) => layer switch
 	{
@@ -312,9 +330,21 @@ public readonly struct WorldAmbientSoundSet
 		WorldAmbientLayer.Frogs => Frogs,
 		WorldAmbientLayer.Leaves => Leaves,
 		WorldAmbientLayer.Water => Water,
-		WorldAmbientLayer.Rain => Rain,
+		WorldAmbientLayer.Rain => ResolveRain( 0.7f ),
 		_ => null,
 	};
+
+	public SoundEvent ResolveRain( float rainAmount )
+	{
+		var strength = WeatherRainStrengthUtil.FromAmount( rainAmount );
+		return strength switch
+		{
+			WeatherRainStrength.Light => LightRain ?? MediumRain ?? Rain ?? StrongRain,
+			WeatherRainStrength.Strong => StrongRain ?? MediumRain ?? Rain ?? LightRain,
+			WeatherRainStrength.Medium => MediumRain ?? Rain ?? LightRain ?? StrongRain,
+			_ => null,
+		};
+	}
 }
 
 public readonly struct WorldAmbientVolumeSet

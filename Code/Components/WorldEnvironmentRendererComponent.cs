@@ -209,7 +209,7 @@ public sealed class WorldEnvironmentRendererComponent : Component, Component.Exe
 		}
 
 		Sun.Enabled = true;
-		Sun.LightColor = WorldAtmospherePalette.GetSunLightColor( time, overcast, rain, temperature );
+		Sun.LightColor = ApplyLightningKeyBoost( WorldAtmospherePalette.GetSunLightColor( time, overcast, rain, temperature ) );
 		Sun.SkyColor = ApplyLightningSkyBoost( WorldAtmospherePalette.GetSkyAmbientColor( time, overcast, rain ) );
 		Sun.FogMode = Light.FogInfluence.Enabled;
 		Sun.FogStrength = WorldAtmospherePalette.GetFogStrength( GetFogAmount(), overcast, rain );
@@ -231,7 +231,7 @@ public sealed class WorldEnvironmentRendererComponent : Component, Component.Exe
 		var intensity = WorldAtmospherePalette.GetMoonLightIntensity( time );
 
 		Moon.GameObject.WorldRotation = WorldAtmospherePalette.GetMoonRotation( time );
-		Moon.LightColor = WorldAtmospherePalette.GetMoonLightColor( overcast, rain ).WithAlpha( intensity );
+		Moon.LightColor = ApplyLightningKeyBoost( WorldAtmospherePalette.GetMoonLightColor( overcast, rain ) ).WithAlpha( intensity );
 		Moon.SkyColor = ApplyLightningSkyBoost( WorldAtmospherePalette.GetSkyAmbientColor( time, overcast, rain ) );
 		Moon.FogMode = Light.FogInfluence.Enabled;
 		Moon.FogStrength = WorldAtmospherePalette.GetFogStrength( GetFogAmount(), overcast, rain ) * 0.35f;
@@ -246,9 +246,20 @@ public sealed class WorldEnvironmentRendererComponent : Component, Component.Exe
 			return sky;
 
 		// Strong viewport-wide pulse so storm flashes read clearly in editor and play.
-		var bolt = new Color( 0.4f, 0.65f, 1.55f );
-		var amount = MathX.Clamp( flash, 0f, 1.25f );
-		return Color.Lerp( sky, bolt, MathX.Clamp( amount * 0.95f, 0f, 1f ) ) * (1f + amount * 2.2f);
+		var bolt = new Color( 0.45f, 0.72f, 1.7f );
+		var amount = MathX.Clamp( flash, 0f, 1.35f );
+		return Color.Lerp( sky, bolt, MathX.Clamp( amount * 1.05f, 0f, 1f ) ) * (1f + amount * 2.8f);
+	}
+
+	Color ApplyLightningKeyBoost( Color light )
+	{
+		var flash = GetLightningFlash();
+		if ( flash <= 0.01f )
+			return light;
+
+		var bolt = new Color( 0.55f, 0.78f, 1.85f );
+		var amount = MathX.Clamp( flash, 0f, 1.35f );
+		return Color.Lerp( light, bolt, MathX.Clamp( amount * 0.85f, 0f, 1f ) ) * (1f + amount * 1.8f);
 	}
 
 	void UpdateFog()

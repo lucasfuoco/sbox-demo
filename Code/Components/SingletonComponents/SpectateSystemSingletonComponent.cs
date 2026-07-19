@@ -15,6 +15,9 @@ public sealed class SpectateSystemSingletonComponent : SingletonComponent<Specta
 	public bool IsFreecam => (FreecamController as PawnComponent)?.IsPossessed ?? false;
 
 	[Property] public SpectateControllerPawnComponent FreecamController { get; set; }
+
+	[Property, Title( "Weather Freecam Spawn" ), Description( "When freecam has no player to copy from, spawn under a storm/rain cloud volume." )]
+	public bool SpawnFreecamNearWeather { get; set; } = true;
 	
 	private bool _wasSpectating { get; set; }
 
@@ -125,7 +128,46 @@ public sealed class SpectateSystemSingletonComponent : SingletonComponent<Specta
 			FreecamController.EyeAngles = rotation;
 			FreecamController.WorldPosition = ClientComponent.Viewer.Pawn.GameObject.WorldPosition + (rotation.Forward * 8.0f);
 		}
+		else if ( SpawnFreecamNearWeather )
+		{
+			PlaceFreecamNearWeather();
+		}
 
 		FreecamController.Possess();
+	}
+
+	void PlaceFreecamNearWeather()
+	{
+		var volume = FindPreferredWeatherVolume();
+		if ( !volume.IsValid() )
+			return;
+
+		var center = volume.Transform.World.Position;
+		var height = 400f;
+		var terrain = WorldManagerSingletonComponent.Instance;
+		if ( terrain.IsValid() )
+			height = terrain.GetHeight( center.x, center.y ) + 280f;
+
+		FreecamController.WorldPosition = new Vector3( center.x, center.y, height );
+		FreecamController.EyeAngles = new Angles( 12f, 200f, 0f );
+	}
+
+	WeatherVolumeComponent FindPreferredWeatherVolume()
+	{
+		WeatherVolumeComponent rain = null;
+
+		foreach ( var volume in Scene.GetAllComponents<WeatherVolumeComponent>() )
+		{
+			if ( !volume.IsValid() || !volume.Enabled )
+				continue;
+
+			if ( volume.VolumeType == WeatherVolumeType.StormCloud )
+				return volume;
+
+			if ( rain is null && volume.VolumeType == WeatherVolumeType.RainCloud )
+				rain = volume;
+		}
+
+		return rain;
 	}
 }

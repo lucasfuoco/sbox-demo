@@ -5,21 +5,22 @@ using Sandbox.Components.SingletonComponents;
 public enum WeatherRainPlacement
 {
 	/// <summary>Single rain shaft that follows the camera under the cloud footprint.</summary>
-	FollowCamera,
-	/// <summary>Multiple fixed shafts anchored in the volume; nearest ones are simulated.</summary>
-	FixedCells,
+	FollowCamera = 0,
+	/// <summary>One rain emitter that fills the whole cloud volume footprint.</summary>
+	FillVolume = 1,
+	/// <summary>Legacy name for <see cref="FillVolume"/>.</summary>
+	FixedCells = FillVolume,
 }
 
 /// <summary>
-/// Rain shafts under rain/storm cloud volumes.
-/// Storm volumes default to fixed cells in the volume; rain clouds can follow the camera.
+/// Rain under rain/storm cloud volumes.
+/// Defaults to one emitter filling the cloud footprint.
 /// </summary>
 [Title( "Weather Volume Rain" ), Category( "World Simulation" ), Icon( "umbrella" )]
 public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInEditor
 {
 	const float CloudBandFraction = 0.06f;
 	const float CloudBandMaxHeight = 6000f;
-	const int MaxRainSlots = 8;
 
 	[RequireComponent]
 	public WeatherVolumeComponent Volume { get; private set; }
@@ -30,23 +31,20 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 	[Property, Group( "Rain" ), Title( "Editor Preview" )]
 	public bool EditorPreview { get; set; } = true;
 
-	[Property, Group( "Rain" ), Title( "Rain Intensity" ), Range( 0.1f, 2f )]
+	[Property, Group( "Rain" ), Title( "Strength" ), Description( "None = follow weather rain amount. Light / Medium / Strong set a fixed particle intensity (audio comes from World Ambient Audio)." )]
+	public WeatherRainStrength Strength { get; set; } = WeatherRainStrength.None;
+
+	[Property, Group( "Rain" ), Title( "Rain Intensity" ), Description( "Extra multiplier on top of Strength." ), Range( 0.1f, 2f )]
 	public float RainIntensity { get; set; } = 1f;
 
-	[Property, Group( "Rain" ), Title( "Placement" ), Description( "Follow Camera = one shaft on the player. Fixed Cells = multiple shafts anchored in the volume." )]
-	public WeatherRainPlacement Placement { get; set; } = WeatherRainPlacement.FixedCells;
+	[Property, Group( "Rain" ), Title( "Placement" ), Description( "Fill Volume = one emitter covering the cloud. Follow Camera = shaft that tracks the player." )]
+	public WeatherRainPlacement Placement { get; set; } = WeatherRainPlacement.FillVolume;
 
-	[Property, Group( "Rain" ), Title( "Column Width" ), Description( "Width of each rain shaft." ), Range( 800f, 24000f )]
+	[Property, Group( "Rain" ), Title( "Column Width" ), Description( "Width of the follow-camera rain shaft." ), Range( 800f, 24000f )]
 	public float ColumnWidth { get; set; } = 14000f;
 
-	[Property, Group( "Rain" ), Title( "Visible Height" ), Description( "Fallback column height when terrain cannot be sampled. Fixed cells otherwise stretch from the cloud deck to the ground." ), Range( 1200f, 80000f )]
+	[Property, Group( "Rain" ), Title( "Visible Height" ), Description( "Fallback column height when terrain cannot be sampled. Fill Volume otherwise stretches from the cloud deck to the ground." ), Range( 1200f, 80000f )]
 	public float VisibleHeight { get; set; } = 20000f;
-
-	[Property, Group( "Rain" ), Title( "Cell Spacing" ), Description( "Distance between fixed rain cells in the volume." ), Range( 2000f, 80000f )]
-	public float CellSpacing { get; set; } = 30000f;
-
-	[Property, Group( "Rain" ), Title( "Active Cell Count" ), Description( "How many nearest fixed cells simulate at once." ), Range( 1, MaxRainSlots )]
-	public int ActiveCellCount { get; set; } = 6;
 
 	[Property, Group( "Rain" ), Title( "Always Preview Under Volume" )]
 	public bool AlwaysPreviewUnderVolume { get; set; } = true;
@@ -72,9 +70,7 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 	[Property, Group( "Ground" ), Title( "Impact Audio Volume" ), Range( 0f, 1f )]
 	public float ImpactAudioVolume { get; set; } = 0.55f;
 
-	readonly List<WorldPrecipitationEffect> _rainSlots = new( MaxRainSlots );
-	readonly List<Vector2> _cellLocals = new();
-	readonly int[] _nearestScratch = new int[MaxRainSlots];
+	WorldPrecipitationEffect _rain;
 
 	WorldRainGroundEffect _ground;
 	WeatherVolumeManagerComponent _volumeManager;
@@ -82,9 +78,6 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 	TimeSince _sinceShelterCheck;
 	bool _sheltered;
 	float _shelterBlend;
-	float _cachedSpacing = -1f;
-	float _cachedColumnWidth = -1f;
-	Vector3 _cachedVolumeSize;
 
 	bool IsEditMode => Game.IsEditor && !Game.IsPlaying;
 
@@ -92,7 +85,7 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 
 	bool ShouldPreview => EnableRain && SupportsRain && Enabled && (Game.IsPlaying || (IsEditMode && EditorPreview));
 
-	bool UsesFixedCells => Placement == WeatherRainPlacement.FixedCells
+	bool UsesFillVolume => Placement == WeatherRainPlacement.FillVolume
 		|| Volume.VolumeType is WeatherVolumeType.StormCloud or WeatherVolumeType.RainCloud;
 
 	protected override void OnAwake() => Tick();
@@ -105,7 +98,7 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 
 	protected override void OnDestroy()
 	{
-		DestroyRainSlots();
+		DestroyRain();
 		if ( _ground.IsValid() )
 			_ground.Root.Destroy();
 
@@ -122,16 +115,15 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 			return;
 		}
 
-		EnsureRainSlots();
+		EnsureRain();
 		EnsureGround();
-		if ( _rainSlots.Count == 0 )
-			return;
 
 		var listener = ResolveListenerPosition();
 		var blend = GetHorizontalBlend( listener );
 		var previewOutside = IsEditMode && AlwaysPreviewUnderVolume && blend <= 0.01f;
+		var insideVolume = blend > 0.01f || previewOutside;
 
-		if ( blend <= 0.01f && !previewOutside )
+		if ( !insideVolume )
 		{
 			DisableEffects();
 			return;
@@ -145,14 +137,10 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 
 		UpdateShelter( listener, previewOutside );
 		var outdoor = 1f - _shelterBlend;
-		if ( outdoor <= 0.02f )
-		{
-			DisableEffects();
-			return;
-		}
-
 		var sample = Volume.GetWeatherSample();
-		var amount = ResolveAmount( sample ) * outdoor * MathX.Clamp( blend <= 0f ? 1f : blend, 0.35f, 1f );
+		var strength = ResolveStrength( sample );
+		var volumeBlend = MathX.Clamp( blend <= 0f ? 1f : blend, 0.35f, 1f );
+		var amount = ResolveAmount( sample, strength ) * MathF.Max( outdoor, 0.15f ) * volumeBlend;
 		var windDirection = sample.WindDirection;
 		var windStrength = sample.WindStrength;
 
@@ -163,8 +151,18 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 			windStrength = MathF.Max( windStrength, world.Weather.WindStrength );
 		}
 
-		if ( UsesFixedCells )
-			UpdateFixedCells( listener, amount, windDirection, windStrength, previewOutside );
+		// Visuals mute under shelter; World Ambient Audio keeps the rain bed while inside the volume.
+		if ( outdoor <= 0.02f )
+		{
+			DisableEffects();
+			return;
+		}
+
+		if ( !_rain.IsValid() )
+			return;
+
+		if ( UsesFillVolume )
+			UpdateFillVolume( listener, previewOutside, amount, windDirection, windStrength );
 		else
 			UpdateFollowCamera( listener, previewOutside, amount, windDirection, windStrength );
 
@@ -176,8 +174,38 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 				SplashRadius,
 				enableSplashes: EnableSplashes && !previewOutside && outdoor > 0.2f,
 				enableAudio: EnableImpactAudio && Game.IsPlaying && outdoor > 0.2f,
-				audioVolume: ImpactAudioVolume * outdoor );
+				audioVolume: ImpactAudioVolume * outdoor * WeatherRainStrengthUtil.ToAudioVolume( strength ) );
 		}
+	}
+
+	/// <summary>
+	/// Sample used by <see cref="WorldAmbientAudioComponent"/> so rain audio can follow the player
+	/// until they leave this volume footprint.
+	/// </summary>
+	public bool TrySampleListenerAudio( Vector3 listener, out WeatherRainStrength strength, out float blend, out float outdoor )
+	{
+		strength = WeatherRainStrength.None;
+		blend = 0f;
+		outdoor = 1f;
+
+		// Audio should keep working even when particle preview is off.
+		if ( !EnableRain || !Enabled || !SupportsRain || !Volume.IsValid() )
+			return false;
+
+		blend = GetHorizontalBlend( listener );
+		if ( blend <= 0.01f )
+			return false;
+
+		UpdateShelter( listener, previewOutside: false );
+		outdoor = MathF.Max( 1f - _shelterBlend, 0.35f );
+		strength = ResolveStrength( Volume.GetWeatherSample() );
+		if ( strength == WeatherRainStrength.None )
+			strength = Volume.VolumeType == WeatherVolumeType.StormCloud
+				? WeatherRainStrength.Strong
+				: WeatherRainStrength.Medium;
+
+		blend = MathX.Clamp( blend, 0.35f, 1f );
+		return true;
 	}
 
 	void UpdateFollowCamera(
@@ -187,194 +215,47 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 		Vector3 windDirection,
 		float windStrength )
 	{
-		GetRainColumn( listener, previewOutside, Vector2.Zero, followListener: true, out var spawnCenter, out var emitterSize );
-		UpdateSlot( _rainSlots[0], spawnCenter, emitterSize, amount, windDirection, windStrength, listener, rateMultiplier: 1f );
-
-		for ( var i = 1; i < _rainSlots.Count; i++ )
-		{
-			if ( _rainSlots[i].IsValid() )
-				_rainSlots[i].Root.Enabled = false;
-		}
+		_ = previewOutside;
+		GetRainColumn( listener, useVolumeCenter: false, followListener: true, fillVolume: false, out var spawnCenter, out var emitterSize );
+		UpdateSlot( spawnCenter, emitterSize, amount, windDirection, windStrength, listener );
 	}
 
-	void UpdateFixedCells(
+	void UpdateFillVolume(
 		Vector3 listener,
+		bool previewOutside,
 		float amount,
 		Vector3 windDirection,
-		float windStrength,
-		bool previewOutside )
+		float windStrength )
 	{
-		EnsureRainSlots();
-		EnsureCellLayout();
+		_ = previewOutside;
 
-		var activeCount = Math.Clamp( ActiveCellCount, 1, Math.Min( MaxRainSlots, _rainSlots.Count ) );
-		var rateMul = MathX.Clamp( 1.75f / MathF.Sqrt( activeCount ), 0.65f, 1.25f );
-
-		if ( _cellLocals.Count == 0 )
-		{
-			UpdateFollowCamera( listener, previewOutside, amount, windDirection, windStrength );
-			return;
-		}
-
-		PickNearestDistinctCells( listener, activeCount, previewOutside );
-
-		for ( var slot = 0; slot < _rainSlots.Count; slot++ )
-		{
-			var rain = _rainSlots[slot];
-			if ( !rain.IsValid() )
-				continue;
-
-			if ( slot >= activeCount || _nearestScratch[slot] < 0 )
-			{
-				rain.Root.Enabled = false;
-				continue;
-			}
-
-			var localXy = _cellLocals[_nearestScratch[slot]];
-			GetRainColumn( listener, false, localXy, followListener: false, out var spawnCenter, out var emitterSize );
-			UpdateSlot( rain, spawnCenter, emitterSize, amount, windDirection, windStrength, listener, rateMul );
-		}
-	}
-
-	void PickNearestDistinctCells( Vector3 listener, int activeCount, bool previewOutside )
-	{
-		var world = Volume.Transform.World;
-		var localListener = previewOutside ? Vector3.Zero : world.PointToLocal( listener );
-		// Keep active shafts well separated across the storm footprint.
-		var minSeparation = MathF.Max( CellSpacing * 0.95f, ColumnWidth * 1.25f );
-		var minSeparationSq = minSeparation * minSeparation;
-
-		for ( var i = 0; i < activeCount; i++ )
-			_nearestScratch[i] = -1;
-
-		// Prefer a ring of targets around the listener so cells fan out instead of clustering.
-		var ringRadius = MathF.Max( CellSpacing, ColumnWidth * 1.5f );
-		var filled = 0;
-		for ( var slot = 0; slot < activeCount && _cellLocals.Count > 0; slot++ )
-		{
-			var angle = slot * (MathF.PI * 2f / activeCount) + 0.4f;
-			var target = new Vector2(
-				localListener.x + MathF.Cos( angle ) * ringRadius,
-				localListener.y + MathF.Sin( angle ) * ringRadius );
-
-			var bestIndex = -1;
-			var bestDist = float.MaxValue;
-			for ( var i = 0; i < _cellLocals.Count; i++ )
-			{
-				var used = false;
-				for ( var p = 0; p < filled; p++ )
-				{
-					if ( _nearestScratch[p] == i )
-					{
-						used = true;
-						break;
-					}
-				}
-
-				if ( used )
-					continue;
-
-				var cell = _cellLocals[i];
-				var tooClose = false;
-				for ( var p = 0; p < filled; p++ )
-				{
-					var picked = _cellLocals[_nearestScratch[p]];
-					var sx = cell.x - picked.x;
-					var sy = cell.y - picked.y;
-					if ( sx * sx + sy * sy < minSeparationSq )
-					{
-						tooClose = true;
-						break;
-					}
-				}
-
-				if ( tooClose )
-					continue;
-
-				var dx = cell.x - target.x;
-				var dy = cell.y - target.y;
-				var distSq = dx * dx + dy * dy;
-				if ( distSq >= bestDist )
-					continue;
-
-				bestDist = distSq;
-				bestIndex = i;
-			}
-
-			if ( bestIndex < 0 )
-				break;
-
-			_nearestScratch[filled++] = bestIndex;
-		}
-
-		// Fill any remaining slots with farthest-from-cluster picks near the listener.
-		while ( filled < activeCount )
-		{
-			var bestIndex = -1;
-			var bestScore = float.MaxValue;
-			for ( var i = 0; i < _cellLocals.Count; i++ )
-			{
-				var used = false;
-				for ( var p = 0; p < filled; p++ )
-				{
-					if ( _nearestScratch[p] == i )
-					{
-						used = true;
-						break;
-					}
-				}
-
-				if ( used )
-					continue;
-
-				var cell = _cellLocals[i];
-				var tooClose = false;
-				for ( var p = 0; p < filled; p++ )
-				{
-					var picked = _cellLocals[_nearestScratch[p]];
-					var sx = cell.x - picked.x;
-					var sy = cell.y - picked.y;
-					if ( sx * sx + sy * sy < minSeparationSq * 0.65f )
-					{
-						tooClose = true;
-						break;
-					}
-				}
-
-				if ( tooClose )
-					continue;
-
-				var dx = cell.x - localListener.x;
-				var dy = cell.y - localListener.y;
-				var distSq = dx * dx + dy * dy;
-				if ( distSq >= bestScore )
-					continue;
-
-				bestScore = distSq;
-				bestIndex = i;
-			}
-
-			if ( bestIndex < 0 )
-				break;
-
-			_nearestScratch[filled++] = bestIndex;
-		}
+		// Dense shaft under the listener from cloud deck → ground.
+		// A single box over the full cloud footprint is too sparse to see.
+		GetRainColumn(
+			listener,
+			useVolumeCenter: false,
+			followListener: true,
+			fillVolume: true,
+			out var spawnCenter,
+			out var emitterSize );
+		UpdateSlot( spawnCenter, emitterSize, amount, windDirection, windStrength, listener );
 	}
 
 	void UpdateSlot(
-		WorldPrecipitationEffect rain,
 		Vector3 spawnCenter,
 		Vector3 emitterSize,
 		float amount,
 		Vector3 windDirection,
 		float windStrength,
-		Vector3 listener,
-		float rateMultiplier )
+		Vector3 listener )
 	{
+		if ( !_rain.IsValid() )
+			return;
+
 		var fallSpeed = MathX.Lerp( 1800f, 3200f, MathX.Clamp( amount, 0f, 1f ) );
 		var lifetime = MathX.Clamp( emitterSize.z / fallSpeed, 0.75f, 18f );
-		rain.SetEmitterSize( emitterSize );
-		rain.Update(
+		_rain.SetEmitterSize( emitterSize );
+		_rain.Update(
 			spawnCenter,
 			amount,
 			windDirection,
@@ -383,57 +264,14 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 			lifetimeSeconds: lifetime,
 			fallSpeedOverride: fallSpeed,
 			enableCollision: CollideWithWorld && !IsEditMode,
-			rateMultiplier: rateMultiplier,
+			rateMultiplier: 1f,
 			clipListener: listener );
-	}
-
-	void EnsureCellLayout()
-	{
-		// Keep grid spacing at least a bit larger than the shaft so cells stay visually distinct.
-		var spacing = MathF.Max( CellSpacing, ColumnWidth * 1.35f );
-		if ( _cellLocals.Count > 0
-			&& MathF.Abs( spacing - _cachedSpacing ) < 1f
-			&& MathF.Abs( ColumnWidth - _cachedColumnWidth ) < 1f
-			&& (_cachedVolumeSize - Volume.Size).Length < 1f )
-			return;
-
-		_cellLocals.Clear();
-		_cachedSpacing = spacing;
-		_cachedColumnWidth = ColumnWidth;
-		_cachedVolumeSize = Volume.Size;
-
-		var half = Volume.Size * 0.5f;
-		var margin = MathF.Max( ColumnWidth * 0.55f, spacing * 0.35f );
-		var minX = -half.x + margin;
-		var maxX = half.x - margin;
-		var minY = -half.y + margin;
-		var maxY = half.y - margin;
-		if ( maxX <= minX || maxY <= minY )
-		{
-			_cellLocals.Add( Vector2.Zero );
-			return;
-		}
-
-		// Deterministic grid anchored in volume local space — moves with the storm, not the camera.
-		for ( var y = minY; y <= maxY + 1f; y += spacing )
-		for ( var x = minX; x <= maxX + 1f; x += spacing )
-		{
-			_cellLocals.Add( new Vector2(
-				MathX.Clamp( x, minX, maxX ),
-				MathX.Clamp( y, minY, maxY ) ) );
-		}
-
-		if ( _cellLocals.Count == 0 )
-			_cellLocals.Add( Vector2.Zero );
 	}
 
 	void DisableEffects()
 	{
-		foreach ( var rain in _rainSlots )
-		{
-			if ( rain.IsValid() )
-				rain.Root.Enabled = false;
-		}
+		if ( _rain.IsValid() )
+			_rain.Root.Enabled = false;
 
 		if ( _ground.IsValid() )
 			_ground.Root.Enabled = false;
@@ -474,8 +312,8 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 	void GetRainColumn(
 		Vector3 listener,
 		bool useVolumeCenter,
-		Vector2 localXy,
 		bool followListener,
+		bool fillVolume,
 		out Vector3 spawnCenter,
 		out Vector3 emitterSize )
 	{
@@ -484,15 +322,12 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 		var bandHeight = MathF.Max( Volume.Size.z * CloudBandFraction, 512f );
 		bandHeight = MathF.Min( bandHeight, MathF.Min( Volume.Size.z, CloudBandMaxHeight ) );
 
+		// Cloud deck = top band of the volume (same band the cloud sprites use).
 		var cloudUndersideLocalZ = half.z - bandHeight;
 		var cloudUndersideZ = (world.Position + world.Rotation * new Vector3( 0f, 0f, cloudUndersideLocalZ )).z;
 
 		Vector3 columnXy;
-		if ( useVolumeCenter )
-		{
-			columnXy = world.Position;
-		}
-		else if ( followListener )
+		if ( followListener || fillVolume )
 		{
 			var local = world.PointToLocal( listener );
 			local.x = MathX.Clamp( local.x, -half.x * 0.95f, half.x * 0.95f );
@@ -500,39 +335,31 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 			local.z = 0f;
 			columnXy = world.PointToWorld( local );
 		}
+		else if ( useVolumeCenter )
+		{
+			columnXy = world.Position;
+		}
 		else
 		{
-			columnXy = world.PointToWorld( new Vector3( localXy.x, localXy.y, 0f ) );
+			columnXy = world.Position;
 		}
 
-		float bottomZ;
-		float topZ;
-		if ( followListener || useVolumeCenter )
-		{
-			bottomZ = useVolumeCenter
-				? ResolveGroundZ( columnXy.x, columnXy.y, listener.z - 180f )
-				: listener.z - 180f;
-			var desiredTop = useVolumeCenter
-				? cloudUndersideZ
-				: MathF.Min( cloudUndersideZ, listener.z + MathF.Max( VisibleHeight, 1200f ) );
-			// Prefer full cloud-to-ground when under a storm/rain deck.
-			if ( !useVolumeCenter )
-				desiredTop = cloudUndersideZ;
-			topZ = MathF.Max( desiredTop, bottomZ + 1200f );
-			bottomZ = MathF.Min( bottomZ, topZ - 1200f );
-		}
-		else
-		{
-			// Fixed cells: full shaft from cloud underside down to terrain.
-			topZ = cloudUndersideZ;
-			bottomZ = ResolveGroundZ( columnXy.x, columnXy.y, topZ - MathF.Max( VisibleHeight, 1600f ) );
-			if ( topZ - bottomZ < 1600f )
-				bottomZ = topZ - 1600f;
-		}
+		// Always span cloud underside → terrain under the column.
+		var topZ = cloudUndersideZ;
+		var bottomZ = ResolveGroundZ( columnXy.x, columnXy.y, topZ - MathF.Max( VisibleHeight, 1600f ) );
+		if ( topZ - bottomZ < 1600f )
+			bottomZ = topZ - 1600f;
+
+		// Keep the shaft from ending above the camera when terrain is missing.
+		bottomZ = MathF.Min( bottomZ, listener.z - 120f );
 
 		var height = MathF.Max( topZ - bottomZ, 1200f );
 		spawnCenter = new Vector3( columnXy.x, columnXy.y, bottomZ + height * 0.5f );
-		emitterSize = new Vector3( ColumnWidth, ColumnWidth, height );
+
+		var width = fillVolume
+			? MathF.Max( ColumnWidth, Volume.VolumeType == WeatherVolumeType.StormCloud ? 16000f : 14000f )
+			: ColumnWidth;
+		emitterSize = new Vector3( width, width, height );
 	}
 
 	float ResolveGroundZ( float worldX, float worldY, float fallbackZ )
@@ -616,42 +443,53 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 		return 1f - (distance - (halfExtent - blendDistance)) / blendDistance;
 	}
 
-	float ResolveAmount( WeatherSample sample )
+	WeatherRainStrength ResolveStrength( WeatherSample sample )
 	{
-		var amount = MathX.Clamp( sample.RainAmount * RainIntensity, 0.55f, 1.5f );
+		if ( Strength is WeatherRainStrength.Light or WeatherRainStrength.Medium or WeatherRainStrength.Strong )
+			return Strength;
+
 		if ( Volume.VolumeType == WeatherVolumeType.StormCloud )
-			amount = MathF.Max( amount, RainIntensity );
+			return WeatherRainStrength.Strong;
 
-		return amount;
+		return WeatherRainStrengthUtil.FromAmount( sample.RainAmount );
 	}
 
-	void EnsureRainSlots()
+	float ResolveAmount( WeatherSample sample, WeatherRainStrength strength )
 	{
-		var wanted = UsesFixedCells ? Math.Clamp( ActiveCellCount, 1, MaxRainSlots ) : 1;
-		while ( _rainSlots.Count < wanted )
-		{
-			var index = _rainSlots.Count;
-			_rainSlots.Add( WorldPrecipitationEffect.Create( GameObject, snow: false, name: $"RainCell_{index}" ) );
-		}
-
-		while ( _rainSlots.Count > wanted )
-		{
-			var last = _rainSlots[^1];
-			_rainSlots.RemoveAt( _rainSlots.Count - 1 );
-			if ( last.IsValid() )
-				last.Root.Destroy();
-		}
+		var baseAmount = WeatherRainStrengthUtil.ToAmount( strength );
+		var fromSample = MathX.Clamp( sample.RainAmount, 0f, 1.5f );
+		var amount = MathF.Max( baseAmount, fromSample ) * WeatherRainStrengthUtil.ToVisualMultiplier( strength );
+		return MathX.Clamp( amount * RainIntensity, 0.2f, 1.75f );
 	}
 
-	void DestroyRainSlots()
+	void EnsureRain()
 	{
-		foreach ( var rain in _rainSlots )
+		if ( _rain.IsValid() )
+			return;
+
+		// Clear leftover multi-cell emitters from older versions.
+		foreach ( var child in GameObject.Children.ToArray() )
 		{
-			if ( rain.IsValid() )
-				rain.Root.Destroy();
+			if ( !child.IsValid() )
+				continue;
+
+			var name = child.Name ?? string.Empty;
+			if ( name.StartsWith( "RainCell_", StringComparison.OrdinalIgnoreCase )
+				|| name.Equals( "RainVolume", StringComparison.OrdinalIgnoreCase ) )
+			{
+				child.Destroy();
+			}
 		}
 
-		_rainSlots.Clear();
+		_rain = WorldPrecipitationEffect.Create( GameObject, snow: false, name: "RainVolume" );
+	}
+
+	void DestroyRain()
+	{
+		if ( _rain.IsValid() )
+			_rain.Root.Destroy();
+
+		_rain = null;
 	}
 
 	void PurgeLegacyEffectChildren()

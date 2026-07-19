@@ -1,0 +1,58 @@
+{
+  "UI": false,
+  "Volume": "0.949999988",
+  "Pitch": "0.879999995 1.10000002",
+  "Decibels": 74,
+  "SelectionMode": "Random",
+  "Sounds": [
+    "sound/ambient/strong_rain_variation1.vsnd",
+    "sound/ambient/strong_rain_variation2.vsnd",
+    "sound/ambient/strong_rain_variation3.vsnd",
+    "sound/ambient/strong_rain_variation4.vsnd"
+  ],
+  "OcclusionEnabled": true,
+  "Occlusion": true,
+  "ReverbEnabled": true,
+  "Reflections": true,
+  "AirAbsorption": true,
+  "Transmission": true,
+  "OcclusionRadius": 72,
+  "DistanceAttenuation": true,
+  "Distance": 14000,
+  "Falloff": [
+    {
+      "x": 0,
+      "y": 1,
+      "in": 0,
+      "out": -1.8,
+      "mode": "Mirrored"
+    },
+    {
+      "x": 0.08,
+      "y": 0.45,
+      "in": 3.5,
+      "out": -3.5,
+      "mode": "Mirrored"
+    },
+    {
+      "x": 0.4,
+      "y": 0.12,
+      "in": 0.16,
+      "out": -0.16,
+      "mode": "Mirrored"
+    },
+    {
+      "x": 1,
+      "y": 0,
+      "in": 0,
+      "out": 0,
+      "mode": "Mirrored"
+    }
+  ],
+  "DefaultMixer": {
+    "Name": "game",
+    "Id": "c4350297-fde3-42f6-9090-b86b6ad39cb0"
+  },
+  "__references": [],
+  "__version": 1
+}

@@ -31,6 +31,7 @@ public readonly struct WorldAmbientConditions
 		var rain = MathX.Clamp( sample.RainAmount, 0f, 1f );
 		var snow = MathX.Clamp( sample.SnowAmount, 0f, 1f );
 		var wind = MathX.Clamp( sample.WindStrength + rain * 0.25f + snow * 0.35f, 0f, 1f );
+		var timeOfDay = world.IsValid() ? world.TimeOfDay : 12f;
 
 		return new WorldAmbientConditions
 		{
@@ -41,9 +42,9 @@ public readonly struct WorldAmbientConditions
 			StormAmount = MathX.Clamp( sample.StormAmount, 0f, 1f ),
 			AudioMuffleAmount = MathX.Clamp( sample.AudioMuffleAmount, 0f, 1f ),
 			VisibilityMultiplier = MathX.Clamp( sample.VisibilityMultiplier, 0.05f, 1f ),
-			Night = GetNightBlend( world.TimeOfDay ),
-			Evening = GetEveningBlend( world.TimeOfDay ),
-			DeepNight = GetDeepNightBlend( world.TimeOfDay ),
+			Night = GetNightBlend( timeOfDay ),
+			Evening = GetEveningBlend( timeOfDay ),
+			DeepNight = GetDeepNightBlend( timeOfDay ),
 			ThunderChance = MathX.Clamp( sample.StormAmount * 0.85f + rain * 0.55f + sample.WindStrength * 0.35f, 0f, 1f ),
 			WindDirection = WeatherSample.NormalizeWindDirection( sample.WindDirection ),
 			TimeSeconds = timeSeconds,

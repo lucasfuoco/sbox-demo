@@ -728,12 +728,13 @@ public sealed class WeatherCloudLayerControllerComponent : Component, Component.
 		rain.Enabled = true;
 		rain.EditorPreview = true;
 		rain.AlwaysPreviewUnderVolume = true;
-		rain.RainIntensity = volume.VolumeType == WeatherVolumeType.StormCloud ? 1.25f : 1f;
-		rain.Placement = WeatherRainPlacement.FixedCells;
+		rain.Strength = volume.VolumeType == WeatherVolumeType.StormCloud
+			? WeatherRainStrength.Strong
+			: WeatherRainStrength.None;
+		rain.RainIntensity = 1f;
+		rain.Placement = WeatherRainPlacement.FillVolume;
 		rain.ColumnWidth = volume.VolumeType == WeatherVolumeType.StormCloud ? 15000f : 14000f;
 		rain.VisibleHeight = volume.VolumeType == WeatherVolumeType.StormCloud ? 45000f : 40000f;
-		rain.CellSpacing = volume.VolumeType == WeatherVolumeType.StormCloud ? 32000f : 30000f;
-		rain.ActiveCellCount = 6;
 		rain.SplashRadius = volume.VolumeType == WeatherVolumeType.StormCloud ? 4800f : 4200f;
 		rain.CollideWithWorld = true;
 		rain.BlockIndoors = true;

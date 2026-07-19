@@ -8,6 +8,7 @@ public enum WeatherType
 	Clear,
 	Cloudy,
 	Overcast,
+	LightRain,
 	Rain,
 	HeavyRain,
 	Snow,

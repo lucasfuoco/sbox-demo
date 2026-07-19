@@ -148,15 +148,18 @@ public sealed class WeatherVolumeLightningRendererComponent : Component, Compone
 		radius = MathF.Max( radius, (listener - source).Length * 1.1f );
 		radius *= MathX.Lerp( 0.85f, 1.2f, MathX.Clamp( intensity, 0f, 1f ) );
 
+		// Place the light closer to the listener so the flash reads on the ground in play mode.
+		var lightPos = Vector3.Lerp( source, listener + Vector3.Up * 200f, 0.35f );
 		lightObject.Enabled = true;
-		lightObject.WorldPosition = source;
+		lightObject.WorldPosition = lightPos;
 		light.Enabled = true;
 		light.Radius = radius;
-		light.Attenuation = Attenuation;
-		light.FogStrength = FogStrength;
+		light.Attenuation = MathF.Min( Attenuation, 0.85f );
+		light.FogStrength = MathF.Max( FogStrength, 1.25f );
 		light.FogMode = Light.FogInfluence.Enabled;
 		light.Shadows = false;
-		light.LightColor = (FlashColor * (PeakBrightness * intensity)).WithAlpha( 1f );
+		var brightness = PeakBrightness * intensity * (Game.IsPlaying ? 1.35f : 1f);
+		light.LightColor = (FlashColor * brightness).WithAlpha( 1f );
 	}
 
 	void UpdateBoltSlot( int i, int count, IReadOnlyList<WeatherLightningFlash> flashes )
@@ -191,10 +194,12 @@ public sealed class WeatherVolumeLightningRendererComponent : Component, Compone
 			_boltFlashIds[i] = flash.Id;
 		}
 
-		ResolveStrikeSpan( flash.Position, out var source, out _, out var length );
+		ResolveStrikeSpan( flash.Position, out var source, out var ground, out var length );
 		var width = BoltWidth * MathX.Lerp( 0.95f, 1.35f, MathX.Clamp( intensity, 0f, 1f ) );
-		var brightness = BoltBrightness * MathX.Lerp( 0.55f, 1.25f, MathX.Clamp( intensity, 0f, 1f ) );
+		var brightness = BoltBrightness * MathX.Lerp( 0.7f, 1.45f, MathX.Clamp( intensity, 0f, 1f ) );
 		var alpha = MathX.Clamp( intensity, 0f, 1f );
+		// Billboard is centered on the transform — place mid-span so the bolt reaches the ground.
+		var mid = (source + ground) * 0.5f;
 
 		bolt.Sprite = sprite;
 		bolt.CurrentFrameIndex = _boltFrames[i];
@@ -213,7 +218,7 @@ public sealed class WeatherVolumeLightningRendererComponent : Component, Compone
 			alpha );
 
 		boltObject.Enabled = true;
-		boltObject.WorldPosition = source;
+		boltObject.WorldPosition = mid;
 		boltObject.WorldRotation = Rotation.Identity;
 	}
 

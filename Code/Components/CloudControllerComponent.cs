@@ -39,10 +39,12 @@ public sealed class CloudControllerComponent : Component
 					continue;
 
 				var blend = GetHorizontalBlend( volume, listener );
-				if ( blend <= 0.05f )
+				if ( blend <= 0.02f )
 					continue;
 
-				peak = MathF.Max( peak, lightning.CurrentFlashIntensity * blend );
+				// Keep sky/key flash strong once you're under the storm footprint.
+				var weight = MathX.Clamp( MathF.Max( blend, 0.55f ), 0f, 1f );
+				peak = MathF.Max( peak, lightning.CurrentFlashIntensity * weight );
 			}
 
 			return peak;

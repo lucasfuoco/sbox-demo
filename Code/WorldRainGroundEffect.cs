@@ -100,7 +100,7 @@ sealed class WorldRainGroundEffect
 		emitter.Rate = MakeConstant( 0f );
 		emitter.Size = new Vector3( 1800f, 1800f, 40f );
 
-		var impactSound = ResourceLibrary.Get<SoundEvent>( "sound/weather/rain_impact.sound" );
+		var impactSound = ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_impact.sound" );
 		var ground = new WorldRainGroundEffect( scene, root, effect, emitter, renderer, impactSound, lastFrame );
 		if ( lastFrame > SplashStartFrame )
 		{

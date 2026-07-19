@@ -36,11 +36,11 @@ public sealed class WeatherVolumeLightningControllerComponent : Component, Compo
 	[Property, Group( "Lightning" ), Title( "Max Interval (seconds)" ), Range( 0.5f, 180f )]
 	public float MaxInterval { get; set; } = 22f;
 
-	[Property, Group( "Lightning" ), Title( "Listener Blend Threshold" ), Range( 0.05f, 1f ), Description( "In play mode, only strike when the listener is this blended into the storm volume." )]
+	[Property, Group( "Lightning" ), Title( "Listener Blend Threshold" ), Range( 0.05f, 1f ), Description( "When the listener is at least this blended into the storm, prefer near-camera strikes." )]
 	public float ListenerBlendThreshold { get; set; } = 0.15f;
 
-	[Property, Group( "Lightning" ), Title( "Near Listener Chance" ), Range( 0f, 1f ), Description( "Chance a strike spawns near the camera instead of anywhere in the volume." )]
-	public float NearListenerChance { get; set; } = 0.75f;
+	[Property, Group( "Lightning" ), Title( "Near Listener Chance" ), Range( 0f, 1f ), Description( "Optional chance a strike spawns near the camera when inside the storm. Leave at 0 for fully random volume strikes." )]
+	public float NearListenerChance { get; set; } = 0f;
 
 	[Property, Group( "Lightning" ), Title( "Near Strike Distance Min" ), Range( 100f, 4000f )]
 	public float NearStrikeDistanceMin { get; set; } = 500f;
@@ -130,9 +130,8 @@ public sealed class WeatherVolumeLightningControllerComponent : Component, Compo
 
 		if ( !_scheduled )
 		{
-			_nextStrikeDelay = IsEditMode ? 0.35f : Game.Random.Float(
-				MathF.Min( MinInterval, MaxInterval ),
-				MathF.Max( MinInterval, MaxInterval ) );
+			// First strike soon so play-mode flashes are obvious; later strikes use Min/Max interval.
+			_nextStrikeDelay = IsEditMode ? 0.35f : Game.Random.Float( 1.25f, 3.5f );
 			_sinceStrike = 0f;
 			_scheduled = true;
 		}
@@ -140,14 +139,6 @@ public sealed class WeatherVolumeLightningControllerComponent : Component, Compo
 		UpdateActiveFlashes();
 
 		var listener = ResolveListenerPosition();
-		if ( !IsEditMode )
-		{
-			// Storm volumes sit in the sky — use horizontal footprint like rain, not full 3D blend.
-			var blend = GetHorizontalBlend( listener );
-			if ( blend < ListenerBlendThreshold )
-				return;
-		}
-
 		var maxFlashes = Math.Clamp( MaxConcurrentFlashes, 1, MaxActiveFlashes );
 		if ( _flashes.Count >= maxFlashes )
 			return;
@@ -191,7 +182,12 @@ public sealed class WeatherVolumeLightningControllerComponent : Component, Compo
 		float localX;
 		float localY;
 
-		if ( Game.Random.Float( 0f, 1f ) < NearListenerChance )
+		var blend = GetHorizontalBlend( listener );
+		var preferNear = NearListenerChance > 0f
+			&& blend >= ListenerBlendThreshold
+			&& Game.Random.Float( 0f, 1f ) < NearListenerChance;
+
+		if ( preferNear )
 		{
 			var localListener = world.PointToLocal( listener );
 			var angle = Game.Random.Float( 0f, MathF.PI * 2f );
@@ -341,16 +337,20 @@ public sealed class WeatherVolumeLightningControllerComponent : Component, Compo
 
 	Vector3 ResolveListenerPosition()
 	{
-		var camera = Scene?.Camera;
-		if ( camera.IsValid() )
-			return camera.WorldPosition;
-
 		if ( !IsEditMode )
 		{
 			EnsureVolumeManager();
 			if ( _volumeManager.IsValid() )
-				return _volumeManager.GetPlayerPosition();
+			{
+				var playerPosition = _volumeManager.GetPlayerPosition();
+				if ( playerPosition.LengthSquared > 0.01f || _volumeManager.FollowCamera.IsValid() )
+					return playerPosition;
+			}
 		}
+
+		var camera = Scene?.Camera;
+		if ( camera.IsValid() )
+			return camera.WorldPosition;
 
 		return Volume.IsValid() ? Volume.Transform.World.Position : WorldPosition;
 	}

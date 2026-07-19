@@ -192,28 +192,29 @@ sealed class WorldPrecipitationEffect
 		}
 
 		rateMultiplier = MathF.Max( rateMultiplier, 0.05f );
-		var volumeScale = MathX.Clamp( _emitterSize.z / 4000f, 0.35f, 5.5f );
-		// Wider shafts need more spawn rate so density doesn't thin out.
-		var areaScale = MathX.Clamp( (_emitterSize.x * _emitterSize.y) / (6000f * 6000f), 0.5f, 8f );
+		// Bias density toward camera-scale shafts; don't explode for huge legacy boxes.
+		var volumeScale = MathX.Clamp( _emitterSize.z / 8000f, 0.55f, 3.5f );
+		var areaNorm = (_emitterSize.x * _emitterSize.y) / (14000f * 14000f);
+		var areaScale = MathX.Clamp( MathF.Sqrt( MathF.Max( areaNorm, 0.01f ) ), 0.65f, 2.8f );
 		var rainScale = volumeScale * areaScale * rateMultiplier;
-		var clipScale = _clipToSurfaces ? 0.7f : 1f;
+		var clipScale = _clipToSurfaces ? 0.85f : 1f;
 		_emitter.Rate = MakeConstant( _kind == Kind.Rain
-			? amount * 3200f * rainScale * clipScale
+			? amount * 4800f * rainScale * clipScale
 			: amount * (temperature > 2f ? 500f : 1600f) * rateMultiplier );
 
 		_effect.MaxParticles = _kind == Kind.Rain
-			? Math.Clamp( (int)(amount * 4200f * rainScale * clipScale), 900, _clipToSurfaces ? 6500 : 12000 )
+			? Math.Clamp( (int)(amount * 6500f * rainScale * clipScale), 1400, _clipToSurfaces ? 12000 : 16000 )
 			: 5000;
 
 		_effect.Brightness = _kind == Kind.Rain
-			? MathX.Lerp( 1.4f, 2.0f, MathX.Clamp( amount, 0f, 1f ) )
+			? MathX.Lerp( 1.55f, 2.2f, MathX.Clamp( amount, 0f, 1f ) )
 			: 1.5f;
 
 		_effect.Gradient = _kind == Kind.Rain
-			? MakeColor( new Color( 0.72f, 0.84f, 1f, MathX.Clamp( 0.7f + amount * 0.2f, 0.7f, 0.95f ) ) )
+			? MakeColor( new Color( 0.72f, 0.84f, 1f, MathX.Clamp( 0.78f + amount * 0.18f, 0.78f, 0.98f ) ) )
 			: MakeColor( Color.White.WithAlpha( 0.92f ) );
 
-		_renderer.Scale = _kind == Kind.Rain ? MathX.Lerp( 0.9f, 1.2f, MathX.Clamp( amount, 0f, 1f ) ) : 1.1f;
+		_renderer.Scale = _kind == Kind.Rain ? MathX.Lerp( 1.05f, 1.35f, MathX.Clamp( amount, 0f, 1f ) ) : 1.1f;
 
 		_stepBucket = (_stepBucket + 1) & 3;
 	}
@@ -378,7 +379,7 @@ sealed class WorldPrecipitationEffect
 		effect.Damping = MakeConstant( 0f );
 		effect.Collision = false;
 		effect.Scale = kind == Kind.Rain
-			? MakeRange( 7f, 18f )
+			? MakeRange( 10f, 24f )
 			: MakeRange( 50f, 130f );
 		effect.StartVelocity = MakeConstant( 0f );
 		effect.Brightness = kind == Kind.Rain ? 1.5f : 1.5f;

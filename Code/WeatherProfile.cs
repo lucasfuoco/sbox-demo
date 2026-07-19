@@ -40,11 +40,20 @@ public sealed class WeatherProfile
 			WindDirection = new Vector3( 0.6f, 0f, 0.8f ).Normal,
 			Temperature = 17f,
 		},
+		[WeatherType.LightRain] = new()
+		{
+			Type = WeatherType.LightRain,
+			OvercastAmount = 0.75f,
+			RainAmount = 0.35f,
+			WindStrength = 0.3f,
+			WindDirection = new Vector3( 0.85f, 0f, 0.35f ).Normal,
+			Temperature = 16f,
+		},
 		[WeatherType.Rain] = new()
 		{
 			Type = WeatherType.Rain,
 			OvercastAmount = 0.9f,
-			RainAmount = 0.55f,
+			RainAmount = 0.7f,
 			WindStrength = 0.45f,
 			WindDirection = new Vector3( 0.9f, 0f, 0.3f ).Normal,
 			Temperature = 14f,
@@ -53,7 +62,7 @@ public sealed class WeatherProfile
 		{
 			Type = WeatherType.HeavyRain,
 			OvercastAmount = 1f,
-			RainAmount = 1f,
+			RainAmount = 1.15f,
 			WindStrength = 0.65f,
 			WindDirection = new Vector3( 1f, 0f, 0.1f ).Normal,
 			Temperature = 11f,
