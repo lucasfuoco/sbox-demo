@@ -17,10 +17,10 @@ public sealed class WeatherOceanWavesControllerComponent : Component, Component.
 	public WaterDefinition BaseProfile { get; set; }
 
 	[Property, Group( "Response" ), Title( "Calm Scale" ), Range( 0.05f, 1.5f ), Description( "Wave intensity multiplier in clear weather." )]
-	public float CalmScale { get; set; } = 0.7f;
+	public float CalmScale { get; set; } = 1.05f;
 
 	[Property, Group( "Response" ), Title( "Storm Scale" ), Range( 0.5f, 2.5f ), Description( "Wave intensity multiplier at full storm." )]
-	public float StormScale { get; set; } = 1.35f;
+	public float StormScale { get; set; } = 1.6f;
 
 	[Property, Group( "Response" ), Title( "Wind Weight" ), Range( 0f, 1f ), Description( "How much wind alone can push sea state without rain." )]
 	public float WindWeight { get; set; } = 0.55f;

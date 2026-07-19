@@ -9,6 +9,7 @@ FEATURES
 {
 	#include "common/features.hlsl"
 	Feature( F_VERTEX_DISPLACEMENT, 0..1, "Displacement" );
+	Feature( F_PARALLAX_OCCLUSION, 0..1, "Parallax" );
 }
 
 MODES
@@ -305,6 +306,8 @@ VS
 	float g_flDisplacementScaleSand < Default( 2.0 ); Range( 0.0, 32.0 ); UiGroup( "Sand,10/61" ); >;
 	float g_flDisplacementScaleRock < Default( 5.0 ); Range( 0.0, 32.0 ); UiGroup( "Rock,10/61" ); >;
 	float g_flDisplacementCenter < Default( 0.5 ); Range( 0.0, 1.0 ); UiGroup( "Material,10/6" ); >;
+	float g_flDisplacementFadeStart < Default( 3072.0 ); Range( 0.0, 65536.0 ); UiGroup( "Material,10/7" ); >;
+	float g_flDisplacementFadeEnd < Default( 12288.0 ); Range( 0.0, 65536.0 ); UiGroup( "Material,10/8" ); >;
 
 	float SampleDisplacement( float2 uv, Texture2D map )
 	{
@@ -333,14 +336,64 @@ VS
 		return lerp( sampleB, sampleA, uvs.primaryWeight );
 	}
 
+	float LayerDisplacementAmount(
+		Texture2D map,
+		float2 worldUv,
+		float2 scale,
+		float rotation,
+		float2 layerOffset,
+		float layerSeed,
+		float warpStrength,
+		bool randomizeRotation,
+		float layerScale )
+	{
+		float sample = SampleLayerDisplacement(
+			map, worldUv, scale, rotation, layerOffset, layerSeed, warpStrength, randomizeRotation );
+		return ( sample - g_flDisplacementCenter ) * 2.0 * layerScale;
+	}
+
 	float BlendDisplacement( float2 worldUv, float3 weights )
 	{
-		float center = g_flDisplacementCenter;
-		float grass = ( SampleLayerDisplacement( g_tDispGrass, worldUv, g_vScaleGrass, g_flRotationGrass, g_vOffsetGrass, 17.3, g_flUvWarpStrengthGrass, g_bRandomRotationGrass ) - center ) * 2.0 * g_flDisplacementScaleGrass;
-		float sand = ( SampleLayerDisplacement( g_tDispSand, worldUv, g_vScaleSand, g_flRotationSand, g_vOffsetSand, 41.9, g_flUvWarpStrengthSand, g_bRandomRotationSand ) - center ) * 2.0 * g_flDisplacementScaleSand;
-		float rock = ( SampleLayerDisplacement( g_tDispRock, worldUv, g_vScaleRock, g_flRotationRock, g_vOffsetRock, 93.7, g_flUvWarpStrengthRock, g_bRandomRotationRock ) - center ) * 2.0 * g_flDisplacementScaleRock;
+		float displacement = 0.0;
 
-		return ( grass * weights.r + sand * weights.g + rock * weights.b ) * g_flDisplacementScale;
+		// Skip inactive biome layers to avoid wasted texture fetches.
+		if ( weights.r > 0.001 )
+		{
+			displacement += LayerDisplacementAmount(
+				g_tDispGrass, worldUv, g_vScaleGrass, g_flRotationGrass, g_vOffsetGrass, 17.3,
+				g_flUvWarpStrengthGrass, g_bRandomRotationGrass, g_flDisplacementScaleGrass ) * weights.r;
+		}
+
+		if ( weights.g > 0.001 )
+		{
+			displacement += LayerDisplacementAmount(
+				g_tDispSand, worldUv, g_vScaleSand, g_flRotationSand, g_vOffsetSand, 41.9,
+				g_flUvWarpStrengthSand, g_bRandomRotationSand, g_flDisplacementScaleSand ) * weights.g;
+		}
+
+		if ( weights.b > 0.001 )
+		{
+			displacement += LayerDisplacementAmount(
+				g_tDispRock, worldUv, g_vScaleRock, g_flRotationRock, g_vOffsetRock, 93.7,
+				g_flUvWarpStrengthRock, g_bRandomRotationRock, g_flDisplacementScaleRock ) * weights.b;
+		}
+
+		return displacement * g_flDisplacementScale;
+	}
+
+	float DisplacementDistanceFade( float3 worldPos )
+	{
+		float fadeStart = min( g_flDisplacementFadeStart, g_flDisplacementFadeEnd );
+		float fadeEnd = max( g_flDisplacementFadeStart, g_flDisplacementFadeEnd );
+		float distanceToCamera = length( worldPos - g_vCameraPositionWs );
+
+		if ( distanceToCamera >= fadeEnd )
+			return 0.0;
+
+		if ( distanceToCamera <= fadeStart )
+			return 1.0;
+
+		return 1.0 - saturate( ( distanceToCamera - fadeStart ) / max( fadeEnd - fadeStart, 1e-3 ) );
 	}
 
 	PixelInput MainVs( VertexInput i )
@@ -353,15 +406,19 @@ VS
 			o.vPaintValues = 1.0;
 
 		#if S_VERTEX_DISPLACEMENT
-			float3 weights = ApplyTextureBlendWeights(
-				saturate( o.vBlendValues.rgb ),
-				g_flTextureBlendSoftness,
-				g_flGrassTextureWeight,
-				g_flSandTextureWeight,
-				g_flRockTextureWeight );
-			float displacement = BlendDisplacement( o.vTextureCoords.xy, weights );
-			o.vPositionWs += o.vNormalWs * displacement;
-			o.vPositionPs = Position3WsToPs( o.vPositionWs );
+			float fade = DisplacementDistanceFade( o.vPositionWs );
+			if ( fade > 0.001 )
+			{
+				float3 weights = ApplyTextureBlendWeights(
+					saturate( o.vBlendValues.rgb ),
+					g_flTextureBlendSoftness,
+					g_flGrassTextureWeight,
+					g_flSandTextureWeight,
+					g_flRockTextureWeight );
+				float displacement = BlendDisplacement( o.vTextureCoords.xy, weights ) * fade;
+				o.vPositionWs += o.vNormalWs * displacement;
+				o.vPositionPs = Position3WsToPs( o.vPositionWs );
+			}
 		#endif
 
 		return FinalizeVertex( o );
@@ -372,6 +429,16 @@ PS
 {
 	#include "common/pixel.hlsl"
 	#include "common/utils/normal.hlsl"
+
+	StaticCombo( S_PARALLAX_OCCLUSION, F_PARALLAX_OCCLUSION, Sys( PC ) );
+
+	CreateInputTexture2D( TextureDisplacementGrass, Linear, 8, "", "_disp", "Grass,10/50", Default( 0.5 ) );
+	CreateInputTexture2D( TextureDisplacementSand, Linear, 8, "", "_disp", "Sand,10/50", Default( 0.5 ) );
+	CreateInputTexture2D( TextureDisplacementRock, Linear, 8, "", "_disp", "Rock,10/50", Default( 0.5 ) );
+
+	Texture2D g_tDispGrass < Channel( R, Box( TextureDisplacementGrass ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tDispSand < Channel( R, Box( TextureDisplacementSand ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
+	Texture2D g_tDispRock < Channel( R, Box( TextureDisplacementRock ), Linear ); OutputFormat( BC7 ); SrgbRead( false ); >;
 
 	CreateInputTexture2D( TextureGrass, Srgb, 8, "", "_color", "Grass,10/10", Default3( 0.2, 0.45, 0.1 ) );
 	CreateInputTexture2D( TextureNormalGrass, Linear, 8, "NormalizeNormals", "_normal", "Grass,10/15", Default3( 0.5, 0.5, 1.0 ) );
@@ -444,6 +511,14 @@ PS
 	float g_flCavityFromBumpStrength < Default( 0.55 ); Range( 0.0, 2.0 ); UiGroup( "Material,10/75" ); >;
 	float g_flCavityAlbedoDarken < Default( 0.35 ); Range( 0.0, 1.0 ); UiGroup( "Material,10/80" ); >;
 	float g_flCavitySpecularDarken < Default( 0.45 ); Range( 0.0, 1.0 ); UiGroup( "Material,10/85" ); >;
+
+	float g_flPomScale < Default( 0.04 ); Range( 0.0, 0.25 ); UiGroup( "Parallax,10/10" ); >;
+	float g_flPomCenter < Default( 0.5 ); Range( 0.0, 1.0 ); UiGroup( "Parallax,10/15" ); >;
+	float g_flPomMinSteps < Default( 4.0 ); Range( 1.0, 16.0 ); UiGroup( "Parallax,10/20" ); >;
+	float g_flPomMaxSteps < Default( 16.0 ); Range( 4.0, 64.0 ); UiGroup( "Parallax,10/25" ); >;
+	float g_flPomFadeStart < Default( 2048.0 ); Range( 0.0, 65536.0 ); UiGroup( "Parallax,10/30" ); >;
+	float g_flPomFadeEnd < Default( 8192.0 ); Range( 0.0, 65536.0 ); UiGroup( "Parallax,10/35" ); >;
+	bool g_bPomInvertHeight < Default1( 0 ); UiGroup( "Parallax,10/40" ); >;
 
 	float2 g_vScaleGrass < Default2( 1.0, 1.0 ); Range2( 0.1, 0.1, 4.0, 4.0 ); UiGroup( "Grass,10/30" ); >;
 	float g_flRotationGrass < Default( 0.0 ); Range( 0.0, 360.0 ); UiGroup( "Grass,10/40" ); >;
@@ -695,9 +770,163 @@ PS
 		return lerp( rgb, varied, g_flColorNoiseStrength );
 	}
 
+#if S_PARALLAX_OCCLUSION
+	float PomDistanceFade( float3 worldPos )
+	{
+		float fadeStart = min( g_flPomFadeStart, g_flPomFadeEnd );
+		float fadeEnd = max( g_flPomFadeStart, g_flPomFadeEnd );
+		float distanceToCamera = length( worldPos - g_vCameraPositionWs );
+
+		if ( distanceToCamera >= fadeEnd )
+			return 0.0;
+
+		if ( distanceToCamera <= fadeStart )
+			return 1.0;
+
+		return 1.0 - saturate( ( distanceToCamera - fadeStart ) / max( fadeEnd - fadeStart, 1e-3 ) );
+	}
+
+	float3 GetViewDirTs( PixelInput i )
+	{
+		float3 viewWs = normalize( g_vCameraPositionWs - i.vPositionWs );
+		float3 t = normalize( i.vTangentUWs );
+		float3 b = normalize( i.vTangentVWs );
+		float3 n = normalize( i.vNormalWs );
+		return normalize( float3( dot( viewWs, t ), dot( viewWs, b ), dot( viewWs, n ) ) );
+	}
+
+	// 0 = grass, 1 = sand, 2 = rock. Grass-first when grass has meaningful weight.
+	int SelectPomHeightLayerIndex( float3 weights )
+	{
+		if ( weights.r >= 0.25 || ( weights.r >= weights.g && weights.r >= weights.b ) )
+			return 0;
+
+		if ( weights.g >= weights.b )
+			return 1;
+
+		return 2;
+	}
+
+	float SamplePomHeightAtWorldUv( float2 worldUv, int layerIndex )
+	{
+		float2 scale = g_vScaleGrass;
+		float rotation = g_flRotationGrass;
+		float2 layerOffset = g_vOffsetGrass;
+		float layerSeed = 17.3;
+		float warpStrength = g_flUvWarpStrengthGrass;
+		bool randomizeRotation = g_bRandomRotationGrass;
+
+		if ( layerIndex == 1 )
+		{
+			scale = g_vScaleSand;
+			rotation = g_flRotationSand;
+			layerOffset = g_vOffsetSand;
+			layerSeed = 41.9;
+			warpStrength = g_flUvWarpStrengthSand;
+			randomizeRotation = g_bRandomRotationSand;
+		}
+		else if ( layerIndex == 2 )
+		{
+			scale = g_vScaleRock;
+			rotation = g_flRotationRock;
+			layerOffset = g_vOffsetRock;
+			layerSeed = 93.7;
+			warpStrength = g_flUvWarpStrengthRock;
+			randomizeRotation = g_bRandomRotationRock;
+		}
+
+		RotatedUvPair uvs = LayerAntiTileUvPair(
+			worldUv, scale, rotation, layerOffset, layerSeed, warpStrength,
+			g_flRotationTileSize, randomizeRotation,
+			g_flRotationSquiggleStrength, g_flRotationSquiggleScale, g_flRotationEdgeBlend );
+
+		float heightA = 0.5;
+		float heightB = 0.5;
+		if ( layerIndex == 0 )
+		{
+			heightA = g_tDispGrass.Sample( g_sAniso, uvs.primary ).r;
+			heightB = ( uvs.primaryWeight < 0.999 ) ? g_tDispGrass.Sample( g_sAniso, uvs.secondary ).r : heightA;
+		}
+		else if ( layerIndex == 1 )
+		{
+			heightA = g_tDispSand.Sample( g_sAniso, uvs.primary ).r;
+			heightB = ( uvs.primaryWeight < 0.999 ) ? g_tDispSand.Sample( g_sAniso, uvs.secondary ).r : heightA;
+		}
+		else
+		{
+			heightA = g_tDispRock.Sample( g_sAniso, uvs.primary ).r;
+			heightB = ( uvs.primaryWeight < 0.999 ) ? g_tDispRock.Sample( g_sAniso, uvs.secondary ).r : heightA;
+		}
+
+		float height = lerp( heightB, heightA, uvs.primaryWeight );
+		if ( g_bPomInvertHeight )
+			height = 1.0 - height;
+
+		// Remap around the authored mid-grey so POM treats center as flat.
+		height = saturate( ( height - g_flPomCenter ) + 0.5 );
+		return height;
+	}
+
+	float2 ParallaxOcclusionWorldUv( PixelInput i, float2 worldUv, float3 weights, float fade )
+	{
+		if ( fade <= 0.001 || g_flPomScale <= 1e-6 )
+			return worldUv;
+
+		int layerIndex = SelectPomHeightLayerIndex( weights );
+		float3 viewDirTs = GetViewDirTs( i );
+		float2 parallaxDir = viewDirTs.xy / max( viewDirTs.z, 0.12 );
+		float heightScale = g_flPomScale * fade;
+
+		int minSteps = (int)clamp( g_flPomMinSteps, 1.0, 64.0 );
+		int maxSteps = (int)clamp( g_flPomMaxSteps, (float)minSteps, 64.0 );
+		int steps = (int)lerp( (float)minSteps, (float)maxSteps, fade );
+		steps = clamp( steps, minSteps, maxSteps );
+
+		float layerDepth = 1.0 / (float)steps;
+		float2 deltaUv = parallaxDir * heightScale * layerDepth;
+
+		float2 offsetUv = worldUv;
+		float currentDepth = 0.0;
+		float currentHeight = SamplePomHeightAtWorldUv( offsetUv, layerIndex );
+
+		[loop]
+		for ( int stepIndex = 0; stepIndex < 64; stepIndex++ )
+		{
+			if ( stepIndex >= steps || currentHeight <= currentDepth )
+				break;
+
+			offsetUv -= deltaUv;
+			currentDepth += layerDepth;
+			currentHeight = SamplePomHeightAtWorldUv( offsetUv, layerIndex );
+		}
+
+		// One-step refinement between the last two samples.
+		float2 prevUv = offsetUv + deltaUv;
+		float prevDepth = currentDepth - layerDepth;
+		float prevHeight = SamplePomHeightAtWorldUv( prevUv, layerIndex );
+
+		float before = prevHeight - prevDepth;
+		float after = currentHeight - currentDepth;
+		float weight = saturate( after / max( after - before, 1e-4 ) );
+		return lerp( offsetUv, prevUv, weight );
+	}
+#endif
+
 	float4 MainPs( PixelInput i ) : SV_Target0
 	{
 		float2 worldUv = i.vTextureCoords.xy;
+
+		float3 weights = ApplyTextureBlendWeights(
+			saturate( i.vBlendValues.rgb ),
+			g_flTextureBlendSoftness,
+			g_flGrassTextureWeight,
+			g_flSandTextureWeight,
+			g_flRockTextureWeight );
+
+		#if S_PARALLAX_OCCLUSION && !S_MODE_DEPTH
+			float pomFade = PomDistanceFade( i.vPositionWs );
+			worldUv = ParallaxOcclusionWorldUv( i, worldUv, weights, pomFade );
+		#endif
 
 		LayerSample grass = SampleBiomeLayer(
 			g_tGrass, g_tRoughGrass, g_tGlossGrass, g_tSpecGrass, g_tAoGrass, g_tNormalGrass, g_tBumpGrass, g_tCavityGrass,
@@ -713,13 +942,6 @@ PS
 			g_tRock, g_tRoughRock, g_tGlossRock, g_tSpecRock, g_tAoRock, g_tNormalRock, g_tBumpRock, g_tCavityRock,
 			worldUv, g_vScaleRock, g_flRotationRock, g_vOffsetRock,
 			93.7, g_flUvWarpStrengthRock, g_flNormalStrengthRock, g_flBumpStrengthRock, g_flGlossBlendRock, g_bRandomRotationRock );
-
-		float3 weights = ApplyTextureBlendWeights(
-			saturate( i.vBlendValues.rgb ),
-			g_flTextureBlendSoftness,
-			g_flGrassTextureWeight,
-			g_flSandTextureWeight,
-			g_flRockTextureWeight );
 
 		float3 albedo = grass.albedo * weights.r + sand.albedo * weights.g + rock.albedo * weights.b;
 		albedo = ApplyHueSaturationNoise( albedo, worldUv );

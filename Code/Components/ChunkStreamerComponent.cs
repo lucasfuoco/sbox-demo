@@ -29,20 +29,20 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 	[Property, Group( "Chunk Streamer" ), Title( "Max Loaded Chunks" ), Description( "Safety cap for simultaneously loaded chunks." ), Range( 16, 512 ), Change( nameof( OnLayoutChanged ) )]
 	public int MaxLoadedChunks { get; set; } = 256;
 
-	[Property, Group( "Chunk Streamer" ), Title( "Resolution" ), Change( nameof( OnMeshSettingsChanged ) )]
-	public int Resolution { get; set; } = 124;
+	[Property, Group( "Chunk Streamer" ), Title( "Resolution" ), Description( "LOD 0 mesh density (quads per chunk edge). Needs to be high for vertex displacement to show." ), Change( nameof( OnMeshSettingsChanged ) )]
+	public int Resolution { get; set; } = 256;
 
 	[Property, Group( "LOD" ), Title( "Use LOD" ), Change( nameof( OnLodSettingsChanged ) )]
 	public bool UseLod { get; set; } = true;
 
-	[Property, Group( "LOD" ), Title( "LOD 0 Distance" ), Description( "Max chunk distance (Chebyshev) from the camera chunk for full detail. The camera chunk is distance 0." ), Change( nameof( OnLodSettingsChanged ) )]
-	public int Lod0Distance { get; set; } = 1;
+	[Property, Group( "LOD" ), Title( "LOD 0 Distance" ), Description( "Max chunk distance (Chebyshev) for full detail. 0 = camera chunk only (recommended with high Resolution)." ), Change( nameof( OnLodSettingsChanged ) )]
+	public int Lod0Distance { get; set; } = 0;
 
 	[Property, Group( "LOD" ), Title( "LOD 1 Distance" ), Description( "Max chunk distance for half detail. Must be greater than LOD 0 Distance." ), Change( nameof( OnLodSettingsChanged ) )]
-	public int Lod1Distance { get; set; } = 2;
+	public int Lod1Distance { get; set; } = 1;
 
 	[Property, Group( "LOD" ), Title( "LOD 2 Distance" ), Description( "Max chunk distance for quarter detail. Set close to View Distance so the lowest detail band appears before chunks unload." ), Change( nameof( OnLodSettingsChanged ) )]
-	public int Lod2Distance { get; set; } = 5;
+	public int Lod2Distance { get; set; } = 3;
 
 	[Property, Group( "LOD" ), Title( "Min LOD Resolution" ), Change( nameof( OnLodSettingsChanged ) )]
 	public int MinLodResolution { get; set; } = 8;
@@ -555,26 +555,24 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 		if ( !worldManager.IsValid() || !worldManager.GameObject.IsValid() )
 			return horizontal;
 
-		var chunkCenterX = coord.X * SafeChunkSize + SafeChunkSize * 0.5f;
-		var chunkCenterY = coord.Y * SafeChunkSize + SafeChunkSize * 0.5f;
-		var terrainHeight = worldManager.GetHeight( chunkCenterX, chunkCenterY );
+		// Altitude above terrain under the camera — not distance to chunk center
+		// (that was demoting LOD 0 for almost the entire camera chunk).
+		var terrainHeight = worldManager.GetHeight( streamPosition.x, streamPosition.y );
+		var altitude = Math.Max( 0f, streamPosition.z - terrainHeight );
+		var altitudeInChunks = altitude / SafeChunkSize * HeightLodScale;
 
-		var offset = new Vector3(
-			streamPosition.x - chunkCenterX,
-			streamPosition.y - chunkCenterY,
-			streamPosition.z - terrainHeight );
-
-		var distanceInChunks = offset.Length / SafeChunkSize * HeightLodScale;
-
-		return MathF.Max( horizontal, distanceInChunks );
+		return horizontal + altitudeInChunks;
 	}
 
 	public int GetChunkLodLevel( ChunkCoord coord, ChunkCoord center, Vector3 streamPosition )
 	{
-		var distance = GetChunkLodDistance( coord, center, streamPosition );
+		var horizontal = Math.Max( Math.Abs( coord.X - center.X ), Math.Abs( coord.Y - center.Y ) );
 
-		if ( distance <= Lod0Distance )
+		// Full-res LOD 0 is grid-only so eye height does not steal displacement detail.
+		if ( horizontal <= Lod0Distance )
 			return 0;
+
+		var distance = GetChunkLodDistance( coord, center, streamPosition );
 
 		if ( distance <= Lod1Distance )
 			return 1;
