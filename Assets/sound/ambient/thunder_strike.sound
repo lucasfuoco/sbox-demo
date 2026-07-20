@@ -1,7 +1,7 @@
 {
   "UI": false,
-  "Volume": "1.15",
-  "Pitch": "0.92,1.08",
+  "Volume": "1.14999998",
+  "Pitch": "0.920000017 1.08000004",
   "Decibels": 82,
   "SelectionMode": "Random",
   "Sounds": [
@@ -10,39 +10,40 @@
     "sound/ambient/thunder_strike_variation3.vsnd",
     "sound/ambient/thunder_strike_variation4.vsnd"
   ],
-  "OcclusionEnabled": false,
-  "Occlusion": false,
+  "OcclusionEnabled": true,
+  "Occlusion": true,
   "ReverbEnabled": true,
   "Reflections": true,
-  "AirAbsorption": false,
+  "AirAbsorption": true,
   "Transmission": false,
+  "OcclusionRadius": 64,
   "DistanceAttenuation": true,
-  "Distance": 45000,
+  "Distance": 60000,
   "Falloff": [
     {
       "x": 0,
       "y": 1,
       "in": 0,
-      "out": -0.4,
+      "out": -0.15,
       "mode": "Mirrored"
     },
     {
-      "x": 0.15,
-      "y": 0.75,
-      "in": 0.5,
-      "out": -0.5,
-      "mode": "Mirrored"
-    },
-    {
-      "x": 0.45,
-      "y": 0.35,
+      "x": 0.3,
+      "y": 0.92,
       "in": 0.2,
       "out": -0.2,
       "mode": "Mirrored"
     },
     {
+      "x": 0.65,
+      "y": 0.75,
+      "in": 0.15,
+      "out": -0.15,
+      "mode": "Mirrored"
+    },
+    {
       "x": 1,
-      "y": 0.05,
+      "y": 0.45,
       "in": 0,
       "out": 0,
       "mode": "Mirrored"

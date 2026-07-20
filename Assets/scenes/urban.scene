@@ -607,16 +607,7 @@
           }
         ],
         "RemovedObjects": [],
-        "PropertyOverrides": [
-          {
-            "Target": {
-              "Type": "Component",
-              "IdValue": "f220d064-34fb-4a75-b828-3e5b7a2d49ab"
-            },
-            "Property": "SpawnFreecamNearWeather",
-            "Value": true
-          }
-        ],
+        "PropertyOverrides": [],
         "MovedObjects": [
           {
             "Id": {
@@ -1191,16 +1182,16 @@
               "Frogs": null,
               "GrassWind": null,
               "Leaves": null,
-              "LightRain": "sound/weather/rain_light.sound",
+              "LightRain": "sound/ambient/rain_light.sound",
               "MaxCricketsVolume": 0.3,
               "MaxFrogsVolume": 0.28,
               "MaxLeavesVolume": 0.32,
               "MaxOwlsVolume": 0.22,
               "MaxRainVolume": 0.55,
-              "MaxThunderVolume": 0.95,
+              "MaxThunderVolume": 0.7,
               "MaxWaterVolume": 0.35,
               "MaxWindVolume": 0.45,
-              "MediumRain": "sound/weather/rain_medium.sound",
+              "MediumRain": "sound/ambient/rain_medium.sound",
               "MountainWind": null,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -1209,16 +1200,31 @@
               "OnComponentStart": null,
               "OnComponentUpdate": null,
               "Owls": null,
-              "Rain": "sound/weather/rain_medium.sound",
+              "Rain": "sound/ambient/rain_medium.sound",
               "SandWind": null,
-              "StrongRain": "sound/weather/rain_strong.sound",
-              "Terrain": null,
+              "StrongRain": "sound/ambient/rain_strong.sound",
+              "Terrain": {
+                "_type": "component",
+                "component_id": "f50f3f72-e2f3-4892-a0c0-50e90f58c5bc",
+                "go": "8a3f2e1d-4b5c-6789-a012-3456789abcde",
+                "component_type": "WorldManagerSingletonComponent"
+              },
               "Thunder": "sound/ambient/thunder_strike.sound",
               "ThunderMaxInterval": 45,
               "ThunderMinInterval": 12,
-              "VolumeManager": null,
+              "VolumeManager": {
+                "_type": "component",
+                "component_id": "e7f8a9b0-c1d2-3456-e789-0abcdef12345",
+                "go": "8a3f2e1d-4b5c-6789-a012-3456789abcde",
+                "component_type": "WeatherVolumeManagerComponent"
+              },
               "Water": null,
-              "WeatherAudio": null,
+              "WeatherAudio": {
+                "_type": "component",
+                "component_id": "e7f8a9b0-c1d2-3456-e789-0abcdef1234a",
+                "go": "8a3f2e1d-4b5c-6789-a012-3456789abcde",
+                "component_type": "WeatherAudioControllerComponent"
+              },
               "Wind": null
             },
             {
@@ -1604,7 +1610,7 @@
               "__version": 2,
               "Flags": 0,
               "Name": "ClearCloud",
-              "Position": "111406.688,0,0",
+              "Position": "215720.938,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "weather_volume,weather_cloud_layer_generated",
@@ -1707,7 +1713,7 @@
               "__version": 2,
               "Flags": 0,
               "Name": "RainCloud",
-              "Position": "361406.688,0,0",
+              "Position": "465720.938,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "weather_volume,weather_cloud_layer_generated",
@@ -1837,7 +1843,7 @@
               "__version": 2,
               "Flags": 0,
               "Name": "StormCloud",
-              "Position": "-388593.25,0,0",
+              "Position": "-284279,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "weather_volume,weather_cloud_layer_generated",
@@ -1994,7 +2000,7 @@
                   "MaxConcurrentFlashes": 1,
                   "MaxInterval": 22,
                   "MinInterval": 10,
-                  "NearListenerChance": 0,
+                  "NearListenerChance": 0.4,
                   "NearStrikeDistanceMax": 2200,
                   "NearStrikeDistanceMin": 500,
                   "OnComponentDestroy": null,
@@ -2012,7 +2018,7 @@
               "__version": 2,
               "Flags": 0,
               "Name": "FogBank",
-              "Position": "-138593.25,0,0",
+              "Position": "-34279,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "weather_volume,weather_cloud_layer_generated",

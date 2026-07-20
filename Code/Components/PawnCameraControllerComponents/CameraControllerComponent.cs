@@ -239,7 +239,14 @@ public sealed class CameraControllerComponent : PawnCameraControllerComponent, I
 	}
 
 
+	const float NormalDofBlur = 8f;
+	const float ScopedDofBlur = 25f;
+	const float DefaultFocalDistance = 200f;
+	const float MaxFocalDistance = 4000f;
+
 	float depthOfFieldScale = 0f;
+	float focalDistance = DefaultFocalDistance;
+
 	void ApplyCameraEffects()
 	{
 		var timeSinceDamage = TimeSinceDamageTaken.Relative;
@@ -247,20 +254,25 @@ public sealed class CameraControllerComponent : PawnCameraControllerComponent, I
 		ChromaticAberration.Scale = shortDamageUi * 1f;
 		Pixelate.Scale = shortDamageUi * 0.2f;
 
-		if ( Player.HasEquipmentTag( "scoped" ) )
-		{
-			depthOfFieldScale = depthOfFieldScale.LerpTo( 1, Time.Delta * 3f );
-			DepthOfField.Enabled = true;
-			DepthOfField.BlurSize = depthOfFieldScale.Remap( 0, 1, 0, 25 );
-		}
-		else
-		{
-			depthOfFieldScale = depthOfFieldScale.LerpTo( 0, Time.Delta * 15f );
-			DepthOfField.BlurSize = depthOfFieldScale.Remap( 0, 1, 0, 25 );
+		var scoped = Player.HasEquipmentTag( "scoped" );
+		depthOfFieldScale = depthOfFieldScale.LerpTo( scoped ? 1f : 0f, Time.Delta * (scoped ? 3f : 15f) );
 
-			if ( depthOfFieldScale.AlmostEqual( 0, 0.1f ) )
-				DepthOfField.Enabled = false;
-		}
+		DepthOfField.Enabled = true;
+		DepthOfField.BlurSize = depthOfFieldScale.Remap( 0, 1, NormalDofBlur, ScopedDofBlur );
+		DepthOfField.FocalDistance = UpdateFocalDistance();
+	}
+
+	float UpdateFocalDistance()
+	{
+		var ray = AimRay;
+		var tr = Scene.Trace.Ray( ray, MaxFocalDistance )
+			.IgnoreGameObjectHierarchy( GameObject.Root )
+			.WithoutTags( "trigger", "player", "ragdoll" )
+			.Run();
+
+		var target = tr.Hit ? tr.Distance : DefaultFocalDistance;
+		focalDistance = focalDistance.LerpTo( target, Time.Delta * 8f );
+		return focalDistance;
 	}
 
 	void ApplyRecoil()

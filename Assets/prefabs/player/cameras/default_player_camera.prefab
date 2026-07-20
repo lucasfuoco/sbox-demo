@@ -186,10 +186,10 @@
       {
         "__type": "Sandbox.DepthOfField",
         "__guid": "8508e342-b8bf-4ada-9ba3-494ca655ac72",
-        "__enabled": false,
+        "__enabled": true,
         "Flags": 0,
         "BackBlur": true,
-        "BlurSize": 30,
+        "BlurSize": 8,
         "FocalDistance": 200,
         "FocusRange": 500,
         "FrontBlur": false,

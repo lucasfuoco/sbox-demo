@@ -1,15 +1,10 @@
 {
   "UI": false,
-  "Volume": "0.55",
-  "Pitch": "0.85,1.15",
+  "Volume": "0.550000012",
+  "Pitch": "0.850000024 1.14999998",
   "Decibels": 65,
   "SelectionMode": "Random",
-  "Sounds": [
-    "sound/casings/9mm/blt_case_bounce_9_water_01.vsnd",
-    "sound/casings/9mm/blt_case_bounce_9_water_02.vsnd",
-    "sound/casings/9mm/blt_case_bounce_9_water_03.vsnd",
-    "sound/casings/9mm/blt_case_bounce_9_water_04.vsnd"
-  ],
+  "Sounds": [],
   "OcclusionEnabled": true,
   "Occlusion": true,
   "ReverbEnabled": true,
@@ -18,32 +13,32 @@
   "Transmission": true,
   "OcclusionRadius": 48,
   "DistanceAttenuation": true,
-  "Distance": 2200,
+  "Distance": 3200,
   "Falloff": [
     {
       "x": 0,
       "y": 1,
       "in": 0,
-      "out": -1.8,
+      "out": -0.5,
       "mode": "Mirrored"
     },
     {
-      "x": 0.08,
-      "y": 0.35,
-      "in": 3.5,
-      "out": -3.5,
+      "x": 0.15,
+      "y": 0.65,
+      "in": 0.5,
+      "out": -0.5,
       "mode": "Mirrored"
     },
     {
-      "x": 0.35,
-      "y": 0.08,
-      "in": 0.16,
-      "out": -0.16,
+      "x": 0.45,
+      "y": 0.25,
+      "in": 0.2,
+      "out": -0.2,
       "mode": "Mirrored"
     },
     {
       "x": 1,
-      "y": 0,
+      "y": 0.05,
       "in": 0,
       "out": 0,
       "mode": "Mirrored"
