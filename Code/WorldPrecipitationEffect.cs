@@ -1,7 +1,7 @@
 namespace Sandbox;
 
 using Sandbox.Components.SingletonComponents;
-using RedSnail.WaterTool;
+using Sandbox.Controllers;
 
 /// <summary>
 /// Rain / snow particle effect used by weather volumes and global precipitation.
@@ -278,7 +278,7 @@ sealed class WorldPrecipitationEffect
 		if ( _terrain.IsValid() )
 			height = MathF.Max( height, _terrain.GetHeight( sample.x, sample.y ) );
 
-		var waterHeight = WaterManager.GetWaterHeightAt( sample );
+		var waterHeight = OceanSurfaceController.GetWaterHeightAt( scene, sample );
 		if ( waterHeight > float.MinValue * 0.5f )
 			height = MathF.Max( height, waterHeight );
 

@@ -1,0 +1,46 @@
+{
+  "UnitsPerMeter": 39.3700787,
+  "MapSize": 256,
+  "UpdatesPerSecond": 30,
+  "Cascades": [
+    {
+      "TileLength": "88,88",
+      "DisplacementScale": 1,
+      "NormalScale": 1,
+      "WindSpeed": 10,
+      "WindDirectionDegrees": 20,
+      "FetchLength": 150,
+      "Swell": 0.8,
+      "Spread": 0.2,
+      "Detail": 1,
+      "Whitecap": 0.5,
+      "FoamAmount": 8
+    },
+    {
+      "TileLength": "57,57",
+      "DisplacementScale": 0.75,
+      "NormalScale": 1,
+      "WindSpeed": 5,
+      "WindDirectionDegrees": 15,
+      "FetchLength": 150,
+      "Swell": 0.8,
+      "Spread": 0.4,
+      "Detail": 1,
+      "Whitecap": 0.5,
+      "FoamAmount": 0
+    },
+    {
+      "TileLength": "16,16",
+      "DisplacementScale": 0,
+      "NormalScale": 0.25,
+      "WindSpeed": 20,
+      "WindDirectionDegrees": 20,
+      "FetchLength": 550,
+      "Swell": 0.8,
+      "Spread": 0.4,
+      "Detail": 1,
+      "Whitecap": 0.25,
+      "FoamAmount": 3
+    }
+  ]
+}

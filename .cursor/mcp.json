@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "sbox": {
+      "url": "http://127.0.0.1:7269/mcp"
+    }
+  }
+}

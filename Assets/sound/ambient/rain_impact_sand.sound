@@ -5,10 +5,10 @@
   "Decibels": 48,
   "SelectionMode": "Random",
   "Sounds": [
-    "sound/ambient/rain_impact_grass_variation1.vsnd",
-    "sound/ambient/rain_impact_grass_variation2.vsnd",
-    "sound/ambient/rain_impact_grass_variation3.vsnd",
-    "sound/ambient/rain_impact_grass_variation4.vsnd"
+    "sound/ambient/rain_impact_sand_variation1.vsnd",
+    "sound/ambient/rain_impact_sand_variation2.vsnd",
+    "sound/ambient/rain_impact_sand_variation3.vsnd",
+    "sound/ambient/rain_impact_sand_variation4.vsnd"
   ],
   "OcclusionEnabled": true,
   "Occlusion": true,

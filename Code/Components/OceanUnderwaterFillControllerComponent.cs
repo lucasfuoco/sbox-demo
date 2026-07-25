@@ -1,5 +1,6 @@
-using RedSnail.WaterTool;
 using Sandbox.Components.SingletonComponents;
+using Sandbox.Controllers;
+using Sandbox.PostProcessing;
 using Sandbox.Rendering;
 using Sandbox.Volumes;
 using RenderStage = Sandbox.Rendering.Stage;
@@ -7,14 +8,14 @@ using RenderStage = Sandbox.Rendering.Stage;
 namespace Sandbox.Components;
 
 /// <summary>
-/// Underwater swim look in play and in the editor viewport.
-/// Requires PostProcessVolume.EditorPreview so effects show while editing.
+/// Underwater swim look in play mode. Detection uses the calm ocean plane
+/// (not tall swell peaks) so beaches and land stay clear of underwater PP.
 /// </summary>
 [Title( "Ocean Underwater Fill Controller" ), Category( "World Simulation" ), Icon( "water" )]
 public sealed class OceanUnderwaterFillControllerComponent : Component, Component.ExecuteInEditor
 {
-	[Property, Group( "Setup" ), Title( "Water Body" )]
-	public WaterBody WaterBody { get; set; }
+	[Property, Group( "Setup" ), Title( "Ocean Surface" )]
+	public OceanSurfaceController Ocean { get; set; }
 
 	[Property, Group( "Setup" ), Title( "World Manager" )]
 	public WorldManagerSingletonComponent TerrainWorld { get; set; }
@@ -31,6 +32,15 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 	[Property, Group( "Detection" ), Title( "Buried Tolerance" ), Range( 0f, 128f )]
 	public float BuriedTolerance { get; set; } = 16f;
 
+	[Property, Group( "Detection" ), Title( "Enter Below Calm Surface" ), Range( 0f, 128f ), Description( "Must be this far under the calm ocean plane before underwater PP starts. Ignores tall wave peaks so beaches stay clear." )]
+	public float EnterBelowCalmSurface { get; set; } = 24f;
+
+	[Property, Group( "Detection" ), Title( "Shore Dry Margin" ), Range( 0f, 512f ), Description( "If terrain is within this distance of the calm surface and the camera is above the ground, treat as dry land." )]
+	public float ShoreDryMargin { get; set; } = 96f;
+
+	[Property, Group( "Look" ), Title( "Enable Underwater Blur" ), Description( "Soft blur while submerged. Off by default — it often reads as the whole world being out of focus." )]
+	public bool EnableUnderwaterBlur { get; set; } = false;
+
 	[Property, Group( "Debug" ), Title( "Log Enter / Exit" )]
 	public bool LogTransitions { get; set; } = true;
 
@@ -39,8 +49,8 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 
 	PostProcessVolume _volume;
 	UnderwaterCausticsEffect _caustics;
-	SimpleFog _fog;
-	WobbleEffect _wobble;
+	PostProcessing.SimpleFog _fog;
+	PostProcessing.WobbleEffect _wobble;
 	ColorAdjustments _color;
 	Vignette _vignette;
 	Blur _blur;
@@ -75,6 +85,16 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 
 		var viewPosition = GetViewPosition();
 		var renderCamera = ResolveRenderCamera();
+
+		// Keep the editor viewport sharp — underwater PP (blur/fog) only runs in play mode.
+		if ( IsEditMode )
+		{
+			UnbindCamera();
+			if ( _wasUnderwater )
+				_wasUnderwater = false;
+			SetEffectsActive( false, 0f, 0f );
+			return;
+		}
 
 		if ( renderCamera.IsValid() )
 			BindCamera( renderCamera );
@@ -133,9 +153,9 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 	{
 		if ( _volume.IsValid() )
 		{
-			_volume.Enabled = true;
-			_volume.BlendWeight = 1f;
-			_volume.EditorPreview = true;
+			_volume.Enabled = active;
+			_volume.BlendWeight = active ? 1f : 0f;
+			_volume.EditorPreview = false;
 		}
 
 		var tint = SampleWaterColor( t );
@@ -143,7 +163,7 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 		if ( _caustics.IsValid() )
 		{
 			_caustics.Enabled = active;
-			_caustics.ForceLocalValues = true;
+			_caustics.ForceLocalValues = active;
 			_caustics.SurfaceZ = surface;
 			_caustics.WaterColor = WaterColor;
 			_caustics.DeepWaterColor = DeepWaterColor;
@@ -189,8 +209,9 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 
 		if ( _blur.IsValid() )
 		{
-			_blur.Enabled = active;
-			_blur.Size = MathX.Lerp( 0.015f, 0.05f, t );
+			var blurOn = active && EnableUnderwaterBlur && !IsEditMode;
+			_blur.Enabled = blurOn;
+			_blur.Size = blurOn ? MathX.Lerp( 0.01f, 0.03f, t ) : 0f;
 		}
 
 		if ( !active )
@@ -202,22 +223,22 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 		surface = 0f;
 		depth = 0f;
 
-		ResolveWaterBody();
+		ResolveOcean();
 
-		if ( WaterBody.IsValid() )
+		float calmSurface;
+
+		if ( Ocean.IsValid() )
 		{
-			if ( !WaterBody.ContainsPointInVolume( position ) )
+			if ( !Ocean.ContainsPointXY( position ) && !Ocean.ContainsPointInVolume( position ) )
 				return false;
 
-			surface = WaterBody.GetWaveHeightAt( position );
-		}
-		else if ( WaterManager.Current is not null && WaterManager.IsPositionInsideAny( position ) )
-		{
-			surface = WaterManager.GetWaterHeightAt( position );
+			calmSurface = Ocean.GetCalmSurfaceHeight();
+			surface = Ocean.GetWaveHeightAt( position );
 		}
 		else
 		{
-			surface = WorldPosition.z;
+			calmSurface = WorldPosition.z;
+			surface = calmSurface;
 			var local = WorldTransform.PointToLocal( position );
 			var halfW = 500_000f;
 			var halfL = 500_000f;
@@ -229,6 +250,8 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 				halfW = volumeCtrl.Width * 0.5f;
 				halfL = volumeCtrl.Length * 0.5f;
 				depthLimit = volumeCtrl.Depth;
+				calmSurface = volumeCtrl.WorldPosition.z;
+				surface = calmSurface;
 			}
 
 			if ( MathF.Abs( local.x ) > halfW || MathF.Abs( local.y ) > halfL )
@@ -237,10 +260,11 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 				return false;
 		}
 
-		if ( surface <= float.MinValue * 0.5f )
+		if ( calmSurface <= float.MinValue * 0.5f )
 			return false;
 
-		if ( position.z >= surface - 2f )
+		// Must be under the calm ocean plane — not just under a passing wave crest.
+		if ( position.z >= calmSurface - EnterBelowCalmSurface )
 			return false;
 
 		TerrainWorld ??= Scene.GetAllComponents<WorldManagerSingletonComponent>().FirstOrDefault();
@@ -249,16 +273,22 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 			var terrain = TerrainWorld.GetHeight( position.x, position.y );
 			if ( position.z < terrain - BuriedTolerance )
 				return false;
+
+			// Camera above dry ground near/above sea level = on land, not swimming.
+			var onGround = position.z <= terrain + 96f;
+			var landAboveWater = terrain >= calmSurface - ShoreDryMargin;
+			if ( onGround && landAboveWater )
+				return false;
 		}
 
-		depth = surface - position.z;
+		depth = MathF.Max( calmSurface - position.z, 0f );
 		return true;
 	}
 
-	void ResolveWaterBody()
+	void ResolveOcean()
 	{
-		WaterBody ??= Components.Get<WaterBody>( FindMode.EverythingInSelfAndDescendants );
-		WaterBody ??= Scene.GetAllComponents<WaterBody>().FirstOrDefault( b => b.WaterType == WaterBodyType.Ocean );
+		Ocean ??= Components.Get<OceanSurfaceController>( FindMode.EverythingInSelfAndDescendants );
+		Ocean ??= Controllers.OceanSurfaceController.FindOcean( Scene );
 	}
 
 	void EnsureEffects()
@@ -272,7 +302,6 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 	{
 		if ( _volume.IsValid() )
 		{
-			_volume.EditorPreview = true;
 			_volume.Enabled = true;
 			return;
 		}
@@ -283,7 +312,6 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 			Cache( _volume.GameObject );
 			ForceInfiniteVolume();
 			_volume.Enabled = true;
-			_volume.EditorPreview = true;
 			return;
 		}
 
@@ -293,7 +321,7 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 
 		_volume = go.Components.Create<PostProcessVolume>();
 		_volume.Enabled = true;
-		_volume.EditorPreview = true;
+		_volume.EditorPreview = false;
 		_volume.BlendWeight = 1f;
 		_volume.Priority = 10;
 		ForceInfiniteVolume();
@@ -302,10 +330,10 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 		_caustics.ForceLocalValues = true;
 		_caustics.Enabled = false;
 
-		_fog = go.Components.Create<SimpleFog>();
+		_fog = go.Components.Create<PostProcessing.SimpleFog>();
 		_fog.Enabled = false;
 
-		_wobble = go.Components.Create<WobbleEffect>();
+		_wobble = go.Components.Create<PostProcessing.WobbleEffect>();
 		_wobble.Enabled = false;
 
 		_color = go.Components.Create<ColorAdjustments>();
@@ -328,7 +356,6 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 			Type = SceneVolume.VolumeTypes.Infinite,
 			Box = new BBox( new Vector3( -1e7f ), new Vector3( 1e7f ) )
 		};
-		_volume.EditorPreview = true;
 	}
 
 	void RemoveLegacyOverlay()
@@ -414,8 +441,8 @@ public sealed class OceanUnderwaterFillControllerComponent : Component, Componen
 	void Cache( GameObject go )
 	{
 		_caustics ??= go.Components.Get<UnderwaterCausticsEffect>( FindMode.EverythingInSelfAndDescendants );
-		_fog ??= go.Components.Get<SimpleFog>( FindMode.EverythingInSelfAndDescendants );
-		_wobble ??= go.Components.Get<WobbleEffect>( FindMode.EverythingInSelfAndDescendants );
+		_fog ??= go.Components.Get<PostProcessing.SimpleFog>( FindMode.EverythingInSelfAndDescendants );
+		_wobble ??= go.Components.Get<PostProcessing.WobbleEffect>( FindMode.EverythingInSelfAndDescendants );
 		_color ??= go.Components.Get<ColorAdjustments>( FindMode.EverythingInSelfAndDescendants );
 		_vignette ??= go.Components.Get<Vignette>( FindMode.EverythingInSelfAndDescendants );
 		_blur ??= go.Components.Get<Blur>( FindMode.EverythingInSelfAndDescendants );

@@ -1,14 +1,14 @@
 {
   "UI": false,
-  "Volume": "0.22",
-  "Pitch": "0.9,1.1",
-  "Decibels": 48,
+  "Volume": "0.24",
+  "Pitch": "0.88,1.12",
+  "Decibels": 50,
   "SelectionMode": "Random",
   "Sounds": [
-    "sound/ambient/rain_impact_grass_variation1.vsnd",
-    "sound/ambient/rain_impact_grass_variation2.vsnd",
-    "sound/ambient/rain_impact_grass_variation3.vsnd",
-    "sound/ambient/rain_impact_grass_variation4.vsnd"
+    "sound/ambient/rain_impact_rock_variation1.vsnd",
+    "sound/ambient/rain_impact_rock_variation2.vsnd",
+    "sound/ambient/rain_impact_rock_variation3.vsnd",
+    "sound/ambient/rain_impact_rock_variation4.vsnd"
   ],
   "OcclusionEnabled": true,
   "Occlusion": true,

@@ -1,0 +1,27 @@
+---
+description: Never edit the Libraries folder (external packages)
+alwaysApply: true
+---
+
+# Do Not Edit Libraries
+
+`Libraries/` is for external s&box packages only. It is **forbidden** to create, modify, or delete anything under this folder. Ocean/FFT water is owned by the main project (`Code/Controllers`, `Code/Renderers`, `Code/Ocean`, `Code/Water/Fft`) — never put game ocean code in Libraries.
+
+## Rules
+
+- Never write, patch, or revert files under `Libraries/**`
+- Never add hooks, shaders, resources, or C# into library packages
+- Implement game features in the main project only (`Code/`, `Assets/`, etc.)
+- If a library API is insufficient, work around it from the main project (reflection, materials, systems, shaders) or ask the user — do not fork the library in-place
+
+## Examples
+
+```
+// ❌ BAD — editing WaterTool / any package under Libraries
+Libraries/redsnail.watertool/Code/Water/WaterManager.cs
+
+// ✅ GOOD — game-owned code outside Libraries
+Code/GameObjectSystems/OceanFftManager.cs
+Code/Water/Fft/...
+Assets/shaders/...
+```

@@ -1065,7 +1065,7 @@
               "__enabled": true,
               "Flags": 0,
               "AlignToWind": true,
-              "BaseProfile": "resources/water/ocean.wtdef",
+              "BaseFftProfile": null,
               "BlendSpeed": 0.45,
               "CalmScale": 0.7,
               "OnComponentDestroy": null,
@@ -1187,7 +1187,7 @@
               "MaxFrogsVolume": 0.28,
               "MaxLeavesVolume": 0.32,
               "MaxOwlsVolume": 0.22,
-              "MaxRainVolume": 0.55,
+              "MaxRainVolume": 0,
               "MaxThunderVolume": 0.7,
               "MaxWaterVolume": 0.35,
               "MaxWindVolume": 0.45,
@@ -1610,7 +1610,7 @@
               "__version": 2,
               "Flags": 0,
               "Name": "ClearCloud",
-              "Position": "215720.938,0,0",
+              "Position": "-189522.25,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "weather_volume,weather_cloud_layer_generated",
@@ -1713,7 +1713,7 @@
               "__version": 2,
               "Flags": 0,
               "Name": "RainCloud",
-              "Position": "465720.938,0,0",
+              "Position": "60477.75,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "weather_volume,weather_cloud_layer_generated",
@@ -1821,7 +1821,7 @@
                   "EnableImpactAudio": true,
                   "EnableRain": true,
                   "EnableSplashes": true,
-                  "ImpactAudioVolume": 0.55,
+                  "ImpactAudioVolume": 0.2,
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -1843,7 +1843,7 @@
               "__version": 2,
               "Flags": 0,
               "Name": "StormCloud",
-              "Position": "-284279,0,0",
+              "Position": "310477.75,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "weather_volume,weather_cloud_layer_generated",
@@ -1951,7 +1951,7 @@
                   "EnableImpactAudio": true,
                   "EnableRain": true,
                   "EnableSplashes": true,
-                  "ImpactAudioVolume": 0.55,
+                  "ImpactAudioVolume": 0.2,
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -2018,7 +2018,7 @@
               "__version": 2,
               "Flags": 0,
               "Name": "FogBank",
-              "Position": "-34279,0,0",
+              "Position": "-439522.25,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "weather_volume,weather_cloud_layer_generated",
@@ -2143,6 +2143,18 @@
               "AutoAlignZ": true,
               "Depth": 20000,
               "Length": 1000000,
+              "Ocean": {
+                "_type": "component",
+                "component_id": "ac03c881-08c7-4a72-b9a4-fa7988e417ed",
+                "go": "3f864ac5-85e3-4ac3-8e70-fbdd05fff0a6",
+                "component_type": "OceanSurfaceController"
+              },
+              "OceanRenderer": {
+                "_type": "component",
+                "component_id": "cba6e278-7bb9-4384-b486-619e42d78bef",
+                "go": "c5601f8f-659a-4b15-a2d8-757dc3763526",
+                "component_type": "OceanSurfaceRenderer"
+              },
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -2156,18 +2168,6 @@
                 "component_type": "WorldManagerSingletonComponent"
               },
               "VisualDepth": 450,
-              "WaterBody": {
-                "_type": "component",
-                "component_id": "ac03c881-08c7-4a72-b9a4-fa7988e417ed",
-                "go": "4c2c7f86-e218-44b6-8d41-63517c8bb01d",
-                "component_type": "WaterBody"
-              },
-              "WaterRenderer": {
-                "_type": "component",
-                "component_id": "cba6e278-7bb9-4384-b486-619e42d78bef",
-                "go": "c5601f8f-659a-4b15-a2d8-757dc3763526",
-                "component_type": "WaterBodyRenderer"
-              },
               "Width": 1000000
             },
             {
@@ -2178,27 +2178,61 @@
               "BuriedTolerance": 16,
               "DeepWaterColor": "0.08,0.28,0.48,1",
               "EditorScreenHint": true,
+              "EnableUnderwaterBlur": true,
+              "EnterBelowCalmSurface": 24,
               "FullEffectDepth": 4500,
               "LogTransitions": true,
+              "Ocean": {
+                "_type": "component",
+                "component_id": "ac03c881-08c7-4a72-b9a4-fa7988e417ed",
+                "go": "3f864ac5-85e3-4ac3-8e70-fbdd05fff0a6",
+                "component_type": "OceanSurfaceController"
+              },
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
+              "ShoreDryMargin": 96,
               "TerrainWorld": {
                 "_type": "component",
                 "component_id": "f50f3f72-e2f3-4892-a0c0-50e90f58c5bc",
                 "go": "8a3f2e1d-4b5c-6789-a012-3456789abcde",
                 "component_type": "WorldManagerSingletonComponent"
               },
-              "WaterBody": {
-                "_type": "component",
-                "component_id": "ac03c881-08c7-4a72-b9a4-fa7988e417ed",
-                "go": "4c2c7f86-e218-44b6-8d41-63517c8bb01d",
-                "component_type": "WaterBody"
-              },
               "WaterColor": "0.28,0.72,0.88,1"
+            },
+            {
+              "__type": "Sandbox.Components.OceanFftControllerComponent",
+              "__guid": "a7c3e91d-2f4b-4e8a-9c1d-6b5e0f8a2d33",
+              "__enabled": true,
+              "Flags": 0,
+              "EnableFftWaves": true,
+              "EnableSeaSpray": true,
+              "FftActive": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Profile": "resources/water/ocean.fftwater"
+            },
+            {
+              "__type": "Sandbox.Controllers.OceanSurfaceController",
+              "__guid": "ac03c881-08c7-4a72-b9a4-fa7988e417ed",
+              "__enabled": true,
+              "Flags": 0,
+              "Depth": 20000,
+              "Length": 1000000,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Width": 1000000
             }
           ],
           "Children": [
@@ -2219,39 +2253,10 @@
               "OwnerTransfer": 1,
               "Components": [
                 {
-                  "__type": "RedSnail.WaterTool.WaterBody",
-                  "__guid": "ac03c881-08c7-4a72-b9a4-fa7988e417ed",
-                  "__enabled": true,
-                  "Flags": 0,
-                  "OnComponentDestroy": null,
-                  "OnComponentDisabled": null,
-                  "OnComponentEnabled": null,
-                  "OnComponentFixedUpdate": null,
-                  "OnComponentStart": null,
-                  "OnComponentUpdate": null,
-                  "SceneVolume": {
-                    "Type": "Box",
-                    "Sphere": {
-                      "Center": "0,0,0",
-                      "Radius": 10
-                    },
-                    "Box": {
-                      "Mins": "-500000,-500000,-10000",
-                      "Maxs": "500000,500000,10000"
-                    },
-                    "Capsule": {
-                      "CenterA": "0,0,10",
-                      "CenterB": "0,0,90",
-                      "Radius": 10
-                    }
-                  },
-                  "WaterType": "Ocean"
-                },
-                {
                   "__type": "Sandbox.HullCollider",
                   "__guid": "b312a9d1-d90f-408e-96a9-a67a95b38a8c",
                   "__enabled": true,
-                  "Flags": 1,
+                  "Flags": 0,
                   "BoxSize": "1000000,1000000,20000",
                   "Center": "0,0,0",
                   "ColliderFlags": 0,
@@ -2328,7 +2333,7 @@
               "__guid": "c5601f8f-659a-4b15-a2d8-757dc3763526",
               "__version": 2,
               "Flags": 0,
-              "Name": "WaterBodyRenderer",
+              "Name": "Ocean Surface",
               "Position": "0,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
@@ -2341,12 +2346,12 @@
               "OwnerTransfer": 1,
               "Components": [
                 {
-                  "__type": "RedSnail.WaterTool.WaterBodyRenderer",
+                  "__type": "Sandbox.Renderers.OceanSurfaceRenderer",
                   "__guid": "cba6e278-7bb9-4384-b486-619e42d78bef",
                   "__enabled": true,
                   "Flags": 0,
                   "BaseCellSize": 16,
-                  "CellsPerRing": 256,
+                  "CellsPerRing": 64,
                   "Depth": 450,
                   "FollowCameraForClipmap": true,
                   "Length": 1000000,
@@ -2358,8 +2363,6 @@
                   "OnComponentStart": null,
                   "OnComponentUpdate": null,
                   "TextureTilingMultiplier": 1,
-                  "UseHybridInclusionBounds": true,
-                  "WaterType": "Ocean",
                   "Width": 1000000
                 }
               ],
@@ -2384,11 +2387,11 @@
                 {
                   "__type": "Sandbox.PostProcessVolume",
                   "__guid": "947e6dcf-bf49-4935-8ab0-bf73b79fa81a",
-                  "__enabled": true,
+                  "__enabled": false,
                   "Flags": 0,
                   "BlendDistance": 50,
-                  "BlendWeight": 1,
-                  "EditorPreview": true,
+                  "BlendWeight": 0,
+                  "EditorPreview": false,
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
                   "OnComponentEnabled": null,
@@ -2437,7 +2440,7 @@
                   "WaterColor": "0.28,0.72,0.88,1"
                 },
                 {
-                  "__type": "RedSnail.WaterTool.SimpleFog",
+                  "__type": "Sandbox.PostProcessing.SimpleFog",
                   "__guid": "fc8df268-2678-4395-acfd-3305c13cedc3",
                   "__enabled": false,
                   "Flags": 0,
@@ -2452,7 +2455,7 @@
                   "Opacity": 0.1
                 },
                 {
-                  "__type": "RedSnail.WaterTool.WobbleEffect",
+                  "__type": "Sandbox.PostProcessing.WobbleEffect",
                   "__guid": "8fa5888b-8485-49aa-9669-e1106865cbd1",
                   "__enabled": false,
                   "Flags": 0,
@@ -2511,7 +2514,7 @@
                   "OnComponentFixedUpdate": null,
                   "OnComponentStart": null,
                   "OnComponentUpdate": null,
-                  "Size": 0.015
+                  "Size": 0
                 }
               ],
               "Children": []
@@ -2543,16 +2546,13 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "RedSnail.WaterTool.WaterManager": {
-        "LakeWaveProfile": "resources/lake.wtdef",
-        "OceanWaveProfile": "resources/water/ocean.wtdef",
-        "PoolWaveProfile": "resources/pool.wtdef",
-        "RiverWaveProfile": "resources/water/river.wtdef"
-      },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
           "$blob": "62b6dacf-f9eb-4d63-aca5-e7a1b2a08ffc"
         }
+      },
+      "Sandbox.GameObjectSystems.OceanFftManager": {
+        "OceanFftProfile": "resources/water/ocean.fftwater"
       },
       "Sandbox.SelectionSetsSystem": {
         "Data": {

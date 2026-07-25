@@ -36,6 +36,9 @@ public partial class PawnCameraControllerComponent : Component
 			AudioListener = Camera.GetOrAddComponent<AudioListener>();
 			ScreenShaker = Camera.GetOrAddComponent<ScreenShakerComponent>();
 			DepthOfField = Camera.GetOrAddComponent<DepthOfField>();
+			// Keep DOF off by default — a short FocusRange blurs out distant terrain.
+			DepthOfField.Enabled = false;
+			DepthOfField.BlurSize = 0f;
 
 			// Optional
 			ColorAdjustments = Camera.GetComponent<ColorAdjustments>();

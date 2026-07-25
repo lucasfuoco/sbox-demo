@@ -67,8 +67,8 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 	[Property, Group( "Ground" ), Title( "Enable Impact Audio" )]
 	public bool EnableImpactAudio { get; set; } = true;
 
-	[Property, Group( "Ground" ), Title( "Impact Audio Volume" ), Range( 0f, 1f )]
-	public float ImpactAudioVolume { get; set; } = 0.55f;
+	[Property, Group( "Ground" ), Title( "Impact Audio Volume" ), Range( 0f, 1f ), Description( "Primary rain audio — spatters when rain hits the ground." )]
+	public float ImpactAudioVolume { get; set; } = 0.2f;
 
 	WorldPrecipitationEffect _rain;
 

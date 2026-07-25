@@ -98,8 +98,8 @@ public sealed class WorldAmbientAudioComponent : Component
 	[Property, Group( "Rain" ), Title( "Rain (Fallback)" ), Description( "Used when a strength-specific sound is unset." )]
 	public SoundEvent Rain { get; set; }
 
-	[Property, Group( "Rain" ), Range( 0f, 1f )]
-	public float MaxRainVolume { get; set; } = 0.7f;
+	[Property, Group( "Rain" ), Range( 0f, 1f ), Description( "Legacy rain-fall bed. Keep at 0 — rain audio comes from drop impact sounds on weather volumes." )]
+	public float MaxRainVolume { get; set; } = 0f;
 
 	[Property, Group( "Thunder" )]
 	public SoundEvent Thunder { get; set; }
@@ -120,9 +120,11 @@ public sealed class WorldAmbientAudioComponent : Component
 	SoundHandle _directionalWindHandle;
 	SoundEvent _directionalWindSound;
 	SoundHandle _rainBedHandle;
-	string _rainBedSoundPath;
+	SoundHandle _rainBedFadeHandle;
 	float _rainBedVolume;
 	float _rainBedHold;
+	float _rainBedDuration;
+	TimeSince _sinceRainBedStarted;
 	WeatherRainStrength _rainBedStrength = WeatherRainStrength.Medium;
 	bool _rainSoundsResolved;
 	readonly HashSet<int> _heardLightningFlashIds = new();
@@ -169,8 +171,8 @@ public sealed class WorldAmbientAudioComponent : Component
 			StrongRain = StrongRain,
 		};
 
-		// Rain bed follows the player (volume or global). Spatial rain field stays off to avoid doubling.
-		var rainBedActive = UpdateRainBed( listenerPosition, conditions );
+		// Rain audio is drop impacts only (WeatherVolumeRain). Never play ambient rain-fall beds.
+		StopRainBed();
 		var volumes = new WorldAmbientVolumeSet
 		{
 			Wind = MaxWindVolume,
@@ -179,7 +181,7 @@ public sealed class WorldAmbientAudioComponent : Component
 			Frogs = MaxFrogsVolume,
 			Leaves = MaxLeavesVolume,
 			Water = MaxWaterVolume,
-			Rain = rainBedActive ? 0f : MaxRainVolume,
+			Rain = 0f,
 		};
 
 		_field.Update( listenerPosition, Terrain, conditions, sounds, volumes, windSounds );
@@ -212,13 +214,9 @@ public sealed class WorldAmbientAudioComponent : Component
 		if ( _rainSoundsResolved )
 			return;
 
-		// Local beds: no distance/occlusion so the loop stays glued to the player.
-		LightRain ??= ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_light_bed.sound" )
-			?? ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_light.sound" );
-		MediumRain ??= ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_medium_bed.sound" )
-			?? ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_medium.sound" );
-		StrongRain ??= ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_strong_bed.sound" )
-			?? ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_strong.sound" );
+		LightRain ??= ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_light.sound" );
+		MediumRain ??= ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_medium.sound" );
+		StrongRain ??= ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_strong.sound" );
 		Rain ??= MediumRain ?? LightRain ?? StrongRain;
 		_rainSoundsResolved = LightRain is not null || MediumRain is not null || StrongRain is not null || Rain is not null;
 	}
@@ -270,11 +268,14 @@ public sealed class WorldAmbientAudioComponent : Component
 			outdoor = 1f - conditions.AudioMuffleAmount;
 		}
 
-		var raining = strength != WeatherRainStrength.None && blend > 0.02f;
+		var liveStrength = strength;
+		var raining = liveStrength != WeatherRainStrength.None && blend > 0.02f;
 		if ( raining )
 		{
-			_rainBedHold = 1.25f;
-			_rainBedStrength = strength;
+			_rainBedHold = 2.5f;
+			// Keep the same sound event for the whole rain stretch so walking never swaps clips.
+			if ( !_rainBedHandle.IsValid() || _rainBedHandle.Finished )
+				_rainBedStrength = liveStrength;
 		}
 		else
 		{
@@ -285,13 +286,13 @@ public sealed class WorldAmbientAudioComponent : Component
 				return false;
 			}
 
-			// Keep the last bed while briefly leaving the footprint / shelter flicker.
-			strength = _rainBedStrength;
+			// Keep the last clip while briefly leaving the footprint / shelter flicker.
+			liveStrength = _rainBedStrength;
 			blend = MathF.Max( blend, 0.45f );
 			outdoor = MathF.Max( outdoor, 0.5f );
 		}
 
-		var sound = ResolveRainSound( strength );
+		var sound = ResolveRainSound( _rainBedStrength );
 		if ( sound is null )
 		{
 			StopRainBed();
@@ -300,43 +301,95 @@ public sealed class WorldAmbientAudioComponent : Component
 
 		var targetVolume = MathX.Clamp(
 			MaxRainVolume
-			* WeatherRainStrengthUtil.ToAudioVolume( strength )
-			* blend
-			* MathX.Lerp( 0.45f, 1f, outdoor ),
-			0.12f,
+			* WeatherRainStrengthUtil.ToAudioVolume( liveStrength != WeatherRainStrength.None ? liveStrength : _rainBedStrength )
+			* MathX.Lerp( 0.55f, 1f, blend )
+			* MathX.Lerp( 0.55f, 1f, outdoor ),
+			0.25f,
 			1f );
 
-		_rainBedVolume = _rainBedVolume.LerpTo( targetVolume, 1f - MathF.Exp( -Time.Delta * 6f ) );
+		_rainBedVolume = _rainBedVolume.LerpTo( targetVolume, 1f - MathF.Exp( -Time.Delta * 4f ) );
 
-		var soundPosition = listenerPosition + Vector3.Up * 64f;
-		var soundPath = sound.ResourcePath ?? string.Empty;
-		var needsNewHandle = !_rainBedHandle.IsValid()
-			|| _rainBedHandle.Finished
-			|| !string.Equals( _rainBedSoundPath, soundPath, StringComparison.OrdinalIgnoreCase );
+		MaintainRainHandle( sound );
+		return _rainBedHandle.IsValid() || _rainBedFadeHandle.IsValid() || _rainBedHold > 0f;
+	}
 
-		if ( needsNewHandle )
+	void MaintainRainHandle( SoundEvent sound )
+	{
+		const float CrossfadeSeconds = 1.5f;
+
+		// Promote the queued next clip once the current one is done.
+		if ( _rainBedFadeHandle.IsValid() && (!_rainBedHandle.IsValid() || _rainBedHandle.Finished) )
 		{
-			// Don't Stop() first — that causes audible gaps while moving.
-			_rainBedHandle = Sound.Play( sound, soundPosition );
-			_rainBedSoundPath = soundPath;
+			_rainBedHandle = _rainBedFadeHandle;
+			_rainBedFadeHandle = default;
+			_sinceRainBedStarted = 0f;
+			_rainBedDuration = 30f;
 		}
 
-		if ( !_rainBedHandle.IsValid() )
+		if ( !_rainBedHandle.IsValid() || _rainBedHandle.Finished )
 		{
-			_rainBedSoundPath = null;
-			return _rainBedHold > 0f;
+			_rainBedHandle = _rainBedFadeHandle.IsValid() ? _rainBedFadeHandle : PlayRainHandle( sound );
+			_rainBedFadeHandle = default;
+			_sinceRainBedStarted = 0f;
+			_rainBedDuration = 30f;
+		}
+		else if ( GetRainRemaining() < CrossfadeSeconds && !_rainBedFadeHandle.IsValid() )
+		{
+			// Start the next variation before this one ends so there's no silent gap.
+			_rainBedFadeHandle = PlayRainHandle( sound );
 		}
 
-		_rainBedHandle.Position = soundPosition;
-		_rainBedHandle.Volume = _rainBedVolume;
-		_rainBedHandle.Pitch = strength switch
+		if ( _rainBedHandle.IsValid() )
 		{
-			WeatherRainStrength.Light => 1.04f,
-			WeatherRainStrength.Strong => 0.94f,
-			_ => 1f,
-		};
+			var primaryVolume = _rainBedVolume;
+			var remaining = GetRainRemaining();
+			if ( _rainBedFadeHandle.IsValid() && remaining < CrossfadeSeconds )
+			{
+				var t = 1f - MathX.Clamp( remaining / CrossfadeSeconds, 0f, 1f );
+				primaryVolume = _rainBedVolume * (1f - t);
+				ConfigureRainHandle( _rainBedFadeHandle, _rainBedVolume * t );
+			}
 
-		return true;
+			ConfigureRainHandle( _rainBedHandle, primaryVolume );
+		}
+		else if ( _rainBedFadeHandle.IsValid() )
+		{
+			ConfigureRainHandle( _rainBedFadeHandle, _rainBedVolume );
+		}
+	}
+
+	float GetRainRemaining()
+	{
+		if ( !_rainBedHandle.IsValid() || _rainBedHandle.Finished )
+			return 0f;
+
+		// Variation clips are ~30s. Don't touch SoundFile.Duration — native VSound_t can be null.
+		if ( _rainBedDuration <= 0.01f )
+			_rainBedDuration = 30f;
+
+		return MathF.Max( 0f, _rainBedDuration - _sinceRainBedStarted );
+	}
+
+	SoundHandle PlayRainHandle( SoundEvent sound )
+	{
+		var handle = Sound.Play( sound );
+		if ( handle.IsValid() )
+			ConfigureRainHandle( handle, 0f );
+
+		return handle;
+	}
+
+	static void ConfigureRainHandle( SoundHandle handle, float volume )
+	{
+		if ( !handle.IsValid() )
+			return;
+
+		handle.ListenLocal = true;
+		handle.SpacialBlend = 0f;
+		handle.OcclusionEnabled = false;
+		handle.DistanceAttenuation = false;
+		handle.Pitch = 1f;
+		handle.Volume = volume;
 	}
 
 	bool TrySampleVolumeRain(
@@ -388,10 +441,17 @@ public sealed class WorldAmbientAudioComponent : Component
 			_rainBedHandle.Stop();
 		}
 
+		if ( _rainBedFadeHandle.IsValid() )
+		{
+			_rainBedFadeHandle.Volume = 0f;
+			_rainBedFadeHandle.Stop();
+		}
+
 		_rainBedHandle = default;
-		_rainBedSoundPath = null;
+		_rainBedFadeHandle = default;
 		_rainBedVolume = 0f;
 		_rainBedHold = 0f;
+		_rainBedDuration = 0f;
 	}
 
 	void UpdateDirectionalWindBed( Vector3 listenerPosition, WorldAmbientConditions conditions )

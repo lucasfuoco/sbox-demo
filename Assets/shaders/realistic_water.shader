@@ -80,6 +80,67 @@ VS
 	float g_flRippleDamping < Attribute( "RippleDamping" ); Default1( 1.5 ); >;
 	StructuredBuffer<float4> g_vRippleData < Attribute( "RippleData" ); >;
 
+	// GodotOceanWaves-style FFT cascade maps (atlas: cascade stacked on Y).
+	// Bound from the game project via Material.Attributes (no Libraries/ edits).
+	int g_nUseOceanFft < Attribute( "UseOceanFft" ); Default( 0 ); >;
+	int g_nOceanFftCascades < Attribute( "OceanFftCascades" ); Default( 0 ); >;
+	int g_nOceanFftCascadeCapacity < Attribute( "OceanFftCascadeCapacity" ); Default( 2 ); >;
+	float g_flOceanFftFadeStart < Attribute( "OceanFftFadeStart" ); Default1( 5900 ); >;
+	float g_flOceanFftFadeRate < Attribute( "OceanFftFadeRate" ); Default1( 0.00018 ); >;
+	float g_flOceanFftDetailFade < Attribute( "OceanFftDetailFade" ); Default1( 23600 ); >;
+	float4 g_vOceanFftScale0 < Attribute( "OceanFftScale0" ); Default4( 0, 0, 0, 0 ); >;
+	float4 g_vOceanFftScale1 < Attribute( "OceanFftScale1" ); Default4( 0, 0, 0, 0 ); >;
+	float4 g_vOceanFftScale2 < Attribute( "OceanFftScale2" ); Default4( 0, 0, 0, 0 ); >;
+	float4 g_vOceanFftScale3 < Attribute( "OceanFftScale3" ); Default4( 0, 0, 0, 0 ); >;
+	Texture2D g_tOceanFftDisplacement < Attribute( "OceanFftDisplacement" ); SrgbRead( false ); >;
+	Texture2D g_tOceanFftNormal < Attribute( "OceanFftNormal" ); SrgbRead( false ); >;
+	SamplerState g_sOceanFft < Filter( Anisotropic ); AddressU( WRAP ); AddressV( WRAP ); >;
+
+	float4 GetOceanFftScale( int cascade )
+	{
+		if ( cascade == 0 ) return g_vOceanFftScale0;
+		if ( cascade == 1 ) return g_vOceanFftScale1;
+		if ( cascade == 2 ) return g_vOceanFftScale2;
+		return g_vOceanFftScale3;
+	}
+
+	float2 OceanFftAtlasUV( float2 worldXY, float4 scales, int cascade )
+	{
+		float2 uv = frac( worldXY * scales.xy );
+		float invCap = 1.0 / max( (float)g_nOceanFftCascadeCapacity, 1.0 );
+		return float2( uv.x, ( (float)cascade + uv.y ) * invCap );
+	}
+
+	// One pass: displacement + slope gradient + foam. Avoids 3x finite-difference sampling.
+	void SampleOceanFft( float2 worldXY, out float3 displacement, out float2 gradient, out float foam )
+	{
+		displacement = 0;
+		gradient = 0;
+		foam = 0;
+
+		float dist = length( worldXY - g_vCameraPositionWs.xy );
+		// Match GodotOceanWaves: full strength until ~150m, then exponential fade (scaled to world units).
+		float distanceFactor = min( exp( -( dist - g_flOceanFftFadeStart ) * g_flOceanFftFadeRate ), 1.0 );
+		int cascadeCount = g_nOceanFftCascades;
+		if ( cascadeCount > 1 && dist > g_flOceanFftDetailFade )
+			cascadeCount = 1;
+
+		[loop]
+		for ( int i = 0; i < cascadeCount; i++ )
+		{
+			float4 scales = GetOceanFftScale( i );
+			float2 atlasUv = OceanFftAtlasUV( worldXY, scales, i );
+			displacement += g_tOceanFftDisplacement.SampleLevel( g_sOceanFft, atlasUv, 0 ).xyz * scales.z;
+			float4 nrm = g_tOceanFftNormal.SampleLevel( g_sOceanFft, atlasUv, 0 );
+			gradient += nrm.xy * scales.w;
+			foam += nrm.a;
+		}
+
+		displacement *= distanceFactor;
+		gradient *= distanceFactor;
+		foam = saturate( foam );
+	}
+
 	// Must match WaterWaveUtility / WaterManager CPU Gerstner.
 	float3 ComputeGerstner( float2 worldXY, float scale, float speed, float2 dir, int octaves, float lacunarity, float persistence, float steepness, float time )
 	{
@@ -151,11 +212,10 @@ VS
 		return z;
 	}
 
-	float3 TotalDisplacement( float2 worldXY )
+	float3 TotalDisplacementGerstner( float2 worldXY )
 	{
 		float3 detail = ComputeGerstner( worldXY, g_flWavesScale, g_flWavesSpeed, g_vWavesDirection, g_nWavesOctaves, g_flWavesLacunarity, g_flWavesPersistence, g_flWavesSteepness, g_flWaterTime ) * g_flWavesIntensity;
 		float3 swell = ComputeGerstner( worldXY, g_flSwellScale, g_flSwellSpeed, g_vSwellDirection, g_nSwellOctaves, g_flSwellLacunarity, g_flSwellPersistence, g_flSwellSteepness, g_flWaterTime ) * g_flSwellIntensity;
-
 		float3 disp = detail + swell;
 		disp.z += ComputeRipples( worldXY );
 		return disp;
@@ -178,15 +238,37 @@ VS
 		float2 worldXY = i.vPositionWs.xy;
 		float3 basePos = i.vPositionWs.xyz;
 
-		float distToCam = distance( worldXY, g_vCameraPositionWs.xy );
-		float eps = max( g_flWaveNormalEpsMin, distToCam * g_flWaveNormalEpsScale );
-		float3 d0 = TotalDisplacement( worldXY );
-		float3 dX = TotalDisplacement( worldXY + float2( eps, 0.0 ) );
-		float3 dY = TotalDisplacement( worldXY + float2( 0.0, eps ) );
+		float3 d0;
+		float3 waveNormal;
+		float3 tangentX;
+		float3 tangentY;
 
-		float3 tangentX = float3( eps, 0.0, 0.0 ) + ( dX - d0 );
-		float3 tangentY = float3( 0.0, eps, 0.0 ) + ( dY - d0 );
-		float3 waveNormal = normalize( cross( tangentX, tangentY ) );
+		if ( g_nUseOceanFft != 0 && g_nOceanFftCascades > 0 )
+		{
+			float2 gradient;
+			float foam;
+			SampleOceanFft( worldXY, d0, gradient, foam );
+			d0.z += ComputeRipples( worldXY );
+
+			// Z-up normal from FFT slope (Godot used Y-up: (-gx, 1, -gz)).
+			waveNormal = normalize( float3( -gradient.x, -gradient.y, 1.0 ) );
+			tangentX = normalize( float3( 1.0, 0.0, gradient.x ) );
+			tangentY = normalize( float3( 0.0, 1.0, gradient.y ) );
+			i.flWaveCrest = foam;
+		}
+		else
+		{
+			float distToCam = distance( worldXY, g_vCameraPositionWs.xy );
+			float eps = max( g_flWaveNormalEpsMin, distToCam * g_flWaveNormalEpsScale );
+			d0 = TotalDisplacementGerstner( worldXY );
+			float3 dX = TotalDisplacementGerstner( worldXY + float2( eps, 0.0 ) );
+			float3 dY = TotalDisplacementGerstner( worldXY + float2( 0.0, eps ) );
+
+			tangentX = float3( eps, 0.0, 0.0 ) + ( dX - d0 );
+			tangentY = float3( 0.0, eps, 0.0 ) + ( dY - d0 );
+			waveNormal = normalize( cross( tangentX, tangentY ) );
+			i.flWaveCrest = saturate( 1.0 - waveNormal.z );
+		}
 
 		i.vPositionWs.xyz = basePos + d0;
 		i.vPositionPs.xyzw = Position3WsToPs( i.vPositionWs.xyz );
@@ -194,9 +276,6 @@ VS
 		i.vNormalWs = waveNormal;
 		i.vTangentUWs = normalize( tangentX );
 		i.vTangentVWs = normalize( tangentY );
-
-		// Crest foam from geometric slope (flat water ~0, breaking wave ~1).
-		i.flWaveCrest = saturate( 1.0 - waveNormal.z );
 
 		return FinalizeVertex( i );
 	}
@@ -530,11 +609,16 @@ PS
 			}
 		}
 
-		// Specular sun glitter
+		// Specular sun glitter — GGX (Atlas / GodotOceanWaves) with Blinn fallback via power.
 		float3 sunDir = normalize( g_vSunDirection );
 		float3 halfVec = normalize( sunDir + viewDirNorm );
 		float nDotH = saturate( dot( surfaceNormal, halfVec ) );
-		float spec = pow( nDotH, g_flSpecularPower ) * g_flSpecularIntensity;
+		float a = max( g_flRoughness, 0.02 );
+		float a2 = a * a;
+		float dDenom = ( nDotH * nDotH ) * ( a2 - 1.0 ) + 1.0;
+		float ggxD = a2 / max( 3.14159265 * dDenom * dDenom, 1e-5 );
+		float blinn = pow( nDotH, g_flSpecularPower );
+		float spec = lerp( blinn, ggxD, 0.85 ) * g_flSpecularIntensity;
 		float sunFacing = saturate( sunDir.z * 2.0 + 0.2 );
 
 		float2 glitterUv = i.vTextureCoords.xy * g_flGlitterScale * g_vNormalTiling.x;

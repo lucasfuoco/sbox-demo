@@ -1,18 +1,33 @@
 namespace Sandbox;
 
+using Sandbox.Components.SingletonComponents;
+using Sandbox.Controllers;
+
 /// <summary>
-/// Camera-local ground splashes and impact audio for outdoor rain.
+/// Camera-local ground splashes and surface-aware rain impact audio.
 /// </summary>
 sealed class WorldRainGroundEffect
 {
 	/// <summary>Play splash from the first impact frame through the end of the sheet.</summary>
 	const int SplashStartFrame = 0;
 
+	enum RainSurface
+	{
+		Grass,
+		Sand,
+		Rock,
+		Water,
+	}
+
 	readonly Scene _scene;
 	readonly ParticleEffect _effect;
 	readonly ParticleBoxEmitter _emitter;
 	readonly ParticleSpriteRenderer _renderer;
-	readonly SoundEvent _impactSound;
+	readonly SoundEvent _fallbackImpact;
+	readonly SoundEvent _sandImpact;
+	readonly SoundEvent _grassImpact;
+	readonly SoundEvent _rockImpact;
+	readonly SoundEvent _waterImpact;
 	readonly int _lastFrame;
 
 	TimeSince _sinceSplashTrace;
@@ -20,6 +35,7 @@ sealed class WorldRainGroundEffect
 	Vector3 _groundCenter;
 	bool _hasGround;
 	float _amount;
+	WorldManagerSingletonComponent _terrain;
 
 	public GameObject Root { get; }
 
@@ -29,7 +45,11 @@ sealed class WorldRainGroundEffect
 		ParticleEffect effect,
 		ParticleBoxEmitter emitter,
 		ParticleSpriteRenderer renderer,
-		SoundEvent impactSound,
+		SoundEvent fallbackImpact,
+		SoundEvent sandImpact,
+		SoundEvent grassImpact,
+		SoundEvent rockImpact,
+		SoundEvent waterImpact,
 		int lastFrame )
 	{
 		_scene = scene;
@@ -37,7 +57,11 @@ sealed class WorldRainGroundEffect
 		_effect = effect;
 		_emitter = emitter;
 		_renderer = renderer;
-		_impactSound = impactSound;
+		_fallbackImpact = fallbackImpact;
+		_sandImpact = sandImpact;
+		_grassImpact = grassImpact;
+		_rockImpact = rockImpact;
+		_waterImpact = waterImpact;
 		_lastFrame = lastFrame;
 	}
 
@@ -100,8 +124,25 @@ sealed class WorldRainGroundEffect
 		emitter.Rate = MakeConstant( 0f );
 		emitter.Size = new Vector3( 1800f, 1800f, 40f );
 
-		var impactSound = ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_impact.sound" );
-		var ground = new WorldRainGroundEffect( scene, root, effect, emitter, renderer, impactSound, lastFrame );
+		var fallback = ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_impact.sound" );
+		var sand = ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_impact_sand.sound" ) ?? fallback;
+		var grass = ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_impact_grass.sound" ) ?? fallback;
+		var rock = ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_impact_rock.sound" ) ?? fallback;
+		var water = ResourceLibrary.Get<SoundEvent>( "sound/ambient/rain_impact_water.sound" ) ?? fallback;
+
+		var ground = new WorldRainGroundEffect(
+			scene,
+			root,
+			effect,
+			emitter,
+			renderer,
+			fallback,
+			sand,
+			grass,
+			rock,
+			water,
+			lastFrame );
+
 		if ( lastFrame > SplashStartFrame )
 		{
 			effect.OnParticleCreated = ground.OnParticleCreated;
@@ -138,7 +179,8 @@ sealed class WorldRainGroundEffect
 		amount = MathX.Clamp( amount, 0f, 1.5f );
 		_amount = amount;
 
-		var active = amount > 0.05f && (enableSplashes || enableAudio);
+		var wantsAudio = enableAudio && HasAnyImpactSound();
+		var active = amount > 0.05f && (enableSplashes || wantsAudio);
 		Root.Enabled = active && enableSplashes;
 
 		if ( !active )
@@ -154,13 +196,7 @@ sealed class WorldRainGroundEffect
 			SampleGround( listener, splashRadius );
 		}
 
-		if ( !_hasGround )
-		{
-			_emitter.Rate = MakeConstant( 0f );
-			return;
-		}
-
-		if ( enableSplashes )
+		if ( enableSplashes && _hasGround )
 		{
 			Root.WorldPosition = _groundCenter + Vector3.Up * 8f;
 			Root.WorldRotation = Rotation.Identity;
@@ -182,9 +218,16 @@ sealed class WorldRainGroundEffect
 			_emitter.Rate = MakeConstant( 0f );
 		}
 
-		if ( enableAudio && _impactSound is not null )
+		if ( wantsAudio )
 			PlayImpactAudio( listener, audioVolume );
 	}
+
+	bool HasAnyImpactSound() =>
+		_sandImpact is not null
+		|| _grassImpact is not null
+		|| _rockImpact is not null
+		|| _waterImpact is not null
+		|| _fallbackImpact is not null;
 
 	void SampleGround( Vector3 listener, float splashRadius )
 	{
@@ -224,24 +267,93 @@ sealed class WorldRainGroundEffect
 
 	void PlayImpactAudio( Vector3 listener, float volumeScale )
 	{
-		var interval = MathX.Lerp( 0.35f, 0.12f, MathX.Clamp( _amount, 0f, 1f ) );
+		// Sparse in light rain, dense in strong rain (amount ~0.2 light → ~1.2+ strong).
+		var rainT = MathX.Clamp( _amount / 1.25f, 0f, 1f );
+		var rateT = rainT * rainT;
+		var interval = MathX.Lerp( 0.55f, 0.018f, rateT );
 		if ( _sinceImpactSound < interval )
 			return;
 
 		_sinceImpactSound = 0f;
 
 		var angle = Game.Random.Float( 0f, MathF.PI * 2f );
-		var dist = Game.Random.Float( 120f, 700f );
+		var dist = Game.Random.Float( 80f, 650f );
+		var offset = new Vector3( MathF.Cos( angle ) * dist, MathF.Sin( angle ) * dist, 0f );
 		var pos = _hasGround
-			? _groundCenter + new Vector3( MathF.Cos( angle ) * dist, MathF.Sin( angle ) * dist, 4f )
-			: listener + new Vector3( MathF.Cos( angle ) * dist, MathF.Sin( angle ) * dist, 0f );
+			? _groundCenter + offset.WithZ( 4f )
+			: listener + offset.WithZ( -32f );
 
-		if ( Sound.Play( _impactSound, pos ) is { } handle )
+		EnsureTerrain();
+		var surface = ResolveSurface( pos );
+		var sound = ResolveImpactSound( surface );
+		if ( sound is null )
+			return;
+
+		// Place water hits on the ocean/calm surface when we can.
+		if ( surface == RainSurface.Water )
 		{
-			handle.Volume = MathX.Clamp( volumeScale * MathX.Lerp( 0.2f, 0.55f, MathX.Clamp( _amount, 0f, 1f ) ), 0f, 1f );
-			handle.Pitch = Game.Random.Float( 0.9f, 1.15f );
+			var waterHeight = OceanSurfaceController.GetWaterHeightAt( _scene, pos );
+			if ( waterHeight > float.MinValue * 0.5f )
+				pos = pos.WithZ( waterHeight + 2f );
+			else if ( _terrain.IsValid() )
+				pos = pos.WithZ( _terrain.GetHeight( pos.x, pos.y ) + 2f );
 		}
+		else if ( _terrain.IsValid() )
+		{
+			pos = pos.WithZ( _terrain.GetHeight( pos.x, pos.y ) + 4f );
+		}
+
+		if ( Sound.Play( sound, pos ) is not { } handle )
+			return;
+
+		handle.Volume = MathX.Clamp( volumeScale * MathX.Lerp( 0.08f, 0.22f, rainT ), 0f, 1f );
+		handle.Pitch = Game.Random.Float( 0.9f, 1.15f );
 	}
+
+	void EnsureTerrain()
+	{
+		if ( _terrain.IsValid() )
+			return;
+
+		_terrain = WorldManagerSingletonComponent.Instance
+			?? _scene?.GetAllComponents<WorldManagerSingletonComponent>().FirstOrDefault();
+	}
+
+	RainSurface ResolveSurface( Vector3 position )
+	{
+		EnsureTerrain();
+
+		var oceanHeight = OceanSurfaceController.GetWaterHeightAt( _scene, position );
+		if ( oceanHeight > float.MinValue * 0.5f )
+		{
+			var ground = _terrain.IsValid() ? _terrain.GetHeight( position.x, position.y ) : position.z;
+			if ( ground <= oceanHeight + 16f )
+				return RainSurface.Water;
+		}
+
+		if ( !_terrain.IsValid() )
+			return RainSurface.Grass;
+
+		var sample = WorldAmbientTerrainSample.Sample( _terrain, position.x, position.y );
+		if ( sample.Water >= 0.45f || sample.Shore >= 0.85f && sample.Sand < 0.35f )
+			return RainSurface.Water;
+
+		if ( sample.Sand >= sample.Grass && sample.Sand >= sample.Rock )
+			return RainSurface.Sand;
+
+		if ( sample.Rock >= sample.Grass )
+			return RainSurface.Rock;
+
+		return RainSurface.Grass;
+	}
+
+	SoundEvent ResolveImpactSound( RainSurface surface ) => surface switch
+	{
+		RainSurface.Sand => _sandImpact ?? _fallbackImpact ?? _grassImpact,
+		RainSurface.Rock => _rockImpact ?? _fallbackImpact ?? _grassImpact,
+		RainSurface.Water => _waterImpact ?? _fallbackImpact ?? _grassImpact,
+		_ => _grassImpact ?? _fallbackImpact ?? _sandImpact,
+	};
 
 	static int GetSpriteFrameCount( Sprite sprite )
 	{
