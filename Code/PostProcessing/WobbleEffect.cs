@@ -9,6 +9,8 @@ public sealed class WobbleEffect : BasePostProcess<WobbleEffect>
 	[Property, Range( 0.1f, 10f )] public float Amplitude { get; set; } = 1f;
 	[Property, Range( 0.1f, 10f )] public float Speed { get; set; } = 1f;
 
+	Material _material;
+
 	public override void Render()
 	{
 		var amplitude = GetWeighted( x => x.Amplitude );
@@ -19,8 +21,8 @@ public sealed class WobbleEffect : BasePostProcess<WobbleEffect>
 		Attributes.Set( "Amplitude", amplitude );
 		Attributes.Set( "Speed", Speed );
 
-		var shader = Material.FromShader( "pp_wobble" );
-		var blit = BlitMode.WithBackbuffer( shader, Stage.BeforePostProcess, 70 );
+		_material ??= Material.FromShader( "pp_wobble" );
+		var blit = BlitMode.WithBackbuffer( _material, Stage.BeforePostProcess, 70 );
 		Blit( blit, "Wobble Effect" );
 	}
 }

@@ -1,0 +1,29 @@
+---
+description: Prefer GPU execution and persistent GPU resources for parallel rendering workloads
+alwaysApply: true
+---
+
+# GPU-First Performance
+
+For rendering, simulation, procedural generation, culling, particles, terrain, water, foliage, and other data-parallel workloads, prefer GPU execution over per-frame CPU work.
+
+- Use compute shaders, GPU instancing, indirect draws, and shader-side animation when appropriate.
+- Keep data resident in persistent `GpuBuffer` and texture resources.
+- Update only changed ranges; avoid rebuilding or uploading complete buffers.
+- Prefer `DrawModelInstancedIndirect` with `GpuInstanceTransform` for large dynamic instance sets.
+- Avoid per-frame managed allocations, LINQ, temporary collections, and transform-array flattening in render paths.
+- Avoid synchronous GPU readbacks and CPU/GPU synchronization stalls.
+- Use stable slots, ring buffers, pooling, and dirty-range updates for streamed data.
+- Perform culling, LOD selection, compaction, and procedural placement on the GPU when engine APIs allow it.
+- Pass time, camera, and other global values through engine shader globals when available.
+
+Do not move work to the GPU blindly. Keep validation, networking, authoritative gameplay state, small serial tasks, and infrequently executed setup logic on the CPU. Consider transfer cost, synchronization, memory use, determinism, and platform compatibility.
+
+Before implementing a CPU-heavy rendering path:
+
+1. Check whether s&box exposes a GPU buffer, compute, instancing, or indirect-draw API.
+2. Estimate CPU work, allocations, upload volume, and draw-call count.
+3. Choose a design that minimizes recurring CPU work and CPU-to-GPU transfers.
+4. Profile or instrument uncertain bottlenecks instead of assuming.
+
+Controllers retain gameplay state and validation. Renderers own GPU resources and presentation.

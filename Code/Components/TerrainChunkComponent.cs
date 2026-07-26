@@ -19,8 +19,8 @@ public sealed class TerrainChunkComponent : Component
 	[Property, Group( "Terrain" ), Title( "Enable Collision" )]
 	public bool EnableCollision { get; set; } = true;
 
-	[Property, Group( "Terrain" ), Title( "Collision Resolution" ), Description( "Collision mesh detail. Lower is faster and more stable on large chunks." ), Range( 4, 128 )]
-	public int CollisionResolution { get; set; } = 32;
+	[Property, Group( "Terrain" ), Title( "Collision Resolution" ), Description( "Collision mesh detail. Independent of visual LOD so distant chunks stay walkable." ), Range( 4, 128 )]
+	public int CollisionResolution { get; set; } = 48;
 
 	static Material _terrainMaterial;
 
@@ -66,6 +66,9 @@ public sealed class TerrainChunkComponent : Component
 
 	public void ApplyMeshData( TerrainChunkMeshData meshData )
 	{
+		var position = GameObject.WorldPosition;
+		GameObject.WorldPosition = new Vector3( position.x, position.y, meshData.HeightOrigin );
+
 		var mesh = new Mesh();
 		mesh.CreateVertexBuffer( meshData.Vertices.Length, meshData.Vertices );
 		mesh.CreateIndexBuffer( meshData.Indices.Length, meshData.Indices );
@@ -73,19 +76,14 @@ public sealed class TerrainChunkComponent : Component
 		mesh.Bounds = meshData.Bounds;
 
 		var modelBuilder = new ModelBuilder().AddMesh( mesh );
-		var collisionEnabled = meshData.HasCollision && TryAddCollisionMesh(
-			modelBuilder,
-			meshData.CollisionVertices,
-			meshData.CollisionIndices );
-
 		var model = TryCreateModel( modelBuilder, mesh );
 
 		var renderer = GameObject.GetOrAddComponent<ModelRenderer>();
 		renderer.Model = model;
 		renderer.MaterialOverride = GetTerrainMaterial();
 
-		if ( collisionEnabled )
-			TryApplyTerrainCollision( model );
+		if ( meshData.HasCollision )
+			TryApplyTerrainCollision( meshData.CollisionVertices, meshData.CollisionIndices );
 		else
 			RemoveTerrainCollision();
 	}
@@ -129,15 +127,46 @@ public sealed class TerrainChunkComponent : Component
 		return _terrainMaterial;
 	}
 
-	void TryApplyTerrainCollision( Model model )
+	void TryApplyTerrainCollision( Vector3[] collisionVertices, int[] collisionIndices )
 	{
 		try
 		{
+			if ( collisionVertices is null || collisionIndices is null || collisionIndices.Length < 3 )
+			{
+				RemoveTerrainCollision();
+				return;
+			}
+
 			GameObject.Tags.Set( "world", true );
+			GameObject.Tags.Set( "solid", true );
+
+			// Build a collision-only model so render skirts can't invalidate physics cooking.
+			var collisionMesh = new Mesh();
+			var collisionVerts = new TerrainVertex[collisionVertices.Length];
+			for ( var i = 0; i < collisionVertices.Length; i++ )
+			{
+				collisionVerts[i] = new TerrainVertex(
+					collisionVertices[i],
+					Vector3.Up,
+					new Vector4( Vector3.Forward, 1f ),
+					Vector2.Zero,
+					new Color32( 255, 0, 0, 255 ),
+					new Color32( 255, 255, 255, 255 ) );
+			}
+
+			collisionMesh.CreateVertexBuffer( collisionVerts.Length, collisionVerts );
+			collisionMesh.CreateIndexBuffer( collisionIndices.Length, collisionIndices );
+			collisionMesh.Material = GetTerrainMaterial();
+			collisionMesh.Bounds = BBox.FromPoints( collisionVertices );
+
+			var builder = new ModelBuilder().AddMesh( collisionMesh );
+			builder.AddCollisionMesh( collisionVertices, collisionIndices );
+			var collisionModel = builder.Create();
 
 			var collider = GameObject.GetOrAddComponent<ModelCollider>();
 			collider.Static = true;
-			collider.Model = model;
+			collider.IsTrigger = false;
+			collider.Model = collisionModel;
 		}
 		catch ( Exception exception )
 		{

@@ -115,7 +115,8 @@ sealed class WorldRainGroundEffect
 		{
 			effect.SheetSequence = true;
 			effect.SnapToFrame = true;
-			effect.SequenceSpeed = MakeConstant( 0f );
+			var sequenceRate = MathF.Max( lastFrame - SplashStartFrame, 1 ) / 0.4f;
+			effect.SequenceSpeed = MakeConstant( sequenceRate );
 		}
 
 		emitter.Loop = true;
@@ -143,29 +144,7 @@ sealed class WorldRainGroundEffect
 			water,
 			lastFrame );
 
-		if ( lastFrame > SplashStartFrame )
-		{
-			effect.OnParticleCreated = ground.OnParticleCreated;
-			effect.OnStep = ground.OnParticleStep;
-		}
-
 		return ground;
-	}
-
-	void OnParticleCreated( Particle particle )
-	{
-		particle.Frame = SplashStartFrame;
-	}
-
-	void OnParticleStep( Particle particle, float delta )
-	{
-		if ( _lastFrame <= SplashStartFrame )
-			return;
-
-		var life = MathF.Max( particle.Age + particle.LifeTimeRemaining, 0.001f );
-		var t = MathX.Clamp( particle.Age / life, 0f, 1f );
-		var frame = SplashStartFrame + (int)(t * (_lastFrame - SplashStartFrame));
-		particle.Frame = Math.Clamp( frame, SplashStartFrame, _lastFrame );
 	}
 
 	public void Update(

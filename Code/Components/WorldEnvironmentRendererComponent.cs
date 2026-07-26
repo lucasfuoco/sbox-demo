@@ -73,6 +73,7 @@ public sealed class WorldEnvironmentRendererComponent : Component, Component.Exe
 	WorldPrecipitationEffect _rain;
 	WorldPrecipitationEffect _snow;
 	Material _skyMaterial;
+	float _cachedLightningFlash;
 
 	bool IsEditMode => Game.IsEditor && !Game.IsPlaying;
 
@@ -134,6 +135,8 @@ public sealed class WorldEnvironmentRendererComponent : Component, Component.Exe
 
 		if ( !World.IsValid() )
 			return;
+
+		_cachedLightningFlash = SampleLightningFlash();
 
 		UpdateSun();
 		UpdateMoon();
@@ -492,7 +495,9 @@ public sealed class WorldEnvironmentRendererComponent : Component, Component.Exe
 
 	float GetCloudDensity() => Clouds.IsValid() ? Clouds.CloudDensity : World.OvercastAmount;
 
-	float GetLightningFlash()
+	float GetLightningFlash() => _cachedLightningFlash;
+
+	float SampleLightningFlash()
 	{
 		if ( Clouds.IsValid() )
 			return Clouds.LightningFlash;

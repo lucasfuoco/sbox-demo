@@ -78,6 +78,7 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 	TimeSince _sinceShelterCheck;
 	bool _sheltered;
 	float _shelterBlend;
+	bool _legacyEffectsPurged;
 
 	bool IsEditMode => Game.IsEditor && !Game.IsPlaying;
 
@@ -107,7 +108,11 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 
 	void Tick()
 	{
-		PurgeLegacyEffectChildren();
+		if ( !_legacyEffectsPurged )
+		{
+			PurgeLegacyEffectChildren();
+			_legacyEffectsPurged = true;
+		}
 
 		if ( !ShouldPreview )
 		{
@@ -425,7 +430,7 @@ public sealed class WeatherVolumeRainComponent : Component, Component.ExecuteInE
 				return false;
 
 			if ( MathF.Abs( otherBlend - myBlend ) <= 0.02f
-				&& string.CompareOrdinal( other.GameObject.Id.ToString(), GameObject.Id.ToString() ) < 0 )
+				&& other.GameObject.Id.CompareTo( GameObject.Id ) < 0 )
 				return false;
 		}
 

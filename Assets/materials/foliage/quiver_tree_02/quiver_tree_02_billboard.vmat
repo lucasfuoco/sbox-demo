@@ -1,0 +1,39 @@
+// Cutout tree billboard — opacity comes from TextureTranslucency
+
+Layer0
+{
+	shader "shaders/foliage.shader"
+
+	//---- Rendering ----
+	F_ALPHA_TEST 1
+	F_RENDER_BACKFACES 1
+	F_SPECULAR 1
+
+	//---- Color ----
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	TextureColor "materials/foliage/quiver_tree_02/quiver_tree_02_billboard_color.png"
+
+	//---- Opacity (shader reads alpha from this, not TextureColor) ----
+	TextureTranslucency "materials/foliage/quiver_tree_02/quiver_tree_02_billboard_trans.png"
+
+	//---- Normal ----
+	TextureNormal "materials/foliage/quiver_tree_02/quiver_tree_02_billboard_normal_dx.png"
+
+	//---- Alpha Test ----
+	g_flAlphaTestReference "0.300"
+	g_flAlphaDistanceStart "2000.000"
+	g_flAlphaDistanceEnd "12000.000"
+
+	//---- Roughness ----
+	g_flRoughnessScaleFactor "0.850"
+	g_flMinRoughness "0.550"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Texture Coordinates ----
+	g_vTexCoordOffset "[0.000 0.000]"
+	g_vTexCoordScale "[1.000 1.000]"
+	g_vTexCoordScrollSpeed "[0.000 0.000]"
+}

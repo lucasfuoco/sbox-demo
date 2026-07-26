@@ -200,10 +200,17 @@ public sealed class TeamAssignerComponent : Component,
 
 	void IGameEventHandler<PlayerJoinedEvent>.OnGameEvent( PlayerJoinedEvent eventArgs )
 	{
-		if ( AllowLateJoiners )
+		if ( !AllowLateJoiners )
+			return;
+
+		var player = eventArgs.Player;
+		if ( player.Team == Team.Unassigned )
+			AssignTeam( player, true );
+		else
 		{
-			// Calling this will invoke callbacks for any ITeamAssignedListener listeners.
-			eventArgs.Player.AssignTeam( eventArgs.Player.Team );
+			// Ensure listeners run, then spawn immediately so late joiners aren't stuck spectating.
+			player.AssignTeam( player.Team );
+			player.RespawnState = RespawnState.Immediate;
 		}
 	}
 }

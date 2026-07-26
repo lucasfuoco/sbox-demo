@@ -75,6 +75,8 @@ public sealed class WeatherCloudLayerControllerComponent : Component, Component.
 	bool _playVolumesSpawned;
 	bool _lanesInitialized;
 	float _alongWindProgress;
+	readonly List<WeatherVolumeWindDriftComponent> _managedDrifts = new();
+	int _managedDriftChildCount = -1;
 
 	bool ShouldDrift => Game.IsPlaying || (Game.IsEditor && DriftInEditor);
 
@@ -234,17 +236,22 @@ public sealed class WeatherCloudLayerControllerComponent : Component, Component.
 
 	List<WeatherVolumeWindDriftComponent> CollectManagedDrifts()
 	{
-		var list = new List<WeatherVolumeWindDriftComponent>();
+		var childCount = GameObject.Children.Count;
+		if ( childCount == _managedDriftChildCount && _managedDrifts.Count > 0 )
+			return _managedDrifts;
+
+		_managedDriftChildCount = childCount;
+		_managedDrifts.Clear();
 		foreach ( var child in GameObject.Children )
 		{
 			var drift = child.Components.Get<WeatherVolumeWindDriftComponent>();
 			if ( !drift.IsValid() || !drift.Enabled || !drift.GroupManaged )
 				continue;
 
-			list.Add( drift );
+			_managedDrifts.Add( drift );
 		}
 
-		return list;
+		return _managedDrifts;
 	}
 
 	static float WrapAlongAxis( float distance, float extent )

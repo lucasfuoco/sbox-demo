@@ -1,6 +1,7 @@
 @using Sandbox.UI
 @using Sandbox
 @using Sandbox.UI.BaseControls
+@using System
 
 @inherits Panel
 @namespace Sandbox.UI.Panels
@@ -51,16 +52,28 @@
                 <ColorPicker Value="@ColorValue" ValueChanged="@OnColorValueChanged" />
             </div>
         }
+        else if ( Description.PropertyType.IsEnum )
+        {
+            <div class="with-padding grow">
+                <label class="name">@Description.Title</label>
+                <div class="grow" />
+            </div>
+
+            <div class="control enum-options layout row gap">
+                @foreach ( var name in Enum.GetNames( Description.PropertyType ) )
+                {
+                    var enumValue = Enum.Parse( Description.PropertyType, name );
+                    <div class="button standard smaller no-anim extra-x-padding @(Equals( Value, enumValue ) ? "selected" : "")" onclick=@(() => SetEnumValue( enumValue ))>@FormatEnumName( name )</div>
+                }
+            </div>
+        }
     }
     else
     {
         <div class="with-padding border-bottom">
-            <label class="name">@Description.Title</label>
+            <label class="name">Unsupported</label>
             <div class="grow" />
-            <div class="value-area">@Value</div>
         </div>
-
-        <label class="name">Unsupported</label>
     }
 </root>
 
@@ -96,11 +109,47 @@
 
     public PropertyDescription Description { get; set; }
 
+    public Action OnChanged { get; set; }
+
     public RangeAttribute Range => Description.GetCustomAttribute<RangeAttribute>();
 
-    void OnNumericValueChanged( float value ) => NumericValue = value;
+    void OnNumericValueChanged( float value )
+    {
+        NumericValue = value;
+        OnChanged?.Invoke();
+    }
 
-    void OnBoolValueChanged( bool value ) => BoolValue = value;
+    void OnBoolValueChanged( bool value )
+    {
+        BoolValue = value;
+        OnChanged?.Invoke();
+    }
 
-    void OnColorValueChanged( Color value ) => ColorValue = value;
+    void OnColorValueChanged( Color value )
+    {
+        ColorValue = value;
+        OnChanged?.Invoke();
+    }
+
+    void SetEnumValue( object value )
+    {
+        Description.SetValue( Target, value );
+
+        if ( Target is GameSettings && Description.Name == nameof( GameSettings.VideoQuality ) && value is Sandbox.Video.VideoQualityTier tier )
+        {
+            GameSettingsSystem.ApplyVideoPreset( tier, persist: false );
+        }
+
+        OnChanged?.Invoke();
+        StateHasChanged();
+    }
+
+    static string FormatEnumName( string name )
+    {
+        if ( string.IsNullOrEmpty( name ) )
+            return name;
+
+        // Insert spaces before capitals for readability (PostProcess -> Post Process stays as enum name).
+        return name;
+    }
 }

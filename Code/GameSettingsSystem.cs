@@ -1,9 +1,35 @@
 using Sandbox.Audio;
+using Sandbox.Engine.Settings;
+using Sandbox.Video;
 
 namespace Sandbox;
 
 public class GameSettings
 {
+	[Title( "Quality" ), Description( "Overall graphics preset. Auto-detected once from your hardware, then yours to change." ), Group( "Video" ), Icon( "high_quality" )]
+	public VideoQualityTier VideoQuality { get; set; } = VideoQualityTier.Medium;
+
+	[Title( "VSync" ), Description( "Limit frame rate to the display refresh rate." ), Group( "Video" ), Icon( "tv" )]
+	public bool VSync { get; set; } = true;
+
+	[Title( "Max Frame Rate" ), Description( "0 = uncapped (still respects VSync when enabled)." ), Group( "Video" ), Icon( "speed" ), Range( 0, 360, 1 )]
+	public int MaxFrameRate { get; set; } = 120;
+
+	[Title( "Shadows" ), Group( "Video" ), Icon( "wb_shade" )]
+	public ShadowQuality ShadowQuality { get; set; } = ShadowQuality.Medium;
+
+	[Title( "Textures" ), Group( "Video" ), Icon( "texture" )]
+	public TextureQuality TextureQuality { get; set; } = TextureQuality.Medium;
+
+	[Title( "Post Processing" ), Group( "Video" ), Icon( "auto_awesome" )]
+	public PostProcessQuality PostProcessQuality { get; set; } = PostProcessQuality.Medium;
+
+	[Title( "Volumetric Fog" ), Group( "Video" ), Icon( "foggy" )]
+	public VolumetricFogQuality VolumetricFogQuality { get; set; } = VolumetricFogQuality.Medium;
+
+	/// <summary>True after the first auto-detect or after the player saves a Video choice. Not shown in UI.</summary>
+	public bool HasChosenVideoQuality { get; set; }
+
 	[Title( "Field Of View" ), Description( "Effects the camera's vision." ), Group( "Game" ), Icon( "grid_view" ), Range( 65, 110, 1 )]
 	public float FieldOfView { get; set; } = 85;
 
@@ -50,6 +76,8 @@ public class GameSettings
 public partial class GameSettingsSystem
 {
 	private static GameSettings current { get; set; }
+	static GraphicsCapabilitySnapshot? _cachedCapabilities;
+
 	public static GameSettings Current
 	{
 		get
@@ -65,15 +93,85 @@ public partial class GameSettingsSystem
 
 	public static string FilePath => "gamesettings.json";
 
+
+	public static GraphicsCapabilitySnapshot Capabilities
+	{
+		get
+		{
+			_cachedCapabilities ??= GraphicsCapabilityDetector.Detect();
+			return _cachedCapabilities.Value;
+		}
+	}
+
+	public static VideoQualityTier RecommendedVideoQuality => Capabilities.RecommendedTier;
+
 	public static void Save()
 	{
+		Current.HasChosenVideoQuality = true;
 		ApplyVolumes();
+		ApplyVideo();
 		FileSystem.Data.WriteJson( FilePath, Current );
 	}
 
 	public static void Load()
 	{
 		Current = FileSystem.Data.ReadJson<GameSettings>( FilePath, new() );
+		EnsureVideoQualityChosen();
+		ApplyVolumes();
+		ApplyVideo();
+	}
+
+	/// <summary>
+	/// Copy a quality profile into Video settings and apply it.
+	/// </summary>
+	public static void ApplyRecommendedVideoQuality( bool persist = true )
+	{
+		ApplyVideoPreset( RecommendedVideoQuality, persist );
+	}
+
+	public static void ApplyVideoPreset( VideoQualityTier tier, bool persist = true )
+	{
+		_ = Current;
+		CopyPresetToSettings( tier );
+		Current.HasChosenVideoQuality = true;
+		ApplyVideo();
+
+		if ( persist )
+			FileSystem.Data.WriteJson( FilePath, Current );
+	}
+
+	public static void ApplyVideo()
+	{
+		var settings = Current;
+		var profile = GraphicsQualityProfile.For( settings.VideoQuality );
+		GraphicsQualityApplicator.Apply( profile, settings );
+
+		var caps = Capabilities;
+		Log.Info(
+			$"[Video] {caps.GpuName} | VRAM {caps.GpuMemoryGb:0.0}GB | " +
+			$"recommended {caps.RecommendedTier} | chosen {settings.VideoQuality}" );
+	}
+
+	static void EnsureVideoQualityChosen()
+	{
+		if ( Current.HasChosenVideoQuality )
+			return;
+
+		CopyPresetToSettings( RecommendedVideoQuality );
+		Current.HasChosenVideoQuality = true;
+		FileSystem.Data.WriteJson( FilePath, Current );
+	}
+
+	static void CopyPresetToSettings( VideoQualityTier tier )
+	{
+		var profile = GraphicsQualityProfile.For( tier );
+		Current.VideoQuality = tier;
+		Current.VSync = profile.VSync;
+		Current.MaxFrameRate = profile.MaxFrameRate;
+		Current.ShadowQuality = profile.ShadowQuality;
+		Current.TextureQuality = profile.TextureQuality;
+		Current.PostProcessQuality = profile.PostProcessQuality;
+		Current.VolumetricFogQuality = profile.VolumetricFogQuality;
 	}
 
 	static void ApplyVolumes()

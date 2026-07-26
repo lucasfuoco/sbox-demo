@@ -35,6 +35,7 @@ public sealed class WeatherVolumeManagerComponent : Component
 	public bool EnableScreenTintHook { get; set; } = true;
 
 	readonly List<WeatherVolumeComponent> _volumes = new();
+	readonly List<(WeatherVolumeComponent volume, float blend)> _contributionsScratch = new();
 	RealTimeSince _sinceVolumeRefresh;
 	WeatherSample _cachedPlayerWeather;
 	Vector3 _cachedPlayerPosition;
@@ -104,7 +105,7 @@ public sealed class WeatherVolumeManagerComponent : Component
 		if ( _volumes.Count == 0 )
 			return result;
 
-		var contributions = new List<(WeatherVolumeComponent volume, float blend)>();
+		_contributionsScratch.Clear();
 
 		foreach ( var volume in _volumes )
 		{
@@ -115,15 +116,15 @@ public sealed class WeatherVolumeManagerComponent : Component
 			if ( blend <= 0.001f )
 				continue;
 
-			contributions.Add( (volume, blend) );
+			_contributionsScratch.Add( (volume, blend) );
 		}
 
-		if ( contributions.Count == 0 )
+		if ( _contributionsScratch.Count == 0 )
 			return result;
 
-		contributions.Sort( (a, b) => b.blend.CompareTo( a.blend ) );
+		_contributionsScratch.Sort( static ( a, b ) => b.blend.CompareTo( a.blend ) );
 
-		foreach ( var (volume, blend) in contributions )
+		foreach ( var (volume, blend) in _contributionsScratch )
 		{
 			var localSample = volume.GetWeatherSample();
 			result = WeatherSample.BlendWithVolume( result, localSample, blend, volume.VolumeType );

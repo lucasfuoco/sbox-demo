@@ -22,7 +22,7 @@
         "Flags": 0,
         "Acceleration": 14,
         "Bounciness": 0.3,
-        "GroundAngle": 45,
+        "GroundAngle": 60,
         "Height": 64,
         "IgnoreLayers": "ragdoll,invis,pickup,no_player,fire",
         "OnComponentDestroy": null,

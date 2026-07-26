@@ -13,7 +13,7 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
     [Property, Group( "Chunk Streamer" ), Title( "World Manager" )]
     public WorldManagerSingletonComponent WorldManager { get; set; }
 
-    [Property, Group( "Chunk Streamer" ), Title( "Camera" ), Description( "Optional play-mode camera. In the editor, the scene viewport is used when this is empty." )]
+    [Property, Group( "Chunk Streamer" ), Title( "Camera" ), Description( "Optional fallback when no local player exists. Play mode prefers the player pawn so terrain collision follows them. Editor uses the scene viewport when empty." )]
     public CameraComponent Camera { get; set; }
 
 	[Property, Group( "Chunk Streamer" ), Title( "Chunk Size" ), Change( nameof( OnLayoutChanged ) )]
@@ -1072,6 +1072,11 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 			return true;
 		}
 
+		// Prefer the local player so collision stays loaded under them.
+		// The optional Camera can be a spectate rig parked at the origin.
+		if ( TryGetPlayModeStreamPosition( out position ) )
+			return true;
+
 		if ( Camera.IsValid() )
 		{
 			position = Camera.WorldPosition;
@@ -1083,9 +1088,6 @@ public sealed class ChunkStreamerComponent : Component, Component.ExecuteInEdito
 			position = activeCamera.WorldPosition;
 			return true;
 		}
-
-		if ( TryGetPlayModeStreamPosition( out position ) )
-			return true;
 
 		return true;
 	}

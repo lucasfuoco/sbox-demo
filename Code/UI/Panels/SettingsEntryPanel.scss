@@ -32,4 +32,11 @@ SettingsEntryPanel
         font-size: 16px;
         color: orange;
     }
+
+    .enum-options
+    {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        max-width: 520px;
+    }
 }

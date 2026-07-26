@@ -40,6 +40,7 @@ sealed class WorldCloudEffect
 	Vector3 _emissionCenter;
 	float _sunSideStrength = 0.35f;
 	float _lightningFlash;
+	float _lastPushedLightningFlash = -1f;
 	WeatherLightningFlash[] _lightningFlashes = Array.Empty<WeatherLightningFlash>();
 	bool _hasLightningFlashes;
 
@@ -217,25 +218,13 @@ sealed class WorldCloudEffect
 
 		var driftSpread = MathF.Max( driftSpeed * 0.08f, 6f );
 		var spreadVelocity = _particleWindVelocity;
-		if ( Game.IsPlaying )
+		// Drive wind on the particle system so OnParticleStep does not rewrite velocity.
+		_effect.ConstantMovement = new ParticleVector3
 		{
-			_effect.ConstantMovement = new ParticleVector3
-			{
-				X = MakeConstant( 0f ),
-				Y = MakeConstant( 0f ),
-				Z = MakeRange( -3f, 10f ),
-			};
-		}
-		else
-		{
-			// Editor viewport does not always run OnParticleStep; drive drift via ConstantMovement instead.
-			_effect.ConstantMovement = new ParticleVector3
-			{
-				X = MakeRange( spreadVelocity.x - driftSpread, spreadVelocity.x + driftSpread ),
-				Y = MakeRange( spreadVelocity.y - driftSpread, spreadVelocity.y + driftSpread ),
-				Z = MakeRange( -3f, 10f ),
-			};
-		}
+			X = MakeRange( spreadVelocity.x - driftSpread, spreadVelocity.x + driftSpread ),
+			Y = MakeRange( spreadVelocity.y - driftSpread, spreadVelocity.y + driftSpread ),
+			Z = MakeRange( -3f, 10f ),
+		};
 
 		var maxParticles = Math.Clamp( (int)(density * spanRoot * 2.2f), 200, 2800 );
 		if ( MathF.Abs( maxParticles - _maxParticles ) > _maxParticles * 0.1f )
@@ -289,8 +278,16 @@ sealed class WorldCloudEffect
 		}
 
 		// Lightning must push colors immediately (slow tint lerp would hide the flash).
-		if ( !Game.IsPlaying || _hasLightningFlashes || _lightningFlash > 0.01f )
+		var wantsLightningColors = !Game.IsPlaying || _hasLightningFlashes || _lightningFlash > 0.01f;
+		if ( wantsLightningColors && MathF.Abs( _lightningFlash - _lastPushedLightningFlash ) > 0.02f )
+		{
+			_lastPushedLightningFlash = _lightningFlash;
 			RefreshParticleColors( editorPreview: !Game.IsPlaying );
+		}
+		else if ( !Game.IsPlaying )
+		{
+			RefreshParticleColors( editorPreview: true );
+		}
 
 		_renderer.Scale = MathF.Max( scaleMultiplier, 1f );
 
@@ -385,26 +382,13 @@ sealed class WorldCloudEffect
 
 		ApplyParticleFrame( particle, frame );
 		ApplyParticleColor( particle, editorPreview: !Game.IsPlaying );
-		ApplyParticleWind( particle );
 	}
 
 	void OnParticleStep( Particle particle, float delta )
 	{
-		ApplyParticleFrame( particle, particle.Get<int>( FrameKey ) );
+		// Wind is ConstantMovement. Frames are sticky after create.
+		// Only rewrite tint for lifetime fade / lightning response.
 		ApplyParticleColor( particle );
-		ApplyParticleWind( particle );
-	}
-
-	void ApplyParticleWind( Particle particle )
-	{
-		if ( !Game.IsPlaying )
-			return;
-
-		if ( _particleWindVelocity.LengthSquared <= 0.0001f )
-			return;
-
-		var turbulence = particle.Get<Vector3>( WindTurbulenceKey );
-		particle.Velocity = _particleWindVelocity + turbulence;
 	}
 
 	void ApplyParticleColor( Particle particle, bool editorPreview = false )

@@ -696,7 +696,8 @@
               "OnComponentEnabled": null,
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
-              "OnComponentUpdate": null
+              "OnComponentUpdate": null,
+              "TimeoutSeconds": 12
             }
           }
         ],
@@ -948,7 +949,7 @@
               "TerrainBottomHeight": -300,
               "TerrainMacroVariation": 0.12759493,
               "TerrainMacroVariationScale": 941.69116,
-              "TerrainTextureTileSize": 384,
+              "TerrainTextureTileSize": 192,
               "UseFalloff": false,
               "UseRadialFalloff": false,
               "UseWorldBounds": true,
@@ -1239,13 +1240,13 @@
                 "component_type": "CameraComponent"
               },
               "ChunkSize": 24576,
-              "ChunksPerFrame": 4,
+              "ChunksPerFrame": 2,
               "HeightLodScale": 1,
               "Lod0Distance": 1,
               "Lod1Distance": 2,
               "Lod2Distance": 4,
               "LodRebuildsPerFrame": 4,
-              "MaxConcurrentBuilds": 8,
+              "MaxConcurrentBuilds": 3,
               "MaxLoadedChunks": 250,
               "MinLodResolution": 5,
               "OnComponentDestroy": null,
@@ -1254,11 +1255,11 @@
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "Resolution": 64,
+              "Resolution": 48,
               "UnloadsPerFrame": 8,
               "UseHeightBasedLod": true,
               "UseLod": true,
-              "ViewDistance": 6,
+              "ViewDistance": 4,
               "WorldManager": {
                 "_type": "component",
                 "component_id": "f50f3f72-e2f3-4892-a0c0-50e90f58c5bc",
@@ -1360,6 +1361,115 @@
               "OnComponentUpdate": null,
               "RandomBlend": 0.45,
               "TimeOfDayInfluence": 0.65
+            },
+            {
+              "__type": "Sandbox.Controllers.SandBiomeTreeController",
+              "__guid": "5b2c800d-d43c-4a35-bd37-5c4f4aead276",
+              "__enabled": true,
+              "Flags": 0,
+              "ChunkStreamer": {
+                "_type": "component",
+                "component_id": "5ed347dc-209b-4c7d-b125-8a76c1912e41",
+                "go": "8a3f2e1d-4b5c-6789-a012-3456789abcde",
+                "component_type": "ChunkStreamerComponent"
+              },
+              "Definition": "models/biomes/sand/quiver_tree_02.sandtree",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "WorldManager": {
+                "_type": "component",
+                "component_id": "f50f3f72-e2f3-4892-a0c0-50e90f58c5bc",
+                "go": "8a3f2e1d-4b5c-6789-a012-3456789abcde",
+                "component_type": "WorldManagerSingletonComponent"
+              }
+            },
+            {
+              "__type": "Sandbox.Controllers.SandBiomeTreeController",
+              "__guid": "6c3d911e-e54d-4b46-9c58-6d43bbf0d101",
+              "__enabled": true,
+              "Flags": 0,
+              "ChunkStreamer": {
+                "_type": "component",
+                "component_id": "5ed347dc-209b-4c7d-b125-8a76c1912e41",
+                "go": "8a3f2e1d-4b5c-6789-a012-3456789abcde",
+                "component_type": "ChunkStreamerComponent"
+              },
+              "Definition": "models/biomes/sand/quiver_tree_01.sandtree",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "WorldManager": {
+                "_type": "component",
+                "component_id": "f50f3f72-e2f3-4892-a0c0-50e90f58c5bc",
+                "go": "8a3f2e1d-4b5c-6789-a012-3456789abcde",
+                "component_type": "WorldManagerSingletonComponent"
+              }
+            },
+            {
+              "__type": "Sandbox.Controllers.TerrainSpawnPointController",
+              "__guid": "7d4ea22f-f65e-4c57-ad69-7e54cc01e212",
+              "__enabled": true,
+              "Flags": 0,
+              "Center": "0,0",
+              "FormationRadius": 3000,
+              "MaxSearchRings": 12,
+              "MaxSlope": 1.25,
+              "MinimumHeightAboveWater": 96,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "PointsPerTeam": 8,
+              "SearchStep": 1200,
+              "TeamSeparation": 24000,
+              "WorldManager": {
+                "_type": "component",
+                "component_id": "f50f3f72-e2f3-4892-a0c0-50e90f58c5bc",
+                "go": "8a3f2e1d-4b5c-6789-a012-3456789abcde",
+                "component_type": "WorldManagerSingletonComponent"
+              }
+            },
+            {
+              "__type": "Sandbox.Controllers.TerrainGroundingController",
+              "__guid": "f1d2e9b2-1cee-4ee8-af41-50411326e347",
+              "__enabled": true,
+              "Flags": 0,
+              "MaxRecoverDistance": 512,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "SkinWidth": 2,
+              "WorldManager": {
+                "_type": "component",
+                "component_id": "f50f3f72-e2f3-4892-a0c0-50e90f58c5bc",
+                "go": "8a3f2e1d-4b5c-6789-a012-3456789abcde",
+                "component_type": "WorldManagerSingletonComponent"
+              }
+            },
+            {
+              "__type": "Sandbox.Controllers.SpawnWeaponController",
+              "__guid": "0e235643-2c43-4539-b35b-0af6f5e443eb",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "Weapon": "prefabs/weapons/makarov/makarov.equip"
             }
           ],
           "Children": []
@@ -1610,7 +1720,7 @@
               "__version": 2,
               "Flags": 0,
               "Name": "ClearCloud",
-              "Position": "-189522.25,0,0",
+              "Position": "-204655.594,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "weather_volume,weather_cloud_layer_generated",
@@ -1650,7 +1760,7 @@
                   "__enabled": true,
                   "Flags": 0,
                   "CastShadows": false,
-                  "CloudAmount": 1.4,
+                  "CloudAmount": 1,
                   "CloudColorTransitionSeconds": 15,
                   "CloudFadeInSeconds": 6,
                   "CloudSize": 3.2,
@@ -1713,7 +1823,7 @@
               "__version": 2,
               "Flags": 0,
               "Name": "RainCloud",
-              "Position": "60477.75,0,0",
+              "Position": "45344.375,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "weather_volume,weather_cloud_layer_generated",
@@ -1753,7 +1863,7 @@
                   "__enabled": true,
                   "Flags": 0,
                   "CastShadows": false,
-                  "CloudAmount": 1.4,
+                  "CloudAmount": 1,
                   "CloudColorTransitionSeconds": 15,
                   "CloudFadeInSeconds": 6,
                   "CloudSize": 3.2,
@@ -1820,7 +1930,7 @@
                   "EditorPreview": true,
                   "EnableImpactAudio": true,
                   "EnableRain": true,
-                  "EnableSplashes": true,
+                  "EnableSplashes": false,
                   "ImpactAudioVolume": 0.2,
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
@@ -1829,10 +1939,10 @@
                   "OnComponentStart": null,
                   "OnComponentUpdate": null,
                   "Placement": "FillVolume",
-                  "RainIntensity": 1,
+                  "RainIntensity": 0.7,
                   "ShelterTraceDistance": 4500,
                   "SplashRadius": 4200,
-                  "Strength": "None",
+                  "Strength": "Light",
                   "VisibleHeight": 40000
                 }
               ],
@@ -1843,7 +1953,7 @@
               "__version": 2,
               "Flags": 0,
               "Name": "StormCloud",
-              "Position": "310477.75,0,0",
+              "Position": "295344.375,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "weather_volume,weather_cloud_layer_generated",
@@ -1883,7 +1993,7 @@
                   "__enabled": true,
                   "Flags": 0,
                   "CastShadows": false,
-                  "CloudAmount": 1.4,
+                  "CloudAmount": 1,
                   "CloudColorTransitionSeconds": 15,
                   "CloudFadeInSeconds": 6,
                   "CloudSize": 3.2,
@@ -1950,7 +2060,7 @@
                   "EditorPreview": true,
                   "EnableImpactAudio": true,
                   "EnableRain": true,
-                  "EnableSplashes": true,
+                  "EnableSplashes": false,
                   "ImpactAudioVolume": 0.2,
                   "OnComponentDestroy": null,
                   "OnComponentDisabled": null,
@@ -1959,10 +2069,10 @@
                   "OnComponentStart": null,
                   "OnComponentUpdate": null,
                   "Placement": "FillVolume",
-                  "RainIntensity": 1,
+                  "RainIntensity": 0.7,
                   "ShelterTraceDistance": 4500,
                   "SplashRadius": 4800,
-                  "Strength": "Strong",
+                  "Strength": "Light",
                   "VisibleHeight": 45000
                 },
                 {
@@ -2018,7 +2128,7 @@
               "__version": 2,
               "Flags": 0,
               "Name": "FogBank",
-              "Position": "-439522.25,0,0",
+              "Position": "-454655.625,0,0",
               "Rotation": "0,0,0,1",
               "Scale": "1,1,1",
               "Tags": "weather_volume,weather_cloud_layer_generated",
@@ -2058,7 +2168,7 @@
                   "__enabled": true,
                   "Flags": 0,
                   "CastShadows": false,
-                  "CloudAmount": 1.4,
+                  "CloudAmount": 1,
                   "CloudColorTransitionSeconds": 15,
                   "CloudFadeInSeconds": 6,
                   "CloudSize": 3.2,
@@ -2209,7 +2319,7 @@
               "__enabled": true,
               "Flags": 0,
               "EnableFftWaves": true,
-              "EnableSeaSpray": true,
+              "EnableSeaSpray": false,
               "FftActive": true,
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
@@ -2217,7 +2327,7 @@
               "OnComponentFixedUpdate": null,
               "OnComponentStart": null,
               "OnComponentUpdate": null,
-              "Profile": "resources/water/ocean.fftwater"
+              "Profile": null
             },
             {
               "__type": "Sandbox.Controllers.OceanSurfaceController",
@@ -2350,8 +2460,8 @@
                   "__guid": "cba6e278-7bb9-4384-b486-619e42d78bef",
                   "__enabled": true,
                   "Flags": 0,
-                  "BaseCellSize": 16,
-                  "CellsPerRing": 64,
+                  "BaseCellSize": 24,
+                  "CellsPerRing": 48,
                   "Depth": 450,
                   "FollowCameraForClipmap": true,
                   "Length": 1000000,
@@ -2552,6 +2662,7 @@
         }
       },
       "Sandbox.GameObjectSystems.OceanFftManager": {
+        "EnableSeaSpray": false,
         "OceanFftProfile": "resources/water/ocean.fftwater"
       },
       "Sandbox.SelectionSetsSystem": {

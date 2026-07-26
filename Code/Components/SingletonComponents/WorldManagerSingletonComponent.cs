@@ -92,7 +92,7 @@ public sealed class WorldManagerSingletonComponent : SingletonComponent<WorldMan
 	public float TerrainBottomHeight { get; set; } = -200f;
 
 	[Property, Group( "Terrain" ), Title( "Texture Tile Size" ), Description( "World units covered by one texture repeat. Larger = fewer visible tiles." ), Range( 64f, 2048f ), Change( nameof( OnTerrainMeshSettingsChanged ) )]
-	public float TerrainTextureTileSize { get; set; } = 384f;
+	public float TerrainTextureTileSize { get; set; } = 192f;
 
 	[Property, Group( "Terrain" ), Title( "Macro Variation" ), Description( "Low-frequency brightness variation to break up repeating texture patches." ), Range( 0f, 0.35f ), Change( nameof( OnTerrainMeshSettingsChanged ) )]
 	public float TerrainMacroVariation { get; set; } = 0.12f;

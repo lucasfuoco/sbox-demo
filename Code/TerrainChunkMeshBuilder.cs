@@ -8,6 +8,11 @@ public sealed class TerrainChunkMeshData
 	public int[] CollisionIndices { get; init; }
 	public bool HasCollision { get; init; }
 	public BBox Bounds { get; init; }
+
+	/// <summary>
+	/// World-space Z used as the chunk object's origin so mesh/collision Z stays small.
+	/// </summary>
+	public float HeightOrigin { get; init; }
 }
 
 public static class TerrainChunkMeshBuilder
@@ -23,7 +28,6 @@ public static class TerrainChunkMeshBuilder
 		resolution = Math.Max( resolution, 4 );
 		var width = resolution + 1;
 		var step = snapshot.ChunkSize / (float)resolution;
-		var bottomHeight = snapshot.TerrainBottomHeight;
 		var chunkOrigin = snapshot.ChunkOrigin;
 		var heights = new float[width, width];
 		var blendPaints = new (Color32 Blend, Color32 Tint)[width, width];
@@ -37,6 +41,18 @@ public static class TerrainChunkMeshBuilder
 				heights[x, y] = snapshot.SampleHeight( worldX, worldY );
 			}
 		}
+
+		// Keep mesh/collision Z near zero for physics stability on huge worlds.
+		var heightOrigin = heights[0, 0];
+		for ( var y = 0; y < width; y++ )
+		{
+			for ( var x = 0; x < width; x++ )
+				heightOrigin = MathF.Min( heightOrigin, heights[x, y] );
+		}
+
+		// Shallow skirt only — a deep absolute bottom makes the model AABB enormous and
+		// causes physics cooking to drop the collision mesh.
+		var bottomHeight = MathF.Min( snapshot.TerrainBottomHeight - heightOrigin, -128f );
 
 		for ( var y = 0; y < width; y++ )
 		{
@@ -63,7 +79,7 @@ public static class TerrainChunkMeshBuilder
 					chunkOrigin,
 					x * step,
 					y * step,
-					heights[x, y],
+					heights[x, y] - heightOrigin,
 					normal,
 					blendPaints[x, y],
 					uvScale ) );
@@ -95,8 +111,8 @@ public static class TerrainChunkMeshBuilder
 		int[] collisionIndices = null;
 		var hasCollision = enableCollision && TryBuildCollisionMesh(
 			snapshot,
-			resolution,
 			collisionResolution,
+			heightOrigin,
 			out collisionVertices,
 			out collisionIndices );
 
@@ -107,7 +123,8 @@ public static class TerrainChunkMeshBuilder
 			CollisionVertices = collisionVertices,
 			CollisionIndices = collisionIndices,
 			HasCollision = hasCollision,
-			Bounds = CalculateMeshBounds( vertices )
+			Bounds = CalculateMeshBounds( vertices ),
+			HeightOrigin = heightOrigin
 		};
 	}
 
@@ -214,21 +231,22 @@ public static class TerrainChunkMeshBuilder
 
 	static bool TryBuildCollisionMesh(
 		TerrainBuildSnapshot snapshot,
-		int visualResolution,
 		int collisionResolution,
+		float heightOrigin,
 		out Vector3[] collisionVertices,
 		out int[] collisionIndices )
 	{
 		collisionVertices = null;
 		collisionIndices = null;
 
-		var target = GetCollisionResolution( visualResolution, collisionResolution );
+		var target = GetCollisionResolution( collisionResolution );
 		if ( target <= 0 )
 			return false;
 
 		var collisionStep = snapshot.ChunkSize / (float)target;
 		var width = target + 1;
 		var chunkOrigin = snapshot.ChunkOrigin;
+		// Standard S&box approach: a single triangle surface mesh for ModelCollider.
 		var vertexList = new List<Vector3>( width * width );
 		var indexList = new List<int>();
 
@@ -240,7 +258,7 @@ public static class TerrainChunkMeshBuilder
 				var localY = y * collisionStep;
 				var worldX = chunkOrigin.x + localX;
 				var worldY = chunkOrigin.y + localY;
-				var height = snapshot.SampleHeight( worldX, worldY );
+				var height = snapshot.SampleHeight( worldX, worldY ) - heightOrigin;
 				vertexList.Add( new Vector3( localX, localY, height ) );
 			}
 		}
@@ -269,9 +287,9 @@ public static class TerrainChunkMeshBuilder
 		return true;
 	}
 
-	static int GetCollisionResolution( int visualResolution, int collisionResolution )
+	static int GetCollisionResolution( int collisionResolution )
 	{
-		var target = Math.Clamp( collisionResolution, 4, visualResolution );
+		var target = Math.Clamp( collisionResolution, 4, 128 );
 		while ( target > 4 && target * target * 2 > MaxCollisionTriangles )
 			target >>= 1;
 

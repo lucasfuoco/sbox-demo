@@ -1,0 +1,30 @@
+// Tree PBR material
+
+Layer0
+{
+	shader "shaders/complex.shader"
+
+	//---- PBR ----
+	F_SPECULAR 1
+	F_RENDER_BACKFACES 1
+
+	//---- Color ----
+	g_flModelTintAmount "1.000"
+	g_vColorTint "[1.000000 1.000000 1.000000 0.000000]"
+	TextureColor "materials/foliage/quiver_tree_02/quiver_tree_02_diff_2k.jpg"
+
+	//---- Normal ----
+	TextureNormal "materials/foliage/quiver_tree_02/quiver_tree_02_normal_dx.png"
+
+	//---- Roughness ----
+	g_flRoughnessScaleFactor "1.000"
+	TextureRoughness "materials/foliage/quiver_tree_02/quiver_tree_02_roughness.png"
+
+	//---- Fog ----
+	g_bFogEnabled "1"
+
+	//---- Texture Coordinates ----
+	g_vTexCoordOffset "[0.000 0.000]"
+	g_vTexCoordScale "[1.000 1.000]"
+	g_vTexCoordScrollSpeed "[0.000 0.000]"
+}

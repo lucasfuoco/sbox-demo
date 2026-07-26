@@ -14,6 +14,10 @@ public sealed class OceanFftSeaSprayRendererComponent : Component
 	ParticleEffect _effect;
 	ParticleBoxEmitter _emitter;
 	ParticleSpriteRenderer _renderer;
+	ParticleGradient _sprayGradient = new()
+	{
+		Type = ParticleGradient.ValueType.Constant,
+	};
 	bool _configured;
 
 	public void UpdateSpray( Vector3 cameraPosition, float intensity )
@@ -35,11 +39,8 @@ public sealed class OceanFftSeaSprayRendererComponent : Component
 		_effect.Scale = MakeRange(
 			MathX.Lerp( 10f, 18f, intensity ),
 			MathX.Lerp( 22f, 48f, intensity ) );
-		_effect.Gradient = new ParticleGradient
-		{
-			Type = ParticleGradient.ValueType.Constant,
-			ConstantValue = new Color( 0.9f, 0.95f, 1f, MathX.Lerp( 0.2f, 0.65f, intensity ) ),
-		};
+		_sprayGradient.ConstantValue = new Color( 0.9f, 0.95f, 1f, MathX.Lerp( 0.2f, 0.65f, intensity ) );
+		_effect.Gradient = _sprayGradient;
 	}
 
 	void EnsureConfigured()

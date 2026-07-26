@@ -9,6 +9,8 @@ public sealed class SimpleFog : BasePostProcess<SimpleFog>
 	[Property, Range( 0, 1 )] public float Intensity { get; set; } = 0.01f;
 	[Property, Range( 0, 1 )] public float Opacity { get; set; } = 0.5f;
 
+	Material _material;
+
 	public override void Render()
 	{
 		var opacity = GetWeighted( x => x.Opacity );
@@ -26,8 +28,8 @@ public sealed class SimpleFog : BasePostProcess<SimpleFog>
 		Attributes.Set( "Intensity", intensity );
 		Attributes.Set( "Opacity", opacity );
 
-		var shader = Material.FromShader( "pp_simplefog" );
-		var blit = BlitMode.WithBackbuffer( shader, Stage.BeforePostProcess, 60 );
+		_material ??= Material.FromShader( "pp_simplefog" );
+		var blit = BlitMode.WithBackbuffer( _material, Stage.BeforePostProcess, 60 );
 		Blit( blit, "Simple Fog" );
 	}
 }

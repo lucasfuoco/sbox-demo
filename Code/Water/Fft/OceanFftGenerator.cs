@@ -40,6 +40,16 @@ public sealed class OceanFftGenerator : IDisposable
 	float _unitsPerMeter = 39.3700787f;
 	List<OceanFftCascadeParameters> _passCascades = new();
 	readonly Random _rng = new( 1234 );
+	readonly Vector4[] _scaleScratch = new Vector4[OceanFftDefinition.MaxCascades];
+	static readonly string[] ScaleAttributeNames =
+	[
+		"OceanFftScale0",
+		"OceanFftScale1",
+		"OceanFftScale2",
+		"OceanFftScale3",
+	];
+	int _lastApplyHash;
+	bool _lastApplyReady;
 
 	public bool IsReady => _displacementAtlas is not null && _normalAtlas is not null && _allocatedCascades > 0 && _warmedUp;
 	public Texture DisplacementAtlas => _displacementAtlas;
@@ -290,12 +300,29 @@ public sealed class OceanFftGenerator : IDisposable
 		if ( !IsReady || definition is null || !definition.HasCascades )
 		{
 			attributes.Set( "UseOceanFft", 0 );
+			_lastApplyReady = false;
+			_lastApplyHash = 0;
 			return;
 		}
 
 		var cascades = definition.Cascades;
 		var count = Math.Min( cascades.Count, _allocatedCascades );
 		var units = MathF.Max( 0.001f, definition.UnitsPerMeter );
+		var applyHash = HashCode.Combine( count, _cascadeCapacity, units.GetHashCode() );
+		for ( var i = 0; i < count; i++ )
+		{
+			var c = cascades[i];
+			applyHash = HashCode.Combine( applyHash, c.TileLength.x, c.TileLength.y, c.DisplacementScale, c.NormalScale );
+		}
+
+		if ( !_lastApplyReady || applyHash != _lastApplyHash )
+		{
+			for ( var i = 0; i < OceanFftDefinition.MaxCascades; i++ )
+				_scaleScratch[i] = i < count ? cascades[i].GetMapScale( units ) : Vector4.Zero;
+
+			_lastApplyReady = true;
+			_lastApplyHash = applyHash;
+		}
 
 		attributes.Set( "UseOceanFft", 1 );
 		attributes.Set( "OceanFftCascades", count );
@@ -306,11 +333,10 @@ public sealed class OceanFftGenerator : IDisposable
 		attributes.Set( "OceanFftDisplacement", _displacementAtlas );
 		attributes.Set( "OceanFftNormal", _normalAtlas );
 
+		// Static keys avoid per-frame $"OceanFftScale{i}" allocations. Always Set so both
+		// DrawAttributes and Material.Attributes targets stay in sync.
 		for ( var i = 0; i < OceanFftDefinition.MaxCascades; i++ )
-		{
-			var scale = i < count ? cascades[i].GetMapScale( units ) : Vector4.Zero;
-			attributes.Set( $"OceanFftScale{i}", scale );
-		}
+			attributes.Set( ScaleAttributeNames[i], _scaleScratch[i] );
 	}
 
 	static float JonswapAlpha( float windSpeed, float fetchLength )
@@ -347,6 +373,8 @@ public sealed class OceanFftGenerator : IDisposable
 		_mapSize = 0;
 		_cascadeCapacity = 0;
 		_allocatedCascades = 0;
+		_lastApplyReady = false;
+		_lastApplyHash = 0;
 	}
 
 	public void Dispose()

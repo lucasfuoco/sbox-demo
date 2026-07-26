@@ -25,6 +25,8 @@ public sealed class UnderwaterCausticsEffect : BasePostProcess<UnderwaterCaustic
 	/// <summary>When true, always blit using this component's values (camera-local / forced fill).</summary>
 	public bool ForceLocalValues { get; set; }
 
+	Material _material;
+
 	public override void Render()
 	{
 		var opacity = ForceLocalValues ? FogOpacity : GetWeighted( x => x.FogOpacity );
@@ -49,7 +51,7 @@ public sealed class UnderwaterCausticsEffect : BasePostProcess<UnderwaterCaustic
 		Attributes.Set( "MaxFogDepth", ForceLocalValues ? MaxFogDepth : GetWeighted( x => x.MaxFogDepth ) );
 		Attributes.Set( "GodRayIntensity", ForceLocalValues ? GodRayIntensity : GetWeighted( x => x.GodRayIntensity ) );
 
-		var shader = Material.FromShader( "shaders/pp_underwater" );
-		Blit( BlitMode.WithBackbuffer( shader, Stage.AfterPostProcess, 50, false ), "Underwater Caustics" );
+		_material ??= Material.FromShader( "shaders/pp_underwater" );
+		Blit( BlitMode.WithBackbuffer( _material, Stage.AfterPostProcess, 50, false ), "Underwater Caustics" );
 	}
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Sandbox.GameObjectSystems;
 using Sandbox.Rendering;
 using RenderStage = Sandbox.Rendering.Stage;
@@ -36,6 +35,8 @@ public sealed class OceanSurfaceRenderer : Component, Component.ExecuteInEditor,
 
 	readonly RenderAttributes _drawAttributes = new();
 	readonly ComputeShader _clipmapShader = new( "water_clipmap_cs" );
+	readonly int[] _snapCellsX = new int[MaxRings];
+	readonly int[] _snapCellsY = new int[MaxRings];
 
 	// Double-buffered command lists (WaterManager pattern): build into the disabled back
 	// list on the main thread; the camera executes the enabled front list on the render thread.
@@ -46,8 +47,14 @@ public sealed class OceanSurfaceRenderer : Component, Component.ExecuteInEditor,
 
 	GpuBuffer<OceanVertex> _vertexBuffer;
 	GpuBuffer<uint> _indexBuffer;
+	uint[] _indexScratch = Array.Empty<uint>();
 	int _totalIndexCount;
 	int _lastConfigHash;
+	int _lastStaticAttributeHash;
+	int _lastSnapHash;
+	int _lastBoundsHash;
+	BBox _cachedBounds;
+	bool _commandListDirty = true;
 	bool _loggedReady;
 
 	int VerticesPerRing => (CellsPerRing + 1) * (CellsPerRing + 1);
@@ -58,6 +65,10 @@ public sealed class OceanSurfaceRenderer : Component, Component.ExecuteInEditor,
 
 	protected override void OnEnabled()
 	{
+		_commandListDirty = true;
+		_lastStaticAttributeHash = 0;
+		_lastSnapHash = 0;
+		_lastBoundsHash = 0;
 		if ( CanRender )
 			CreateBuffers();
 	}
@@ -67,6 +78,7 @@ public sealed class OceanSurfaceRenderer : Component, Component.ExecuteInEditor,
 		UnbindCameras();
 		_vertexBuffer = default;
 		_indexBuffer = default;
+		_commandListDirty = true;
 	}
 
 	protected override void OnDestroy()
@@ -84,14 +96,26 @@ public sealed class OceanSurfaceRenderer : Component, Component.ExecuteInEditor,
 		{
 			CreateBuffers();
 			_lastConfigHash = hash;
+			_commandListDirty = true;
+			_lastStaticAttributeHash = 0;
+			_lastSnapHash = 0;
 		}
 
-		UpdateDrawAttributes();
+		UpdateStaticDrawAttributes();
+		UpdateDynamicDrawAttributes();
 		OceanFftManager.Current?.BindToRenderer( this );
 
 		var cameraPos = GetClipmapCameraPosition();
+		var snapHash = HashCode.Combine( ComputeSnapHash( cameraPos ), WorldPosition.z.GetHashCode(), _lastBoundsHash );
+		if ( snapHash != _lastSnapHash )
+		{
+			_lastSnapHash = snapHash;
+			_commandListDirty = true;
+		}
+
 		BindCameras();
-		BuildCommandList( cameraPos );
+		if ( _commandListDirty )
+			BuildCommandList( cameraPos );
 	}
 
 	/// <summary>
@@ -147,6 +171,7 @@ public sealed class OceanSurfaceRenderer : Component, Component.ExecuteInEditor,
 		camera.AddCommandList( _front, RenderStage.AfterTransparent );
 		camera.AddCommandList( _back, RenderStage.AfterTransparent );
 		bound = camera;
+		_commandListDirty = true;
 	}
 
 	void UnbindCameras()
@@ -167,9 +192,17 @@ public sealed class OceanSurfaceRenderer : Component, Component.ExecuteInEditor,
 		_boundEditorCamera = null;
 	}
 
-	void UpdateDrawAttributes()
+	void UpdateStaticDrawAttributes()
 	{
 		var bounds = GetWorldBounds2D();
+		var staticHash = HashCode.Combine(
+			HashCode.Combine( bounds.Mins.x, bounds.Mins.y, bounds.Maxs.x, bounds.Maxs.y ),
+			HashCode.Combine( Depth, OuterExtent, TextureTilingMultiplier, CellsPerRing ),
+			BaseCellSize );
+		if ( staticHash == _lastStaticAttributeHash )
+			return;
+
+		_lastStaticAttributeHash = staticHash;
 
 		// Infinite ocean without WaterBody inclusion volumes: clip to world OBB only.
 		_drawAttributes.Set( "RequireWaterInclusionVolumes", 0 );
@@ -179,7 +212,6 @@ public sealed class OceanSurfaceRenderer : Component, Component.ExecuteInEditor,
 		_drawAttributes.Set( "WaterInclusionVolumeCount", 0 );
 		_drawAttributes.Set( "WaterExclusionVolumeCount", 0 );
 		_drawAttributes.Set( "WaterHullExclusionCount", 0 );
-		_drawAttributes.Set( "WaterTime", Time.Now );
 		_drawAttributes.Set( "DepthMax", Depth );
 		_drawAttributes.Set( "RippleCount", 0 );
 
@@ -201,6 +233,30 @@ public sealed class OceanSurfaceRenderer : Component, Component.ExecuteInEditor,
 		}
 	}
 
+	void UpdateDynamicDrawAttributes()
+	{
+		_drawAttributes.Set( "WaterTime", Time.Now );
+	}
+
+	int ComputeSnapHash( Vector3 cameraPosition )
+	{
+		var rings = ComputeRingCount();
+		var hash = rings;
+		var anchor = FollowCameraForClipmap ? cameraPosition : WorldPosition;
+
+		for ( var ring = 0; ring < rings; ring++ )
+		{
+			var cellSize = BaseCellSize * (1 << ring);
+			var cellX = (int)MathF.Floor( anchor.x / cellSize );
+			var cellY = (int)MathF.Floor( anchor.y / cellSize );
+			_snapCellsX[ring] = cellX;
+			_snapCellsY[ring] = cellY;
+			hash = HashCode.Combine( hash, cellX, cellY );
+		}
+
+		return hash;
+	}
+
 	void BuildCommandList( Vector3 cameraPosition )
 	{
 		var cl = _back;
@@ -216,9 +272,8 @@ public sealed class OceanSurfaceRenderer : Component, Component.ExecuteInEditor,
 		for ( var ring = 0; ring < rings; ring++ )
 		{
 			var cellSize = BaseCellSize * (1 << ring);
-			var anchor = FollowCameraForClipmap ? cameraPosition : WorldPosition;
-			var snapX = MathF.Floor( anchor.x / cellSize ) * cellSize;
-			var snapY = MathF.Floor( anchor.y / cellSize ) * cellSize;
+			var snapX = _snapCellsX[ring] * cellSize;
+			var snapY = _snapCellsY[ring] * cellSize;
 
 			cl.Attributes.Set( "VertexBuffer", _vertexBuffer );
 			cl.Attributes.Set( "VertexOffset", ring * vertsPerRing );
@@ -241,6 +296,7 @@ public sealed class OceanSurfaceRenderer : Component, Component.ExecuteInEditor,
 		_back.Enabled = true;
 		_front.Enabled = false;
 		(_front, _back) = (_back, _front);
+		_commandListDirty = false;
 
 		if ( !_loggedReady )
 		{
@@ -251,6 +307,15 @@ public sealed class OceanSurfaceRenderer : Component, Component.ExecuteInEditor,
 
 	BBox GetWorldBounds2D()
 	{
+		var boundsHash = HashCode.Combine(
+			WorldPosition,
+			WorldRotation,
+			HashCode.Combine( Width, Length, Depth ) );
+		if ( boundsHash == _lastBoundsHash )
+			return _cachedBounds;
+
+		_lastBoundsHash = boundsHash;
+
 		var right = WorldRotation.Right * (Length * 0.5f);
 		var forward = WorldRotation.Forward * (Width * 0.5f);
 		var c0 = WorldPosition + right + forward;
@@ -263,9 +328,10 @@ public sealed class OceanSurfaceRenderer : Component, Component.ExecuteInEditor,
 		var minY = MathF.Min( MathF.Min( c0.y, c1.y ), MathF.Min( c2.y, c3.y ) );
 		var maxY = MathF.Max( MathF.Max( c0.y, c1.y ), MathF.Max( c2.y, c3.y ) );
 
-		return new BBox(
+		_cachedBounds = new BBox(
 			new Vector3( minX, minY, WorldPosition.z - Depth ),
 			new Vector3( maxX, maxY, WorldPosition.z ) );
+		return _cachedBounds;
 	}
 
 	int ComputeRingCount()
@@ -295,7 +361,10 @@ public sealed class OceanSurfaceRenderer : Component, Component.ExecuteInEditor,
 		_vertexBuffer = new GpuBuffer<OceanVertex>( ringCount * verticesPerRing, GpuBuffer.UsageFlags.Vertex | GpuBuffer.UsageFlags.Structured );
 		_indexBuffer = new GpuBuffer<uint>( totalIndices, GpuBuffer.UsageFlags.Index | GpuBuffer.UsageFlags.Structured );
 
-		var indices = new List<uint>();
+		if ( _indexScratch.Length < totalIndices )
+			_indexScratch = new uint[totalIndices];
+
+		var write = 0;
 		for ( var ring = 0; ring < ringCount; ring++ )
 		{
 			var baseVertex = (uint)(ring * verticesPerRing);
@@ -309,16 +378,16 @@ public sealed class OceanSurfaceRenderer : Component, Component.ExecuteInEditor,
 				var i1 = i0 + 1;
 				var i2 = i0 + (uint)(n + 1);
 				var i3 = i2 + 1;
-				indices.Add( i0 );
-				indices.Add( i1 );
-				indices.Add( i2 );
-				indices.Add( i1 );
-				indices.Add( i3 );
-				indices.Add( i2 );
+				_indexScratch[write++] = i0;
+				_indexScratch[write++] = i1;
+				_indexScratch[write++] = i2;
+				_indexScratch[write++] = i1;
+				_indexScratch[write++] = i3;
+				_indexScratch[write++] = i2;
 			}
 		}
 
-		_indexBuffer.SetData( indices );
-		_totalIndexCount = indices.Count;
+		_indexBuffer.SetData( _indexScratch.AsSpan( 0, write ) );
+		_totalIndexCount = write;
 	}
 }

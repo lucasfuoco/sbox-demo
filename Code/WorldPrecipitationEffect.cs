@@ -38,6 +38,11 @@ sealed class WorldPrecipitationEffect
 	float _clipCeiling = float.MaxValue;
 	WorldManagerSingletonComponent _terrain;
 	int _stepBucket;
+	ParticleVector3 _constantMovement = new();
+	ParticleGradient _colorGradient = new()
+	{
+		Type = ParticleGradient.ValueType.Constant,
+	};
 
 	public GameObject Root { get; }
 
@@ -157,12 +162,10 @@ sealed class WorldPrecipitationEffect
 		_effect.Damping = MakeConstant( 0f );
 		_effect.Collision = false;
 		_effect.StartVelocity = MakeConstant( 0f );
-		_effect.ConstantMovement = new ParticleVector3
-		{
-			X = MakeRange( fall.x - spread, fall.x + spread ),
-			Y = MakeRange( fall.y - spread, fall.y + spread ),
-			Z = MakeRange( fall.z * 0.96f, fall.z * 1.04f ),
-		};
+		_constantMovement.X = MakeRange( fall.x - spread, fall.x + spread );
+		_constantMovement.Y = MakeRange( fall.y - spread, fall.y + spread );
+		_constantMovement.Z = MakeRange( fall.z * 0.96f, fall.z * 1.04f );
+		_effect.ConstantMovement = _constantMovement;
 
 		if ( _clipToSurfaces )
 		{
@@ -210,9 +213,10 @@ sealed class WorldPrecipitationEffect
 			? MathX.Lerp( 1.55f, 2.2f, MathX.Clamp( amount, 0f, 1f ) )
 			: 1.5f;
 
-		_effect.Gradient = _kind == Kind.Rain
-			? MakeColor( new Color( 0.72f, 0.84f, 1f, MathX.Clamp( 0.78f + amount * 0.18f, 0.78f, 0.98f ) ) )
-			: MakeColor( Color.White.WithAlpha( 0.92f ) );
+		_colorGradient.ConstantValue = _kind == Kind.Rain
+			? new Color( 0.72f, 0.84f, 1f, MathX.Clamp( 0.78f + amount * 0.18f, 0.78f, 0.98f ) )
+			: Color.White.WithAlpha( 0.92f );
+		_effect.Gradient = _colorGradient;
 
 		_renderer.Scale = _kind == Kind.Rain ? MathX.Lerp( 1.05f, 1.35f, MathX.Clamp( amount, 0f, 1f ) ) : 1.1f;
 
@@ -282,7 +286,7 @@ sealed class WorldPrecipitationEffect
 		if ( waterHeight > float.MinValue * 0.5f )
 			height = MathF.Max( height, waterHeight );
 
-		// One downward trace catches roofs / props the heightfield misses.
+		// One amortized prop/roof probe per refreshed cell keeps this off the hot particle path.
 		var start = sample + Vector3.Up * ClipProbeUp;
 		var tr = scene.Trace.Ray( start, start + Vector3.Down * ClipProbeDown )
 			.WithoutTags( "trigger", "player", "ragdoll", "particles", "weather_volume" )
@@ -317,9 +321,6 @@ sealed class WorldPrecipitationEffect
 
 	void OnRainParticleStep( Particle particle, float delta )
 	{
-		if ( _lastFrame > 0 )
-			particle.Frame = particle.Get<int>( FrameKey );
-
 		if ( !_clipToSurfaces || !_clipGridReady )
 			return;
 

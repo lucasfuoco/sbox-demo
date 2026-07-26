@@ -22,6 +22,7 @@ public sealed class OceanFftManager : GameObjectSystem<OceanFftManager>
 
 	OceanFftGenerator _generator;
 	OceanFftDefinition _runtimeProfile;
+	OceanFftDefinition _qualityOverride;
 	bool _loggedMissing;
 	GameObject _seaSprayObject;
 	OceanFftSeaSprayRendererComponent _seaSpray;
@@ -62,6 +63,33 @@ public sealed class OceanFftManager : GameObjectSystem<OceanFftManager>
 	}
 
 	public OceanFftDefinition ResolveProfile()
+	{
+		if ( _qualityOverride is { HasCascades: true } )
+			return _qualityOverride;
+
+		return ResolveSourceProfile();
+	}
+
+	/// <summary>
+	/// Apply video-quality ocean budgets without mutating the authored .fftwater asset.
+	/// </summary>
+	public void ApplyQualityBudget( int mapSize, float updatesPerSecond, bool seaSpray )
+	{
+		var source = ResolveSourceProfile();
+		if ( source is null || !source.HasCascades )
+			return;
+
+		_qualityOverride = new OceanFftDefinition
+		{
+			UnitsPerMeter = source.UnitsPerMeter,
+			MapSize = mapSize,
+			UpdatesPerSecond = updatesPerSecond,
+			Cascades = source.Cascades,
+		};
+		EnableSeaSpray = seaSpray;
+	}
+
+	OceanFftDefinition ResolveSourceProfile()
 	{
 		if ( OceanFftProfile is not null && OceanFftProfile.HasCascades )
 			return OceanFftProfile;

@@ -1,10 +1,9 @@
 using Sandbox.Components.SingletonComponents;
-using Sandbox.GameEvents;
 
 namespace Sandbox.Components;
 
 public abstract class RespawnerComponent : Component,
-	IGameEventHandler<UpdateStateGameEvent>
+	IGameEventHandler<UpdateStateEvent>
 {
 	[Property, Sync( SyncFlags.FromHost )] public float RespawnDelaySeconds { get; set; } = 3f;
 	[Property] public bool AllowSpectatorsToSpawn { get; set; } = false;
@@ -18,7 +17,7 @@ public abstract class RespawnerComponent : Component,
 		return (RespawnDelaySeconds - ClientComponent.Local.TimeSinceRespawnStateChanged).Clamp( 0f, RespawnDelaySeconds ).CeilToInt();
 	}
 
-	void IGameEventHandler<UpdateStateGameEvent>.OnGameEvent( UpdateStateGameEvent eventArgs )
+	void IGameEventHandler<UpdateStateEvent>.OnGameEvent( UpdateStateEvent eventArgs )
 	{
 		foreach ( var player in GameUtils.AllPlayers )
 		{
